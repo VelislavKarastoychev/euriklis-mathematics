@@ -29,9 +29,37 @@ export class Matrix {
    * @returns {boolean} - True if the "m" parameter is a
    * Matrix and false otherwise.
    */
-  static isMatrix (m: Matrix): boolean {
+  static isMatrix(m: Matrix): boolean {
     return conditions.IsMatrix(m);
-  } 
+  }
+
+  /**
+   * Creates a matrix with zero elements
+   * @param rows - an integer greater than zero
+   * @param columns - an integer greater than zero
+   * @param {NumericType} type
+   */
+  static zeros(
+    rows: number,
+    columns: number,
+    type: NumericType = "float64",
+  ): Matrix {
+    const z = new Matrix();
+    z.#M = models.GenerateZeroMatrix(rows, columns, type);
+    return z;
+  }
+  
+  /**
+   * Generates a square zero matrix
+   * 
+   * @param n - The number of the rows and the columns of the Matrix
+   * @param type - The type of each element of the Matrix
+   * @returns A square zero Matrix
+   */
+  static zero (n: number, type: NumericType = "float64"): Matrix {
+    return Matrix.zeros(n, n, type);
+  }
+  
   /**
    * Creates a new Matrix instance with randomized values.
    * @param rows - The number of rows.
@@ -111,7 +139,7 @@ export class Matrix {
   get rows(): number {
     return this.#M.length;
   }
-  
+
   /**
    * @readonly
    * Returns the number of columns of the current
