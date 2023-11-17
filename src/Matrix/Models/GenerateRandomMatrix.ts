@@ -2,6 +2,16 @@
 
 import { MatrixType, NumericType, TypedArray } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts"
+
+/**
+ * @param rows - an integer number greater than zero.
+ * @param columns - an integer
+ * @param from - a real number
+ * @param to - a real number
+ * @param type {NumericType} - describes the type of the matrix elements.
+ * @param seed - a real number
+ * @returns a MatrixType (array of typed arrays)
+ */
 export const GenerateRandomMatrix = (
   rows: number,
   columns: number,
