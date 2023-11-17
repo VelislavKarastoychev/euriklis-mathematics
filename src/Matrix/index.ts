@@ -23,6 +23,16 @@ export class Matrix {
   #type: NumericType = "float64";
 
   /**
+   * Checks if the input parameter "m" is a Matrix
+   * instance from the Matrix library of the @euriklis/mathematics.
+   * @param m - A Matrix instance.
+   * @returns {boolean} - True if the "m" parameter is a
+   * Matrix and false otherwise.
+   */
+  static isMatrix (m: Matrix): boolean {
+    return conditions.IsMatrix(m);
+  } 
+  /**
    * Creates a new Matrix instance with randomized values.
    * @param rows - The number of rows.
    * @param columns - The number of columns.
