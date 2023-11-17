@@ -18,7 +18,7 @@ export class Matrix {
   /**
    * @private {NumericType} #type - A holder for the type of the
    * current matrix instance. By default this property will be
-   * set to "float64" (double precission) type.
+   * set to "float64" (double precision) type.
    */
   #type: NumericType = "float64";
 
@@ -114,7 +114,7 @@ export class Matrix {
   
   /**
    * @readonly
-   * Retusns the number of columns of the current
+   * Returns the number of columns of the current
    * Matrix instance.
    */
   get columns(): number {
