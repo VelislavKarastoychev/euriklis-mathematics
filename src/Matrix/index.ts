@@ -84,7 +84,7 @@ export class Matrix {
    * @param n - The number of rows/columns of the identity matrix
    * @returns {Matrix} The identity matrix
    */
-  static identity(n: number, type: NumericType): Matrix {
+  static identity(n: number, type: NumericType = "float64"): Matrix {
     return Matrix.identityLike(n, n, type);
   }
 
@@ -178,8 +178,10 @@ export class Matrix {
   }
 
   getBlock(
-    { from = [0, 0], to = [this.rows - 1, this.columns - 1] }:
-      MatrixBlockOptions,
+    { from, to }: MatrixBlockOptions = {
+      from: [0, 0],
+      to: [this.rows - 1, this.columns - 1],
+    },
   ): Matrix {
     const block = new Matrix();
     block.#M = models.GetBlock(this.#M, from, to, this.type);
