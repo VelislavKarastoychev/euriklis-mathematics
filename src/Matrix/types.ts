@@ -30,3 +30,7 @@ export type TypedArrayConstructor = Int8ArrayConstructor
   | Float64ArrayConstructor;
   
 export type MatrixType = TypedArray[] | never [];
+export type MatrixBlockOptions = {
+  from: [number, number],
+  to: [number, number],
+}

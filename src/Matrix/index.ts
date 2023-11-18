@@ -3,6 +3,7 @@ import * as conditions from "./Conditions/index.ts";
 import * as models from "./Models/index.ts";
 import * as errors from "./Errors/index.ts";
 import {
+  MatrixBlockOptions,
   MatrixDeclaration,
   MatrixType,
   NumericMatrix,
@@ -48,18 +49,45 @@ export class Matrix {
     z.#M = models.GenerateZeroMatrix(rows, columns, type);
     return z;
   }
-  
+
   /**
    * Generates a square zero matrix
-   * 
+   *
    * @param n - The number of the rows and the columns of the Matrix
    * @param type - The type of each element of the Matrix
    * @returns A square zero Matrix
    */
-  static zero (n: number, type: NumericType = "float64"): Matrix {
+  static zero(n: number, type: NumericType = "float64"): Matrix {
     return Matrix.zeros(n, n, type);
   }
-  
+
+  /**
+   * Generates an identity-like matrix with specified dimensions.
+   *
+   * @param {number} rows - The number of rows of the matrix.
+   * @param {number} columns - The number of columns of the matrix.
+   * @param {NumericType} type - The type of each element of the matrix.
+   * @returns {Matrix} - An identity-like matrix.
+   */
+  static identityLike(
+    rows: number,
+    columns: number,
+    type: NumericType = "float64",
+  ): Matrix {
+    const I = new Matrix();
+    I.#M = models.GenerateIdentityLikeMatrix(rows, columns, type);
+    return I;
+  }
+
+  /**
+   * Generates identity matrix with specified dimensions
+   * @param n - The number of rows/columns of the identity matrix
+   * @returns {Matrix} The identity matrix
+   */
+  static identity(n: number, type: NumericType): Matrix {
+    return Matrix.identityLike(n, n, type);
+  }
+
   /**
    * Creates a new Matrix instance with randomized values.
    * @param rows - The number of rows.
@@ -147,5 +175,14 @@ export class Matrix {
    */
   get columns(): number {
     return this.rows ? this.#M[0].length : 0;
+  }
+
+  getBlock(
+    { from = [0, 0], to = [this.rows - 1, this.columns - 1] }:
+      MatrixBlockOptions,
+  ): Matrix {
+    const block = new Matrix();
+    block.#M = models.GetBlock(this.#M, from, to, this.type);
+    return block;
   }
 }

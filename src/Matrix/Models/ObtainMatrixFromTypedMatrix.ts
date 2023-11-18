@@ -15,7 +15,7 @@ const AssignRow = (m1: TypedArray, m2: number[]): void => {
     j = i << 2;
     m2[j] = m1[j];
     m2[j + 1] = m1[j + 1];
-    m2[j + 2] = m1[j + 1];
+    m2[j + 2] = m1[j + 2];
     m2[j + 3] = m1[j + 3];
   }
   j = i << 2;
