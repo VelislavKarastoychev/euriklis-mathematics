@@ -12,6 +12,8 @@ const runError = (text: string): never => {
   throw error;
 };
 
-
 export const IncorrectMatrixInput = (): never =>
   runError(texts.IncorrectMatrixInputTxt);
+
+export const IncorrectFromAndToParametersInGetBlock = (): never =>
+  runError(texts.IncorrectFromAndToParametersInGetBlockTxt);

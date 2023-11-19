@@ -176,13 +176,19 @@ export class Matrix {
   get columns(): number {
     return this.rows ? this.#M[0].length : 0;
   }
-
+  /**
+   *
+   */
   getBlock(
-    { from, to }: MatrixBlockOptions = {
+    options: MatrixBlockOptions = {
       from: [0, 0],
       to: [this.rows - 1, this.columns - 1],
     },
   ): Matrix {
+    const {from, to} = options;
+    if (!conditions.AreFromAndToCorrectlyDefined(from, to)) {
+      errors.IncorrectFromAndToParametersInGetBlock();
+    } 
     const block = new Matrix();
     block.#M = models.GetBlock(this.#M, from, to, this.type);
     return block;
