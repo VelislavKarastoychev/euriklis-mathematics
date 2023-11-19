@@ -33,4 +33,5 @@ export type MatrixType = TypedArray[] | never [];
 export type MatrixBlockOptions = {
   from: [number, number],
   to: [number, number],
+  block?: NumericMatrix | Matrix
 }

@@ -2,7 +2,11 @@
 import validator from "@euriklis/validator";
 import { Matrix } from "../src/index.ts";
 new validator(Matrix.identity(10).getBlock().M)
-  .describe("The getBlockMethod:").test({title: true, success: "green", error: "yellow"})
+  .describe("The getBlockMethod:").test({
+    title: true,
+    success: "green",
+    error: "yellow",
+  })
   .describe(
     "1. Has to return the same matrix when is called without parameters.",
   )
@@ -27,26 +31,33 @@ const numericArray = [
   [5, 6, 7, 8, 9, 10, 11, 12, 13],
   [6, 7, 8, 9, 10, 11, 12, 13, 14],
 ];
-const matrix = new Matrix({M: numericArray, type: "int8"});
-new validator(matrix.getBlock({from: [1, 0], to: [5, 4]}).M)
+const matrix = new Matrix({ M: numericArray, type: "int8" });
+new validator(matrix.getBlock({ from: [1, 0], to: [5, 4] }).M)
   .describe("3. Has to returns the corresponding matrix elements")
   .isSame([
     [2, 3, 4, 5, 6],
     [3, 4, 5, 6, 7],
     [4, 5, 6, 7, 8],
     [5, 6, 7, 8, 9],
-    [6, 7, 8, 9, 10]
+    [6, 7, 8, 9, 10],
   ])
   .and.bind(
-    new validator(matrix.getBlock({from: [4, 7], to: [5, 8]}).M)
+    new validator(matrix.getBlock({ from: [4, 7], to: [5, 8] }).M)
       .isSame([
         [12, 13],
-        [13, 14]
-      ])
+        [13, 14],
+      ]),
   )
   .test()
+  .describe("4. Throws error when the to parameters are incorrect (greater than the matrix dimensions)")
+  .and.bind(
+    new validator(() => matrix.getBlock({from: [0, 0], to: [200, 201]})).throwsErrorWith()
+  ).test()
 const benchmark = new validator(Matrix.random(...dimensions))
-  .describe("Time performance of the getBlock for extracting of a block 5000 x 5000:")
-  .test({title: true, success: "green", error: "pink"})
-  .benchmark(matrix => matrix.getBlock({from: [0, 0], to: [4999, 4999]}));
+  .isInstanceof(Matrix)
+  .describe(
+    `5. Time performance of the getBlock with parameters matrix -> ${dimensions[0]} x ${dimensions[1]}, from = [0, 0], to = [4999, 4999]:`,
+  )
+  .test()
+  .benchmark((matrix) => matrix.getBlock({ from: [0, 0], to: [4999, 4999] }));
 console.table(benchmark);

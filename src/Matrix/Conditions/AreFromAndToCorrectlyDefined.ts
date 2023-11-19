@@ -12,8 +12,9 @@ import validator from "@euriklis/validator";
  * @returns {boolean} True if the from and to are
  * correctly defined.
  */
-export const AreFromAndToCorrectlyDefined = (from: [number, number], to: [number, number]): boolean => {
+export const AreFromAndToCorrectlyDefined = (from: [number, number], to: [number, number], dimensions: [number, number]): boolean => {
   return new validator({from, to}).interface({
-    from: f => f.isArrayAndForEvery((item, i) => item.isLessThanOrEqual(to[i as number]))
+    from: f => f.isArrayAndForEvery((item, i) => item.isLessThanOrEqual(to[i as number])),
+    to: t => t.isArrayAndForEvery((item, i) => item.isLessThan(dimensions[i as number]))
   }).answer;
 }

@@ -30,7 +30,7 @@ export class Matrix {
    * @returns {boolean} - True if the "m" parameter is a
    * Matrix and false otherwise.
    */
-  static isMatrix(m: Matrix): boolean {
+  static isMatrix(m: any): boolean {
     return conditions.IsMatrix(m);
   }
 
@@ -116,10 +116,18 @@ export class Matrix {
    * @param options - The options for matrix initialization.
    * @returns A new Matrix instance.
    */
-  constructor(options?: MatrixDeclaration) {
+  constructor(options?: MatrixDeclaration | Matrix | NumericMatrix) {
     if (options !== undefined) {
-      this.type = options.type;
-      this.M = options.M;
+      if (
+        Matrix.isMatrix(options) ||
+        conditions.IsMatrixDeclaration(options as MatrixDeclaration)
+      ) {
+        this.type = (options as Matrix | MatrixDeclaration).type || "float64";
+        this.M = (options as Matrix).M;
+      } else {
+        this.type = "float64";
+        this.M = options as NumericMatrix;
+      }
     }
   }
 
@@ -176,21 +184,29 @@ export class Matrix {
   get columns(): number {
     return this.rows ? this.#M[0].length : 0;
   }
-  /**
-   *
-   */
+  /** */
   getBlock(
     options: MatrixBlockOptions = {
       from: [0, 0],
       to: [this.rows - 1, this.columns - 1],
     },
   ): Matrix {
-    const {from, to} = options;
-    if (!conditions.AreFromAndToCorrectlyDefined(from, to)) {
+    const { from, to } = options;
+    if (
+      !conditions.AreFromAndToCorrectlyDefined(from, to, [
+        this.rows,
+        this.columns,
+      ])
+    ) {
       errors.IncorrectFromAndToParametersInGetBlock();
-    } 
+    }
     const block = new Matrix();
     block.#M = models.GetBlock(this.#M, from, to, this.type);
     return block;
+  }
+  setBlock(options: MatrixBlockOptions) {
+    const { block, from, to } = options;
+    models.SetBlock(this.#M, block, from, to);
+    return this;
   }
 }
