@@ -184,7 +184,14 @@ export class Matrix {
   get columns(): number {
     return this.rows ? this.#M[0].length : 0;
   }
-  /** */
+
+  /**
+   * Gets a block matrix by given starting and ending indices
+   *
+   * @param options - The "from" and "to" indices needed for the method
+   *   (by default set to [0, 0] and [rows - 1, columns - 1]).
+   * @returns {Matrix} The block as Matrix
+   */
   getBlock(
     options: MatrixBlockOptions = {
       from: [0, 0],
@@ -192,6 +199,7 @@ export class Matrix {
     },
   ): Matrix {
     const { from, to } = options;
+    
     if (
       !conditions.AreFromAndToCorrectlyDefined(from, to, [
         this.rows,
@@ -202,11 +210,43 @@ export class Matrix {
     }
     const block = new Matrix();
     block.#M = models.GetBlock(this.#M, from, to, this.type);
+    
     return block;
   }
-  setBlock(options: MatrixBlockOptions) {
+
+  /**
+   * Sets the elements of a block/ sub - matrix of the current Matrix
+   * instance with the elements of the "block" parameter.
+   *
+   * @param options - The "block", "from," and "to" parameters needed for the method.
+   * @returns {Matrix} The updated Matrix instance.
+   */
+  setBlock(options: MatrixBlockOptions): Matrix {
+    let b: NumericMatrix | MatrixType | null = null;
     const { block, from, to } = options;
-    models.SetBlock(this.#M, block, from, to);
+    
+    if (
+      !conditions.AreFromAndToCorrectlyDefined(from, to, [
+        this.rows,
+        this.columns,
+      ])
+    ) {
+      errors.IncorrectFromAndToParametersInSetBlock();
+    }
+    if (Matrix.isMatrix(block as Matrix)) {
+      b = (block as Matrix).#M;
+    } else b = block;
+    if (conditions.IsArrayOfArraysWithEqualSize(b as NumericMatrix)) {
+      if (
+        (b as NumericMatrix).length > (to[0] - from[0] + 1) ||
+        (b as NumericMatrix)[0].length > (to[1] - from[1] + 1)
+      ) {
+        errors.IncorrectBlockParameterInSetBlock();
+      }
+    }
+
+    models.SetBlock(this.#M, b as NumericMatrix, from, to);
+    
     return this;
   }
 }

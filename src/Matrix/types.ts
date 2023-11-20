@@ -12,7 +12,8 @@ export type MatrixDeclaration = {
   M: NumericMatrix;
   type: NumericType;
 };
-export type TypedArray = Int8Array
+export type TypedArray =
+  | Int8Array
   | Uint8Array
   | Int16Array
   | Uint16Array
@@ -20,7 +21,8 @@ export type TypedArray = Int8Array
   | Uint32Array
   | Float32Array
   | Float64Array;
-export type TypedArrayConstructor = Int8ArrayConstructor
+export type TypedArrayConstructor =
+  | Int8ArrayConstructor
   | Uint8ArrayConstructor
   | Int16ArrayConstructor
   | Uint16ArrayConstructor
@@ -28,10 +30,10 @@ export type TypedArrayConstructor = Int8ArrayConstructor
   | Uint32ArrayConstructor
   | Float32ArrayConstructor
   | Float64ArrayConstructor;
-  
-export type MatrixType = TypedArray[] | never [];
+
+export type MatrixType = TypedArray[] | never[];
 export type MatrixBlockOptions = {
-  from: [number, number],
-  to: [number, number],
-  block?: NumericMatrix | Matrix
-}
+  from: [number, number];
+  to: [number, number];
+  block?: NumericMatrix | Matrix;
+};

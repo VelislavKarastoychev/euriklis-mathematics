@@ -17,3 +17,7 @@ export const IncorrectMatrixInput = (): never =>
 
 export const IncorrectFromAndToParametersInGetBlock = (): never =>
   runError(texts.IncorrectFromAndToParametersInGetBlockTxt);
+export const IncorrectFromAndToParametersInSetBlock = (): never =>
+  runError(texts.IncorrectFromAndToParametersInSetBlockTxt);
+export const IncorrectBlockParameterInSetBlock = (): never =>
+  runError(texts.IncorrectBlockParameterInSetBlockTxt);
