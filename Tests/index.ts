@@ -6,3 +6,5 @@ import "./zeros.spec.ts";
 import "./identity-like.spec.ts";
 import "./get-block.spec.ts";
 import "./set-block.spec.ts";
+import "./get-row.spec.ts";
+import "./set-row.spec.ts";

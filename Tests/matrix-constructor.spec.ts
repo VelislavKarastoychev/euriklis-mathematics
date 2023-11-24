@@ -80,7 +80,7 @@ new validator(emptyMatrix)
       incorrectNumericMatrix,
     ),
   ).test()
-  .describe("5. Has to throw error when the input is a collection of typed arrays")
+  .describe("5. Has to not throw error when the input is a collection of typed arrays with equal size")
   .and.bind(
-    new validator(matrixFromNumericInput).throwsErrorWith(typedArrayCollection)
+    new validator(matrixFromNumericInput).not.throwsErrorWith(typedArrayCollection)
   ).test();

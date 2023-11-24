@@ -14,7 +14,7 @@ import validator from "@euriklis/validator";
  */
 export const AreFromAndToCorrectlyDefined = (from: [number, number], to: [number, number], dimensions: [number, number]): boolean => {
   return new validator({from, to}).interface({
-    from: f => f.isArrayAndForEvery((item, i) => item.isLessThanOrEqual(to[i as number])),
-    to: t => t.isArrayAndForEvery((item, i) => item.isLessThan(dimensions[i as number]))
+    from: f => f.isArrayAndForEvery((item, i) => item.isPositiveInteger.and.isLessThanOrEqual(to[i as number])),
+    to: t => t.isArrayAndForEvery((item, i) => item.isPositiveInteger.and.isLessThan(dimensions[i as number]))
   }).answer;
 }

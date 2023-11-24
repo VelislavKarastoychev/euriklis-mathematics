@@ -5,6 +5,6 @@ import validator from "@euriklis/validator";
  * a legal matrix object.
  */
 export const IsArrayOfArraysWithEqualSize = (array: NumericMatrix): boolean =>
-  new validator(array).isArrayOfArraysWithEqualSize.answer;
+  new validator(array).isArrayOfAbstractArraysWithEqualSize.answer;
 
 

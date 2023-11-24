@@ -9,7 +9,7 @@ import {
   NumericMatrix,
   NumericType,
   TypedArrayConstructor,
-} from "./types.ts";
+} from "./types";
 
 export class Matrix {
   /**
@@ -22,7 +22,6 @@ export class Matrix {
    * set to "float64" (double precision) type.
    */
   #type: NumericType = "float64";
-
   /**
    * Checks if the input parameter "m" is a Matrix
    * instance from the Matrix library of the @euriklis/mathematics.
@@ -199,7 +198,7 @@ export class Matrix {
     },
   ): Matrix {
     const { from, to } = options;
-    
+
     if (
       !conditions.AreFromAndToCorrectlyDefined(from, to, [
         this.rows,
@@ -210,7 +209,7 @@ export class Matrix {
     }
     const block = new Matrix();
     block.#M = models.GetBlock(this.#M, from, to, this.type);
-    
+
     return block;
   }
 
@@ -224,7 +223,7 @@ export class Matrix {
   setBlock(options: MatrixBlockOptions): Matrix {
     let b: NumericMatrix | MatrixType | null = null;
     const { block, from, to } = options;
-    
+
     if (
       !conditions.AreFromAndToCorrectlyDefined(from, to, [
         this.rows,
@@ -246,7 +245,49 @@ export class Matrix {
     }
 
     models.SetBlock(this.#M, b as NumericMatrix, from, to);
-    
+
     return this;
+  }
+  /**
+   * Retrieves a specific row from the matrix based on the provided row index
+   * and optional column range.
+   *
+   * @param {number} rowIndex - The index of the row to retrieve.
+   * @param {number} [fromColumnIndex=0] - The starting column index (default is 0).
+   * @param {number} [toColumnIndex=this.columns - 1] - The ending column index (default is the last column).
+   * @returns {Matrix} - The extracted row as a Matrix.
+   */
+  getRow(
+    rowIndex: number,
+    fromColumnIndex: number = 0,
+    toColumnIndex: number = this.columns - 1,
+  ): Matrix {
+    return this.getBlock({
+      from: [rowIndex, fromColumnIndex],
+      to: [rowIndex, toColumnIndex],
+    });
+  }
+
+  /**
+   * Sets the values of a specific row in the matrix based on the provided row index,
+   * column range, and values.
+   *
+   * @param {number} rowIndex - The index of the row to set.
+   * @param {number} fromColumnIndex - The starting column index.
+   * @param {number} toColumnIndex - The ending column index.
+   * @param {NumericMatrix | Matrix} row - The values to set in the specified row.
+   * @returns {Matrix} - The updated matrix instance.
+   */
+  setRow(
+    rowIndex: number,
+    fromColumnIndex: number,
+    toColumnIndex: number,
+    row: NumericMatrix | Matrix,
+  ): Matrix {
+    return this.setBlock({
+      from: [rowIndex, fromColumnIndex],
+      to: [rowIndex, toColumnIndex],
+      block: row,
+    });
   }
 }

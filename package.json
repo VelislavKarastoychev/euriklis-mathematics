@@ -7,7 +7,8 @@
   "scripts": {
     "test": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./Tests/index.ts",
     "build": "tsc",
-    "start": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./src/index.ts"
+    "start": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./src/index.ts",
+    "runts": "ts-node ./src/index.ts"
   },
   "keywords": [
     "Matrix",
@@ -22,7 +23,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@euriklis/validator": "^4.0.1",
+    "@euriklis/validator": "^4.2.1",
     "numericjs": "^1.2.6"
   }
 }

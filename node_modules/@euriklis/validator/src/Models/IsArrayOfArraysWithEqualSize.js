@@ -23,9 +23,9 @@ export const IsArrayOfArraysWithEqualSize = (value) => {
     j = i << 2;
     if (
       !CheckType(value[j], "Array") || value[j].length !== l ||
-      !CheckType(value[j + 1], "Array") || value[j].length !== l ||
-      !CheckType(value[j + 2], "Array") || value[j].length !== l ||
-      !CheckType(value[j + 3], "Array") || value[j].length !== l
+      !CheckType(value[j + 1], "Array") || value[j + 1].length !== l ||
+      !CheckType(value[j + 2], "Array") || value[j + 2].length !== l ||
+      !CheckType(value[j + 3], "Array") || value[j + 3].length !== l
     ) return false;
   }
 
