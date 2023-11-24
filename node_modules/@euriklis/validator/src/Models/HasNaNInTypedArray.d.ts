@@ -1,2 +1,0 @@
-export function HasNaNInTypedArray(value: Int8Array | Uint8ClampedArray | Uint8Array | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array): boolean;
-//# sourceMappingURL=HasNaNInTypedArray.d.ts.map

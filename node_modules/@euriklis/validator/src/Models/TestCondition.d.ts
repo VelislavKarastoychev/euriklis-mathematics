@@ -1,2 +1,0 @@
-export function TestCondition(value: any, property?: string | number, item: number | string, condition?: "eq" | "lt" | "gt" | "neq" | "leq" | "geq"): boolean;
-//# sourceMappingURL=TestCondition.d.ts.map
