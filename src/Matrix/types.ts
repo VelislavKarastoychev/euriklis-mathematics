@@ -1,3 +1,4 @@
+export type Integer = number;
 export type IntegerNumericType =
   | "int8"
   | "unsignedInt8"
@@ -38,5 +39,4 @@ export type MatrixBlockOptions = {
   block?: NumericMatrix | Matrix;
 };
 
-export type Integer = number;
 
