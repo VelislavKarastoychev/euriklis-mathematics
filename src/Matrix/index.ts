@@ -4,6 +4,7 @@ import * as models from "./Models/index.ts";
 import * as errors from "./Errors/index.ts";
 import {
   Integer,
+  Block,
   MatrixBlockOptions,
   MatrixDeclaration,
   MatrixType,
@@ -57,7 +58,7 @@ export class Matrix {
    * @param type - The type of each element of the Matrix
    * @returns A square zero Matrix
    */
-  static zero(n: number, type: NumericType = "float64"): Matrix {
+  static zero(n: Integer, type: NumericType = "float64"): Matrix {
     return Matrix.zeros(n, n, type);
   }
 
@@ -65,7 +66,7 @@ export class Matrix {
    * Generates an identity-like matrix with specified dimensions.
    *
    * @param {Integer} rows - The number of rows of the matrix.
-   * @param {number} columns - The number of columns of the matrix.
+   * @param {Integer} columns - The number of columns of the matrix.
    * @param {NumericType} type - The type of each element of the matrix.
    * @returns {Matrix} - An identity-like matrix.
    */
@@ -221,7 +222,7 @@ export class Matrix {
    * @param options - The "block", "from," and "to" parameters needed for the method.
    * @returns {Matrix} The updated Matrix instance.
    */
-  setBlock(options: MatrixBlockOptions): Matrix {
+  setBlock(options: (MatrixBlockOptions & Block)): Matrix {
     let b: NumericMatrix | MatrixType | null = null;
     const { block, from, to } = options;
 
@@ -235,7 +236,7 @@ export class Matrix {
     }
     if (Matrix.isMatrix(block as Matrix)) {
       b = (block as Matrix).#M;
-    } else b = block;
+    } else b = block as NumericMatrix;
     if (conditions.IsArrayOfArraysWithEqualSize(b as NumericMatrix)) {
       if (
         (b as NumericMatrix).length > (to[0] - from[0] + 1) ||
@@ -292,5 +293,34 @@ export class Matrix {
     });
   }
 
-  // make exchangeColumns...
+  /**
+   * Exchange rows in the matrix.
+   *
+   * @param {Integer} row1 - The index of the first row to exchange.
+   * @param {Integer} row2 - The index of the second row to exchange.
+   * @param {Integer} fromColumn - The starting column index (inclusive).
+   * @param {Integer} toColumn - The ending column index (exclusive).
+   * @returns {Matrix} The updated Matrix instance (The initial matrix is not copied).
+   */
+  exchangeRows(
+    row1: Integer,
+    row2: Integer,
+    fromColumn: Integer = 0,
+    toColumn: Integer = this.columns - 1,
+  ): Matrix {
+    if (row1 < 0 || row1 >= this.rows || row2 < 0 || row2 >= this.rows) {
+      errors.IncorrectRowIndexParametersInExchangeRows();
+    }
+
+    if (fromColumn < 0 || fromColumn > toColumn) {
+      errors.IncorrectFromColumnIndexParameterInExchangeRows();
+    }
+
+    if (toColumn < fromColumn || toColumn > this.columns || toColumn < 0) {
+      errors.IncorrectToColumnIndexParameterInExcangeRows();
+    }
+
+    models.ExchangeRows(this.#M, row1, row2, fromColumn, toColumn);
+    return this;
+  }
 }
