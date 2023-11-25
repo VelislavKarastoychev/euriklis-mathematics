@@ -11,6 +11,7 @@ import {
   NumericType,
   TypedArrayConstructor,
 } from "./types";
+import { webcrypto } from "crypto";
 
 export class Matrix {
   /**
@@ -290,5 +291,14 @@ export class Matrix {
       to: [rowIndex, toColumnIndex],
       block: row,
     });
+  }
+
+  exchangeRows(
+    row1: Integer,
+    ro2: Integer,
+    fromColumn: Integer,
+    toColumn: Integer,
+  ): Matrix {
+    return this;
   }
 }
