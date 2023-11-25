@@ -292,35 +292,5 @@ export class Matrix {
     });
   }
 
-  /**
-   * Exchange rows in the matrix.
-   *
-   * @param {Integer} row1 - The index of the first row to exchange.
-   * @param {Integer} row2 - The index of the second row to exchange.
-   * @param {Integer} fromColumn - The starting column index (inclusive).
-   * @param {Integer} toColumn - The ending column index (exclusive).
-   * @returns {Matrix} The updated Matrix instance.
-   */
-  // exchangeRows(
-  //   row1: Integer,
-  //   row2: Integer,
-  //   fromColumn: Integer = 0,
-  //   toColumn: Integer = this.columns,
-  // ): Matrix {
-  //   if (row1 > row2) errors.IncorrectRowsParametersInExchangeRows();
-  //   if (row2 >= this.rows || row2 < 0) {
-  //     errors.IncorrectEndingRowIndexParameterInExchangeRows();
-  //   }
-  //   if (row1 < 0) errors.IncorrectStartingRowIndexParameterInExchangeRows();
-  //   if (fromColumn < 0 || fromColumn > toColumn) {
-  //     errors.IncorrectFromColumnIndexParameterInExchangeRows();
-  //   }
-  //   if (toColumn < 0 || toColumn >= this.columns) {
-  //     errors.IncorrectToColumnIndexParameterInExchangeRows();
-  //   }
-  //   models.ExchangeRows(this.#M, row1, row2, fromColumn, toColumn);
-  //   return this;
-  // }
-
   // make exchangeColumns...
 }
