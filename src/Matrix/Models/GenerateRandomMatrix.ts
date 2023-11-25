@@ -1,6 +1,6 @@
 "use strict";
 
-import { MatrixType, NumericType, TypedArray } from "../types";
+import { Integer, MatrixType, NumericType, TypedArray } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts"
 
 /**
@@ -13,18 +13,18 @@ import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts"
  * @returns a MatrixType (array of typed arrays)
  */
 export const GenerateRandomMatrix = (
-  rows: number,
-  columns: number,
-  from: number,
-  to: number,
+  rows: Integer,
+  columns: Integer,
+  from: Integer,
+  to: Integer,
   type: NumericType,
   seed: number,
 ): MatrixType => {
   const d = [rows, columns];
   function RandomNumberGenerator(
-    from: number,
-    to: number,
-    k: number,
+    from: Integer,
+    to: Integer,
+    k: Integer,
   ): MatrixType | TypedArray | never [] {
     let n = d[k];
     const typedArray = CreateTypedArrayConstructor(type);

@@ -1,6 +1,7 @@
 "use strict";
 
-import { MatrixType, NumericMatrix, TypedArray } from "../types";
+import { webcrypto } from "crypto";
+import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
 
 /**
  * Iteratively sets a the elements of a matrix
@@ -18,12 +19,12 @@ import { MatrixType, NumericMatrix, TypedArray } from "../types";
 const SetBlockIterator = (
   matrix: MatrixType | TypedArray,
   block: MatrixType | NumericMatrix | number[],
-  from: [number, number],
-  to: [number, number],
-  k: number,
+  from: [Integer, Integer],
+  to: [Integer, Integer],
+  k: Integer,
 ): void => {
   const n = to[k] - from[k] + 1;
-  let i: number;
+  let i: Integer;
   if (k) {
     for (i = n; i--;) {
       (matrix as TypedArray)[i + from[k]] = (block as TypedArray | number[])[i];
@@ -56,6 +57,6 @@ const SetBlockIterator = (
 export const SetBlock = (
   matrix: MatrixType,
   block: MatrixType | NumericMatrix,
-  from: [number, number],
-  to: [number, number],
+  from: [Integer, Integer],
+  to: [Integer, Integer],
 ): void => SetBlockIterator(matrix, block, from, to, 0);

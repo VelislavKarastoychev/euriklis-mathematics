@@ -1,5 +1,5 @@
 "use strict";
-import { MatrixType, NumericType } from "../types";
+import { Integer, MatrixType, NumericType } from "../types";
 import { ComputeBytesLength } from "./ComputeBytesLength.ts";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
@@ -14,16 +14,16 @@ import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
  * @returns {MatrixType} - An identity-like matrix.
  */
 export const GenerateIdentityLikeMatrix = (
-  rows: number,
-  columns: number,
+  rows: Integer,
+  columns: Integer,
   type: NumericType,
 ): MatrixType => {
   const I = [];
   const bytesLength = ComputeBytesLength(type) * columns;
   const buffer = new ArrayBuffer(bytesLength * rows);
   const typedArray = CreateTypedArrayConstructor(type);
-  const k: number = rows < columns ? rows : columns;
-  let i: number;
+  const k: Integer = rows < columns ? rows : columns;
+  let i: Integer;
   for (i = rows; i--;) {
     I[i] = new typedArray(buffer, i * bytesLength, columns);
     if (i < k) {

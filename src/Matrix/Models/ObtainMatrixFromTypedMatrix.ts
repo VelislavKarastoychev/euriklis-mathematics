@@ -1,5 +1,5 @@
 "use strict";
-import { MatrixType, NumericMatrix, TypedArray } from "../types.ts";
+import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types.ts";
 
 /**
  * Copies elements from a TypedArray to a regular array.
@@ -10,7 +10,7 @@ import { MatrixType, NumericMatrix, TypedArray } from "../types.ts";
  */
 const AssignRow = (m1: TypedArray, m2: number[]): void => {
   const n = m1.length;
-  let i: number, j: number;
+  let i: Integer, j: Integer;
   for (i = 0; i < n >> 2; i++) {
     j = i << 2;
     m2[j] = m1[j];
@@ -31,8 +31,8 @@ const AssignRow = (m1: TypedArray, m2: number[]): void => {
  * @returns {NumericMatrix} - The numeric matrix.
  */
 export const ObtainMatrixFromTypedMatrix = (m: MatrixType): NumericMatrix => {
-  const n: number = m.length, matrix: number[][] = [];
-  let i: number;
+  const n: Integer = m.length, matrix: number[][] = [];
+  let i: Integer;
   for (i = n; i--;) AssignRow(m[i], matrix[i] = []);
   return matrix;
 };

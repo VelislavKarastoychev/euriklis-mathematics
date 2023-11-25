@@ -3,6 +3,7 @@ import * as conditions from "./Conditions/index.ts";
 import * as models from "./Models/index.ts";
 import * as errors from "./Errors/index.ts";
 import {
+  Integer,
   MatrixBlockOptions,
   MatrixDeclaration,
   MatrixType,
@@ -40,8 +41,8 @@ export class Matrix {
    * @param {NumericType} type
    */
   static zeros(
-    rows: number,
-    columns: number,
+    rows: Integer,
+    columns: Integer,
     type: NumericType = "float64",
   ): Matrix {
     const z = new Matrix();
@@ -56,21 +57,21 @@ export class Matrix {
    * @param type - The type of each element of the Matrix
    * @returns A square zero Matrix
    */
-  static zero(n: number, type: NumericType = "float64"): Matrix {
+  static zero(n: Integer, type: NumericType = "float64"): Matrix {
     return Matrix.zeros(n, n, type);
   }
 
   /**
    * Generates an identity-like matrix with specified dimensions.
    *
-   * @param {number} rows - The number of rows of the matrix.
-   * @param {number} columns - The number of columns of the matrix.
+   * @param {Integer} rows - The number of rows of the matrix.
+   * @param {Integer} columns - The number of columns of the matrix.
    * @param {NumericType} type - The type of each element of the matrix.
    * @returns {Matrix} - An identity-like matrix.
    */
   static identityLike(
-    rows: number,
-    columns: number,
+    rows: Integer,
+    columns: Integer,
     type: NumericType = "float64",
   ): Matrix {
     const I = new Matrix();
@@ -83,7 +84,7 @@ export class Matrix {
    * @param n - The number of rows/columns of the identity matrix
    * @returns {Matrix} The identity matrix
    */
-  static identity(n: number, type: NumericType = "float64"): Matrix {
+  static identity(n: Integer, type: NumericType = "float64"): Matrix {
     return Matrix.identityLike(n, n, type);
   }
 
@@ -98,8 +99,8 @@ export class Matrix {
    * @returns A new Matrix instance.
    */
   static random(
-    rows: number,
-    columns: number,
+    rows: Integer,
+    columns: Integer,
     from = 0,
     to = 1,
     type: NumericType = "float64",
@@ -171,7 +172,7 @@ export class Matrix {
    * @readonly
    * Returns the rows of the current matrix instance.
    */
-  get rows(): number {
+  get rows(): Integer {
     return this.#M.length;
   }
 
@@ -180,7 +181,7 @@ export class Matrix {
    * Returns the number of columns of the current
    * Matrix instance.
    */
-  get columns(): number {
+  get columns(): Integer {
     return this.rows ? this.#M[0].length : 0;
   }
 
@@ -252,15 +253,15 @@ export class Matrix {
    * Retrieves a specific row from the matrix based on the provided row index
    * and optional column range.
    *
-   * @param {number} rowIndex - The index of the row to retrieve.
-   * @param {number} [fromColumnIndex=0] - The starting column index (default is 0).
-   * @param {number} [toColumnIndex=this.columns - 1] - The ending column index (default is the last column).
+   * @param {Integer} rowIndex - The index of the row to retrieve.
+   * @param {Integer} [fromColumnIndex=0] - The starting column index (default is 0).
+   * @param {Integer} [toColumnIndex=this.columns - 1] - The ending column index (default is the last column).
    * @returns {Matrix} - The extracted row as a Matrix.
    */
   getRow(
-    rowIndex: number,
-    fromColumnIndex: number = 0,
-    toColumnIndex: number = this.columns - 1,
+    rowIndex: Integer,
+    fromColumnIndex: Integer = 0,
+    toColumnIndex: Integer = this.columns - 1,
   ): Matrix {
     return this.getBlock({
       from: [rowIndex, fromColumnIndex],
@@ -272,16 +273,16 @@ export class Matrix {
    * Sets the values of a specific row in the matrix based on the provided row index,
    * column range, and values.
    *
-   * @param {number} rowIndex - The index of the row to set.
-   * @param {number} fromColumnIndex - The starting column index.
-   * @param {number} toColumnIndex - The ending column index.
+   * @param {Integer} rowIndex - The index of the row to set.
+   * @param {Integer} fromColumnIndex - The starting column index.
+   * @param {Integer} toColumnIndex - The ending column index.
    * @param {NumericMatrix | Matrix} row - The values to set in the specified row.
    * @returns {Matrix} - The updated matrix instance.
    */
   setRow(
-    rowIndex: number,
-    fromColumnIndex: number,
-    toColumnIndex: number,
+    rowIndex: Integer,
+    fromColumnIndex: Integer,
+    toColumnIndex: Integer,
     row: NumericMatrix | Matrix,
   ): Matrix {
     return this.setBlock({

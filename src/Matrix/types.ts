@@ -37,3 +37,6 @@ export type MatrixBlockOptions = {
   to: [number, number];
   block?: NumericMatrix | Matrix;
 };
+
+export type Integer = number;
+

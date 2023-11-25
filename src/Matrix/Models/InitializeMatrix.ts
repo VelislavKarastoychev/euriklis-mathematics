@@ -1,5 +1,5 @@
 "use strict";
-import { MatrixType, NumericMatrix, TypedArrayConstructor } from "../types.ts";
+import { Integer, MatrixType, NumericMatrix, TypedArrayConstructor } from "../types.ts";
 /**
  * Generates a matrix with a typed array form
  * which is needed for more efficient computations.
@@ -9,7 +9,7 @@ export const InitializeMatrix = (
   matrix: NumericMatrix,
   M: MatrixType | undefined,
 ): MatrixType => {
-  let i: number;
+  let i: Integer;
   if (!M) M = [];
   else {
     const rows = matrix.length;

@@ -1,5 +1,5 @@
 "use strict";
-import { MatrixType, NumericType } from "../types";
+import { Integer, MatrixType, NumericType } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 import { ComputeBytesLength } from "./ComputeBytesLength.ts";
 
@@ -16,15 +16,15 @@ import { ComputeBytesLength } from "./ComputeBytesLength.ts";
  * @returns {MatrixType} an array of typed arrays
  */
 export const GenerateZeroMatrix = (
-  rows: number,
-  columns: number,
+  rows: Integer,
+  columns: Integer,
   type: NumericType,
 ): MatrixType => {
   const matrix: MatrixType = [];
   const bytesLength: number = ComputeBytesLength(type) * columns;
   const buffer = new ArrayBuffer(bytesLength * rows);
   const typedArray = CreateTypedArrayConstructor(type);
-  let i: number;
+  let i: Integer;
   for (i = rows; i--;) {
     matrix[i] = new typedArray(buffer, i * bytesLength, columns);
   }
