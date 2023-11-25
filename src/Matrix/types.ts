@@ -1,3 +1,4 @@
+export type Integer = number; 
 export type IntegerNumericType =
   | "int8"
   | "unsignedInt8"
