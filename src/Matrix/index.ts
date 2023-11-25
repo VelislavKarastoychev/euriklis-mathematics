@@ -4,7 +4,6 @@ import * as models from "./Models/index.ts";
 import * as errors from "./Errors/index.ts";
 import {
   Integer,
-  Block,
   MatrixBlockOptions,
   MatrixDeclaration,
   MatrixType,
@@ -222,7 +221,7 @@ export class Matrix {
    * @param options - The "block", "from," and "to" parameters needed for the method.
    * @returns {Matrix} The updated Matrix instance.
    */
-  setBlock(options: (MatrixBlockOptions & Block)): Matrix {
+  setBlock(options: MatrixBlockOptions & {block: NumericMatrix | Matrix | MatrixType}): Matrix {
     let b: NumericMatrix | MatrixType | null = null;
     const { block, from, to } = options;
 
