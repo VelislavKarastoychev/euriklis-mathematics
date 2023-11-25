@@ -21,3 +21,9 @@ export const IncorrectFromAndToParametersInSetBlock = (): never =>
   runError(texts.IncorrectFromAndToParametersInSetBlockTxt);
 export const IncorrectBlockParameterInSetBlock = (): never =>
   runError(texts.IncorrectBlockParameterInSetBlockTxt);
+export const IncorrectRowIndexParametersInExchangeRows = (): never => 
+  runError(texts.IncorrectRowIndexParametersInExchangeRowsTxt);
+export const IncorrectFromColumnIndexParameterInExchangeRows = (): never =>
+  runError(texts.IncorrectFromColumnIndexParameterInExchangeRowsTxt);
+export const IncorrectToColumnIndexParameterInExcangeRows = (): never =>
+  runError(texts.IncorrectToColumnIndexParameterInExchangeRowsTxt);
