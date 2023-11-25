@@ -221,7 +221,11 @@ export class Matrix {
    * @param options - The "block", "from," and "to" parameters needed for the method.
    * @returns {Matrix} The updated Matrix instance.
    */
-  setBlock(options: MatrixBlockOptions & {block: NumericMatrix | Matrix | MatrixType}): Matrix {
+  setBlock(
+    options: MatrixBlockOptions & {
+      block: NumericMatrix | Matrix | MatrixType;
+    },
+  ): Matrix {
     let b: NumericMatrix | MatrixType | null = null;
     const { block, from, to } = options;
 
@@ -320,6 +324,26 @@ export class Matrix {
     }
 
     models.ExchangeRows(this.#M, row1, row2, fromColumn, toColumn);
+    return this;
+  }
+  exchangeColumns(
+    col1: Integer,
+    col2: Integer,
+    fromRow: Integer,
+    toRow: Integer,
+  ): Matrix {
+    if (col1 < 0 || col1 > this.columns || col2 < 0 || col2 >= this.columns) {
+      errors.IncorrectColumnIndexParametersInExchangeColumns();
+    }
+    
+    if (fromRow < 0 || fromRow > toRow) {
+      errors.IncorrectFromRowIndexParameterInExchangeColumns();
+    } 
+
+    if (toRow < 0 || toRow >= this.rows) {
+      errors.IncorrectToRowIndexParameterInExchangeColumns();
+    }
+    
     return this;
   }
 }
