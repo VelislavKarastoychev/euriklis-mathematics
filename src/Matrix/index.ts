@@ -329,8 +329,8 @@ export class Matrix {
   exchangeColumns(
     col1: Integer,
     col2: Integer,
-    fromRow: Integer,
-    toRow: Integer,
+    fromRow: Integer = 0,
+    toRow: Integer = this.rows - 1,
   ): Matrix {
     if (col1 < 0 || col1 > this.columns || col2 < 0 || col2 >= this.columns) {
       errors.IncorrectColumnIndexParametersInExchangeColumns();
@@ -344,6 +344,7 @@ export class Matrix {
       errors.IncorrectToRowIndexParameterInExchangeColumns();
     }
     
+    models.ExchangeColumns(this.#M, col1, col2, fromRow, toRow);
     return this;
   }
 }

@@ -9,3 +9,4 @@ import "./set-block.spec.ts";
 import "./get-row.spec.ts";
 import "./set-row.spec.ts";
 import "./exchange-rows.spec.ts";
+import "./exchange-columns.spec.ts";

@@ -7,3 +7,4 @@ export { InitializeMatrix } from "./InitializeMatrix.ts";
 export { ObtainMatrixFromTypedMatrix } from "./ObtainMatrixFromTypedMatrix.ts";
 export { GetBlock} from "./GetBlock.ts";
 export { SetBlock } from "./SetBlock.ts";
+export { ExchangeColumns } from "./ExchangeColumns.ts";
