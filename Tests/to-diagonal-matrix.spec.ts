@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator";
 import { Matrix } from "../src/index.ts";
-
+const mtx = Matrix.random(3, 1);
 const m: Matrix = Matrix.random(2, 50);
 new validator(m.toDiagonalMatrix().M).forEvery((row, i) => {
   return row.forEvery((el, j) =>

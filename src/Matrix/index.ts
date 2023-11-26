@@ -359,7 +359,7 @@ export class Matrix {
 
     return this;
   }
-  
+
   /**
    * Gets the diagonal of the matrix or the subdiagonal when a row index is defined.
    *
@@ -377,11 +377,16 @@ export class Matrix {
 
     return diagonalMatrix;
   }
-
-  toDiagonalMatrix () {
+  /**
+   * Converts the current matrix into collection of 
+   * diagonal matrix blocks.
+   *
+   * @returns {Matrix} - The resulting diagonal matrix.
+   */
+  toDiagonalMatrix(): Matrix {
     const diagMatrix = new Matrix();
     diagMatrix.#M = models.ToDiagonalMatrix(this.#M, this.type);
-    
+
     return diagMatrix;
   }
 }
