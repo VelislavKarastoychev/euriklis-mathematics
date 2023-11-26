@@ -425,4 +425,29 @@ export class Matrix {
     }
     return this;
   }
+
+  appendBlockBottom(block: NumericMatrix | MatrixType | Matrix): Matrix {
+    let blockData: MatrixType | undefined;
+    if (Matrix.isMatrix(block)) {
+      blockData = (block as Matrix).#M;
+    } else {
+      blockData = new Matrix(block).#M;
+    }
+
+    if (!conditions.IsEmpty(blockData)) {
+      if (blockData[0].length !== this.columns) {
+        errors.IncorrectBlockParameterInAppendBlockBottom();
+      }
+      const typedArray = models.CreateTypedArrayConstructor(this.type);
+      const extendedMatrix = new Matrix();
+      extendedMatrix.#M = models.AppendBlockBottom(
+        this.#M,
+        blockData,
+        typedArray
+      );
+
+      return extendedMatrix
+    }
+    return this;
+  }
 }

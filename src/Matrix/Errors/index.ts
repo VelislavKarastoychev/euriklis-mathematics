@@ -37,3 +37,5 @@ export const IncorrectRowIndexParameterInGetDiagonal = (): never =>
   runError(texts.IncorrectRowIndexParameterInGetDiagonalTxt);
 export const IncorrectBlockParameterInAppendBlockRight = (): never =>
   runError(texts.IncorrectBlockParameterInAppendBlockRightTxt);
+export const IncorrectBlockParameterInAppendBlockBottom = (): never =>
+  runError(texts.IncorrectBlockParameterInAppendBlockBottomTxt);
