@@ -1,11 +1,15 @@
 "use strict";
 
-import {
-  Integer,
-  MatrixType,
-  TypedArrayConstructor,
-} from "../types";
+import { Integer, MatrixType, TypedArrayConstructor } from "../types";
 
+/**
+ * Utility function to append a block to the bottom of a matrix.
+ *
+ * @param {MatrixType} matrix - The current matrix instance.
+ * @param {MatrixType} block - The block to append.
+ * @param {TypedArrayConstructor} typedArray - The typed array constructor.
+ * @returns {MatrixType} - The result of appending the block.
+ */
 export const AppendBlockBottom = (
   matrix: MatrixType,
   block: MatrixType,
@@ -21,5 +25,6 @@ export const AppendBlockBottom = (
       ? new typedArray(matrix[i])
       : new typedArray(block[i - n1]);
   }
+
   return extendedMatrix;
 };

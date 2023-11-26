@@ -426,6 +426,12 @@ export class Matrix {
     return this;
   }
 
+  /**
+   * Appends a block to the bottom of the current matrix instance.
+   *
+   * @param {NumericMatrix | MatrixType | Matrix} block - The block to append.
+   * @returns {Matrix} - The extended matrix instance.
+   */
   appendBlockBottom(block: NumericMatrix | MatrixType | Matrix): Matrix {
     let blockData: MatrixType | undefined;
     if (Matrix.isMatrix(block)) {
@@ -443,11 +449,12 @@ export class Matrix {
       extendedMatrix.#M = models.AppendBlockBottom(
         this.#M,
         blockData,
-        typedArray
+        typedArray,
       );
 
-      return extendedMatrix
+      return extendedMatrix;
     }
+    
     return this;
   }
 }
