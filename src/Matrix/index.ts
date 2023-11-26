@@ -13,6 +13,8 @@ import {
 } from "./types";
 
 export class Matrix {
+  // 1. Declaration of the private methods and properties
+
   /**
    * @private {MatrixType} #M - A holder of the matrix instance
    */
@@ -23,9 +25,13 @@ export class Matrix {
    * set to "float64" (double precision) type.
    */
   #type: NumericType = "float64";
+
+  // 2. Static methods
+
   /**
    * Checks if the input parameter "m" is a Matrix
    * instance from the Matrix library of the @euriklis/mathematics.
+   *
    * @param m - A Matrix instance.
    * @returns {boolean} - True if the "m" parameter is a
    * Matrix and false otherwise.
@@ -36,6 +42,7 @@ export class Matrix {
 
   /**
    * Creates a matrix with zero elements
+   *
    * @param rows - an integer greater than zero
    * @param columns - an integer greater than zero
    * @param {NumericType} type
@@ -81,6 +88,7 @@ export class Matrix {
 
   /**
    * Generates identity matrix with specified dimensions
+   *
    * @param n - The number of rows/columns of the identity matrix
    * @returns {Matrix} The identity matrix
    */
@@ -90,6 +98,7 @@ export class Matrix {
 
   /**
    * Creates a new Matrix instance with randomized values.
+   *
    * @param rows - The number of rows.
    * @param columns - The number of columns.
    * @param from - The minimum value for randomization.
@@ -110,6 +119,8 @@ export class Matrix {
     rand.#M = models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
     return rand;
   }
+
+  // 3. Constructor
 
   /**
    * Creates a new Matrix instance.
@@ -133,8 +144,11 @@ export class Matrix {
     }
   }
 
+  // 4. Properties and utility fields
+  
   /**
    * Gets the matrix data.
+   *
    * @returns The numeric matrix.
    */
   get M(): NumericMatrix {
@@ -143,6 +157,7 @@ export class Matrix {
 
   /**
    * Sets the matrix data.
+   *
    * @param matrix - The numeric matrix.
    */
   set M(matrix: NumericMatrix | MatrixType) {
@@ -160,6 +175,7 @@ export class Matrix {
 
   /**
    * Gets the numeric type of the matrix.
+   *
    * @returns The numeric type.
    */
   get type(): NumericType {
@@ -168,6 +184,7 @@ export class Matrix {
 
   /**
    * Sets the numeric type of the matrix.
+   *
    * @param type - The numeric type.
    */
   set type(type: NumericType) {
@@ -191,6 +208,18 @@ export class Matrix {
   get columns(): Integer {
     return this.rows ? this.#M[0].length : 0;
   }
+
+  /**
+   * @readonly
+   * @returns {boolean} True if the matrix is squared 
+   * and false otherwise.
+   */
+  get isSquare (): boolean { 
+    return this.rows !== this.columns;
+  }
+
+  // 5. Utility functions or operators 
+  // for matrix manipulation.
 
   /**
    * Gets a block matrix by given starting and ending indices
@@ -454,7 +483,10 @@ export class Matrix {
 
       return extendedMatrix;
     }
-    
+
     return this;
   }
+
+  // 6. Matrix operations and 
+  // common linear algebra algorithms.
 }
