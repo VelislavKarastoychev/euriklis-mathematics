@@ -10,3 +10,4 @@ export const IncorrectToColumnIndexParameterInExchangeRowsTxt = "Incorrect toCol
 export const IncorrectColumnIndexParametersInExchangeColumnsTxt = "Incorrect column index parameters in exchangeColumns method. Note that these indices have to be positive integers in less than the total columns of the matrix."
 export const IncorrectFromRowIndexParameterInExchangeColumnsTxt = "Incorrect fromRow parameter in the exchangeColumns method. Note that this parameter has to be a positive integer less than the toRow index parameter.";
 export const IncorrectToRowIndexParameterInExchangeColumnsTxt = "Incorrect toRow index parameter in exchangeColumns method. Note that this parameter has to be a positive integer less than the rows of the matrix.";
+export const IncorrectRowIndexParameterInGetDiagonalTxt = "Incorrect row index parameter in getDiagonal method. Note that this parameter has to be a positive integer less than the total rows of the matrix.";

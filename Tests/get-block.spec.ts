@@ -49,15 +49,22 @@ new validator(matrix.getBlock({ from: [1, 0], to: [5, 4] }).M)
       ]),
   )
   .test()
-  .describe("4. Throws error when the to parameters are incorrect (greater than the matrix dimensions)")
-  .and.bind(
-    new validator(() => matrix.getBlock({from: [0, 0], to: [200, 201]})).throwsErrorWith()
-  ).test()
-const benchmark = new validator(Matrix.random(...dimensions))
-  .isInstanceof(Matrix)
   .describe(
-    `5. Time performance of the getBlock with parameters matrix -> ${dimensions[0]} x ${dimensions[1]}, from = [0, 0], to = [4999, 4999]:`,
+    "4. Throws error when the to parameters are incorrect (greater than the matrix dimensions)",
   )
-  .test()
-  .benchmark((matrix) => matrix.getBlock({ from: [0, 0], to: [4999, 4999] }));
-console.table(benchmark);
+  .and.bind(
+    new validator(() => matrix.getBlock({ from: [0, 0], to: [200, 201] }))
+      .throwsErrorWith(),
+  ).test()
+  .describe(
+    `5. Time performance of the getBlock with parameters matrix -> ${
+      dimensions[0]
+    } x ${dimensions[1]}, from = [0, 0], to = [4999, 4999]:`,
+  ).test()
+  .on(true, () => {
+    const benchmark = new validator(Matrix.random(...dimensions))
+      .benchmark((matrix) =>
+        matrix.getBlock({ from: [0, 0], to: [4999, 4999] })
+      );
+    console.table(benchmark);
+  });

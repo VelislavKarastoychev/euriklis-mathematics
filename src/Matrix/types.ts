@@ -32,7 +32,7 @@ export type TypedArrayConstructor =
   | Float32ArrayConstructor
   | Float64ArrayConstructor;
 
-export type MatrixType = TypedArray[] | never[];
+export type MatrixType = TypedArray[] | [];
 export type MatrixBlockOptions = {
   from: [number, number];
   to: [number, number];

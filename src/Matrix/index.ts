@@ -324,8 +324,19 @@ export class Matrix {
     }
 
     models.ExchangeRows(this.#M, row1, row2, fromColumn, toColumn);
+
     return this;
   }
+
+  /**
+   * Exchange columns in the matrix
+   *
+   * @param {Integer} col1 - The index of the first column to exchange
+   * @param {Integer} col2 - The index of the second column to exchange
+   * @param {Integer} fromRow - The starting row index
+   * @param {Integer} toRow - The ending row index
+   * @returns {Matrix} The updated matrix instance (the previous values are not copied)
+   */
   exchangeColumns(
     col1: Integer,
     col2: Integer,
@@ -335,16 +346,42 @@ export class Matrix {
     if (col1 < 0 || col1 > this.columns || col2 < 0 || col2 >= this.columns) {
       errors.IncorrectColumnIndexParametersInExchangeColumns();
     }
-    
+
     if (fromRow < 0 || fromRow > toRow) {
       errors.IncorrectFromRowIndexParameterInExchangeColumns();
-    } 
+    }
 
     if (toRow < 0 || toRow >= this.rows) {
       errors.IncorrectToRowIndexParameterInExchangeColumns();
     }
-    
+
     models.ExchangeColumns(this.#M, col1, col2, fromRow, toRow);
+
     return this;
+  }
+  
+  /**
+   * Gets the diagonal of the matrix or the subdiagonal when a row index is defined.
+   *
+   * @param {Integer} row - The row index for subdiagonal (default is 0).
+   * @returns {Matrix} - The diagonal or subdiagonal as a Matrix.
+   */
+  getDiagonal(row: Integer = 0): Matrix {
+    if (row < 0 || row >= this.rows) {
+      errors.IncorrectRowIndexParameterInGetDiagonal();
+    }
+
+    const typedArray = models.CreateTypedArrayConstructor(this.type);
+    const diagonalMatrix = new Matrix();
+    diagonalMatrix.#M = models.GetDiagonal(this.#M, row, typedArray);
+
+    return diagonalMatrix;
+  }
+
+  toDiagonalMatrix () {
+    const diagMatrix = new Matrix();
+    diagMatrix.#M = models.ToDiagonalMatrix(this.#M, this.type);
+    
+    return diagMatrix;
   }
 }
