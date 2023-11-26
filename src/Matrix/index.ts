@@ -489,4 +489,11 @@ export class Matrix {
 
   // 6. Matrix operations and 
   // common linear algebra algorithms.
+
+  
+  get transpose (): Matrix {
+    if (this.rows === 1 && this.columns === 1) return this;
+   // models.TransposeMatrix(this.#M, this.rows, this.columns);
+    return this;
+  }
 }
