@@ -6,7 +6,7 @@ import { Integer, MatrixType, NumericMatrix, TypedArrayConstructor } from "../ty
  */
 export const InitializeMatrix = (
   typedArray: TypedArrayConstructor,
-  matrix: NumericMatrix,
+  matrix: NumericMatrix | MatrixType,
   M: MatrixType | undefined,
 ): MatrixType => {
   let i: Integer;

@@ -12,3 +12,4 @@ import "./exchange-rows.spec.ts";
 import "./exchange-columns.spec.ts";
 import "./get-diagonal.spec.ts";
 import "./to-diagonal-matrix.spec.ts";
+import "./append-block-right.spec.ts";

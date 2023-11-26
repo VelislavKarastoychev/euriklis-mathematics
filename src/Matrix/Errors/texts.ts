@@ -11,3 +11,4 @@ export const IncorrectColumnIndexParametersInExchangeColumnsTxt = "Incorrect col
 export const IncorrectFromRowIndexParameterInExchangeColumnsTxt = "Incorrect fromRow parameter in the exchangeColumns method. Note that this parameter has to be a positive integer less than the toRow index parameter.";
 export const IncorrectToRowIndexParameterInExchangeColumnsTxt = "Incorrect toRow index parameter in exchangeColumns method. Note that this parameter has to be a positive integer less than the rows of the matrix.";
 export const IncorrectRowIndexParameterInGetDiagonalTxt = "Incorrect row index parameter in getDiagonal method. Note that this parameter has to be a positive integer less than the total rows of the matrix.";
+export const IncorrectBlockParameterInAppendBlockRightTxt = "Incorrect block parameter in appendBlockRight method. The block has to be a Matrix, NumericMatrix or MatrixType with the same rows as the initial Matrix instance.";

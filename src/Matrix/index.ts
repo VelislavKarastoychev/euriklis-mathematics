@@ -116,7 +116,9 @@ export class Matrix {
    * @param options - The options for matrix initialization.
    * @returns A new Matrix instance.
    */
-  constructor(options?: MatrixDeclaration | Matrix | NumericMatrix) {
+  constructor(
+    options?: MatrixDeclaration | Matrix | NumericMatrix | MatrixType,
+  ) {
     if (options !== undefined) {
       if (
         Matrix.isMatrix(options) ||
@@ -126,7 +128,7 @@ export class Matrix {
         this.M = (options as Matrix).M;
       } else {
         this.type = "float64";
-        this.M = options as NumericMatrix;
+        this.M = options as NumericMatrix | MatrixType;
       }
     }
   }
@@ -143,12 +145,17 @@ export class Matrix {
    * Sets the matrix data.
    * @param matrix - The numeric matrix.
    */
-  set M(matrix: NumericMatrix) {
+  set M(matrix: NumericMatrix | MatrixType) {
     if (conditions.IsArrayOfArraysWithEqualSize(matrix)) {
       const matrixType: TypedArrayConstructor = models
         .CreateTypedArrayConstructor(this.type);
       models.InitializeMatrix(matrixType, matrix, this.#M);
     } else errors.IncorrectMatrixInput();
+  }
+
+  get data() {
+    const typedArray = models.CreateTypedArrayConstructor(this.type);
+    return this.#M.map((row) => new typedArray(row));
   }
 
   /**
@@ -378,7 +385,7 @@ export class Matrix {
     return diagonalMatrix;
   }
   /**
-   * Converts the current matrix into collection of 
+   * Converts the current matrix into collection of
    * diagonal matrix blocks.
    *
    * @returns {Matrix} - The resulting diagonal matrix.
@@ -388,5 +395,34 @@ export class Matrix {
     diagMatrix.#M = models.ToDiagonalMatrix(this.#M, this.type);
 
     return diagMatrix;
+  }
+
+  /**
+   * Appends a block to the right side of the current matrix instance.
+   *
+   * @param {NumericMatrix | MatrixType | Matrix} block - The block to append.
+   * @returns {Matrix} - The extended matrix instance.
+   */
+  appendBlockRight(block: NumericMatrix | MatrixType | Matrix): Matrix {
+    let blockData: MatrixType | undefined;
+    if (Matrix.isMatrix(block)) {
+      blockData = (block as Matrix).#M;
+    } else {
+      blockData = new Matrix(block).#M;
+    }
+    if (!conditions.IsEmpty(blockData)) {
+      if (blockData.length !== this.rows) {
+        errors.IncorrectBlockParameterInAppendBlockRight();
+      }
+      const typedArray = models.CreateTypedArrayConstructor(this.type);
+      const extendedMatrix = new Matrix();
+      extendedMatrix.#M = models.AppendBlockRight(
+        this.#M,
+        blockData,
+        typedArray,
+      );
+      return extendedMatrix;
+    }
+    return this;
   }
 }

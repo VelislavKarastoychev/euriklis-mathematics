@@ -11,7 +11,7 @@ export type NumericType = IntegerNumericType | FloatNumericType;
 export type NumericMatrix = number[][];
 export type MatrixDeclaration = {
   M: NumericMatrix;
-  type: NumericType;
+  type?: NumericType;
 };
 export type TypedArray =
   | Int8Array

@@ -10,3 +10,4 @@ export { SetBlock } from "./SetBlock.ts";
 export { ExchangeColumns } from "./ExchangeColumns.ts";
 export { GetDiagonal } from "./GetDiagonal.ts";
 export { ToDiagonalMatrix } from "./ToDiagonalMatrix.ts";
+export { AppendBlockRight } from "./AppendBlockRight.ts";
