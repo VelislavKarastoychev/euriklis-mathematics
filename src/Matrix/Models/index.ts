@@ -12,3 +12,4 @@ export { GetDiagonal } from "./GetDiagonal.ts";
 export { ToDiagonalMatrix } from "./ToDiagonalMatrix.ts";
 export { AppendBlockRight } from "./AppendBlockRight.ts";
 export { AppendBlockBottom } from "./AppendBlockBottom.ts";
+export { TransposeMatrix } from "./TransposeMatrix.ts";
