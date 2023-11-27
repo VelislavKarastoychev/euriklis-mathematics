@@ -493,7 +493,9 @@ export class Matrix {
   
   get transpose (): Matrix {
     if (this.rows === 1 && this.columns === 1) return this;
-   // models.TransposeMatrix(this.#M, this.rows, this.columns);
-    return this;
+    const typedArray =  models.CreateTypedArrayConstructor(this.type);
+    const transposed = new Matrix();
+    transposed.#M = models.TransposeMatrix(this.#M, this.rows, this.columns, typedArray);
+    return transposed;
   }
 }
