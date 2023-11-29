@@ -7,71 +7,59 @@ import {
   TypedArrayConstructor,
 } from "../types";
 
+/**
+ * Transposes a matrix.
+ *
+ * @param {MatrixType} matrix - The 
+ * matrix to be transposed.
+ * @param {number} rows - The 
+ * number of rows in the original matrix.
+ * @param {number} columns - The 
+ * number of columns in the original matrix.
+ * @param {TypedArrayConstructor} typedArray - The 
+ * constructor for the TypedArray type used in the matrix.
+ * @returns {MatrixType} - Returns 
+ * a new matrix representing the transposed matrix.
+ */
 export const TransposeMatrix = (
   matrix: MatrixType,
-  rows: Integer,
-  columns: Integer,
+  rows: number,
+  columns: number,
   typedArray: TypedArrayConstructor,
 ): MatrixType => {
-  const transposed: MatrixType = [];
-  const r = matrix.length;
-  const c = matrix[0].length;
-  let A0: TypedArray,
+  let i: Integer,
+    j: Integer,
+    transposed = Array(columns),
+    A0: TypedArray,
     A1: TypedArray,
-    A2: TypedArray,
-    A3: TypedArray,
-    B0: TypedArray,
-    B1: TypedArray,
-    B2: TypedArray,
-    B3: TypedArray;
-  let i: Integer, j: Integer, p: Integer, q: Integer;
-  for (i = c; i--;) transposed[i] = new typedArray(r);
-  for (i = 0; i < r >> 2; i++) {
-    j = i << 2;
-    A0 = matrix[j];
-    A1 = matrix[j + 1];
-    A2 = matrix[j + 2];
-    A3 = matrix[j + 3];
-    for (p = 0; p < c >> 2; p++) {
-      q = p << 2;
-
-      B0 = transposed[q];
-      B1 = transposed[q + 1];
-      B2 = transposed[q + 2];
-      B3 = transposed[q + 3];
-
-      B0[j] = A0[q];
-      B0[j + 1] = A1[q];
-      B0[j + 2] = A2[q];
-      B0[j + 3] = A3[q];
-
-      B1[j] = A0[q + 1];
-      B1[j + 1] = A1[q + 1];
-      B1[j + 2] = A2[q + 1];
-      B1[j + 3] = A3[q + 1];
-
-      B2[j] = A0[q + 2];
-      B2[j + 1] = A1[q + 2];
-      B2[j + 2] = A2[q + 2];
-      B2[j + 3] = A3[q + 2];
-      
-      B3[j] = A0[q + 3];
-      B3[j + 1] = A1[q + 3];
-      B3[j + 2] = A2[q + 3];
-      B3[j + 3] = A3[q + 3];
+    Bj: TypedArray;
+  for (j = 0; j < columns; j++) transposed[j] = new typedArray(rows);
+  for (i = rows - 1; i >= 1; i -= 2) {
+    A1 = matrix[i];
+    A0 = matrix[i - 1];
+    for (j = columns - 1; j >= 1; --j) {
+      Bj = transposed[j];
+      Bj[i] = A1[j];
+      Bj[i - 1] = A0[j];
+      --j;
+      Bj = transposed[j];
+      Bj[i] = A1[j];
+      Bj[i - 1] = A0[j];
     }
-
-    for (q = p << 2;q < c;q++) {
-      B0 = transposed[q];
-      B0[j] = A0[q];
-      B0[j + 1] = A1[q];
-      B0[j + 2] = A2[q];
-      B0[j + 3] = A3[q];
+    if (j === 0) {
+      Bj = transposed[0];
+      Bj[i] = A1[0];
+      Bj[i - 1] = A0[0];
     }
   }
-  for (j = i << 2;j < r;j++) {
-    A0 = matrix[j];
-    
+  if (i === 0) {
+    A0 = matrix[0];
+    for (j = columns - 1; j >= 1; j -= 2) {
+      transposed[j][0] = A0[j];
+      transposed[j - 1][0] = A0[j - 1];
+    }
+    if (j === 0) transposed[0][0] = A0[0];
   }
-  return [new Float32Array(12)];
+  
+  return transposed;
 };

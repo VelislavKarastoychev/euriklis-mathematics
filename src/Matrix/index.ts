@@ -145,7 +145,7 @@ export class Matrix {
   }
 
   // 4. Properties and utility fields
-  
+
   /**
    * Gets the matrix data.
    *
@@ -211,14 +211,14 @@ export class Matrix {
 
   /**
    * @readonly
-   * @returns {boolean} True if the matrix is squared 
+   * @returns {boolean} True if the matrix is squared
    * and false otherwise.
    */
-  get isSquare (): boolean { 
+  get isSquare(): boolean {
     return this.rows !== this.columns;
   }
 
-  // 5. Utility functions or operators 
+  // 5. Utility functions or operators
   // for matrix manipulation.
 
   /**
@@ -487,15 +487,27 @@ export class Matrix {
     return this;
   }
 
-  // 6. Matrix operations and 
+  // 6. Matrix operations and
   // common linear algebra algorithms.
 
-  
-  get transpose (): Matrix {
+  /**
+   * Transposes the current matrix,
+   * swapping its rows and columns.
+   *
+   * @returns {Matrix} Returns a new Matrix
+   * instance representing the transposed matrix.
+   */
+  transpose(): Matrix {
     if (this.rows === 1 && this.columns === 1) return this;
-    const typedArray =  models.CreateTypedArrayConstructor(this.type);
+    const typedArray = models.CreateTypedArrayConstructor(this.type);
     const transposed = new Matrix();
-    transposed.#M = models.TransposeMatrix(this.#M, this.rows, this.columns, typedArray);
+    transposed.#M = models.TransposeMatrix(
+      this.#M,
+      this.rows,
+      this.columns,
+      typedArray,
+    );
+    
     return transposed;
   }
 }
