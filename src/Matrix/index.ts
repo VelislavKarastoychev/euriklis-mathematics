@@ -220,7 +220,16 @@ export class Matrix {
 
   // 5. Utility functions or operators
   // for matrix manipulation.
-
+  
+  /**
+   * Checks if the elements of the current Matrix are equal to 
+   * the elements of the "matrix" parameter of the method.
+   *
+   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used
+   * for comparison
+   * @returns {boolean} true, if the elements of the current matrix instance
+   * are equal to the elements of the "matrix" parameter, false otherwise.
+   */
   isEqualTo(matrix: Matrix | NumericMatrix | MatrixType): boolean {
     const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
       ? (matrix as Matrix).#M
