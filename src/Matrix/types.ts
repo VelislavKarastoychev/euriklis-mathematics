@@ -38,4 +38,6 @@ export type MatrixBlockOptions = {
   to: [number, number];
 };
 
+export type ComparisonParameter = "lt" | "gt" | "geq" | "leq" | "neq" | "eq";
+export type ComparisonOperator = "===" | ">=" | "<=" | ">" | "<" | "!==";
 
