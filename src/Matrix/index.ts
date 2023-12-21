@@ -221,6 +221,16 @@ export class Matrix {
   // 5. Utility functions or operators
   // for matrix manipulation.
 
+  isEqualTo(matrix: Matrix | NumericMatrix | MatrixType): boolean {
+    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
+      ? (matrix as Matrix).#M
+      : (matrix as MatrixType | NumericMatrix);
+    if (this.rows !== m.length || this.columns !== m[0].length) return false;
+    else if (this.rows < 20 && this.columns < 20) {
+      return JSON.stringify(this.#M) === JSON.stringify(m);
+    } else return models.CompareMatrices(this.#M, m, "eq");
+  }
+
   /**
    * Gets a block matrix by given starting and ending indices
    *
@@ -507,7 +517,7 @@ export class Matrix {
       this.columns,
       typedArray,
     );
-    
+
     return transposed;
   }
 }
