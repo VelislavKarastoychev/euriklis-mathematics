@@ -258,6 +258,23 @@ export class Matrix {
   }
 
   /**
+   * Checks if the elements of the current Matrix are greater than or equal to
+   * the elements of the "matrix" parameter of the method.
+   *
+   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used
+   * for comparison
+   * @returns {boolean} true, if the elements of the current matrix instance
+   * are greater than or equal to the elements of the "matrix" parameter, false otherwise.
+   */
+  isGreaterThanOrEqual(matrix: Matrix | NumericMatrix | MatrixType): boolean {
+    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
+      ? (matrix as Matrix).#M
+      : (matrix as MatrixType | NumericMatrix);
+    if (this.rows !== m.length || this.columns !== m[0].length) return false;
+    else return models.CompareMatrices(this.#M, m, "geq");
+  }
+
+  /**
    * Checks if all elements of the current Matrix are less than the corresponding
    * elements of the provided matrix.
    *
