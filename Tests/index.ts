@@ -17,3 +17,4 @@
 // import "./transpose.spec.ts";
 // import "./is-equal-to.spec.ts";
 // import "./is-less-than.spec.ts"
+import "./is-less-than-or-equal.spec.ts";
