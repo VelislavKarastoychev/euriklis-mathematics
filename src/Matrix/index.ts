@@ -257,6 +257,22 @@ export class Matrix {
   }
 
   /**
+   * Checks if the elements of the current Matrix are less than or equal to
+   * the elements of the "matrix" parameter.
+   *
+   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used for comparison.
+   * @returns {boolean} true, if the elements of the current matrix instance are less than
+   * or equal to the elements of the "matrix" parameter, false otherwise.
+   */
+  isLessThanOrEqual(matrix: Matrix | NumericMatrix | MatrixType): boolean {
+    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
+      ? (matrix as Matrix).#M
+      : (matrix as NumericMatrix | MatrixType);
+    if (this.rows !== m.length || this.columns !== m[0].length) return false;
+    else return models.CompareMatrices(this.#M, m, "leq");
+  }
+
+  /**
    * Gets a block matrix by given starting and ending indices
    *
    * @param options - The "from" and "to" indices needed for the method
