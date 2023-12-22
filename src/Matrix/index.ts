@@ -220,14 +220,14 @@ export class Matrix {
 
   // 5. Utility functions or operators
   // for matrix manipulation.
-  
+
   /**
-   * Checks if the elements of the current Matrix are equal to 
-   * the elements of the "matrix" parameter of the method.
+   * Checks if the elements of the current Matrix are equal to
+   * the corresponding elements of the provided matrix.
    *
    * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used
    * for comparison
-   * @returns {boolean} true, if the elements of the current matrix instance
+   * @returns {boolean} True, if the elements of the current matrix instance
    * are equal to the elements of the "matrix" parameter, false otherwise.
    */
   isEqualTo(matrix: Matrix | NumericMatrix | MatrixType): boolean {
@@ -238,6 +238,22 @@ export class Matrix {
     else if (this.rows < 20 && this.columns < 20) {
       return JSON.stringify(this.#M) === JSON.stringify(m);
     } else return models.CompareMatrices(this.#M, m, "eq");
+  }
+
+  /**
+   * Checks if all elements of the current Matrix are less than the corresponding
+   * elements of the provided matrix.
+   *
+   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix for comparison.
+   * @returns {boolean} True if all elements of the current matrix are less than
+   * the corresponding elements of the provided matrix, false otherwise.
+   */
+  isLessThan(matrix: Matrix | NumericMatrix | MatrixType): boolean {
+    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
+      ? (matrix as Matrix).#M
+      : (matrix as NumericMatrix | MatrixType);
+    if (this.rows !== m.length || this.columns !== m[0].length) return false;
+    else return models.CompareMatrices(this.#M, m, "lt");
   }
 
   /**
