@@ -97,6 +97,32 @@ export class Matrix {
   }
 
   /**
+   * Creates a new Matrix with specified dimensions, 
+   * where each element is initialized to the same numeric value.
+   *
+   * @static
+   * @param {number} n - The numeric value to replicate.
+   * @param {Integer} rows - The number of rows in the new matrix.
+   * @param {Integer} columns - The number of columns in the new matrix.
+   * @param {NumericType} [type="float64"] - The numeric type of the matrix elements.
+   * @returns {Matrix} A new Matrix with the specified dimensions and replicated numeric value.
+   * @throws {Error} If rows or columns are not positive.
+   */
+  static replicate(
+    n: number,
+    rows: Integer,
+    columns: Integer,
+    type: NumericType = "float64",
+  ): Matrix {
+    const rep: Matrix = new Matrix();
+    if (rows > 0 && columns > 0) {
+      rep.#M = models.Replicate(n, rows, columns, type) as MatrixType;
+    } else errors.IncorrectRowsOrColumnsParameterInReplicate();
+
+    return rep;
+  }
+
+  /**
    * Creates a new Matrix instance with randomized values.
    *
    * @param rows - The number of rows.
@@ -115,7 +141,7 @@ export class Matrix {
     type: NumericType = "float64",
     seed: number = 123445,
   ): Matrix {
-    const rand = new Matrix();
+    const rand: Matrix = new Matrix();
     rand.#M = models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
     return rand;
   }
@@ -595,4 +621,6 @@ export class Matrix {
 
     return transposed;
   }
+
+
 }
