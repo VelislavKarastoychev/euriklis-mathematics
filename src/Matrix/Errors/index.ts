@@ -33,9 +33,11 @@ export const IncorrectFromRowIndexParameterInExchangeColumns = (): never =>
   runError(texts.IncorrectFromRowIndexParameterInExchangeColumnsTxt);
 export const IncorrectToRowIndexParameterInExchangeColumns = (): never =>
   runError(texts.IncorrectToRowIndexParameterInExchangeColumnsTxt);
-export const IncorrectRowIndexParameterInGetDiagonal = (): never => 
+export const IncorrectRowIndexParameterInGetDiagonal = (): never =>
   runError(texts.IncorrectRowIndexParameterInGetDiagonalTxt);
 export const IncorrectBlockParameterInAppendBlockRight = (): never =>
   runError(texts.IncorrectBlockParameterInAppendBlockRightTxt);
 export const IncorrectBlockParameterInAppendBlockBottom = (): never =>
   runError(texts.IncorrectBlockParameterInAppendBlockBottomTxt);
+export const IncorrectRowsOrColumnsParameterInReplicate = (): never =>
+  runError(texts.IncorrectRowsOrColumnsParameterInReplicateTxt);
