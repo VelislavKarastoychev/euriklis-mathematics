@@ -14,3 +14,4 @@ export { AppendBlockRight } from "./AppendBlockRight.ts";
 export { AppendBlockBottom } from "./AppendBlockBottom.ts";
 export { TransposeMatrix } from "./TransposeMatrix.ts";
 export { CompareMatrices } from "./CompareMatrices.ts";
+export { Replicate } from "./Replicate.ts";
