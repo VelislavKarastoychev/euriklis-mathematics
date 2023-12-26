@@ -97,7 +97,7 @@ export class Matrix {
   }
 
   /**
-   * Creates a new Matrix with specified dimensions, 
+   * Creates a new Matrix with specified dimensions,
    * where each element is initialized to the same numeric value.
    *
    * @static
@@ -622,5 +622,20 @@ export class Matrix {
     return transposed;
   }
 
-
+  get T() {
+    return this.transpose();
+  }
+  /**
+   * Calculates the Frobenius norm of a matrix.
+   *
+   * @memberof Matrix
+   * @type {number}
+   * @readonly
+   * @throws {Error} If the matrix is not valid.
+   * @returns {number} The Frobenius (Euclidean) 
+   * norm of the matrix.
+   */
+  get FrobeniusNorm(): number {
+    return models.FrobeniusNorm(this.#M);
+  }
 }
