@@ -40,4 +40,14 @@ export type MatrixBlockOptions = {
 
 export type ComparisonParameter = "lt" | "gt" | "geq" | "leq" | "neq" | "eq";
 export type ComparisonOperator = "===" | ">=" | "<=" | ">" | "<" | "!==";
-
+export type MatrixReducer =
+  | "inf"
+  | "sup"
+  | "norm1"
+  | "infNorm"
+  | "square"
+  | "cube"
+  | "any"
+  | "all"
+  | "sum"
+  | "product";
