@@ -20,4 +20,5 @@
 // import "./is-less-than-or-equal.spec.ts";
 // import "./is-greater-than.spec.ts";
 // import "./is-greater-than-or-equal.spec.ts";
-import "./replicate.spec.ts"
+// import "./replicate.spec.ts"
+import "./euklidean-norm.spec.ts";
