@@ -12,7 +12,7 @@ import { MatrixReduce } from "./MatrixReduce.ts";
  * @returns {number} The Euclidean norm of the matrix.
  */
 export const FrobeniusNorm = (a: MatrixType | NumericMatrix): number => {
-  const squareSum = MatrixReduce(a, "square");
+  const squareSum: number = MatrixReduce(a, "square");
   if (squareSum < 0 || isNaN(squareSum)) InternalErrorInFrobeniusNorm();
-  else return Math.sqr(squareSum);
+  return Math.sqrt(squareSum);
 };
