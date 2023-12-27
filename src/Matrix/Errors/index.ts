@@ -41,3 +41,5 @@ export const IncorrectBlockParameterInAppendBlockBottom = (): never =>
   runError(texts.IncorrectBlockParameterInAppendBlockBottomTxt);
 export const IncorrectRowsOrColumnsParameterInReplicate = (): never =>
   runError(texts.IncorrectRowsOrColumnsParameterInReplicateTxt);
+export const InternalErrorInFrobeniusNorm = (): never =>
+  runError(texts.InternalErrorInFrobeniusNormTxt);
