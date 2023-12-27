@@ -14,3 +14,4 @@ export const IncorrectRowIndexParameterInGetDiagonalTxt = "Incorrect row index p
 export const IncorrectBlockParameterInAppendBlockRightTxt = "Incorrect block parameter in appendBlockRight method. The block has to be a Matrix, NumericMatrix or MatrixType with the same rows as the initial Matrix instance.";
 export const IncorrectBlockParameterInAppendBlockBottomTxt = "Incorrect block parameter in appendBlockBottom method. Note that this parameter has to be with the same columns as the initial matrix instance.";
 export const IncorrectRowsOrColumnsParameterInReplicateTxt = "Incorrect rows or columns parameters in replicate static method. The both rows and columns has to be positive integers greater than zero.";
+export const InternalErrorInFrobeniusNormTxt = "Internal error in the Frobenius norm method. The elements of the matrix are not numbers or the sum of the squares is negative.";
