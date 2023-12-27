@@ -638,4 +638,5 @@ export class Matrix {
   get FrobeniusNorm(): number {
     return models.FrobeniusNorm(this.#M);
   }
+  
 }
