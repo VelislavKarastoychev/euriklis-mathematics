@@ -1,14 +1,18 @@
 "use strict";
 
+import { InternalErrorInFrobeniusNorm } from "../Errors/index.ts";
 import { MatrixType, NumericMatrix } from "../types";
 import { MatrixReduce } from "./MatrixReduce.ts";
 /**
- * Calculates the Frobenius (Euclidean)
+ * Calculates the Frobenius (Euclidean) 
  * norm of a matrix using matrix reduction.
  *
  * @param {MatrixType | NumericMatrix} a - The input matrix.
- * @returns {number} The Frobenius norm of the matrix.
+ * @throws {Error} If the matrix is not valid.
+ * @returns {number} The Euclidean norm of the matrix.
  */
 export const FrobeniusNorm = (a: MatrixType | NumericMatrix): number => {
-  return Math.sqrt(MatrixReduce(a, "square"));
+  const squareSum = MatrixReduce(a, "square");
+  if (squareSum < 0 || isNaN(squareSum)) InternalErrorInFrobeniusNorm();
+  else return Math.sqr(squareSum);
 };
