@@ -639,13 +639,25 @@ export class Matrix {
     return models.FrobeniusNorm(this.#M);
   }
 
-  get infiniteNorm(): number {
-    const infNorm = models.MatrixReduce(this.#M, "infNorm");
-    if (infNorm < 0 || isNaN(infNorm)) {
-      throw new Error(
-        "Internal error in infiniteNorm method. The matrix elements are not numbers or the norm is negative.",
-      );
+  /**
+   * Obtains the infinity norm of the matrix.
+   * The infinity norm is the maximum absolute row sum of the matrix.
+   * It is calculated as the maximum sum of absolute values of each row.
+   * If the matrix is empty or contains non-numeric elements, an internal error is thrown.
+   *
+   * @returns {number} The infinity norm of the matrix.
+   * @throws {Error} Throws an internal error if the matrix is empty or contains non-numeric elements.
+   *
+   * @example
+   * const matrix = new Matrix([[1, 2, 3], [-4, 5, 6], [7, 8, 9]]);
+   * const infinityNorm = matrix.infinityNorm; // Returns 24
+   */
+  get infinityNorm(): number {
+    const maxNorm = models.MatrixReduce(this.#M, "infNorm");
+    if (maxNorm < 0 || isNaN(maxNorm)) {
+      errors.InternalErrorInInfinityNorm();
     }
-    return infNorm;
+
+    return maxNorm;
   }
 }
