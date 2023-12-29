@@ -45,12 +45,18 @@ const ReducerExpression = (
         columnAccumulator: "accum += abs(aij);",
         init: "const abs = Math.abs;let accum = 0;",
       };
+    case "maxNorm":
+      return {
+        rowAccumulator: "accum = max(accum, abs(ai));",
+        columnAccumulator: "accum = max(accum, abs(aij))",
+        init: "const max = Math.max, abs = Math.abs;let accum = 0;",
+      };
     case "infNorm":
       return {
         rowAccumulator: "accum = max(accum, abs(ai));",
-        columnAccumulator: "accum = max(accum, abs(aij));",
-        init: "const max = Math.max, abs = Math.abs;let accum = 0;",
-      };
+        columnAccumulator: "accum += abs(aij);",
+        init: "const max = Math.max, abs = Math.abs;let accum = 0;"
+      }
     case "any":
       return {
         rowAccumulator: "if (ai) return true;",
