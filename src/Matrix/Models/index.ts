@@ -15,4 +15,5 @@ export { AppendBlockBottom } from "./AppendBlockBottom.ts";
 export { TransposeMatrix } from "./TransposeMatrix.ts";
 export { CompareMatrices } from "./CompareMatrices.ts";
 export { Replicate } from "./Replicate.ts";
+export { MatrixReduce } from "./MatrixReduce.ts";
 export { FrobeniusNorm } from "./FrobeniusNorm.ts";
