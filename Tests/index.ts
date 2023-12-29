@@ -23,3 +23,4 @@
 // import "./replicate.spec.ts"
 // import "./frobenius-norm.spec.ts";
 import "./infinity-norm.spec.ts";
+import "./max-norm.spec.ts";
