@@ -33,3 +33,5 @@ export const InternalErrorInFrobeniusNormTxt =
   "Internal error in the Frobenius norm method. The elements of the matrix are not numbers or the sum of the squares is negative.";
 export const InternalErrorInInfinityNormTxt =
   "Internal error in infiniteNorm method. The matrix elements are not numbers or the norm is negative.";
+export const InternalErrorInMaxNormTxt =
+  "Internal error in the maxNorm method. The elements of the matrix are incorrectly defined or the norm is negative number.";
