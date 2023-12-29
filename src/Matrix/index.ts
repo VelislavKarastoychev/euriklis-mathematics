@@ -632,11 +632,20 @@ export class Matrix {
    * @type {number}
    * @readonly
    * @throws {Error} If the matrix is not valid.
-   * @returns {number} The Frobenius (Euclidean) 
+   * @returns {number} The Frobenius (Euclidean)
    * norm of the matrix.
    */
   get FrobeniusNorm(): number {
     return models.FrobeniusNorm(this.#M);
   }
-  
+
+  get infiniteNorm(): number {
+    const infNorm = models.MatrixReduce(this.#M, "infNorm");
+    if (infNorm < 0 || isNaN(infNorm)) {
+      throw new Error(
+        "Internal error in infiniteNorm method. The matrix elements are not numbers or the norm is negative.",
+      );
+    }
+    return infNorm;
+  }
 }
