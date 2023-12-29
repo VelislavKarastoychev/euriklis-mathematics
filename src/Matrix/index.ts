@@ -653,9 +653,28 @@ export class Matrix {
    * const infinityNorm = matrix.infinityNorm; // Returns 24
    */
   get infinityNorm(): number {
-    const maxNorm = models.MatrixReduce(this.#M, "infNorm");
-    if (maxNorm < 0 || isNaN(maxNorm)) {
+    const infNorm = models.MatrixReduce(this.#M, "infNorm");
+    if (infNorm < 0 || isNaN(infNorm)) {
       errors.InternalErrorInInfinityNorm();
+    }
+
+    return infNorm;
+  }
+
+  /**
+   * Obtains the maximum absolute element norm of the matrix.
+   * The maximum absolute element norm is the maximum absolute value of any element in the matrix.
+   *
+   * @returns {number} The maximum absolute element norm of the matrix.
+   *
+   * @example
+   * const matrix = new Matrix([[1, 2, 3], [-4, 5, 6], [7, 8, 9]]);
+   * const maxNorm = matrix.maxNorm; // Returns 9 (maximum absolute value in the matrix)
+   */
+  get maxNorm(): number {
+    const maxNorm = models.MatrixReduce(this.#M, "maxNorm");
+    if (maxNorm < 0 || isNaN(maxNorm)) {
+      errors.InternalErrorInMaxNorm();
     }
 
     return maxNorm;
