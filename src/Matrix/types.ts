@@ -45,6 +45,7 @@ export type MatrixReducer =
   | "sup"
   | "norm1"
   | "infNorm"
+  | "maxNorm"
   | "square"
   | "cube"
   | "any"
