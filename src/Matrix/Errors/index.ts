@@ -45,3 +45,10 @@ export const InternalErrorInFrobeniusNorm = (): never =>
   runError(texts.InternalErrorInFrobeniusNormTxt);
 export const InternalErrorInInfinityNorm = (): never =>
   runError(texts.InternalErrorInInfinityNormTxt);
+export const InternalErrorInMaxNorm = (): never =>
+  runError(texts.InternalErrorInMaxNormTxt);
+
+
+
+
+
