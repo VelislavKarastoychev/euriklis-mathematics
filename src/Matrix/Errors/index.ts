@@ -43,3 +43,5 @@ export const IncorrectRowsOrColumnsParameterInReplicate = (): never =>
   runError(texts.IncorrectRowsOrColumnsParameterInReplicateTxt);
 export const InternalErrorInFrobeniusNorm = (): never =>
   runError(texts.InternalErrorInFrobeniusNormTxt);
+export const InternalErrorInInfinityNorm = (): never =>
+  runError(texts.InternalErrorInInfinityNormTxt);
