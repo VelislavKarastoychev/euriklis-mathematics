@@ -34,5 +34,6 @@ export const ObtainMatrixFromTypedMatrix = (m: MatrixType): NumericMatrix => {
   const n: Integer = m.length, matrix: number[][] = [];
   let i: Integer;
   for (i = n; i--;) AssignRow(m[i], matrix[i] = []);
+  
   return matrix;
 };
