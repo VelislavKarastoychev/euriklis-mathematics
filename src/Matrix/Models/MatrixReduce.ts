@@ -55,8 +55,8 @@ const ReducerExpression = (
       return {
         rowAccumulator: "accum = max(accum, abs(ai));",
         columnAccumulator: "accum += abs(aij);",
-        init: "const max = Math.max, abs = Math.abs;let accum = 0;"
-      }
+        init: "const max = Math.max, abs = Math.abs;let accum = 0;",
+      };
     case "any":
       return {
         rowAccumulator: "if (ai) return true;",
@@ -97,6 +97,7 @@ const MatrixReduceIterator = (
   rowAccumulator: string,
   columnAccumulator: string,
   init: string,
+  it: boolean = false,
 ): number =>
   Function(
     "a",
@@ -124,18 +125,19 @@ const MatrixReduceIterator = (
        
       } else {
         for (i = n;i--;) {
-          ai = reduceIterator(a[i], it + 1);
+          ai = reduceIterator(a[i], !it);
           ${rowAccumulator}
         }
        }
        return accum;
      }
-     return reduceIterator(a, 0);
+     return reduceIterator(a, ${it});
     `,
   )(matrix);
 
 /**
- * Performs matrix reduction based on the specified reducer type.
+ * Performs matrix reduction based on the specified reducer type
+ * through the rows of the matrix.
  *
  * @param {MatrixType | NumericMatrix} matrix - The input matrix.
  * @param {MatrixReducer} reducer - The type of matrix reducer.
@@ -148,5 +150,11 @@ export const MatrixReduce = (
   const { columnAccumulator, rowAccumulator, init } = ReducerExpression(
     reducer,
   );
-  return MatrixReduceIterator(matrix, rowAccumulator, columnAccumulator, init);
+  return MatrixReduceIterator(
+    matrix,
+    rowAccumulator,
+    columnAccumulator,
+    init,
+    reducer === "norm1" ? true : false,
+  );
 };
