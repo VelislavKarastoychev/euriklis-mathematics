@@ -47,8 +47,9 @@ export const InternalErrorInInfinityNorm = (): never =>
   runError(texts.InternalErrorInInfinityNormTxt);
 export const InternalErrorInMaxNorm = (): never =>
   runError(texts.InternalErrorInMaxNormTxt);
-
-
-
-
-
+export const IncorrectRowsOrColumnsParameterInRandom = (): never =>
+  runError(texts.IncorrectRowsOrColumnsParameterInRandomTxt);
+export const IncorrectRowsOrColumnsParametersInZeros = (): never =>
+  runError(texts.IncorrectRowsOrColumnsParametersInZerosTxt);
+export const IncorrectRowsOrColumnsParametersInIdentityLike = (): never =>
+  runError(texts.IncorrectRowsOrColumnsParametersInIdentityLikeTxt);
