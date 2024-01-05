@@ -35,3 +35,6 @@ export const InternalErrorInInfinityNormTxt =
   "Internal error in infiniteNorm method. The matrix elements are not numbers or the norm is negative.";
 export const InternalErrorInMaxNormTxt =
   "Internal error in the maxNorm method. The elements of the matrix are incorrectly defined or the norm is negative number.";
+export const IncorrectRowsOrColumnsParameterInRandomTxt = "Incorrect rows or columns parameter in the random method. Note that both rows and columns have to be positive integers.";
+export const IncorrectRowsOrColumnsParametersInZerosTxt = "Incorrect rows or columns parameter in the zeros method. Note that rows and columns have to be positive integers.";
+export const IncorrectRowsOrColumnsParametersInIdentityLikeTxt = "Incorrect rows or columns parameters in identityLike method. Note that both rows and columns have to be positive integers.";
