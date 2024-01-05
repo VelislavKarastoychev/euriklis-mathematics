@@ -3,6 +3,12 @@ import * as conditions from "./Conditions/index.ts";
 import * as models from "./Models/index.ts";
 import * as errors from "./Errors/index.ts";
 import {
+  ifFromOrToParametersAreIncorrectlyDefinedThrow,
+  ifIsNotArrayOfArraysWithEqualSizeThrow,
+  ifRowsOrColumnsAreNotPositiveIntegersThrow,
+  resetMatrix,
+} from "./Decorators/index.ts";
+import {
   Integer,
   MatrixBlockOptions,
   MatrixDeclaration,
@@ -18,13 +24,13 @@ export class Matrix {
   /**
    * @private {MatrixType} #M - A holder of the matrix instance
    */
-  #M: MatrixType = [];
+  private _M: MatrixType = [];
   /**
    * @private {NumericType} #type - A holder for the type of the
    * current matrix instance. By default this property will be
    * set to "float64" (double precision) type.
    */
-  #type: NumericType = "float64";
+  private _type: NumericType = "float64";
 
   // 2. Static methods
 
@@ -47,13 +53,16 @@ export class Matrix {
    * @param columns - an integer greater than zero
    * @param {NumericType} type
    */
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParametersInZeros,
+  )
   static zeros(
     rows: Integer,
     columns: Integer,
     type: NumericType = "float64",
   ): Matrix {
     const z = new Matrix();
-    z.#M = models.GenerateZeroMatrix(rows, columns, type);
+    z._M = models.GenerateZeroMatrix(rows, columns, type);
     return z;
   }
 
@@ -76,13 +85,16 @@ export class Matrix {
    * @param {NumericType} type - The type of each element of the matrix.
    * @returns {Matrix} - An identity-like matrix.
    */
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParametersInIdentityLike,
+  )
   static identityLike(
     rows: Integer,
     columns: Integer,
     type: NumericType = "float64",
   ): Matrix {
     const I = new Matrix();
-    I.#M = models.GenerateIdentityLikeMatrix(rows, columns, type);
+    I._M = models.GenerateIdentityLikeMatrix(rows, columns, type);
     return I;
   }
 
@@ -108,6 +120,11 @@ export class Matrix {
    * @returns {Matrix} A new Matrix with the specified dimensions and replicated numeric value.
    * @throws {Error} If rows or columns are not positive.
    */
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInReplicate,
+    1,
+    2,
+  )
   static replicate(
     n: number,
     rows: Integer,
@@ -115,9 +132,7 @@ export class Matrix {
     type: NumericType = "float64",
   ): Matrix {
     const rep: Matrix = new Matrix();
-    if (rows > 0 && columns > 0) {
-      rep.#M = models.Replicate(n, rows, columns, type) as MatrixType;
-    } else errors.IncorrectRowsOrColumnsParameterInReplicate();
+    rep._M = models.Replicate(n, rows, columns, type) as MatrixType;
 
     return rep;
   }
@@ -133,6 +148,9 @@ export class Matrix {
    * @param seed - The seed for randomization.
    * @returns A new Matrix instance.
    */
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom,
+  )
   static random(
     rows: Integer,
     columns: Integer,
@@ -142,7 +160,7 @@ export class Matrix {
     seed: number = 123445,
   ): Matrix {
     const rand: Matrix = new Matrix();
-    rand.#M = models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
+    rand._M = models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
     return rand;
   }
 
@@ -178,7 +196,7 @@ export class Matrix {
    * @returns The numeric matrix.
    */
   get M(): NumericMatrix {
-    return models.ObtainMatrixFromTypedMatrix(this.#M);
+    return models.ObtainMatrixFromTypedMatrix(this._M);
   }
 
   /**
@@ -186,17 +204,16 @@ export class Matrix {
    *
    * @param matrix - The numeric matrix.
    */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   set M(matrix: NumericMatrix | MatrixType) {
-    if (conditions.IsArrayOfArraysWithEqualSize(matrix)) {
-      const matrixType: TypedArrayConstructor = models
-        .CreateTypedArrayConstructor(this.type);
-      models.InitializeMatrix(matrixType, matrix, this.#M);
-    } else errors.IncorrectMatrixInput();
+    const matrixType: TypedArrayConstructor = models
+      .CreateTypedArrayConstructor(this._type);
+    models.InitializeMatrix(matrixType, matrix, this._M);
   }
 
   get data() {
-    const typedArray = models.CreateTypedArrayConstructor(this.type);
-    return this.#M.map((row) => new typedArray(row));
+    const typedArray = models.CreateTypedArrayConstructor(this._type);
+    return this._M.map((row) => new typedArray(row));
   }
 
   /**
@@ -205,7 +222,7 @@ export class Matrix {
    * @returns The numeric type.
    */
   get type(): NumericType {
-    return this.#type;
+    return this._type;
   }
 
   /**
@@ -213,9 +230,9 @@ export class Matrix {
    *
    * @param type - The numeric type.
    */
+  @resetMatrix
   set type(type: NumericType) {
-    this.#type = type;
-    if (this.rows) this.M = this.M;
+    this._type = type;
   }
 
   /**
@@ -223,7 +240,7 @@ export class Matrix {
    * Returns the rows of the current matrix instance.
    */
   get rows(): Integer {
-    return this.#M.length;
+    return this._M.length;
   }
 
   /**
@@ -232,7 +249,7 @@ export class Matrix {
    * Matrix instance.
    */
   get columns(): Integer {
-    return this.rows ? this.#M[0].length : 0;
+    return this.rows ? this._M[0].length : 0;
   }
 
   /**
@@ -258,12 +275,12 @@ export class Matrix {
    */
   isEqualTo(matrix: Matrix | NumericMatrix | MatrixType): boolean {
     const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix).#M
+      ? (matrix as Matrix)._M
       : (matrix as MatrixType | NumericMatrix);
     if (this.rows !== m.length || this.columns !== m[0].length) return false;
     else if (this.rows < 20 && this.columns < 20) {
-      return JSON.stringify(this.#M) === JSON.stringify(m);
-    } else return models.CompareMatrices(this.#M, m, "eq");
+      return JSON.stringify(this._M) === JSON.stringify(m);
+    } else return models.CompareMatrices(this._M, m, "eq");
   }
 
   /**
@@ -277,10 +294,10 @@ export class Matrix {
    */
   isGreaterThan(matrix: Matrix | NumericMatrix | MatrixType): boolean {
     const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix).#M
+      ? (matrix as Matrix)._M
       : (matrix as MatrixType | NumericMatrix);
     if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this.#M, m, "gt");
+    else return models.CompareMatrices(this._M, m, "gt");
   }
 
   /**
@@ -294,10 +311,10 @@ export class Matrix {
    */
   isGreaterThanOrEqual(matrix: Matrix | NumericMatrix | MatrixType): boolean {
     const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix).#M
+      ? (matrix as Matrix)._M
       : (matrix as MatrixType | NumericMatrix);
     if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this.#M, m, "geq");
+    else return models.CompareMatrices(this._M, m, "geq");
   }
 
   /**
@@ -310,10 +327,10 @@ export class Matrix {
    */
   isLessThan(matrix: Matrix | NumericMatrix | MatrixType): boolean {
     const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix).#M
+      ? (matrix as Matrix)._M
       : (matrix as NumericMatrix | MatrixType);
     if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this.#M, m, "lt");
+    else return models.CompareMatrices(this._M, m, "lt");
   }
 
   /**
@@ -326,10 +343,10 @@ export class Matrix {
    */
   isLessThanOrEqual(matrix: Matrix | NumericMatrix | MatrixType): boolean {
     const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix).#M
+      ? (matrix as Matrix)._M
       : (matrix as NumericMatrix | MatrixType);
     if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this.#M, m, "leq");
+    else return models.CompareMatrices(this._M, m, "leq");
   }
 
   /**
@@ -339,24 +356,14 @@ export class Matrix {
    *   (by default set to [0, 0] and [rows - 1, columns - 1]).
    * @returns {Matrix} The block as Matrix
    */
+  @ifFromOrToParametersAreIncorrectlyDefinedThrow(
+    errors.IncorrectFromAndToParametersInGetBlock,
+  )
   getBlock(
-    options: MatrixBlockOptions = {
-      from: [0, 0],
-      to: [this.rows - 1, this.columns - 1],
-    },
-  ): Matrix {
-    const { from, to } = options;
-
-    if (
-      !conditions.AreFromAndToCorrectlyDefined(from, to, [
-        this.rows,
-        this.columns,
-      ])
-    ) {
-      errors.IncorrectFromAndToParametersInGetBlock();
-    }
+    options?: MatrixBlockOptions): Matrix {
+    const { from, to } = options as MatrixBlockOptions;
     const block = new Matrix();
-    block.#M = models.GetBlock(this.#M, from, to, this.type);
+    block._M = models.GetBlock(this._M, from, to, this._type);
 
     return block;
   }
@@ -368,6 +375,9 @@ export class Matrix {
    * @param options - The "block", "from," and "to" parameters needed for the method.
    * @returns {Matrix} The updated Matrix instance.
    */
+  @ifFromOrToParametersAreIncorrectlyDefinedThrow(
+    errors.IncorrectFromAndToParametersInSetBlock
+  )
   setBlock(
     options: MatrixBlockOptions & {
       block: NumericMatrix | Matrix | MatrixType;
@@ -376,16 +386,8 @@ export class Matrix {
     let b: NumericMatrix | MatrixType | null = null;
     const { block, from, to } = options;
 
-    if (
-      !conditions.AreFromAndToCorrectlyDefined(from, to, [
-        this.rows,
-        this.columns,
-      ])
-    ) {
-      errors.IncorrectFromAndToParametersInSetBlock();
-    }
     if (Matrix.isMatrix(block as Matrix)) {
-      b = (block as Matrix).#M;
+      b = (block as Matrix)._M;
     } else b = block as NumericMatrix;
     if (conditions.IsArrayOfArraysWithEqualSize(b as NumericMatrix)) {
       if (
@@ -396,7 +398,7 @@ export class Matrix {
       }
     }
 
-    models.SetBlock(this.#M, b as NumericMatrix, from, to);
+    models.SetBlock(this._M, b as NumericMatrix, from, to);
 
     return this;
   }
@@ -470,7 +472,7 @@ export class Matrix {
       errors.IncorrectToColumnIndexParameterInExcangeRows();
     }
 
-    models.ExchangeRows(this.#M, row1, row2, fromColumn, toColumn);
+    models.ExchangeRows(this._M, row1, row2, fromColumn, toColumn);
 
     return this;
   }
@@ -502,7 +504,7 @@ export class Matrix {
       errors.IncorrectToRowIndexParameterInExchangeColumns();
     }
 
-    models.ExchangeColumns(this.#M, col1, col2, fromRow, toRow);
+    models.ExchangeColumns(this._M, col1, col2, fromRow, toRow);
 
     return this;
   }
@@ -520,7 +522,7 @@ export class Matrix {
 
     const typedArray = models.CreateTypedArrayConstructor(this.type);
     const diagonalMatrix = new Matrix();
-    diagonalMatrix.#M = models.GetDiagonal(this.#M, row, typedArray);
+    diagonalMatrix._M = models.GetDiagonal(this._M, row, typedArray);
 
     return diagonalMatrix;
   }
@@ -532,7 +534,7 @@ export class Matrix {
    */
   toDiagonalMatrix(): Matrix {
     const diagMatrix = new Matrix();
-    diagMatrix.#M = models.ToDiagonalMatrix(this.#M, this.type);
+    diagMatrix._M = models.ToDiagonalMatrix(this._M, this.type);
 
     return diagMatrix;
   }
@@ -546,9 +548,9 @@ export class Matrix {
   appendBlockRight(block: NumericMatrix | MatrixType | Matrix): Matrix {
     let blockData: MatrixType | undefined;
     if (Matrix.isMatrix(block)) {
-      blockData = (block as Matrix).#M;
+      blockData = (block as Matrix)._M;
     } else {
-      blockData = new Matrix(block).#M;
+      blockData = new Matrix(block)._M;
     }
     if (!conditions.IsEmpty(blockData)) {
       if (blockData.length !== this.rows) {
@@ -556,8 +558,8 @@ export class Matrix {
       }
       const typedArray = models.CreateTypedArrayConstructor(this.type);
       const extendedMatrix = new Matrix();
-      extendedMatrix.#M = models.AppendBlockRight(
-        this.#M,
+      extendedMatrix._M = models.AppendBlockRight(
+        this._M,
         blockData,
         typedArray,
       );
@@ -575,9 +577,9 @@ export class Matrix {
   appendBlockBottom(block: NumericMatrix | MatrixType | Matrix): Matrix {
     let blockData: MatrixType | undefined;
     if (Matrix.isMatrix(block)) {
-      blockData = (block as Matrix).#M;
+      blockData = (block as Matrix)._M;
     } else {
-      blockData = new Matrix(block).#M;
+      blockData = new Matrix(block)._M;
     }
 
     if (!conditions.IsEmpty(blockData)) {
@@ -586,8 +588,8 @@ export class Matrix {
       }
       const typedArray = models.CreateTypedArrayConstructor(this.type);
       const extendedMatrix = new Matrix();
-      extendedMatrix.#M = models.AppendBlockBottom(
-        this.#M,
+      extendedMatrix._M = models.AppendBlockBottom(
+        this._M,
         blockData,
         typedArray,
       );
@@ -612,8 +614,8 @@ export class Matrix {
     if (this.rows === 1 && this.columns === 1) return this;
     const typedArray = models.CreateTypedArrayConstructor(this.type);
     const transposed = new Matrix();
-    transposed.#M = models.TransposeMatrix(
-      this.#M,
+    transposed._M = models.TransposeMatrix(
+      this._M,
       this.rows,
       this.columns,
       typedArray,
@@ -628,15 +630,13 @@ export class Matrix {
   /**
    * Calculates the Frobenius norm of a matrix.
    *
-   * @memberof Matrix
-   * @type {number}
    * @readonly
    * @throws {Error} If the matrix is not valid.
    * @returns {number} The Frobenius (Euclidean)
    * norm of the matrix.
    */
   get FrobeniusNorm(): number {
-    return models.FrobeniusNorm(this.#M);
+    return models.FrobeniusNorm(this._M);
   }
 
   /**
@@ -653,7 +653,7 @@ export class Matrix {
    * const infinityNorm = matrix.infinityNorm; // Returns 24
    */
   get infinityNorm(): number {
-    const infNorm = models.MatrixReduce(this.#M, "infNorm");
+    const infNorm = models.MatrixReduce(this._M, "infNorm");
     if (infNorm < 0 || isNaN(infNorm)) {
       errors.InternalErrorInInfinityNorm();
     }
@@ -672,11 +672,21 @@ export class Matrix {
    * const maxNorm = matrix.maxNorm; // Returns 9 (maximum absolute value in the matrix)
    */
   get maxNorm(): number {
-    const maxNorm = models.MatrixReduce(this.#M, "maxNorm");
+    const maxNorm = models.MatrixReduce(this._M, "maxNorm");
     if (maxNorm < 0 || isNaN(maxNorm)) {
       errors.InternalErrorInMaxNorm();
     }
 
     return maxNorm;
+  }
+
+  get norm1(): number {
+    const norm1 = models.MatrixReduce(this._M, "norm1");
+    if (norm1 < 0 || isNaN(norm1)) {
+      //errors.InternalErrorInNorm1();
+      throw new Error("Error!");
+    }
+
+    return norm1;
   }
 }
