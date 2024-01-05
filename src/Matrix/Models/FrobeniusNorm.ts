@@ -3,6 +3,8 @@
 import { InternalErrorInFrobeniusNorm } from "../Errors/index.ts";
 import { MatrixType, NumericMatrix } from "../types";
 import { MatrixReduce } from "./MatrixReduce.ts";
+
+
 /**
  * Calculates the Frobenius (Euclidean) 
  * norm of a matrix using matrix reduction.
