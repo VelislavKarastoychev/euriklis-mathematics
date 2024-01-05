@@ -2,11 +2,9 @@
 import validator from "@euriklis/validator";
 import { Matrix } from "../src/index.ts";
 
+const matrixArray = Array.from({ length: 37 }).map((_) => Array.from({ length: 173 }).map((_) => 3.14));
 const m = new Matrix();
-const M = Array.from({ length: 37 }).map((_) =>
-  Array.from({ length: 173 }).map((_) => 3.14)
-);
-m.M = M;
+ m.M = matrixArray;
 
 new validator(Matrix.replicate(3.14, 37, 173).isEqualTo(m))
   .describe("The replicate method has to:").test({
