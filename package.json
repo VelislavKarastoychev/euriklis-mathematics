@@ -8,7 +8,7 @@
     "test": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm --inspect ./Tests/index.ts",
     "build": "tsc",
     "start": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./src/index.ts",
-    "runts": "ts-node ./src/index.ts"
+    "benchmark": "node --no-warnings='ExperimentalWarning' --loader ts-node/esm ./Benchmark/index.ts"
   },
   "keywords": [
     "Matrix",
