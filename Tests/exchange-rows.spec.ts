@@ -53,15 +53,4 @@ new validator(new Matrix(a).exchangeRows(1, 4).M)
   ).describe(
     "2. Has to exchange a column range of two rows when the fromColumn and toColumn parameters are defined.",
   )
-  .test()
-  .describe(
-    "3. Time performance of the exchangeRows method with parameters matrix --> 6000 x 6000, row1 = 99, row2 = 5189, fromColumn = 99, toColumn = 5098",
-  ).test()
-  .on(true, () => {
-    const m = Matrix.random(6000, 6000);
-    const benchmark = new validator(m).benchmark(
-      (matrix) => matrix.exchangeRows(99, 5189, 99, 5098),
-      100,
-    );
-    console.table(benchmark);
-  });
+  .test();
