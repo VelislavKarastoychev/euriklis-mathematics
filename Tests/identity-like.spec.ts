@@ -32,13 +32,3 @@ new validator(Matrix.identityLike(15, 51).M)
       .and.throwsErrorWith(-2, 2)
       .and.not.throwsErrorWith(4, 3),
   ).test()
-  .describe(
-    "3. Time performance of the identity(Like) method with parameters rows = 5000 and columns = 5000",
-  )
-  .test()
-  .on(true, () => {
-    const benchmark = new validator(Matrix).benchmark((m) =>
-      m.identityLike(5000, 5000)
-    );
-    console.table(benchmark);
-  });
