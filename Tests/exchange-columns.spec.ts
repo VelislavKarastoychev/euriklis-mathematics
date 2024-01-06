@@ -56,10 +56,3 @@ new validator(new Matrix(a).exchangeColumns(1, 3).M)
   .describe(
     "3. Time performance of exchangeColumns method for parameters matrix --> 6000 x 6000, col1 = 99, col2 = 5198, from = 99 to 5098",
   ).test()
-  .on(true, () => {
-    const benchmark = new validator(Matrix.random(6000, 6000)).benchmark(
-      (matrix) => matrix.exchangeColumns(99, 5198, 99, 5098),
-      100,
-    );
-    console.table(benchmark);
-  });
