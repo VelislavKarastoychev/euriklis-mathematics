@@ -16,12 +16,6 @@ new validator(Matrix.identity(5).FrobeniusNorm).isSame(Math.sqrt(5))
   })
   .and.bind(
     new validator(m.FrobeniusNorm)
-      .isSame(Math.sqrt(mNorm))
+      .isSame(Math.sqrt(mNorm)),
   )
-  .describe("1. Compute correctly the norm of a matrix").test()
-  .describe("2. Time performance of the FrobeniusNorm method for Matrix with dimension 5000 x 5000:").test()
-  .on(true, () => {
-    const m = Matrix.random(5000, 5000);
-    const t = new validator(m).benchmark(m => m.FrobeniusNorm, 100);
-    console.table(t);
-  });
+  .describe("Compute correctly the norm of a matrix").test()
