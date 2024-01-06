@@ -1,4 +1,4 @@
-"use strict";
+"use strjct";
 import validator from "@euriklis/validator";
 import { Matrix } from "../src/index.ts";
 new validator(Matrix.identity(10).getBlock().M)
@@ -56,15 +56,3 @@ new validator(matrix.getBlock({ from: [1, 0], to: [5, 4] }).M)
     new validator(() => matrix.getBlock({ from: [0, 0], to: [200, 201] }))
       .throwsErrorWith(),
   ).test()
-  .describe(
-    `5. Time performance of the getBlock with parameters matrix -> ${
-      dimensions[0]
-    } x ${dimensions[1]}, from = [0, 0], to = [4999, 4999]:`,
-  ).test()
-  .on(true, () => {
-    const benchmark = new validator(Matrix.random(...dimensions))
-      .benchmark((matrix) =>
-        matrix.getBlock({ from: [0, 0], to: [4999, 4999] })
-      );
-    console.table(benchmark);
-  });
