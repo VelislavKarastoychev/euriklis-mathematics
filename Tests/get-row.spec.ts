@@ -41,13 +41,3 @@ new validator(new Matrix(mat45).getRow(2).M)
     new validator(() => new Matrix(mat45).getRow(0, 0, 1000)).throwsErrorWith(),
   )
   .test()
-  .describe(
-    "4. Time performance of the getRow method with parameters matrix --> 6000 x 6000, row 400, from 989 to 5988:",
-  )
-  .test().on(true, () => {
-    const mat6 = Matrix.random(6000, 6000);
-    const benchmark = new validator(mat6).benchmark((m) =>
-      m.getRow(400, 989, 5988)
-    );
-    console.table(benchmark);
-  });
