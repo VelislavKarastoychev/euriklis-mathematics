@@ -35,10 +35,3 @@ new validator(m1.appendBlockRight(m2).M).forEvery((row) =>
   ).describe(
     "5. Not throw when the argument is empty array or empty matrix but returns the same matrix."
   ).test()
-  .describe("6. Time performance the appendBlockRight method for two matrices 5000 x 5000").test()
-  .on(true, () => {
-    const m1 = Matrix.random(5000, 5000);
-    const m2 = Matrix.random(5000, 5000);
-    const benchmark = new validator(m1).benchmark(m => m.appendBlockRight(m2))
-    console.table(benchmark);
-  })
