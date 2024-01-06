@@ -29,14 +29,3 @@ new validator(rand55.getDiagonal().M[0])
       console.table(rand55M);
     }),
   ).test()
-  .describe(
-    "3. Time performance of getDiagonal method for matrix with parameters 5000 x 5000",
-  ).test()
-  .on(true, () => {
-    const rand5kx5k = Matrix.random(5000, 5000);
-    const benchmark = new validator(rand5kx5k).benchmark((matrix) =>
-      matrix.getDiagonal(),
-      100
-    );
-    console.table(benchmark);
-  });
