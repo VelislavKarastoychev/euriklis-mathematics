@@ -34,12 +34,3 @@ randomMatrix
       .and.throwsErrorWith(2, 0)
       .and.not.throwsErrorWith(2, 3)
   ).test()
-  .describe(
-    "3. Performance of the random static method for rows = 5000, columns = 5000, from = - and to = 1:",
-  ).test()
-  .on(true, () => {
-    const b = new validator(Matrix).benchmark((m) =>
-      m.random(5000, 5000, -1, 1)
-    );
-    console.table(b);
-  });
