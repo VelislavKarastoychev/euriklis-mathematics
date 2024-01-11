@@ -17,3 +17,4 @@ export { CompareMatrices } from "./CompareMatrices.ts";
 export { Replicate } from "./Replicate.ts";
 export { MatrixReduce } from "./MatrixReduce.ts";
 export { FrobeniusNorm } from "./FrobeniusNorm.ts";
+export { Reshape } from "./Reshape.ts";
