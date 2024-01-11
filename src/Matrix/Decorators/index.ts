@@ -9,3 +9,4 @@ export {
 } from "./IfIsNotArrayOfArraysWithEqualSizeThrow.ts";
 export { resetMatrix } from "./ResetMatrix.ts";
 export { ifFromOrToParametersAreIncorrectlyDefinedThrow } from "./IfFromOrToParametersAreIncorrectlyDefinedThrow.ts";
+export { ifRowsAndColumnsAreInappropriatelyDefinedThrow } from "./ifRowsAndColumnsAreInappropriatelyDefinedThrow.ts";
