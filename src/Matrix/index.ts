@@ -5,6 +5,7 @@ import * as errors from "./Errors/index.ts";
 import {
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
+  ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   resetMatrix,
 } from "./Decorators/index.ts";
@@ -15,6 +16,7 @@ import {
   MatrixType,
   NumericMatrix,
   NumericType,
+  TypedArray,
   TypedArrayConstructor,
 } from "./types";
 
@@ -213,7 +215,7 @@ export class Matrix {
 
   get data() {
     const typedArray = models.CreateTypedArrayConstructor(this._type);
-    return this._M.map((row) => new typedArray(row));
+    return this._M.map((row: TypedArray) => new typedArray(row));
   }
 
   /**
@@ -360,7 +362,8 @@ export class Matrix {
     errors.IncorrectFromAndToParametersInGetBlock,
   )
   getBlock(
-    options?: MatrixBlockOptions): Matrix {
+    options?: MatrixBlockOptions,
+  ): Matrix {
     const { from, to } = options as MatrixBlockOptions;
     const block = new Matrix();
     block._M = models.GetBlock(this._M, from, to, this._type);
@@ -376,7 +379,7 @@ export class Matrix {
    * @returns {Matrix} The updated Matrix instance.
    */
   @ifFromOrToParametersAreIncorrectlyDefinedThrow(
-    errors.IncorrectFromAndToParametersInSetBlock
+    errors.IncorrectFromAndToParametersInSetBlock,
   )
   setBlock(
     options: MatrixBlockOptions & {
@@ -602,6 +605,35 @@ export class Matrix {
 
   // 6. Matrix operations and
   // common linear algebra algorithms.
+
+  /**
+   * Reshapes the matrix to have the specified number of rows and columns.
+   * Throws an error if the provided rows and columns are inappropriate.
+   *
+   * @param {Integer} rows - The desired number of rows for the reshaped matrix.
+   * @param {Integer} columns - The desired number of columns for the reshaped matrix.
+   * @returns {Matrix} The reshaped matrix.
+   * @throws {Error} Throws an error if the provided rows and columns are inappropriate.
+   * i.e. when they are not positive integers.
+   */
+  @ifRowsAndColumnsAreInappropriatelyDefinedThrow(
+    errors.IncorrectRowsAndColumnsParametersInReshape,
+  )
+  reshape(rows: Integer, columns: Integer): Matrix {
+    const reshaped = new Matrix();
+    if (rows === this.rows && columns === this.columns) return this;
+    const typedArray = models.CreateTypedArrayConstructor(this.type);
+    reshaped._M = models.Reshape(
+      this._M,
+      this.rows,
+      this.columns,
+      rows,
+      columns,
+      typedArray,
+    );
+    
+    return reshaped;
+  }
 
   /**
    * Transposes the current matrix,
