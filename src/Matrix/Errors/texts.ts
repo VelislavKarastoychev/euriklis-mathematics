@@ -38,3 +38,4 @@ export const InternalErrorInMaxNormTxt =
 export const IncorrectRowsOrColumnsParameterInRandomTxt = "Incorrect rows or columns parameter in the random method. Note that both rows and columns have to be positive integers.";
 export const IncorrectRowsOrColumnsParametersInZerosTxt = "Incorrect rows or columns parameter in the zeros method. Note that rows and columns have to be positive integers.";
 export const IncorrectRowsOrColumnsParametersInIdentityLikeTxt = "Incorrect rows or columns parameters in identityLike method. Note that both rows and columns have to be positive integers.";
+export const IncorrectRowsAndColumnsParametersInReshapeTxt = "Incorrectly defined rows and columns in the reshape method. Note that rows and columns have to be positive integers, which product is equals to the product of the rows and the columns of the current Matrix instance.";
