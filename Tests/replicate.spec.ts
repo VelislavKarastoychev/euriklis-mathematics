@@ -21,12 +21,3 @@ new validator(Matrix.replicate(3.14, 37, 173).isEqualTo(m))
   ).describe(
     "2. throws error when the rows or the columns are insufficiently defined",
   ).test()
-  .describe(
-    "3. Time performance of the replicate method for matrix with dimension 5000 x 5000",
-  ).test()
-  .on(true, () => {
-    const t = new validator(Matrix).benchmark((m) =>
-      m.replicate(3.14, 5000, 5000)
-    );
-    console.table(t);
-  });
