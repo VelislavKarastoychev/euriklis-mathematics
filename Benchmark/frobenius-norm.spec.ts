@@ -18,20 +18,12 @@ import numeric from "numericjs";
         (matrix) => matrix.FrobeniusNorm,
         100,
       );
-      const t31 = performance.now();
-      const vec = m.M.reduce(
-        (accum: number[], row: number[]) => {
-          accum.push(...row);
-          return accum;
-        },
-        [],
-      );
-      const t32 = performance.now();
+      const vec = m.M.flat();
       const t2 = new validator(vec).benchmark((v) => {
         return numeric.norm2(v);
       });
       console.table({
         "@euriklis/mathematics": t1,
-        "numericjs": { ...t2, mean: t2.mean + t32 - t31 },
+        "numericjs": t2,
       });
     }))();
