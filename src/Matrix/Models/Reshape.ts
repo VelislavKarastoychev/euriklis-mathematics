@@ -28,13 +28,25 @@ export const Reshape = (
   let i: Integer, j: Integer, r: Integer = mrows - 1, c: Integer = mcolumns - 1;
   for (i = rows; i--;) {
     reshaped[i] = new typedArray(columns);
-    for (j = columns; j--;) {
+    for (j = columns; j-- > 1;) {
+      if (c === -1) {
+        r--;
+        c = mcolumns - 1;
+      }
       reshaped[i][j--] = matrix[r][c--];
       if (c === -1) {
         r--;
         c = mcolumns - 1;
       }
       reshaped[i][j] = matrix[r][c--];
+    }
+
+    if (j === 0) {
+      if (c === -1) {
+        r--;
+        c = mcolumns - 1;
+      }
+      reshaped[i][0] = matrix[r][c--];
     }
   }
 
