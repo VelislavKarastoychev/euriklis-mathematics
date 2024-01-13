@@ -3,11 +3,12 @@ import {
   Integer,
   MatrixType,
   NumericMatrix,
+  TypedArray,
   TypedArrayConstructor,
 } from "../types";
 /**
  * Reshapes the provided matrix with the specified number of rows and columns.
- * 
+ *
  * @param {MatrixType | NumericMatrix} matrix - The input matrix.
  * @param {Integer} mrows - The original number of rows in the matrix.
  * @param {Integer} mcolumns - The original number of columns in the matrix.
@@ -25,16 +26,29 @@ export const Reshape = (
   typedArray: TypedArrayConstructor,
 ): MatrixType => {
   const reshaped = [];
-  let i: Integer, j: Integer, r: Integer = mrows - 1, c: Integer = mcolumns -1;
-  for (i = rows; i--;) { reshaped[i] = new typedArray(columns);
-    for (j = columns;j--;) {
+  let i: Integer, j: Integer, r: Integer = mrows - 1, c: Integer = mcolumns - 1;
+  for (i = rows; i--;) {
+    reshaped[i] = new typedArray(columns);
+    for (j = columns; j-- > 1;) {
+      if (c === -1) {
+        r--;
+        c = mcolumns - 1;
+      }
+      reshaped[i][j--] = matrix[r][c--];
       if (c === -1) {
         r--;
         c = mcolumns - 1;
       }
       reshaped[i][j] = matrix[r][c--];
     }
+    if (j === 0) {
+      if (c === -1) {
+        r--;
+        c = mcolumns - 1;
+      }
+      reshaped[i][0] = matrix[r][c--];
+    }
   }
-  
+
   return reshaped;
 };
