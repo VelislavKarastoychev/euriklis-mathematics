@@ -3,7 +3,6 @@ import {
   Integer,
   MatrixType,
   NumericMatrix,
-  TypedArray,
   TypedArrayConstructor,
 } from "../types";
 /**
