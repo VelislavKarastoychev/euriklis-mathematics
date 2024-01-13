@@ -19,7 +19,6 @@ function reshapeMatrix(matrix: NumericMatrix, newRows: Integer, newColumns: Inte
 }
 const m = Matrix.random(5000, 5000);
 const reshaped = m.reshape(2500, 10000);
-console.log(reshaped.reshape(5000, 5000).isEqualTo(m));
 (async () => new validator(reshaped.reshape(5000, 5000).isEqualTo(m))
   .isSame(true)
   .describe("Time performance of reshape method:")
