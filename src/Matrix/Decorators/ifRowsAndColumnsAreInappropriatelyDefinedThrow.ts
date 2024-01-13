@@ -15,7 +15,7 @@ export function ifRowsAndColumnsAreInappropriatelyDefinedThrow(
     const method: Function = descriptor.value;
     descriptor.value = function (rows: Integer, columns: Integer) {
       if (
-        rows < 0 || columns < 0 || this.rows * this.columns !== rows * columns || !Number.isInteger(rows) || !Number.isInteger(columns)
+        rows < 0 || columns < 0 || this.rows * this.columns !== rows * columns
       ) {
         error();
       }
