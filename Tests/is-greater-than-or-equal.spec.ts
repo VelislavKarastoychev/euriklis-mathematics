@@ -16,23 +16,28 @@ new validator(a1.isGreaterThanOrEqual(a2))
   })
   .isSame(true).describe(
     "1. return true when the current Matrix instance and the method parameter are equal.",
-  ).test()
-  .and.bind(
-    new validator(a3.isGreaterThanOrEqual(a2)).isSame(true),
-  ).describe(
-    "2. return true when the elements of the current Matrix instance are greater than the elements of the method parameter.",
-  ).test()
-  .and.bind(
-    new validator(a4.isGreaterThanOrEqual(a5)).isSame(false),
-  ).describe(
-    "3. return false when the current Matrix instance and the method parameter have distinct dimension.",
-  ).test()
+  ).test();
+
+new validator(a3.isGreaterThanOrEqual(a2)).isSame(true).describe(
+  "2. return true when the elements of the current Matrix instance are greater than the elements of the method parameter.",
+).test();
+
+new validator(a4.isGreaterThanOrEqual(a5)).isSame(false)
   .describe(
-    "4. Time performance of the isGreaterThanOrEqual method for random matrices with dimension 5000 x 5000",
-  ).test()
-  .on(true, () => {
-    const m1 = Matrix.random(5000, 5000, 1, 2);
-    const m2 = Matrix.random(5000, 5000);
-    const t = new validator(m1).benchmark((m) => m.isGreaterThanOrEqual(m2));
-    console.table(t);
-  });
+    "3. return false when the current Matrix instance and the method parameter have distinct dimension.",
+  ).test();
+
+new validator(
+  Matrix.random(2, 3, 1, 2).isGreaterThanOrEqual(Matrix.random(2, 3).M),
+)
+  .isSame(true)
+  .and.bind(
+    new validator(
+      Matrix.random(2, 4, 2, 3).isGreaterThanOrEqual(
+        Matrix.random(2, 4, 2, 3).data,
+      ),
+    ).isSame(true),
+  ).describe(
+    "4. return the correct value when the matrices are with the same dimension and different type.",
+  )
+  .test();
