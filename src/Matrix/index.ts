@@ -280,9 +280,7 @@ export class Matrix {
       ? (matrix as Matrix)._M
       : (matrix as MatrixType | NumericMatrix);
     if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else if (this.rows < 20 && this.columns < 20) {
-      return JSON.stringify(this._M) === JSON.stringify(m);
-    } else return models.CompareMatrices(this._M, m, "eq");
+    else return models.CompareMatrices(this._M, m, "eq");
   }
 
   /**
@@ -631,7 +629,7 @@ export class Matrix {
       columns,
       typedArray,
     );
-    
+
     return reshaped;
   }
 
