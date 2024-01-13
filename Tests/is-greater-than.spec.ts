@@ -25,25 +25,23 @@ new validator(a1.isGreaterThan(a2))
   .isSame(true)
   .describe(
     "1. return true when all elements are greater than the method parameter elements.",
-  ).test()
-  .and.bind(
-    new validator(a1.isGreaterThan(a3)).isSame(false),
-  ).describe(
+  ).test();
+new validator(a1.isGreaterThan(a3)).isSame(false)
+  .describe(
     "2. return false, when the current Matrix instance and the method parameter matrix have distinct dimension.",
   )
-  .test()
+  .test();
+
+new validator(Matrix.random(4, 4).isGreaterThan(a3)).isSame(false)
   .describe(
     "3. return false when the current Matrix instance and the method parameter are equals",
   )
+  .test();
+
+new validator(a1.isGreaterThan(a2.M)).isSame(true)
   .and.bind(
-    new validator(Matrix.random(4, 4).isGreaterThan(a3)).isSame(false),
-  ).test()
-  .describe(
-    "4. Time performance of the isGreaterThan method for random matrices with dimension 5000 x 5000",
-  ).test()
-  .on(true, () => {
-    const m1 = Matrix.random(5000, 5000, 1, 2);
-    const m2 = Matrix.random(5000, 5000);
-    const t = new validator(m1).benchmark((m) => m.isGreaterThan(m2));
-    console.table(t);
-  });
+    new validator(a1.isGreaterThan(a2.data)).isSame(true),
+  ).describe(
+    "4. return the correct value when the matrices have different type.",
+  )
+  .test();
