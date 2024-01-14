@@ -21,3 +21,4 @@ import "./max-norm.spec.ts";
 import "./set-row.spec.ts";
 import "./to-diagonal-matrix.spec.ts";
 import "./zeros.spec.ts";
+import "./transpose.spec.ts";
