@@ -17,7 +17,7 @@ import "./set-row.spec.ts";
 // import "./transpose.spec.ts";
 import "./is-equal-to.spec.ts";
 // import "./is-less-than.spec.ts"
-// import "./is-less-than-or-equal.spec.ts";
+import "./is-less-than-or-equal.spec.ts";
 import "./is-greater-than.spec.ts";
 import "./is-greater-than-or-equal.spec.ts";
 import "./replicate.spec.ts"
