@@ -15,3 +15,4 @@ import "./get-row.spec.ts";
 // import "./is-greater-than.spec.ts";
 // import "./is-greater-than-or-equal-to.spec.ts";
 import "./is-less-than-or-equal.spec.ts";
+import "./is-less-than.spec.ts";
