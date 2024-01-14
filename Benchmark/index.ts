@@ -19,3 +19,4 @@ import "./get-row.spec.ts";
 import "./max-norm.spec.ts";
 // import "./set-block.spec.ts";
 import "./set-row.spec.ts";
+import "./to-diagonal-matrix.spec.ts";
