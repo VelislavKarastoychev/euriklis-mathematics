@@ -12,4 +12,5 @@ import "./get-row.spec.ts";
 // import "./random.spec.ts";
 // import "./reshape.spec.ts";
 // import "./is-equal-to.spec.ts";
-import "./is-greater-than.spec.ts";
+// import "./is-greater-than.spec.ts";
+// import "./is-greater-than-or-equal-to.spec.ts";
