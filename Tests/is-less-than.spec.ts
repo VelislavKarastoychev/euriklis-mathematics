@@ -23,19 +23,18 @@ new validator(a.isLessThan(b))
     success: "green",
     error: "red",
   })
-  .isSame(true)
-  .and.bind(
-    new validator(b.isLessThan(c)).isSame(false),
-  ).describe("1. return the correct answer").test()
+  .isSame(true);
+new validator(b.isLessThan(c)).isSame(false)
+  .describe("1. return the correct answer").test();
+
+new validator(a.isLessThan(new Matrix([[10000000]]))).isSame(false)
   .describe("2. return false when the matrices have distinct dimension.")
+  .test();
+
+new validator(a.isLessThan(b.M)).isSame(true)
   .and.bind(
-    new validator(a.isLessThan(new Matrix([[10000000]]))).isSame(false)
-  ).test()
-  .describe("3. Time performance of the isLessThan method for random Matrices with dimension 5000 x 5000").test()
-  .on(true, () => {
-    const m1 = Matrix.random(5000, 5000);
-    const m2 = Matrix.random(5000, 5000, 1, 2);
-    const t = new validator(m1).benchmark((m) => m.isLessThan(m2));
-    console.table(t);
-  });
-  
+    new validator(a.isLessThan(b.data)).isSame(true),
+  ).describe(
+    "3. return the correct result when the matrices have different types.",
+  )
+  .test();
