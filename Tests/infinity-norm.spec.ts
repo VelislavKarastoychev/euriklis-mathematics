@@ -12,13 +12,5 @@ new validator(m.infinityNorm).isSame(24)
     success: "green",
     error: "red",
   }).describe(
-    "1. Has to return the greatest in absolute value element of a matrix.",
+    "1. Has to return the greatest in absolute value sum of elements in a row of a matrix.",
   ).test()
-  .describe(
-    "2. Time performance of the infiniteNorm method for random matrix with dimension 5000 x 5000",
-  ).test()
-  .on(true, () => {
-    const rand = Matrix.random(5000, 5000);
-    const t = new validator(rand).benchmark((m) => m.infinityNorm);
-    console.table(t);
-  });
