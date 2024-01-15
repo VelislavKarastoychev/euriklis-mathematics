@@ -713,7 +713,7 @@ export class Matrix {
   get norm1(): number {
     const norm1 = models.MatrixReduce(this._M, "norm1");
     if (norm1 < 0 || isNaN(norm1)) {
-      //errors.InternalErrorInNorm1();
+      errors.InternalErrorInNorm1();
       throw new Error("Error!");
     }
 
