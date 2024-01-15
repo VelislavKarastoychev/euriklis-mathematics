@@ -55,3 +55,5 @@ export const IncorrectRowsOrColumnsParametersInIdentityLike = (): never =>
   runError(texts.IncorrectRowsOrColumnsParametersInIdentityLikeTxt);
 export const IncorrectRowsAndColumnsParametersInReshape = (): never =>
   runError(texts.IncorrectRowsAndColumnsParametersInReshapeTxt);
+export const InternalErrorInNorm1 = (): never =>
+  runError(texts.InternalErrorInNorm1Txt);
