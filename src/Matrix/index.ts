@@ -718,17 +718,60 @@ export class Matrix {
   }
 
   /**
-   * Calculates the 1-norm (maximum column sum) of the matrix.
+   * Computes the 1-norm (maximum column sum) of the matrix.
    *
    * @returns {number} The 1-norm of the matrix.
+   * @throws {Error} If the calculation of the method is NaN.
    */
   get norm1(): number {
     const norm1 = models.MatrixReduce(this._M, "norm1");
     if (norm1 < 0 || isNaN(norm1)) {
       errors.InternalErrorInNorm1();
-      throw new Error("Error!");
     }
 
     return norm1;
+  }
+
+  /**
+   * Computes the superior norm of the matrix.
+   *
+   * @returns {number} The superior norm.
+   * @throws {Error} If the calculation result is NaN.
+   */
+  get superior(): number {
+    const superior = models.MatrixReduce(this._M, "sup");
+    if (isNaN(superior)) {
+      errors.InternalErrorInSuperiorNorm();
+    }
+
+    return superior;
+  }
+
+  /**
+   * Computes the inferior norm of the matrix.
+   *
+   * @returns {number} The inferior norm.
+   * @throws {Error} If the calculation result is NaN.
+   */
+  get inferior(): number {
+    const inferior = models.MatrixReduce(this._M, "inf");
+    if (isNaN(inferior)) {
+      errors.InternalErrorInInferiorNorm();
+    }
+
+    return inferior;
+  }
+
+  /**
+   * Computes the sum of all elements in the matrix.
+   *
+   * @returns {number} The sum of all elements.
+   * @throws {Error} If the calculation result is NaN.
+   */
+  get sumOfAllElements(): number {
+    const sum = models.MatrixReduce(this._M, "sum");
+    if (isNaN(sum)) errors.InternalErrorInSum();
+
+    return sum;
   }
 }
