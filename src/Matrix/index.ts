@@ -660,7 +660,7 @@ export class Matrix {
    *
    * @returns {Matrix} A new Matrix instance
    * representing the transposed matrix.
-   **/
+   */
   get T(): Matrix {
     return this.transpose();
   }
@@ -717,6 +717,11 @@ export class Matrix {
     return maxNorm;
   }
 
+  /**
+   * Calculates the 1-norm (maximum column sum) of the matrix.
+   *
+   * @returns {number} The 1-norm of the matrix.
+   */
   get norm1(): number {
     const norm1 = models.MatrixReduce(this._M, "norm1");
     if (norm1 < 0 || isNaN(norm1)) {
