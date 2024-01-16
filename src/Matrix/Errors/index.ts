@@ -63,3 +63,5 @@ export const InternalErrorInInferiorNorm = (): never =>
   runError(texts.InternalErrorInInferiorNormTxt);
 export const InternalErrorInSum = (): never =>
   runError(texts.InternalErrorInSumTxt);
+export const InternalErrorInProduct = (): never => 
+  runError(texts.InternalErrorInProductTxt);
