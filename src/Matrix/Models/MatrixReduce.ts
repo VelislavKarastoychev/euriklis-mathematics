@@ -170,7 +170,7 @@ const MatrixReduceColumnIterator = (
   columnAccumulator: string,
   init: string,
   it: boolean = false,
-) =>
+): number =>
   new Function(
     "a",
     `const reduceIterator = (a, col, it) => {
