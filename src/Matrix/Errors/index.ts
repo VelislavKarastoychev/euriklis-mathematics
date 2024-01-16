@@ -63,5 +63,9 @@ export const InternalErrorInInferiorNorm = (): never =>
   runError(texts.InternalErrorInInferiorNormTxt);
 export const InternalErrorInSum = (): never =>
   runError(texts.InternalErrorInSumTxt);
-export const InternalErrorInProduct = (): never => 
+export const InternalErrorInProduct = (): never =>
   runError(texts.InternalErrorInProductTxt);
+export const InternalErrorInSquares = (): never =>
+  runError(texts.InternalErrorInSquaresTxt);
+export const InternalErrorInCubes = (): never => 
+  runError(texts.InternalErrorInCubesTxt);
