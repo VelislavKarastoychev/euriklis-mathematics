@@ -774,4 +774,17 @@ export class Matrix {
 
     return sum;
   }
+
+  /**
+   * Computes the sum of all elements in the matrix.
+   *
+   * @returns {number} The product of all elements.
+   * @throws {Error} If the calculation result is NaN.
+   **/
+  get productOfAllElements (): number {
+    const product = models.MatrixReduce(this._M, "product");
+    if (isNaN(product)) errors.InternalErrorInProduct();
+
+    return product;
+  }
 }
