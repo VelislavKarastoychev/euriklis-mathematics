@@ -637,7 +637,7 @@ export class Matrix {
    * Transposes the current matrix,
    * swapping its rows and columns.
    *
-   * @returns {Matrix} Returns a new Matrix
+   * @returns {Matrix} A new Matrix
    * instance representing the transposed matrix.
    */
   transpose(): Matrix {
@@ -654,7 +654,14 @@ export class Matrix {
     return transposed;
   }
 
-  get T() {
+  /**
+   * Transposes the current Matrix instance,
+   * swaping its row and column elements.
+   *
+   * @returns {Matrix} A new Matrix instance
+   * representing the transposed matrix.
+   **/
+  get T(): Matrix {
     return this.transpose();
   }
   /**
