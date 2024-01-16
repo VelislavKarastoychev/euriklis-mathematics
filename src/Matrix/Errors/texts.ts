@@ -40,3 +40,6 @@ export const IncorrectRowsOrColumnsParametersInZerosTxt = "Incorrect rows or col
 export const IncorrectRowsOrColumnsParametersInIdentityLikeTxt = "Incorrect rows or columns parameters in identityLike method. Note that both rows and columns have to be positive integers.";
 export const IncorrectRowsAndColumnsParametersInReshapeTxt = "Incorrectly defined rows and columns in the reshape method. Note that rows and columns have to be positive integers, which product is equals to the product of the rows and the columns of the current Matrix instance.";
 export const InternalErrorInNorm1Txt = "Internal error in norm1 method. Note that te norm1 has to be a positive number.";
+export const InternalErrorInSuperiorTxt = "Internal error in superior method. Note probably some of the elements of the matrix is not a number.";
+export const InternalErrorInInferiorNormTxt = "Internal error in inferior norm getter method. Probably some of the elements of the matrix is not a number.";
+export const InternalErrorInSumTxt = "Internal error in sumOfAllElements getter method. Probably some of the elements of the matrix is not a number.";
