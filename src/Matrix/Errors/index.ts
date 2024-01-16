@@ -57,3 +57,9 @@ export const IncorrectRowsAndColumnsParametersInReshape = (): never =>
   runError(texts.IncorrectRowsAndColumnsParametersInReshapeTxt);
 export const InternalErrorInNorm1 = (): never =>
   runError(texts.InternalErrorInNorm1Txt);
+export const InternalErrorInSuperiorNorm = (): never =>
+  runError(texts.InternalErrorInSuperiorTxt);
+export const InternalErrorInInferiorNorm = (): never =>
+  runError(texts.InternalErrorInInferiorNormTxt);
+export const InternalErrorInSum = (): never =>
+  runError(texts.InternalErrorInSumTxt);
