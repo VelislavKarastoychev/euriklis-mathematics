@@ -787,4 +787,32 @@ export class Matrix {
 
     return product;
   }
+
+  /**
+   * Computes the sum of the squares of all matrix elements.
+   *
+   * @returns {number} The sum of squares of all matrix elements.
+   * @throws {Error} If some  of the elements of the matrix is NaN
+   * or the result of the computation is negative.
+   */
+  get sumOfSquaresOfAllElements (): number {
+    const squares = models.MatrixReduce(this._M, "square");
+    if (isNaN(squares) || squares < 0) {
+      errors.InternalErrorInSquares();
+    }
+
+    return squares;
+  }
+  /**
+   * Computes the sum of the cubes of all matrix elements.
+   *
+   * @returns {number} The calculated result of the method.
+   * @throws {Error} If the calculated result is NaN.
+   */
+  get sumOfCubesOfAllElements(): number {
+    const cubes = models.MatrixReduce(this._M, "cube");
+    if (isNaN(cubes)) errors.InternalErrorInCubes();
+
+    return cubes;
+  }
 }
