@@ -53,3 +53,7 @@ export const InternalErrorInSumTxt =
   "Internal error in sumOfAllElements getter method. Probably some of the elements of the matrix is not a number.";
 export const InternalErrorInProductTxt =
   "Internal error in the productOfAllElements getter method. Probably some of the elements of the matrix is NaN.";
+export const InternalErrorInSquaresTxt =
+  "Internal error in sumOfSquaresOfAllElements getter method. Probably some of the elements of the current matrix instance is NaN or the result of the calculation is negative.";
+export const InternalErrorInCubesTxt =
+  "Internal error in the sumOfCubesOfAllElements getter method. Probably some of the elements of the matrix is NaN.";
