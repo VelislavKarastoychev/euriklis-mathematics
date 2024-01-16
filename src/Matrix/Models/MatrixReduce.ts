@@ -1,19 +1,26 @@
 "use strict";
 import { MatrixReducer, MatrixType, NumericMatrix, TypedArray } from "../types";
+
 /**
  * Generates the accumulator expressions and initialization code
  * based on the specified matrix reducer type.
  *
  * @param {MatrixReducer} reducer - The type of matrix reducer.
  * @returns {{
- *   columnAccumulator: string,
- *   rowAccumulator: string,
- *   init: string
+ *   columnAccumulator: string;
+ *   rowAccumulator: string;
+ *   init: string;
+ *   f: Function;
  * }} The accumulator expressions and initialization code.
  */
 const ReducerExpression = (
   reducer: MatrixReducer,
-): { columnAccumulator: string; rowAccumulator: string; init: string, f: Function } => {
+): {
+  columnAccumulator: string;
+  rowAccumulator: string;
+  init: string;
+  f: Function;
+} => {
   switch (reducer) {
     case "inf":
       return {
@@ -146,14 +153,26 @@ const MatrixReduceRowIterator = (
     `,
   )(matrix);
 
+/**
+ * Performs matrix reduction based on the specified reducer expressions
+ * through the columns of the matrix.
+ *
+ * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+ * @param {string} rowAccumulator - The row accumulator expression.
+ * @param {string} columnAccumulator - The column accumulator expression.
+ * @param {string} init - The initialization code.
+ * @param {boolean} it - Iteration indicator.
+ * @returns {number} The result of the matrix reduction.
+ */
 const MatrixReduceColumnIterator = (
   matrix: MatrixType | NumericMatrix,
   rowAccumulator: string,
   columnAccumulator: string,
   init: string,
-  it: boolean = false
-) => new Function(
-    'a',
+  it: boolean = false,
+) =>
+  new Function(
+    "a",
     `const reduceIterator = (a, col, it) => {
        const n = a.length;
        ${init};
@@ -185,8 +204,8 @@ const MatrixReduceColumnIterator = (
     }
     
     return reduceIterator(a, -1,${it});
-    `
-  )(matrix)
+    `,
+  )(matrix);
 
 /**
  * Performs matrix reduction based on the specified reducer type
@@ -200,13 +219,13 @@ export const MatrixReduce = (
   matrix: MatrixType | NumericMatrix,
   reducer: MatrixReducer,
 ): number => {
-  const { columnAccumulator, rowAccumulator, init,f  } = ReducerExpression(
+  const { columnAccumulator, rowAccumulator, init, f } = ReducerExpression(
     reducer,
   );
   return f(
     matrix,
     rowAccumulator,
     columnAccumulator,
-    init
+    init,
   );
 };
