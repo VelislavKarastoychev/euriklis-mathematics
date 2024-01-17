@@ -1,3 +1,5 @@
+import { types } from "util";
+
 export type Integer = number;
 export type IntegerNumericType =
   | "int8"
@@ -52,3 +54,35 @@ export type MatrixReducer =
   | "all"
   | "sum"
   | "product";
+export type BinaryPointwiseOperator =
+  | "gt"
+  | "geq"
+  | "lt"
+  | "leq"
+  | "eq"
+  | "neq"
+  | "plus"
+  | "minus"
+  | "Hadamard"
+  | "power"
+  | "xor"
+  | "rightShiftBy"
+  | "leftShiftBy"
+  | "or"
+  | "and";
+export type BinaryOperator =
+  | ">"
+  | ">="
+  | "<"
+  | "<="
+  | "==="
+  | "!=="
+  | "+"
+  | "-"
+  | "*"
+  | "**"
+  | "^"
+  | "|"
+  | "&"
+  | "<<"
+  | ">>";
