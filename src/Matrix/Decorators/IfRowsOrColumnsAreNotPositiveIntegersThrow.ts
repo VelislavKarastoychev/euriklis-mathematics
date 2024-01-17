@@ -19,8 +19,8 @@ export function ifRowsOrColumnsAreNotPositiveIntegersThrow(
   error: Function,
   rowIndex: Integer = 0,
   columnIndex: Integer = 1,
-): (_: any, __: string, descriptor: any) => any {
-  return function (_: any, __: string, descriptor: any) {
+): (_: any, __: string, descriptor: PropertyDescriptor) => any {
+  return function (_: any, __: string, descriptor: PropertyDescriptor) {
     const methodFunction = descriptor.value;
     descriptor.value = function (...args: any[]) {
       if (
