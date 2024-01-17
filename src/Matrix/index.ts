@@ -5,6 +5,7 @@ import * as errors from "./Errors/index.ts";
 import {
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
+  ifIsNotNumberOrMatrixThrow,
   ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   resetMatrix,
@@ -664,6 +665,7 @@ export class Matrix {
   get T(): Matrix {
     return this.transpose();
   }
+
   /**
    * Calculates the Frobenius norm of a matrix.
    *
@@ -780,8 +782,8 @@ export class Matrix {
    *
    * @returns {number} The product of all elements.
    * @throws {Error} If the calculation result is NaN.
-   **/
-  get productOfAllElements (): number {
+   */
+  get productOfAllElements(): number {
     const product = models.MatrixReduce(this._M, "product");
     if (isNaN(product)) errors.InternalErrorInProduct();
 
@@ -795,7 +797,7 @@ export class Matrix {
    * @throws {Error} If some  of the elements of the matrix is NaN
    * or the result of the computation is negative.
    */
-  get sumOfSquaresOfAllElements (): number {
+  get sumOfSquaresOfAllElements(): number {
     const squares = models.MatrixReduce(this._M, "square");
     if (isNaN(squares) || squares < 0) {
       errors.InternalErrorInSquares();
@@ -803,6 +805,7 @@ export class Matrix {
 
     return squares;
   }
+
   /**
    * Computes the sum of the cubes of all matrix elements.
    *
@@ -814,5 +817,221 @@ export class Matrix {
     if (isNaN(cubes)) errors.InternalErrorInCubes();
 
     return cubes;
+  }
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * greater than the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix - like structure) then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   * @returns {Matrix}
+   * @throws {Error} If the "m" parameter is not number or Matrix
+   * like structure.
+   */
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("gt"))
+  gt(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "gt",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("geq"))
+  geq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "geq",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
+  eq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "lt",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("neq"))
+  neq(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "neq",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
+  lt(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "lt",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("leq"))
+  leq(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "leq",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"))
+  or(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "or",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"))
+  and(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "and",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"))
+  xor(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "xor",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("rightShiftBy"),
+  )
+  rightShiftBy(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "rightShiftBy",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
+  )
+  leftShiftBy(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "leftShiftBy",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("plus"),
+  )
+  plus(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "plus",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("minus"),
+  )
+  minus(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "minus",
+      this._type,
+    );
+
+    return output;
+  }
+
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("power"),
+  )
+  power(m: number | Matrix | MatrixType | NumericMatrix) {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "power",
+      this._type,
+    );
+
+    return output;
   }
 }
