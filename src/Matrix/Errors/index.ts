@@ -67,5 +67,8 @@ export const InternalErrorInProduct = (): never =>
   runError(texts.InternalErrorInProductTxt);
 export const InternalErrorInSquares = (): never =>
   runError(texts.InternalErrorInSquaresTxt);
-export const InternalErrorInCubes = (): never => 
+export const InternalErrorInCubes = (): never =>
   runError(texts.InternalErrorInCubesTxt);
+export const IncorrectMatrixParameterInPointwise =
+  (method: string) => (): never =>
+    runError(texts.IncorrectMatrixParameterInPointwiseTxt(method));
