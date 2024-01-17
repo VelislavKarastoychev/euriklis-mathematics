@@ -4,3 +4,4 @@ export { IsEmpty } from "./IsEmpty.ts";
 export { IsMatrix } from "./IsMatrix.ts";
 export { IsMatrixDeclaration } from "./IsMatrixDeclaration.ts";
 export { IsTypedArrayOrArray } from "./IsTypedArrayOrArray.ts";
+export { IsNumber } from "./IsNumber.ts";
