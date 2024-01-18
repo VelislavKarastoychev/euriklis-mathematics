@@ -924,11 +924,11 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
    * or matrix for pointwise comparison.
-   * @returns {Matrix} A new matrix resulting 
+   * @returns {Matrix} A new matrix resulting
    * from the pointwise "not equal to" operation.
-   * @throws {Error} If the "m" parameter is not 
+   * @throws {Error} If the "m" parameter is not
    * a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("neq"))
@@ -959,11 +959,11 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The
    * number or matrix for pointwise comparison.
-   * @returns {Matrix} A new matrix resulting 
+   * @returns {Matrix} A new matrix resulting
    * from the pointwise "less than" operation.
-   * @throws {Error} If the "m" parameter is 
+   * @throws {Error} If the "m" parameter is
    * not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
@@ -994,11 +994,11 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The
    * number or matrix for pointwise comparison.
-   * @returns {Matrix} A new matrix resulting 
+   * @returns {Matrix} A new matrix resulting
    * from the pointwise "less than or equal to" operation.
-   * @throws {Error} If the "m" parameter is not a number 
+   * @throws {Error} If the "m" parameter is not a number
    * or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("leq"))
@@ -1033,7 +1033,7 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise OR operation.
    * @returns {Matrix} A new matrix resulting from the pointwise bitwise OR operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
@@ -1070,7 +1070,7 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
    * matrix for the bitwise AND operation.
    * @returns {Matrix} A new matrix resulting from the pointwise bitwise AND operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
@@ -1144,7 +1144,7 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise right shift operation.
    * @returns {Matrix} A new matrix resulting from the pointwise bitwise right shift operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
@@ -1184,7 +1184,7 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise left shift operation.
    * @returns {Matrix } A new matrix resulting from the pointwise bitwise left shift operation.
    * @throws {ErrorI} f the "m" parameter is not a number or Matrix-like structure.
@@ -1220,7 +1220,7 @@ export class Matrix {
    * If the input is a matrix with the same dimensions as the current matrix,
    * the addition operation is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the addition operation.
    * @returns {Matrix}  A new matrix resulting from the pointwise addition operation.
    * @throws {Error } If the "m" parameter is not a number or Matrix-like structure.
@@ -1292,7 +1292,7 @@ export class Matrix {
    * with the same dimensions as the current matrix, the exponentiation operation
    * is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
    * for the exponentiation operation.
    * @returns {Matrix} A new matrix resulting from the pointwise exponentiation operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
@@ -1328,7 +1328,7 @@ export class Matrix {
    * is a matrix with the same dimensions as the current matrix, the Hadamard
    * product is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
    * for the Hadamard product.
    * @returns {Matrix} A new matrix resulting from the Hadamard product operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
@@ -1351,6 +1351,73 @@ export class Matrix {
       this._M,
       m as number | MatrixType | NumericMatrix,
       "Hadamard",
+      this._type,
+    );
+
+    return output;
+  }
+
+  /**
+   * Performs element-wise division between the current matrix and the provided
+   * number or matrix. If the input is a number, each element of the current
+   * matrix is divided by that number. If the input is a matrix with the same
+   * dimensions as the current matrix, division is applied element-wise between
+   * corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
+   * matrix for the element-wise division.
+   *
+   * @returns {Matrix}  A new matrix resulting from the element-wise division operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  divide(m: Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (typeof m !== "number") {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("divide")();
+      }
+    }
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as MatrixType | NumericMatrix,
+      "divide",
+      this._type,
+    );
+
+    return output;
+  }
+
+  /**
+   * Performs element-wise modulus operation between the current matrix and the
+   * provided number or matrix. If the input is a number, each element of the
+   * current matrix is computed modulo that number. If the input is a matrix
+   * with the same dimensions as the current matrix, modulus operation is applied
+   * element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix 
+   * for the element-wise modulus operation.
+   * @returns {Matrix} A new matrix resulting from the element-wise modulus operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  modulus(m: Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (typeof m !== "number") {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("modulus")();
+      }
+    }
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as MatrixType | NumericMatrix,
+      "modulus",
       this._type,
     );
 
