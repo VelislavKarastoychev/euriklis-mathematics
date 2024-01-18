@@ -3,7 +3,6 @@
 import {
   BinaryOperator,
   BinaryPointwiseOperator,
-  Integer,
   MatrixType,
   NumericMatrix,
   NumericType,
@@ -11,6 +10,12 @@ import {
 } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
+/**
+ * Generates the JavaScript binary operator expression based on the binary pointwise operator.
+ *
+ * @param {BinaryPointwiseOperator} action - The binary pointwise operator.
+ * @returns {BinaryOperator} The JavaScript binary operator expression.
+ */
 const BinaryPointwiseExpression = (action: BinaryPointwiseOperator) => {
   switch (action) {
     case "gt":
@@ -46,6 +51,16 @@ const BinaryPointwiseExpression = (action: BinaryPointwiseOperator) => {
   }
 };
 
+/**
+ * Applies recursively a binary pointwise
+ * operator between two matrices or a matrix and a scalar.
+ *
+ * @param {MatrixType | NumericType} m1 - The matrix instance data.
+ * @param {number | MatrixType | NumericMatrix} m2 - The second matrix or scalar.
+ * @param {BinaryOperator} operator - The binary operator to apply.
+ * @param {TypedArrayConstructor} typedArray - The constructor for the typed array.
+ * @returns {MatrixType} The result of applying the binary pointwise operator.
+ */
 const BinaryPointwiseIterator = (
   m1: MatrixType | NumericType,
   m2: number | MatrixType | NumericMatrix,
@@ -58,31 +73,21 @@ const BinaryPointwiseIterator = (
     `
     const binaryPointwise = (a, b, it = false) => {
       const n = a.length;
-      let i, j, c;
+      let i, c;
       if (it) {
         c = new ${typedArray.name}(n);
         if (typeof b === "number") {
-            for (i = 0;i < n >> 2;i++) {
-            j = i << 2;
-            c[j] = a[j] ${operator} b;
-            c[j + 1] = a[j + 1] ${operator} b;
-            c[j + 2] = a[j + 2] ${operator} b;
-            c[j + 3] = a[j + 3] ${operator} b;
+          for (i = n;i-- > 1;) {
+            c[i] = a[i--] ${operator} b;
+            c[i] = a[i] ${operator} b;
           }
-          for (j = i << 2;j < n;j++) { 
-            c[j] = a[j] ${operator} b;
-          }
+          if (i === 0) c[i] = a[i] ${operator} b;
         } else {
-          for (i = 0;i < n >> 2;i++) {
-            j = i << 2;
-            c[j] = a[j] ${operator} b[j];
-            c[j + 1] = a[j + 1] ${operator} b[j + 1];
-            c[j + 2] = a[j + 2] ${operator} b[j + 2];
-            c[j + 3] = a[j + 3] ${operator} b[j + 3];
+          for (i = n;i-- > 1;) {
+            c[i] = a[i] ${operator} b[i--];
+            c[i] = a[i] ${operator} b[i];
           }
-          for (j = i << 2;j < n;j++) { 
-            c[j] = a[j] ${operator} b[j];
-          }
+          if (i === 0) c[0] = a[0] ${operator} b[0]
         }
       } else {
         c = new Array(n);
@@ -99,6 +104,16 @@ const BinaryPointwiseIterator = (
   )(m1, m2);
 };
 
+/**
+ * Applies a binary pointwise operator
+ * between two matrices or a matrix and a scalar.
+ *
+ * @param {MatrixType} m1 - The  matrix instance.
+ * @param {number | MatrixType | NumericMatrix} m2 - The second matrix or scalar.
+ * @param {BinaryPointwiseOperator} action - The binary pointwise operator to apply.
+ * @param {NumericType} type - The numeric type of the result matrix.
+ * @returns {MatrixType} The result of applying the binary pointwise operator.
+ */
 export const BinaryPointwise = (
   m1: MatrixType,
   m2: number | MatrixType | NumericMatrix,
