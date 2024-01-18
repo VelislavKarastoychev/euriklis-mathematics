@@ -924,12 +924,12 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for pointwise comparison.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise "not equal to" operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number 
+   * or matrix for pointwise comparison.
+   * @returns {Matrix} A new matrix resulting 
+   * from the pointwise "not equal to" operation.
+   * @throws {Error} If the "m" parameter is not 
+   * a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("neq"))
   neq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
@@ -959,12 +959,12 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for pointwise comparison.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise "less than" operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The 
+   * number or matrix for pointwise comparison.
+   * @returns {Matrix} A new matrix resulting 
+   * from the pointwise "less than" operation.
+   * @throws {Error} If the "m" parameter is 
+   * not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
   lt(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
@@ -994,12 +994,12 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for pointwise comparison.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise "less than or equal to" operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The 
+   * number or matrix for pointwise comparison.
+   * @returns {Matrix} A new matrix resulting 
+   * from the pointwise "less than or equal to" operation.
+   * @throws {Error} If the "m" parameter is not a number 
+   * or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("leq"))
   leq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
@@ -1030,12 +1030,10 @@ export class Matrix {
    * a matrix with the same dimensions as the current matrix, the bitwise OR
    * operation is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the bitwise OR operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise bitwise OR operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * matrix for the bitwise OR operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise bitwise OR operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"))
   or(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
@@ -1066,12 +1064,10 @@ export class Matrix {
    * a matrix with the same dimensions as the current matrix, the bitwise AND
    * operation is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the bitwise AND operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise bitwise AND operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or 
+   * matrix for the bitwise AND operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise bitwise AND operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"))
   and(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
@@ -1102,12 +1098,9 @@ export class Matrix {
    * the input is a matrix with the same dimensions as the current matrix, the
    * bitwise XOR operation is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the bitwise XOR operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise bitwise XOR operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix for the bitwise XOR operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise bitwise XOR operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"))
   xor(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
@@ -1141,12 +1134,10 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the bitwise right shift operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise bitwise right shift operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * matrix for the bitwise right shift operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise bitwise right shift operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("rightShiftBy"),
@@ -1183,12 +1174,10 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the bitwise left shift operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise bitwise left shift operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * matrix for the bitwise left shift operation.
+   * @returns {Matrix } A new matrix resulting from the pointwise bitwise left shift operation.
+   * @throws {ErrorI} f the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
@@ -1221,12 +1210,10 @@ export class Matrix {
    * If the input is a matrix with the same dimensions as the current matrix,
    * the addition operation is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the addition operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise addition operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
+   * matrix for the addition operation.
+   * @returns {Matrix}  A new matrix resulting from the pointwise addition operation.
+   * @throws {Error } If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("plus"),
@@ -1259,12 +1246,10 @@ export class Matrix {
    * with the same dimensions as the current matrix, the subtraction operation
    * is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the subtraction operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise subtraction operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
+   * matrix for the subtraction operation.
+   * @returns {MatrixA}  new matrix resulting from the pointwise subtraction operation.
+   * @throws {ErrorI} f the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("minus"),
@@ -1297,12 +1282,10 @@ export class Matrix {
    * with the same dimensions as the current matrix, the exponentiation operation
    * is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the exponentiation operation.
-   * @returns {Matrix}
-   *        A new matrix resulting from the pointwise exponentiation operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix 
+   * for the exponentiation operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise exponentiation operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("power"),
@@ -1335,12 +1318,10 @@ export class Matrix {
    * is a matrix with the same dimensions as the current matrix, the Hadamard
    * product is applied element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   *        The number or matrix for the Hadamard product.
-   * @returns {Matrix}
-   *        A new matrix resulting from the Hadamard product operation.
-   * @throws {Error}
-   *        If the "m" parameter is not a number or Matrix-like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix 
+   * for the Hadamard product.
+   * @returns {Matrix} A new matrix resulting from the Hadamard product operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("Hadamard"),
