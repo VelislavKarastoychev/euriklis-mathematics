@@ -1030,6 +1030,9 @@ export class Matrix {
    * a matrix with the same dimensions as the current matrix, the bitwise OR
    * operation is applied element-wise between corresponding elements.
    *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or 
    * matrix for the bitwise OR operation.
    * @returns {Matrix} A new matrix resulting from the pointwise bitwise OR operation.
@@ -1063,6 +1066,9 @@ export class Matrix {
    * of the current matrix is bitwise ANDed with that number. If the input is
    * a matrix with the same dimensions as the current matrix, the bitwise AND
    * operation is applied element-wise between corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
    *
    * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or 
    * matrix for the bitwise AND operation.
@@ -1098,6 +1104,9 @@ export class Matrix {
    * the input is a matrix with the same dimensions as the current matrix, the
    * bitwise XOR operation is applied element-wise between corresponding elements.
    *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix for the bitwise XOR operation.
    * @returns {Matrix} A new matrix resulting from the pointwise bitwise XOR operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
@@ -1131,6 +1140,7 @@ export class Matrix {
    * positions. If the input is a matrix with the same dimensions as the current
    * matrix, the bitwise right shift operation is applied element-wise between
    * corresponding elements.
+   *
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
