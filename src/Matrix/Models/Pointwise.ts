@@ -27,9 +27,9 @@ const BinaryPointwiseExpression = (action: BinaryPointwiseOperator) => {
     case "leq":
       return "<=";
     case "eq":
-      return "===";
+      return "==";
     case "neq":
-      return "!==";
+      return "!=";
     case "and":
       return "&";
     case "or":
