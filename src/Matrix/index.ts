@@ -818,21 +818,28 @@ export class Matrix {
 
     return cubes;
   }
+
   /**
-   * Generates a matrix with elements 0/1. If the element is
-   * greater than the m (or m[i][j] in the case when the m
-   * is a Matrix or Matrix - like structure) then the output
-   * element will be 1 and zero otherwise.
+   * Generates a matrix with elements 0/1. If the element is greater than the provided
+   * value or the corresponding element in the input matrix (m), then the output element
+   * will be 1; otherwise, it will be 0.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m
-   * @returns {Matrix}
-   * @throws {Error} If the "m" parameter is not number or Matrix
-   * like structure.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The value or matrix to compare against.
+   * @returns {Matrix} A matrix with elements 0/1 based on the comparison.
+   * @throws {Error} If the "m" parameter is not a number or a matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("gt"))
   gt(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (typeof m !== "number") {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("gt")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -843,10 +850,31 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * greater than or equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
+   * or matrix for pointwise comparison.
+   * @returns {Matrix} A new matrix resulting from the pointwise
+   * "greater than or equal to" operation.
+   * @throws {Error} If the "m" parameter is
+   * not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("geq"))
   geq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("geq")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -856,25 +884,65 @@ export class Matrix {
 
     return output;
   }
-
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
+   * or matrix for pointwise comparison.
+   * @returns {Matrix} A new matrix resulting from the
+   * pointwise "equal to" operation.
+   * @throws {Error} If the "m" parameter is not a
+   * number or Matrix-like structure.
+   */
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("eq"))
   eq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("eq")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
-      "lt",
+      "eq",
       this._type,
     );
 
     return output;
   }
-
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * not equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for pointwise comparison.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise "not equal to" operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("neq"))
-  neq(m: number | Matrix | MatrixType | NumericMatrix) {
+  neq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("neq")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -885,10 +953,31 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * less than the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for pointwise comparison.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise "less than" operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
-  lt(m: number | Matrix | MatrixType | NumericMatrix) {
+  lt(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("lt")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -899,10 +988,31 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * less than or equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for pointwise comparison.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise "less than or equal to" operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("leq"))
-  leq(m: number | Matrix | MatrixType | NumericMatrix) {
+  leq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("leq")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -913,10 +1023,32 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a bitwise OR operation element-wise between the current matrix
+   * and the provided number or matrix. If the input is a number, each element
+   * of the current matrix is bitwise ORed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the bitwise OR
+   * operation is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the bitwise OR operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise bitwise OR operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"))
-  or(m: number | Matrix | MatrixType | NumericMatrix) {
+  or(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("or")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -927,10 +1059,32 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a bitwise AND operation element-wise between the current matrix
+   * and the provided number or matrix. If the input is a number, each element
+   * of the current matrix is bitwise ANDed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the bitwise AND
+   * operation is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the bitwise AND operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise bitwise AND operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"))
-  and(m: number | Matrix | MatrixType | NumericMatrix) {
+  and(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("and")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -941,10 +1095,32 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a bitwise XOR (exclusive OR) operation element-wise between the
+   * current matrix and the provided number or matrix. If the input is a number,
+   * each element of the current matrix is bitwise XORed with that number. If
+   * the input is a matrix with the same dimensions as the current matrix, the
+   * bitwise XOR operation is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the bitwise XOR operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise bitwise XOR operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"))
-  xor(m: number | Matrix | MatrixType | NumericMatrix) {
+  xor(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("xor")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -955,12 +1131,37 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a bitwise right shift operation element-wise between the current
+   * matrix and the provided number or matrix. If the input is a number, each
+   * element of the current matrix is bitwise right-shifted by that number of
+   * positions. If the input is a matrix with the same dimensions as the current
+   * matrix, the bitwise right shift operation is applied element-wise between
+   * corresponding elements.
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the bitwise right shift operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise bitwise right shift operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("rightShiftBy"),
   )
-  rightShiftBy(m: number | Matrix | MatrixType | NumericMatrix) {
+  rightShiftBy(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("rightShiftBy")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -971,12 +1172,38 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a bitwise left shift operation element-wise between the current
+   * matrix and the provided number or matrix. If the input is a number, each
+   * element of the current matrix is bitwise left-shifted by that number of
+   * positions. If the input is a matrix with the same dimensions as the current
+   * matrix, the bitwise left shift operation is applied element-wise between
+   * corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the bitwise left shift operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise bitwise left shift operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
   )
-  leftShiftBy(m: number | Matrix | MatrixType | NumericMatrix) {
+  leftShiftBy(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("leftShiftBy")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -987,12 +1214,34 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a pointwise addition operation (classical matrix addition) between
+   * the current matrix and the provided number or matrix. If the input is a
+   * number, each element of the current matrix is added by that number.
+   * If the input is a matrix with the same dimensions as the current matrix,
+   * the addition operation is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the addition operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise addition operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("plus"),
   )
-  plus(m: number | Matrix | MatrixType | NumericMatrix) {
+  plus(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("plus")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -1003,12 +1252,34 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a pointwise subtraction operation between the current matrix and
+   * the provided number or matrix. If the input is a number, each element of
+   * the current matrix is subtracted by that number. If the input is a matrix
+   * with the same dimensions as the current matrix, the subtraction operation
+   * is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the subtraction operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise subtraction operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("minus"),
   )
-  minus(m: number | Matrix | MatrixType | NumericMatrix) {
+  minus(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("minus")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
@@ -1019,16 +1290,76 @@ export class Matrix {
     return output;
   }
 
+  /**
+   * Performs a pointwise exponentiation operation between the current matrix and
+   * the provided number or matrix. If the input is a number, each element of the
+   * current matrix is raised to the power of that number. If the input is a matrix
+   * with the same dimensions as the current matrix, the exponentiation operation
+   * is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the exponentiation operation.
+   * @returns {Matrix}
+   *        A new matrix resulting from the pointwise exponentiation operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("power"),
   )
-  power(m: number | Matrix | MatrixType | NumericMatrix) {
+  power(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("power")();
+      }
+    }
     output._M = models.BinaryPointwise(
       this._M,
       m as number | MatrixType | NumericMatrix,
       "power",
+      this._type,
+    );
+
+    return output;
+  }
+
+  /**
+   * Performs the Hadamard product (element-wise multiplication) between the
+   * current matrix and the provided number or matrix. If the input is a number,
+   * each element of the current matrix is multiplied by that number. If the input
+   * is a matrix with the same dimensions as the current matrix, the Hadamard
+   * product is applied element-wise between corresponding elements.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m
+   *        The number or matrix for the Hadamard product.
+   * @returns {Matrix}
+   *        A new matrix resulting from the Hadamard product operation.
+   * @throws {Error}
+   *        If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("Hadamard"),
+  )
+  Hadamard(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (typeof m !== "number") {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        m[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("Hadamard")();
+      }
+    }
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "Hadamard",
       this._type,
     );
 
