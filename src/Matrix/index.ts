@@ -20,6 +20,7 @@ import {
   TypedArray,
   TypedArrayConstructor,
 } from "./types";
+import { NaptrRecord } from "dns";
 
 export class Matrix {
   // 1. Declaration of the private methods and properties
@@ -835,7 +836,7 @@ export class Matrix {
     if (typeof m !== "number") {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("gt")();
       }
@@ -870,7 +871,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("geq")();
       }
@@ -904,7 +905,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("eq")();
       }
@@ -938,7 +939,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("neq")();
       }
@@ -973,7 +974,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("lt")();
       }
@@ -1008,7 +1009,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("leq")();
       }
@@ -1042,7 +1043,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("or")();
       }
@@ -1076,7 +1077,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("and")();
       }
@@ -1109,7 +1110,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("xor")();
       }
@@ -1148,7 +1149,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("rightShiftBy")();
       }
@@ -1188,7 +1189,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("leftShiftBy")();
       }
@@ -1224,7 +1225,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("plus")();
       }
@@ -1260,7 +1261,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("minus")();
       }
@@ -1296,7 +1297,7 @@ export class Matrix {
     if (!conditions.IsNumber(m)) {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("power")();
       }
@@ -1332,7 +1333,7 @@ export class Matrix {
     if (typeof m !== "number") {
       if (
         (m as MatrixType | NumericMatrix).length !== this.rows &&
-        m[0].length !== this.columns
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
       ) {
         errors.IncorrectMatrixParameterInPointwise("Hadamard")();
       }
