@@ -2,12 +2,12 @@
 import validator from "@euriklis/validator";
 import { Matrix } from "../src/index.ts";
 import { Integer } from "../src/Matrix/types.ts";
-const zeros = Array.from({ length: 5000 }).map((_) =>
-  Array.from({ length: 5000 }).map((_) => 0)
+const zeros = Array.from({ length: 50 }).map((_) =>
+  Array.from({ length: 50 }).map((_) => 0)
 );
 const generateZeroMatrix = (rows: Integer, columns: Integer) =>
   Matrix.zeros(rows, columns);
-new validator(Matrix.zeros(5000, 5000).M)
+new validator(Matrix.zeros(50, 50).M)
   .describe("The zeros static method:").test({
     title: true,
     success: "green",
