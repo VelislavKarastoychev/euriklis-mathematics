@@ -20,7 +20,6 @@ import {
   TypedArray,
   TypedArrayConstructor,
 } from "./types";
-import { NaptrRecord } from "dns";
 
 export class Matrix {
   // 1. Declaration of the private methods and properties
