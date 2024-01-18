@@ -42,6 +42,10 @@ const BinaryPointwiseExpression = (action: BinaryPointwiseOperator) => {
       return ">>";
     case "Hadamard":
       return "*";
+    case "divide":
+      return "/";
+    case "modulus":
+      return "%";
     case "minus":
       return "-";
     case "plus":
