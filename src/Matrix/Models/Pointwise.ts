@@ -16,7 +16,9 @@ import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
  * @param {BinaryPointwiseOperator} action - The binary pointwise operator.
  * @returns {BinaryOperator} The JavaScript binary operator expression.
  */
-const BinaryPointwiseExpression = (action: BinaryPointwiseOperator) => {
+const BinaryPointwiseExpression = (
+  action: BinaryPointwiseOperator,
+): BinaryOperator => {
   switch (action) {
     case "gt":
       return ">";
@@ -31,8 +33,12 @@ const BinaryPointwiseExpression = (action: BinaryPointwiseOperator) => {
     case "neq":
       return "!=";
     case "and":
+      return "&&";
+    case "band":
       return "&";
     case "or":
+      return "||";
+    case "bor":
       return "|";
     case "xor":
       return "^";
