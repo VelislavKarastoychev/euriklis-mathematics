@@ -1,5 +1,3 @@
-import { types } from "util";
-
 export type Integer = number;
 export type IntegerNumericType =
   | "int8"
@@ -71,7 +69,9 @@ export type BinaryPointwiseOperator =
   | "rightShiftBy"
   | "leftShiftBy"
   | "or"
-  | "and";
+  | "bor"
+  | "and"
+  | "band"
 export type BinaryOperator =
   | ">"
   | ">="
@@ -86,7 +86,9 @@ export type BinaryOperator =
   | "%"
   | "**"
   | "^"
+  | "||"
   | "|"
+  | "&&"
   | "&"
   | "<<"
   | ">>";
