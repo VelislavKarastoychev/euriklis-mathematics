@@ -22,6 +22,8 @@ import {
 } from "./types";
 
 export class Matrix {
+  // 0. Get the minimum machine number close to zero.
+  static epsilon = 2.220446049250313e-16;
   // 1. Declaration of the private methods and properties
 
   /**
@@ -1024,14 +1026,11 @@ export class Matrix {
   }
 
   /**
-   * Performs a bitwise OR operation element-wise between the current matrix
+   * Performs a logical OR operation element-wise between the current matrix
    * and the provided number or matrix. If the input is a number, each element
-   * of the current matrix is bitwise ORed with that number. If the input is
-   * a matrix with the same dimensions as the current matrix, the bitwise OR
+   * of the current matrix is logical ORed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the logical OR
    * operation is applied element-wise between corresponding elements.
-   *
-   * NB! Note that in JavaScript and in TypeScript respectively the logical
-   * bitwise operations are limited to 32-bit numbers.
    *
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise OR operation.
@@ -1061,14 +1060,50 @@ export class Matrix {
   }
 
   /**
-   * Performs a bitwise AND operation element-wise between the current matrix
+   * Performs a bitwise OR operation element-wise between the current matrix
    * and the provided number or matrix. If the input is a number, each element
-   * of the current matrix is bitwise ANDed with that number. If the input is
-   * a matrix with the same dimensions as the current matrix, the bitwise AND
+   * of the current matrix is bitwise ORed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the bitwise OR
    * operation is applied element-wise between corresponding elements.
    *
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
+   * matrix for the bitwise OR operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise bitwise OR operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("bitwiseOr"),
+  )
+  bitwiseOr(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("bitwiseOr")();
+      }
+    }
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "bor",
+      this._type,
+    );
+
+    return output;
+  }
+
+  /**
+   * Performs a logical AND operation element-wise between the current matrix
+   * and the provided number or matrix. If the input is a number, each element
+   * of the current matrix is logical ANDed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the logical AND
+   * operation is applied element-wise between corresponding elements.
    *
    * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
    * matrix for the bitwise AND operation.
@@ -1091,6 +1126,45 @@ export class Matrix {
       this._M,
       m as number | MatrixType | NumericMatrix,
       "and",
+      this._type,
+    );
+
+    return output;
+  }
+
+  /**
+   * Performs a bitwise AND operation element-wise between the current matrix
+   * and the provided number or matrix. If the input is a number, each element
+   * of the current matrix is bitwise ANDed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the bitwise AND
+   * operation is applied element-wise between corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
+   * matrix for the bitwise AND operation.
+   * @returns {Matrix} A new matrix resulting from the pointwise bitwise AND operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("bitwiseAnd"),
+  )
+  bitwiseAnd(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
+    const output = new Matrix();
+    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== this.rows &&
+        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("bitwiseAnd")();
+      }
+    }
+    output._M = models.BinaryPointwise(
+      this._M,
+      m as number | MatrixType | NumericMatrix,
+      "band",
       this._type,
     );
 
@@ -1398,7 +1472,7 @@ export class Matrix {
    * with the same dimensions as the current matrix, modulus operation is applied
    * element-wise between corresponding elements.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix 
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
    * for the element-wise modulus operation.
    * @returns {Matrix} A new matrix resulting from the element-wise modulus operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
