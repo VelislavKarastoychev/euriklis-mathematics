@@ -1,4 +1,3 @@
-
 "use strict";
 import validator from "@euriklis/validator";
 import numeric from "numericjs";
