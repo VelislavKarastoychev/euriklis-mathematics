@@ -39,3 +39,8 @@ import "./lt.spec.ts";
 import "./leq.spec.ts";
 import "./neq.spec.ts";
 import "./plus.spec.ts";
+import "./minus.spec.ts";
+import "./and.spec.ts";
+import "./or.spec.ts";
+import "./bitwise-and.spec.ts";
+import "./bitwise-or.spec.ts";
