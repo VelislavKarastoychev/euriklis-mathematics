@@ -49,3 +49,4 @@ import "./set-row.spec.ts";
 // import "./Hadamard.spec.ts";
 // import "./divide.spec.ts";
 // import "./modulus.spec.ts";
+import "./negate.spec.ts";
