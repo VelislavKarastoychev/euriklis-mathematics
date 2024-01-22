@@ -7,6 +7,7 @@ import {
   NumericMatrix,
   NumericType,
   TypedArrayConstructor,
+  UnaryPointwiseOperator,
 } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
@@ -58,6 +59,43 @@ const BinaryPointwiseExpression = (
       return "+";
     case "power":
       return "**";
+  }
+};
+
+const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
+  switch (action) {
+    case "neg":
+      return "-";
+    case "bneg":
+      return "~";
+    case "sin":
+      return "Math.sin";
+    case "cos":
+      return "Math.cos";
+    case "tg":
+      return "Math.tan";
+    case "cotg":
+      return "Math.cotan";
+    case "exp":
+      return "Math.exp";
+    case "sinh":
+      return "Math.sinh";
+    case "cosh":
+      return "Math.cosh";
+    case "tanh":
+      return "Math.tanh";
+    case "cotanh":
+      return "Math.cotanh";
+    case "arcsin":
+      return "Math.asin";
+    case "arccos":
+      return "Math.acos";
+    case "atan":
+      return "Math.atan";
+    case "acotan":
+      return "Math.acotan";
+    case "abs":
+      return "Math.abs";
   }
 };
 
@@ -132,5 +170,47 @@ export const BinaryPointwise = (
 ): MatrixType => {
   const typedArray: TypedArrayConstructor = CreateTypedArrayConstructor(type);
   const operator = BinaryPointwiseExpression(action);
+
   return BinaryPointwiseIterator(m1, m2, operator, typedArray);
+};
+
+const UnaryPointwiseIterator = (
+  matrix: MatrixType | NumericMatrix,
+  operator: string,
+  typedArray: TypedArrayConstructor,
+): MatrixType =>
+  new Function(
+    "matrix",
+    `
+    const unaryPointwise = (a, it = false) => {
+      const n = a.length;
+      let i, j, out;
+      if (it) {
+        out = new ${typedArray.name}(n);
+        for (i = n;i-- > 1;) {
+          out[i] = ${operator}(a[i--]);
+          out[i] = ${operator}(a[i]);
+        }
+        
+        if (i === 0) out[0] = ${operator}(a[0]);
+       } else {
+        out = new Array(n);
+        for (i = n;i--;) out[i] = unaryPointwise(a[i], !it);
+      }
+      
+      return out;
+    }
+    return unaryPointwise(matrix);
+    `,
+  )(matrix, operator, typedArray);
+
+export const UnaryPointwise = (
+  matrix: MatrixType | NumericMatrix,
+  action: UnaryPointwiseOperator,
+  type: NumericType,
+): MatrixType => {
+  const typedArray: TypedArrayConstructor = CreateTypedArrayConstructor(type);
+  const operator = UnaryPointwiseExpression(action);
+
+  return UnaryPointwiseIterator(matrix, operator, typedArray);
 };
