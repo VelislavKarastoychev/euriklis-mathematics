@@ -92,3 +92,21 @@ export type BinaryOperator =
   | "&"
   | "<<"
   | ">>";
+export type UnaryPointwiseOperator =
+  | "neg"
+  | "bneg"
+  | "sin"
+  | "cos"
+  | "tg"
+  | "cotg"
+  | "sinh"
+  | "cosh"
+  | "tanh"
+  | "cotanh"
+  | "exp"
+  | "abs"
+  | "arcsin"
+  | "arccos"
+  | "atan"
+  | "acotan"
+  | "sigmoid";
