@@ -18,4 +18,4 @@ export { Replicate } from "./Replicate.ts";
 export { MatrixReduce } from "./MatrixReduce.ts";
 export { FrobeniusNorm } from "./FrobeniusNorm.ts";
 export { Reshape } from "./Reshape.ts";
-export { BinaryPointwise } from "./Pointwise.ts";
+export { BinaryPointwise, UnaryPointwise } from "./Pointwise.ts";
