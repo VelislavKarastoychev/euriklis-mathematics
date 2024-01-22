@@ -1444,7 +1444,7 @@ export class Matrix {
    * @returns {Matrix}  A new matrix resulting from the element-wise division operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
-  divide(m: Matrix | MatrixType | NumericMatrix): Matrix {
+  divide(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
     if (typeof m !== "number") {
@@ -1477,7 +1477,7 @@ export class Matrix {
    * @returns {Matrix} A new matrix resulting from the element-wise modulus operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
-  modulus(m: Matrix | MatrixType | NumericMatrix): Matrix {
+  modulus(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
     const output = new Matrix();
     if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
     if (typeof m !== "number") {
