@@ -527,7 +527,8 @@ export class Matrix {
     const typedArray = models.CreateTypedArrayConstructor(this.type);
     const diagonalMatrix = new Matrix();
     diagonalMatrix._M = models.GetDiagonal(this._M, row, typedArray);
-
+    diagonalMatrix._type = this._type;
+    
     return diagonalMatrix;
   }
   /**
@@ -539,7 +540,8 @@ export class Matrix {
   toDiagonalMatrix(): Matrix {
     const diagMatrix = new Matrix();
     diagMatrix._M = models.ToDiagonalMatrix(this._M, this.type);
-
+    diagMatrix._type = this._type;
+    
     return diagMatrix;
   }
 
@@ -567,6 +569,8 @@ export class Matrix {
         blockData,
         typedArray,
       );
+      extendedMatrix._type = this._type;
+      
       return extendedMatrix;
     }
     return this;
@@ -597,6 +601,7 @@ export class Matrix {
         blockData,
         typedArray,
       );
+      extendedMatrix._type = this._type;
 
       return extendedMatrix;
     }
@@ -632,6 +637,7 @@ export class Matrix {
       columns,
       typedArray,
     );
+    reshaped._type = this._type;
 
     return reshaped;
   }
@@ -653,6 +659,7 @@ export class Matrix {
       this.columns,
       typedArray,
     );
+    transposed._type = this._type;
 
     return transposed;
   }
@@ -848,6 +855,7 @@ export class Matrix {
       "gt",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -883,6 +891,7 @@ export class Matrix {
       "geq",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -917,6 +926,7 @@ export class Matrix {
       "eq",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -951,6 +961,7 @@ export class Matrix {
       "neq",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -986,6 +997,7 @@ export class Matrix {
       "lt",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1021,6 +1033,7 @@ export class Matrix {
       "leq",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1055,6 +1068,7 @@ export class Matrix {
       "or",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1094,6 +1108,7 @@ export class Matrix {
       "bor",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1128,6 +1143,7 @@ export class Matrix {
       "and",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1167,6 +1183,7 @@ export class Matrix {
       "band",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1203,6 +1220,7 @@ export class Matrix {
       "xor",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1243,6 +1261,7 @@ export class Matrix {
       "rightShiftBy",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1283,6 +1302,7 @@ export class Matrix {
       "leftShiftBy",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1319,6 +1339,7 @@ export class Matrix {
       "plus",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1355,6 +1376,7 @@ export class Matrix {
       "minus",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1391,6 +1413,7 @@ export class Matrix {
       "power",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1427,6 +1450,7 @@ export class Matrix {
       "Hadamard",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1461,6 +1485,7 @@ export class Matrix {
       "divide",
       this._type,
     );
+    output._type = this._type;
 
     return output;
   }
@@ -1494,7 +1519,16 @@ export class Matrix {
       "modulus",
       this._type,
     );
+    output._type = this._type;
 
     return output;
+  }
+
+  get negate() {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "neg",this._type);
+    output._type = this._type;
+    
+    return output; 
   }
 }
