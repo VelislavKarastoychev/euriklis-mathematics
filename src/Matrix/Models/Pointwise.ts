@@ -153,10 +153,10 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "Math.sin";
     case "cos":
       return "Math.cos";
-    case "tg":
+    case "tan":
       return "Math.tan";
-    case "cotg":
-      return "Math.cotan";
+    case "cotan":
+      return "((param) => 1 / Math.tan(param))";
     case "exp":
       return "Math.exp";
     case "sinh":
