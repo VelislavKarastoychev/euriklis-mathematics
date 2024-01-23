@@ -1594,4 +1594,46 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the tangent function point-wise to the elements of the matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the tangent.
+   * The resulting value is computed as `Math.tan(weight * element + bias)`.
+   *
+   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the tangent function.
+   * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @returns {Matrix} A new matrix with the tangent function applied to its elements.
+   */
+  tan(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "tan", this._type, weight, bias);
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the cotangent function point-wise to the elements of the matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the cotangent.
+   * The resulting value is computed as `Math.cotan(weight * element + bias)`.
+   *
+   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the cotangent function.
+   * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @returns {Matrix} A new matrix with the cotangent function applied to its elements.
+   */
+  cotan(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "cotan",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
