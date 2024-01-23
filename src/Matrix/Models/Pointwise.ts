@@ -221,6 +221,49 @@ const UnaryPointwiseIterator = (
   )(matrix, operator, typedArray);
 
 /**
+ * Applies a weighted unary point-wise operator 
+ * with a bias to the elements of a matrix or array.
+ *
+ * @param {MatrixType | NumericMatrix} matrix - The input matrix or array.
+ * @param {string} operator - The JavaScript operator expression.
+ * @param {TypedArrayConstructor} typedArray - The TypedArray constructor based on numeric type.
+ * @param {number} weight - A number to multiply each matrix element before applying the operator.
+ * @param {number} bias - A number to be added to each element after the multiplication.
+ * @returns {MatrixType} A new array or matrix with the operator applied to its elements.
+ */
+const UnaryPointwiseIteratorWithWeightAndBias = (
+  matrix: MatrixType | NumericMatrix,
+  operator: string,
+  typedArray: TypedArrayConstructor,
+  weight: number,
+  bias: number,
+): MatrixType =>
+  new Function(
+    "matrix",
+    `
+    const unaryPointwise = (a, it = false) => {
+      const n = a.length;
+      let i, j, out;
+      if (it) {
+        out = new ${typedArray.name}(n);
+        for (i = n;i-- > 1;) {
+          out[i] = ${operator}(${weight} * a[i--] + ${bias});
+          out[i] = ${operator}(${weight} * a[i] + ${bias});
+        }
+        
+        if (i === 0) out[0] = ${operator}(${weight} * a[0] + ${bias});
+       } else {
+        out = new Array(n);
+        for (i = n;i--;) out[i] = unaryPointwise(a[i], !it);
+      }
+      
+      return out;
+    }
+    return unaryPointwise(matrix);
+    `,
+  )(matrix, operator, typedArray);
+
+/**
  * Applies a unary point-wise operation to the elements of a matrix or array.
  *
  * @param {MatrixType | NumericMatrix} matrix - The input matrix or array.
@@ -232,9 +275,19 @@ export const UnaryPointwise = (
   matrix: MatrixType | NumericMatrix,
   action: UnaryPointwiseOperator,
   type: NumericType,
+  weight: number,
+  bias: number,
 ): MatrixType => {
   const typedArray: TypedArrayConstructor = CreateTypedArrayConstructor(type);
   const operator = UnaryPointwiseExpression(action);
-
+  if (weight !== 1 || bias !== 0) {
+    return UnaryPointwiseIteratorWithWeightAndBias(
+      matrix,
+      operator,
+      typedArray,
+      weight,
+      bias,
+    );
+  }
   return UnaryPointwiseIterator(matrix, operator, typedArray);
 };
