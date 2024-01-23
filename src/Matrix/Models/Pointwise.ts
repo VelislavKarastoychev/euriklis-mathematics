@@ -62,43 +62,6 @@ const BinaryPointwiseExpression = (
   }
 };
 
-const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
-  switch (action) {
-    case "neg":
-      return "-";
-    case "bneg":
-      return "~";
-    case "sin":
-      return "Math.sin";
-    case "cos":
-      return "Math.cos";
-    case "tg":
-      return "Math.tan";
-    case "cotg":
-      return "Math.cotan";
-    case "exp":
-      return "Math.exp";
-    case "sinh":
-      return "Math.sinh";
-    case "cosh":
-      return "Math.cosh";
-    case "tanh":
-      return "Math.tanh";
-    case "cotanh":
-      return "Math.cotanh";
-    case "arcsin":
-      return "Math.asin";
-    case "arccos":
-      return "Math.acos";
-    case "atan":
-      return "Math.atan";
-    case "acotan":
-      return "Math.acotan";
-    case "abs":
-      return "Math.abs";
-  }
-};
-
 /**
  * Applies recursively a binary pointwise
  * operator between two matrices or a matrix and a scalar.
@@ -174,6 +137,59 @@ export const BinaryPointwise = (
   return BinaryPointwiseIterator(m1, m2, operator, typedArray);
 };
 
+/**
+ * Returns the JavaScript expression for a given unary point-wise operator.
+ *
+ * @param {UnaryPointwiseOperator} action - The unary point-wise operator.
+ * @returns {string} The JavaScript expression corresponding to the operator.
+ */
+const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
+  switch (action) {
+    case "neg":
+      return "-";
+    case "bneg":
+      return "~";
+    case "sin":
+      return "Math.sin";
+    case "cos":
+      return "Math.cos";
+    case "tg":
+      return "Math.tan";
+    case "cotg":
+      return "Math.cotan";
+    case "exp":
+      return "Math.exp";
+    case "sinh":
+      return "Math.sinh";
+    case "cosh":
+      return "Math.cosh";
+    case "tanh":
+      return "Math.tanh";
+    case "cotanh":
+      return "Math.cotanh";
+    case "arcsin":
+      return "Math.asin";
+    case "arccos":
+      return "Math.acos";
+    case "atan":
+      return "Math.atan";
+    case "acotan":
+      return "Math.acotan";
+    case "abs":
+      return "Math.abs";
+    case "sigmoid":
+      return "((param) => 1 / (1 + Math.exp(-param)))";
+  }
+};
+
+/**
+ * Applies a unary point-wise operator to the elements of a matrix or array.
+ *
+ * @param {MatrixType | NumericMatrix} matrix - The input matrix or array.
+ * @param {string} operator - The JavaScript operator expression.
+ * @param {TypedArrayConstructor} typedArray - The TypedArray constructor based on numeric type.
+ * @returns {MatrixType} A new array or matrix with the operator applied to its elements.
+ */
 const UnaryPointwiseIterator = (
   matrix: MatrixType | NumericMatrix,
   operator: string,
@@ -204,6 +220,14 @@ const UnaryPointwiseIterator = (
     `,
   )(matrix, operator, typedArray);
 
+/**
+ * Applies a unary point-wise operation to the elements of a matrix or array.
+ *
+ * @param {MatrixType | NumericMatrix} matrix - The input matrix or array.
+ * @param {UnaryPointwiseOperator} action - The unary point-wise operator to apply.
+ * @param {NumericType} type - The numeric type of the elements.
+ * @returns {MatrixType} A new array or matrix with the unary point-wise operation applied.
+ */
 export const UnaryPointwise = (
   matrix: MatrixType | NumericMatrix,
   action: UnaryPointwiseOperator,
