@@ -1798,4 +1798,28 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the point-wise arctangent function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the arctangent.
+   * The resulting value is computed as `Math.atan(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the arctangent function.
+   * @param {number} bias - A number to be added to each element before applying the arctangent function.
+   * @returns {Matrix} A new matrix with the arctangent function applied to its elements.
+   */
+  arctan(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "atan",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
