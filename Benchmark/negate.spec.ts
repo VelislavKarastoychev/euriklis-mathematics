@@ -7,7 +7,7 @@ import numeric from "numericjs";
   const r = Matrix.random(5000, 5000);
   const m = r.M;
 
-  new validator(r.negate.isEqualTo(numeric.neg(m)))
+  new validator(r.negate().isEqualTo(numeric.neg(m)))
     .isSame(true)
     .on(true, (v) => {
       v.describe(
@@ -19,7 +19,7 @@ import numeric from "numericjs";
           error: "red",
         });
 
-      const t1 = new validator(r).benchmark((m) => m.negate);
+      const t1 = new validator(r).benchmark((m) => m.negate());
       const t2 = new validator(m).benchmark((m) => numeric.neg(m));
       console.table({
         "@euriklis/mathematics": t1,
