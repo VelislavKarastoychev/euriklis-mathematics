@@ -167,6 +167,14 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "Math.tanh";
     case "cotanh":
       return "((x) => 1 / Math.tanh(x))";
+    case "asinh":
+      return "Math.asinh";
+    case "acosh":
+      return "Math.arccosh";
+    case "atanh":
+      return "Math.atanh";
+    case "acotanh":
+      return "Math.acotanh";
     case "arcsin":
       return "Math.asin";
     case "arccos":
@@ -174,7 +182,7 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
     case "atan":
       return "Math.atan";
     case "acotan":
-      return "Math.acotan";
+      return "((x) => (Math.PI/2) - Math.atan(x))";
     case "abs":
       return "Math.abs";
     case "sigmoid":
