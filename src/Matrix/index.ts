@@ -1774,4 +1774,28 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the point-wise arccosine function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the arccosine.
+   * The resulting value is computed as `Math.acos(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the arccosine function.
+   * @param {number} bias - A number to be added to each element before applying the arccosine function.
+   * @returns {Matrix} A new matrix with the arccosine function applied to its elements.
+   */
+  arccos(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "arccos",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
