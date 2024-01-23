@@ -52,4 +52,6 @@ import "./set-row.spec.ts";
 // import "./negate.spec.ts";
 // import "./bitwise-negate.spec.ts";
 // import "./sin.spec.ts";
-import "./cos.spec.ts";
+// import "./cos.spec.ts";
+// import "./tan.spec.ts";
+import "./cotan.spec.ts";
