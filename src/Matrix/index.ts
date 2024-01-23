@@ -1822,4 +1822,70 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the point-wise arccotangent function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the arccotangent.
+   * The resulting value is computed as `Math.acotan(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the arccotangent function.
+   * @param {number} bias - A number to be added to each element before applying the arccotangent function.
+   * @returns {Matrix} A new matrix with the arccotangent function applied to its elements.
+   */
+  arccotan(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "acotan",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise absolute value function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the absolute value.
+   * The resulting value is computed as `Math.abs(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the absolute value function.
+   * @param {number} bias - A number to be added to each element before applying the absolute value function.
+   * @returns {Matrix} A new matrix with the absolute value function applied to its elements.
+   */
+  abs(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "abs", this._type, weight, bias);
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise sigmoid function to the elements of the matrix or array.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the sigmoid.
+   * The resulting value is computed as `1 / (1 + Math.exp(-(weight * element + bias)))`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the sigmoid function.
+   * @param {number} bias - A number to be added to each element before applying the sigmoid function.
+   * @returns {Matrix} A new matrix with the sigmoid function applied to its elements.
+   */
+  sigmoid(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "sigmoid",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
