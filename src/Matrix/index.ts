@@ -528,7 +528,7 @@ export class Matrix {
     const diagonalMatrix = new Matrix();
     diagonalMatrix._M = models.GetDiagonal(this._M, row, typedArray);
     diagonalMatrix._type = this._type;
-    
+
     return diagonalMatrix;
   }
   /**
@@ -541,7 +541,7 @@ export class Matrix {
     const diagMatrix = new Matrix();
     diagMatrix._M = models.ToDiagonalMatrix(this._M, this.type);
     diagMatrix._type = this._type;
-    
+
     return diagMatrix;
   }
 
@@ -570,7 +570,7 @@ export class Matrix {
         typedArray,
       );
       extendedMatrix._type = this._type;
-      
+
       return extendedMatrix;
     }
     return this;
@@ -1524,11 +1524,29 @@ export class Matrix {
     return output;
   }
 
-  get negate() {
+  /**
+   * Performs a unary point-wise negation.
+   *
+   * @returns {Matrix} A new Matrix instance with negated elements.
+   */
+  get negate(): Matrix {
     const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "neg",this._type);
+    output._M = models.UnaryPointwise(this._M, "neg", this._type);
     output._type = this._type;
-    
-    return output; 
+
+    return output;
+  }
+
+  /**
+   * Performs a unary point-wise bitwise negation.
+   *
+   * @returns {Matrix} A new Matrix instance with bitwise negated elements.
+   */
+  get bitwiseNegate(): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "bneg", this._type);
+    output._type = this._type;
+
+    return output;
   }
 }
