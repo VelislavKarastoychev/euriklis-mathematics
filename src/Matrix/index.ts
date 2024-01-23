@@ -1702,4 +1702,76 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the point-wise hyperbolic tangent function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the hyperbolic tangent.
+   * The resulting value is computed as `Math.tanh(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the hyperbolic tangent function.
+   * @param {number} bias - A number to be added to each element before applying the hyperbolic tangent function.
+   * @returns {Matrix} A new matrix with the hyperbolic tangent function applied to its elements.
+   */
+  tanh(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "tanh",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise hyperbolic cotangent function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the hyperbolic cotangent.
+   * The resulting value is computed as `cotanh(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the hyperbolic cotangent function.
+   * @param {number} bias - A number to be added to each element before applying the hyperbolic cotangent function.
+   * @returns {Matrix} A new matrix with the hyperbolic cotangent function applied to its elements.
+   */
+  cotanh(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "cotanh",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise arcsine function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the arcsine.
+   * The resulting value is computed as `Math.asin(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the arcsine function.
+   * @param {number} bias - A number to be added to each element before applying the arcsine function.
+   * @returns {Matrix} A new matrix with the arcsine function applied to its elements.
+   */
+  arcsin(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "arcsin",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
