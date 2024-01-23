@@ -51,3 +51,4 @@ import "./divide.spec.ts";
 import "./right-and-left-shift.spec.ts";
 import "./Hadamard.spec.ts";
 import "./negate.spec.ts";
+import "./bitwise-nagate.spec.ts";
