@@ -50,3 +50,4 @@ import "./set-row.spec.ts";
 // import "./divide.spec.ts";
 // import "./modulus.spec.ts";
 import "./negate.spec.ts";
+import "./bitwise-negate.spec.ts";
