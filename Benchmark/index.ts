@@ -51,3 +51,4 @@ import "./set-row.spec.ts";
 // import "./modulus.spec.ts";
 import "./negate.spec.ts";
 import "./bitwise-negate.spec.ts";
+import "./sin.spec.ts";
