@@ -71,7 +71,7 @@ export type BinaryPointwiseOperator =
   | "or"
   | "bor"
   | "and"
-  | "band"
+  | "band";
 export type BinaryOperator =
   | ">"
   | ">="
