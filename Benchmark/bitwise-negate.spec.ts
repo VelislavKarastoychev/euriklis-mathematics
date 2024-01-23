@@ -6,7 +6,7 @@ import numeric from "numericjs";
 (async () => {
   const r = Matrix.random(5000, 5000);
   const m = r.M;
-  new validator(r.bitwiseNegate.isEqualTo(numeric.bnot(m)))
+  new validator(r.bitwiseNegate().isEqualTo(numeric.bnot(m)))
     .isSame(true)
     .on(true, (v) => {
       v.describe("Time performance of bitwiseNegate getter method:")
@@ -15,7 +15,7 @@ import numeric from "numericjs";
           success: "green",
           error: "red"
         });
-      const t1 = new validator(r).benchmark((m) => m.bitwiseNegate);
+      const t1 = new validator(r).benchmark((m) => m.bitwiseNegate());
       const t2 = new validator(m).benchmark((m) => numeric.bnot(m));
       console.table({
         "@euriklis/mathematics": t1,
