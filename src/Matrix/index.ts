@@ -1540,7 +1540,7 @@ export class Matrix {
   /**
    * Performs a unary point-wise bitwise negation.
    *
-   * Optionally, a weight and bias can be applied to 
+   * Optionally, a weight and bias can be applied to
    * each element.
    *
    * @returns {Matrix} A new Matrix instance with bitwise negated elements.
@@ -1558,7 +1558,7 @@ export class Matrix {
 
     return output;
   }
-  
+
   /**
    * Applies the sine function point-wise to the elements of the matrix.
    *
@@ -1572,6 +1572,24 @@ export class Matrix {
   sin(weight: number = 1, bias: number = 0): Matrix {
     const output = new Matrix();
     output._M = models.UnaryPointwise(this._M, "sin", this._type, weight, bias);
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the cosine function point-wise to the elements of the matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the cosine.
+   * The resulting value is computed as `Math.cos(weight * element + bias)`.
+   *
+   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the cosine function.
+   * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @returns {Matrix} A new matrix with the cosine function applied to its elements.
+   */
+  cos(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "cos", this._type, weight, bias);
     output._type = this._type;
 
     return output;
