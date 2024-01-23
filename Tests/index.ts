@@ -53,3 +53,4 @@ import "./Hadamard.spec.ts";
 import "./negate.spec.ts";
 import "./bitwise-nagate.spec.ts";
 import "./sin.spec.ts";
+import "./cos.spec.ts";
