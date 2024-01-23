@@ -1578,7 +1578,7 @@ export class Matrix {
   }
 
   /**
-   * Applies the cosine function point-wise to the elements of the matrix.
+   * Applies the cosine function point-wise to the elements of the Matrix.
    *
    * Optionally, a weight and bias can be applied to each element before computing the cosine.
    * The resulting value is computed as `Math.cos(weight * element + bias)`.
@@ -1596,7 +1596,7 @@ export class Matrix {
   }
 
   /**
-   * Applies the tangent function point-wise to the elements of the matrix.
+   * Applies the tangent function point-wise to the elements of the Matrix.
    *
    * Optionally, a weight and bias can be applied to each element before computing the tangent.
    * The resulting value is computed as `Math.tan(weight * element + bias)`.
@@ -1614,7 +1614,7 @@ export class Matrix {
   }
 
   /**
-   * Applies the cotangent function point-wise to the elements of the matrix.
+   * Applies the cotangent function point-wise to the elements of the Matrix.
    *
    * Optionally, a weight and bias can be applied to each element before computing the cotangent.
    * The resulting value is computed as `Math.cotan(weight * element + bias)`.
@@ -1628,6 +1628,72 @@ export class Matrix {
     output._M = models.UnaryPointwise(
       this._M,
       "cotan",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise exponential function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the exponent.
+   * The resulting value is computed as `Math.exp(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the exponential function.
+   * @param {number} bias - A number to be added to each element before applying the exponential function.
+   * @returns {Matrix} A new matrix with the exponential function applied to its elements.
+   */
+  exp(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "exp", this._type, weight, bias);
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise hyperbolic sine function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the hyperbolic sine.
+   * The resulting value is computed as `Math.sinh(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the hyperbolic sine function.
+   * @param {number} bias - A number to be added to each element before applying the hyperbolic sine function.
+   * @returns {Matrix} A new matrix with the hyperbolic sine function applied to its elements.
+   */
+  sinh(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "sinh",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise hyperbolic cosine function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the hyperbolic cosine.
+   * The resulting value is computed as `Math.cosh(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the hyperbolic cosine function.
+   * @param {number} bias - A number to be added to each element before applying the hyperbolic cosine function.
+   * @returns {Matrix} A new matrix with the hyperbolic cosine function applied to its elements.
+   */
+  cosh(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "cosh",
       this._type,
       weight,
       bias,
