@@ -67,3 +67,6 @@ import "./arctan.spec.ts";
 import "./arccotan.spec.ts";
 import "./abs.spec.ts";
 import "./sigmoid.spec.ts";
+import "./round.spec.ts";
+import "./ceil.spec.ts";
+import "./sqrt.spec.ts";
