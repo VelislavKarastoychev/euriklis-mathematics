@@ -2002,4 +2002,52 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the point-wise Rectified Linear Unit (ReLU) function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the ReLU.
+   * The resulting value is computed as `x <= 0 ? -1 : x`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the ReLU function.
+   * @param {number} bias - A number to be added to each element before applying the ReLU function.
+   * @returns {Matrix} A new matrix with the ReLU function applied to its elements.
+   */
+  ReLU(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "ReLU",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise step function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the step function.
+   * The resulting value is computed as `x <= 0 ? -1 : 1`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the step function.
+   * @param {number} bias - A number to be added to each element before applying the step function.
+   * @returns {Matrix} A new matrix with the step function applied to its elements.
+   */
+  step(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "step",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
