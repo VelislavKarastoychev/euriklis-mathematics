@@ -197,6 +197,10 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "Math.log";
     case "floor":
       return "Math.floor";
+    case "ReLU":
+      return "((x) => x <= 0 ? -1 : x)";
+    case "step":
+      return "((x) => x <= 0 ? -1 : 1)";
   }
 };
 
@@ -239,7 +243,7 @@ const UnaryPointwiseIterator = (
   )(matrix, operator, typedArray);
 
 /**
- * Applies a weighted unary point-wise operator 
+ * Applies a weighted unary point-wise operator
  * with a bias to the elements of a matrix or array.
  *
  * @param {MatrixType | NumericMatrix} matrix - The input matrix or array.
