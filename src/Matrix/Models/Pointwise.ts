@@ -195,6 +195,8 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "Math.sqrt";
     case "log":
       return "Math.log";
+    case "floor":
+      return "Math.floor";
   }
 };
 
