@@ -1888,4 +1888,76 @@ export class Matrix {
 
     return output;
   }
+
+  /**
+   * Applies the point-wise rounding function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before rounding.
+   * The resulting value is computed as `Math.round(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the rounding function.
+   * @param {number} bias - A number to be added to each element before applying the rounding function.
+   * @returns {Matrix} A new matrix with the rounding function applied to its elements.
+   */
+  round(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "round",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise ceiling function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before ceiling.
+   * The resulting value is computed as `Math.ceil(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the ceiling function.
+   * @param {number} bias - A number to be added to each element before applying the ceiling function.
+   * @returns {Matrix} A new matrix with the ceiling function applied to its elements.
+   */
+  ceil(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "ceil",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise square root function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the square root.
+   * The resulting value is computed as `Math.sqrt(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the square root function.
+   * @param {number} bias - A number to be added to each element before applying the square root function.
+   * @returns {Matrix} A new matrix with the square root function applied to its elements.
+   */
+  sqrt(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "sqrt",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  } 
 }
