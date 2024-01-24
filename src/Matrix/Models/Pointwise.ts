@@ -187,6 +187,14 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "Math.abs";
     case "sigmoid":
       return "((x) => 1 / (1 + Math.exp(-x)))";
+    case "round":
+      return "Math.round";
+    case "ceil":
+      return "Math.ceil";
+    case "sqrt":
+      return "Math.sqrt";
+    case "log":
+      return "Math.log";
   }
 };
 
