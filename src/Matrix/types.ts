@@ -113,4 +113,8 @@ export type UnaryPointwiseOperator =
   | "arccos"
   | "atan"
   | "acotan"
-  | "sigmoid";
+  | "sigmoid"
+  | "round"
+  | "ceil"
+  | "sqrt"
+  | "log";
