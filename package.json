@@ -2,11 +2,11 @@
   "name": "@euriklis/mathematics",
   "version": "1.0.0",
   "description": "A mathematical library for numerical computations",
-  "main": "./dist/index.js",
+  "main": "./Tests/index.ts",
   "type": "module",
   "scripts": {
-    "test": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm --inspect ./Tests/index.ts",
-    "build": "tsc",
+    "test": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./Tests/index.ts",
+    "build": "ts-node",
     "start": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./src/index.ts",
     "benchmark": "node --no-warnings='ExperimentalWarning' --loader ts-node/esm ./Benchmark/index.ts"
   },
@@ -18,7 +18,7 @@
   "author": "Euriklis - euriklis@hotmai.com",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.8.10",
+    "@types/node": "^20.11.6",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
