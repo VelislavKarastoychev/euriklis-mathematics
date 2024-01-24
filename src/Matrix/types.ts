@@ -118,4 +118,6 @@ export type UnaryPointwiseOperator =
   | "ceil"
   | "sqrt"
   | "log"
-  | "floor";
+  | "floor"
+  | "ReLU"
+  | "step";
