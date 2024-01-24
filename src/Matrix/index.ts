@@ -1959,5 +1959,47 @@ export class Matrix {
     output._type = this._type;
 
     return output;
-  } 
+  }
+
+  /**
+   * Applies the point-wise natural logarithm function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the natural logarithm.
+   * The resulting value is computed as `Math.log(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the natural logarithm function.
+   * @param {number} bias - A number to be added to each element before applying the natural logarithm function.
+   * @returns {Matrix} A new matrix with the natural logarithm function applied to its elements.
+   */
+  log(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "log", this._type, weight, bias);
+    output._type = this._type;
+
+    return output;
+  }
+
+  /**
+   * Applies the point-wise floor function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the floor.
+   * The resulting value is computed as `Math.floor(weight * element + bias)`.
+   *
+   * @param {number} weight - A number to multiply each element before applying the floor function.
+   * @param {number} bias - A number to be added to each element before applying the floor function.
+   * @returns {Matrix} A new matrix with the floor function applied to its elements.
+   */
+  floor(weight: number = 1, bias: number = 0): Matrix {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(
+      this._M,
+      "floor",
+      this._type,
+      weight,
+      bias,
+    );
+    output._type = this._type;
+
+    return output;
+  }
 }
