@@ -117,4 +117,5 @@ export type UnaryPointwiseOperator =
   | "round"
   | "ceil"
   | "sqrt"
-  | "log";
+  | "log"
+  | "floor";
