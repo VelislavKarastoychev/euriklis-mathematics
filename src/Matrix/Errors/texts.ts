@@ -59,3 +59,4 @@ export const InternalErrorInCubesTxt =
   "Internal error in the sumOfCubesOfAllElements getter method. Probably some of the elements of the matrix is NaN.";
 export const IncorrectMatrixParameterInPointwiseTxt = (method: string) =>
   `Incorrect Matrix parameter in the ${method} method. Note that this parameter has to be either a number, a Matrix or Matrix - like object.`;
+export const MatrixDegenerateTxt = "Matrix degenerate. Small tolerance value.";
