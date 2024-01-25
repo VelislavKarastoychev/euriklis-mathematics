@@ -23,7 +23,6 @@ import {
 
 export class Matrix {
   // 0. Get the minimum machine number close to zero.
-  static epsilon = 2.220446049250313e-16;
   // 1. Declaration of the private methods and properties
 
   /**
