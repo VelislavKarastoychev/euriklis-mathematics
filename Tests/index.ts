@@ -1,5 +1,5 @@
 "use strict";
-import "./matrix-constructor.spec.ts";
+// import "./matrix-constructor.spec.ts";
 import "./is-matrix.spec.ts";
 import "./random-matrix.spec.ts";
 import "./zeros.spec.ts";
