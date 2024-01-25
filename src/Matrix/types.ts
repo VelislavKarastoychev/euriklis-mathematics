@@ -120,4 +120,5 @@ export type UnaryPointwiseOperator =
   | "log"
   | "floor"
   | "ReLU"
-  | "step";
+  | "step"
+  | "deepCopy";
