@@ -74,3 +74,6 @@ import "./log.spec.ts";
 import "./floor.spec.ts";
 import "./ReLU.spec.ts";
 import "./step.spec.ts";
+import "./is-symmetric.spec.ts";
+import "./copy.spec.ts";
+import "./LU.spec.ts";
