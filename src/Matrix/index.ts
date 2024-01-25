@@ -138,7 +138,7 @@ export class Matrix {
   ): Matrix {
     const rep: Matrix = new Matrix();
     rep._M = models.Replicate(n, rows, columns, type) as MatrixType;
-
+    rep._type = type;
     return rep;
   }
 
@@ -166,6 +166,7 @@ export class Matrix {
   ): Matrix {
     const rand: Matrix = new Matrix();
     rand._M = models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
+    rand._type = type;
     return rand;
   }
 
@@ -263,7 +264,17 @@ export class Matrix {
    * and false otherwise.
    */
   get isSquare(): boolean {
-    return this.rows !== this.columns;
+    return this.rows === this.columns;
+  }
+
+  /**
+   * Checks if the matrix is symmetric.
+   *
+   * @returns {boolean} True if the matrix is symmetric, false otherwise.
+   */
+  get isSymmetric(): boolean {
+    if (!this.isSquare) return false;
+    return conditions.IsMatrixSymmetric(this._M);
   }
 
   // 5. Utility functions or operators
@@ -2049,5 +2060,22 @@ export class Matrix {
     output._type = this._type;
 
     return output;
+  }
+
+  copy() {
+    const output = new Matrix();
+    output._M = models.UnaryPointwise(this._M, "deepCopy", this._type, 1, 0);
+    output._type = this._type;
+
+    return output;
+  }
+
+  // 6. Numerical methods
+
+  LUPC(): { LU: Matrix; P: Integer[] } {
+    const LU = new Matrix();
+    const { lu, P } = models.CompactLUFactorizationWithPermutations(this._M);
+    LU._M = lu;
+    return { LU, P };
   }
 }
