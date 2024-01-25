@@ -72,3 +72,5 @@ export const InternalErrorInCubes = (): never =>
 export const IncorrectMatrixParameterInPointwise =
   (method: string) => (): never =>
     runError(texts.IncorrectMatrixParameterInPointwiseTxt(method));
+export const MatrixDegenerate = (): never =>
+  runError(texts.MatrixDegenerateTxt);
