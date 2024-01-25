@@ -19,3 +19,4 @@ export { MatrixReduce } from "./MatrixReduce.ts";
 export { FrobeniusNorm } from "./FrobeniusNorm.ts";
 export { Reshape } from "./Reshape.ts";
 export { BinaryPointwise, UnaryPointwise } from "./Pointwise.ts";
+export { CompactLUFactorizationWithPermutations } from "./CompactLUFactorizationWithPermutations.ts";
