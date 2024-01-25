@@ -201,6 +201,8 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "((x) => x <= 0 ? -1 : x)";
     case "step":
       return "((x) => x <= 0 ? -1 : 1)";
+    case "deepCopy":
+      return "Math.abs";
   }
 };
 
