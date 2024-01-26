@@ -2,6 +2,7 @@
 import {
   Integer,
   MatrixType,
+  NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
 } from "../types";
@@ -15,7 +16,7 @@ import {
  * @returns {[TypedArray]} - The diagonal or subdiagonal as a new Matrix instance.
  */
 export const GetDiagonal = (
-  matrix: MatrixType,
+  matrix: MatrixType | NumericMatrix,
   row: Integer,
   typedArray: TypedArrayConstructor = Float64Array,
 ): [TypedArray] => {

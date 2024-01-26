@@ -17,7 +17,7 @@ import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
  * between the cases
  */
 const SetBlockIterator = (
-  matrix: MatrixType | TypedArray,
+  matrix: NumericMatrix | MatrixType | TypedArray,
   block: MatrixType | NumericMatrix | number[],
   from: [Integer, Integer],
   to: [Integer, Integer],
@@ -55,7 +55,7 @@ const SetBlockIterator = (
  * of the "matrix"
  */
 export const SetBlock = (
-  matrix: MatrixType,
+  matrix: MatrixType | NumericMatrix,
   block: MatrixType | NumericMatrix,
   from: [Integer, Integer],
   to: [Integer, Integer],

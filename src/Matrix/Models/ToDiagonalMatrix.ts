@@ -3,6 +3,7 @@ import {
   Integer,
   MatrixType,
   NumericType,
+  NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
 } from "../types.ts";
@@ -21,7 +22,7 @@ import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
  */
 const ToDiagonalMatrixIterator = (
   buffer: ArrayBuffer,
-  matrix: TypedArray | MatrixType,
+  matrix: TypedArray | MatrixType | NumericMatrix,
   bytes: Integer,
   typedArray: TypedArrayConstructor,
   k: Integer,
@@ -68,7 +69,7 @@ const ToDiagonalMatrixIterator = (
  * @returns {MatrixType} The resulting matrix.
  */
 export const ToDiagonalMatrix = (
-  matrix: MatrixType,
+  matrix: MatrixType | NumericMatrix,
   type: NumericType,
 ): MatrixType => {
   const bytes: Integer = ComputeBytesLength(type);

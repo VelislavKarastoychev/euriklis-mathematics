@@ -1,5 +1,5 @@
 "use strict";
-import { Integer, MatrixType } from "../types";
+import { Integer, MatrixType, NumericMatrix } from "../types";
 
 /**
  * @param {MatrixType} matrix - The matrix data.
@@ -9,7 +9,7 @@ import { Integer, MatrixType } from "../types";
  * @param {Integer} to - The ending row index
  */
 export const ExchangeColumns = (
-  matrix: MatrixType,
+  matrix: MatrixType | NumericMatrix,
   col1: Integer,
   col2: Integer,
   from: Integer,

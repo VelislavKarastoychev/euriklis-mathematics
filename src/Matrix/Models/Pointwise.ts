@@ -73,7 +73,7 @@ const BinaryPointwiseExpression = (
  * @returns {MatrixType} The result of applying the binary pointwise operator.
  */
 const BinaryPointwiseIterator = (
-  m1: MatrixType | NumericType,
+  m1: NumericMatrix | MatrixType | NumericType,
   m2: number | MatrixType | NumericMatrix,
   operator: BinaryOperator,
   typedArray: TypedArrayConstructor,
@@ -126,7 +126,7 @@ const BinaryPointwiseIterator = (
  * @returns {MatrixType} The result of applying the binary pointwise operator.
  */
 export const BinaryPointwise = (
-  m1: MatrixType,
+  m1: MatrixType | NumericMatrix,
   m2: number | MatrixType | NumericMatrix,
   action: BinaryPointwiseOperator,
   type: NumericType,

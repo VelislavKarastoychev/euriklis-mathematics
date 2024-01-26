@@ -3,6 +3,7 @@
 import {
   Integer,
   MatrixType,
+  NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
 } from "../types";
@@ -22,7 +23,7 @@ import {
  * a new matrix representing the transposed matrix.
  */
 export const TransposeMatrix = (
-  matrix: MatrixType,
+  matrix: MatrixType | NumericMatrix,
   rows: number,
   columns: number,
   typedArray: TypedArrayConstructor,
@@ -30,9 +31,9 @@ export const TransposeMatrix = (
   let i: Integer,
     j: Integer,
     transposed = Array(columns),
-    A0: TypedArray,
-    A1: TypedArray,
-    Bj: TypedArray;
+    A0: TypedArray | number [],
+    A1: TypedArray | number [],
+    Bj: TypedArray | number [];
   for (j = 0; j < columns; j++) transposed[j] = new typedArray(rows);
   for (i = rows - 1; i >= 1; i -= 2) {
     A1 = matrix[i];

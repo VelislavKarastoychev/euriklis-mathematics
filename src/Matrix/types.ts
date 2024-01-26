@@ -36,6 +36,7 @@ export type MatrixType = TypedArray[] | [];
 export type MatrixBlockOptions = {
   from: [number, number];
   to: [number, number];
+  type?: NumericType;
 };
 
 export type ComparisonParameter = "lt" | "gt" | "geq" | "leq" | "neq" | "eq";

@@ -1,8 +1,8 @@
 "use strict";
-import { Integer, MatrixType, TypedArray } from "../types";
+import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
 export const CompactLUFactorizationWithPermutations = (
-  M: MatrixType,
-): {lu: MatrixType, P: Integer[]} => {
+  M: MatrixType | NumericMatrix,
+): { LU: MatrixType | NumericMatrix; P: Integer[] } => {
   const n = M.length;
   const P = [];
   const abs = Math.abs;
@@ -85,5 +85,5 @@ export const CompactLUFactorizationWithPermutations = (
       }
     }
   }
-  return {lu: M, P};
+  return { LU: M, P };
 };

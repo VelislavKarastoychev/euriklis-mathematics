@@ -2,6 +2,7 @@
 import {
   Integer,
   MatrixType,
+  NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
 } from "../types";
@@ -16,8 +17,8 @@ import {
  * @returns {MatrixType | TypedArray} - The result of appending the block.
  */
 const AppendBlockRightIterator = (
-  matrix: MatrixType | TypedArray,
-  block: MatrixType | TypedArray,
+  matrix: NumericMatrix | MatrixType | TypedArray,
+  block: NumericMatrix | MatrixType | TypedArray,
   typedArray: TypedArrayConstructor,
   k: Integer,
 ): MatrixType | TypedArray => {
@@ -56,8 +57,8 @@ const AppendBlockRightIterator = (
  * @returns {MatrixType} - The result of appending the block.
  */
 export const AppendBlockRight = (
-  matrix: MatrixType,
-  block: MatrixType,
+  matrix: NumericMatrix | MatrixType,
+  block: NumericMatrix | MatrixType,
   typedArray: TypedArrayConstructor,
 ): MatrixType =>
   AppendBlockRightIterator(matrix, block, typedArray, 0) as MatrixType;

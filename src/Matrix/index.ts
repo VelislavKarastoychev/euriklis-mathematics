@@ -20,21 +20,17 @@ import {
   TypedArray,
   TypedArrayConstructor,
 } from "./types";
+import { type } from "os";
 
 export class Matrix {
-  // 0. Get the minimum machine number close to zero.
   // 1. Declaration of the private methods and properties
 
-  /**
-   * @private {MatrixType} #M - A holder of the matrix instance
-   */
-  private _M: MatrixType = [];
   /**
    * @private {NumericType} #type - A holder for the type of the
    * current matrix instance. By default this property will be
    * set to "float64" (double precision) type.
    */
-  private _type: NumericType = "float64";
+  private static _type: NumericType = "float64";
 
   // 2. Static methods
 
@@ -63,11 +59,9 @@ export class Matrix {
   static zeros(
     rows: Integer,
     columns: Integer,
-    type: NumericType = "float64",
-  ): Matrix {
-    const z = new Matrix();
-    z._M = models.GenerateZeroMatrix(rows, columns, type);
-    return z;
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.GenerateZeroMatrix(rows, columns, type);
   }
 
   /**
@@ -77,7 +71,10 @@ export class Matrix {
    * @param type - The type of each element of the Matrix
    * @returns A square zero Matrix
    */
-  static zero(n: Integer, type: NumericType = "float64"): Matrix {
+  static zero(
+    n: Integer,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     return Matrix.zeros(n, n, type);
   }
 
@@ -95,11 +92,9 @@ export class Matrix {
   static identityLike(
     rows: Integer,
     columns: Integer,
-    type: NumericType = "float64",
-  ): Matrix {
-    const I = new Matrix();
-    I._M = models.GenerateIdentityLikeMatrix(rows, columns, type);
-    return I;
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.GenerateIdentityLikeMatrix(rows, columns, type);
   }
 
   /**
@@ -108,7 +103,10 @@ export class Matrix {
    * @param n - The number of rows/columns of the identity matrix
    * @returns {Matrix} The identity matrix
    */
-  static identity(n: Integer, type: NumericType = "float64"): Matrix {
+  static identity(
+    n: Integer,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     return Matrix.identityLike(n, n, type);
   }
 
@@ -133,12 +131,9 @@ export class Matrix {
     n: number,
     rows: Integer,
     columns: Integer,
-    type: NumericType = "float64",
-  ): Matrix {
-    const rep: Matrix = new Matrix();
-    rep._M = models.Replicate(n, rows, columns, type) as MatrixType;
-    rep._type = type;
-    return rep;
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.Replicate(n, rows, columns, type) as MatrixType;
   }
 
   /**
@@ -160,110 +155,24 @@ export class Matrix {
     columns: Integer,
     from: Integer = 0,
     to: Integer = 1,
-    type: NumericType = "float64",
+    type: NumericType = Matrix._type,
     seed: number = 123445,
-  ): Matrix {
-    const rand: Matrix = new Matrix();
-    rand._M = models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
-    rand._type = type;
-    return rand;
+  ): MatrixType | NumericMatrix {
+    return models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
   }
 
   // 3. Constructor
 
-  /**
-   * Creates a new Matrix instance.
-   * @param options - The options for matrix initialization.
-   * @returns A new Matrix instance.
-   */
-  constructor(
-    options?: MatrixDeclaration | Matrix | NumericMatrix | MatrixType,
-  ) {
-    if (options !== undefined) {
-      if (
-        Matrix.isMatrix(options) ||
-        conditions.IsMatrixDeclaration(options as MatrixDeclaration)
-      ) {
-        this.type = (options as Matrix | MatrixDeclaration).type || "float64";
-        this.M = (options as Matrix).M;
-      } else {
-        this.type = "float64";
-        this.M = options as NumericMatrix | MatrixType;
-      }
-    }
-  }
-
   // 4. Properties and utility fields
 
   /**
-   * Gets the matrix data.
-   *
-   * @returns The numeric matrix.
-   */
-  get M(): NumericMatrix {
-    return models.ObtainMatrixFromTypedMatrix(this._M);
-  }
-
-  /**
-   * Sets the matrix data.
-   *
-   * @param matrix - The numeric matrix.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  set M(matrix: NumericMatrix | MatrixType) {
-    const matrixType: TypedArrayConstructor = models
-      .CreateTypedArrayConstructor(this._type);
-    models.InitializeMatrix(matrixType, matrix, this._M);
-  }
-
-  get data() {
-    const typedArray = models.CreateTypedArrayConstructor(this._type);
-    return this._M.map((row: TypedArray) => new typedArray(row));
-  }
-
-  /**
-   * Gets the numeric type of the matrix.
-   *
-   * @returns The numeric type.
-   */
-  get type(): NumericType {
-    return this._type;
-  }
-
-  /**
-   * Sets the numeric type of the matrix.
-   *
-   * @param type - The numeric type.
-   */
-  @resetMatrix
-  set type(type: NumericType) {
-    this._type = type;
-  }
-
-  /**
-   * @readonly
-   * Returns the rows of the current matrix instance.
-   */
-  get rows(): Integer {
-    return this._M.length;
-  }
-
-  /**
-   * @readonly
-   * Returns the number of columns of the current
-   * Matrix instance.
-   */
-  get columns(): Integer {
-    return this.rows ? this._M[0].length : 0;
-  }
-
-  /**
-   * @readonly
    * @returns {boolean} True if the matrix is squared
    * and false otherwise.
    */
-  get isSquare(): boolean {
-    return this.rows === this.columns;
+  // TODO: check if the the matrix is an array of arrays
+  // with equal size.
+  static isSquare(matrix: MatrixType | NumericMatrix): boolean {
+    return matrix.length === matrix[0].length;
   }
 
   /**
@@ -271,9 +180,10 @@ export class Matrix {
    *
    * @returns {boolean} True if the matrix is symmetric, false otherwise.
    */
-  get isSymmetric(): boolean {
-    if (!this.isSquare) return false;
-    return conditions.IsMatrixSymmetric(this._M);
+  // TODO: check if the matrix is array of arrays with equal size.
+  static isSymmetric(matrix: MatrixType | NumericMatrix): boolean {
+    if (!Matrix.isSquare(matrix)) return false;
+    return conditions.IsMatrixSymmetric(matrix);
   }
 
   // 5. Utility functions or operators
@@ -283,83 +193,94 @@ export class Matrix {
    * Checks if the elements of the current Matrix are equal to
    * the corresponding elements of the provided matrix.
    *
-   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used
+   * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
    * for comparison
+   *@param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
+   * for comparison
+
    * @returns {boolean} True, if the elements of the current matrix instance
    * are equal to the elements of the "matrix" parameter, false otherwise.
    */
-  isEqualTo(matrix: Matrix | NumericMatrix | MatrixType): boolean {
-    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix)._M
-      : (matrix as MatrixType | NumericMatrix);
-    if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this._M, m, "eq");
+  static isEqualTo(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "eq");
   }
 
   /**
    * Checks if the elements of the current Matrix are greater than
    * the elements of the "matrix" parameter of the method.
    *
-   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used
+   * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
    * for comparison
+   *@param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
+   * for comparison
+
    * @returns {boolean} true, if the elements of the current matrix instance
    * are greater than the elements of the "matrix" parameter, false otherwise.
    */
-  isGreaterThan(matrix: Matrix | NumericMatrix | MatrixType): boolean {
-    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix)._M
-      : (matrix as MatrixType | NumericMatrix);
-    if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this._M, m, "gt");
+  static isGreaterThan(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "gt");
   }
 
   /**
    * Checks if the elements of the current Matrix are greater than or equal to
    * the elements of the "matrix" parameter of the method.
    *
-   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used
+   * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
+   * for comparison
+   * @param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
    * for comparison
    * @returns {boolean} true, if the elements of the current matrix instance
    * are greater than or equal to the elements of the "matrix" parameter, false otherwise.
    */
-  isGreaterThanOrEqual(matrix: Matrix | NumericMatrix | MatrixType): boolean {
-    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix)._M
-      : (matrix as MatrixType | NumericMatrix);
-    if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this._M, m, "geq");
+  static isGreaterThanOrEqual(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "geq");
   }
 
   /**
    * Checks if all elements of the current Matrix are less than the corresponding
    * elements of the provided matrix.
    *
-   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix for comparison.
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix for comparison.
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix for comparison.
    * @returns {boolean} True if all elements of the current matrix are less than
    * the corresponding elements of the provided matrix, false otherwise.
    */
-  isLessThan(matrix: Matrix | NumericMatrix | MatrixType): boolean {
-    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix)._M
-      : (matrix as NumericMatrix | MatrixType);
-    if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this._M, m, "lt");
+  static isLessThan(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "lt");
   }
 
   /**
    * Checks if the elements of the current Matrix are less than or equal to
    * the elements of the "matrix" parameter.
    *
-   * @param {Matrix | NumericMatrix | MatrixType} matrix - The matrix used for comparison.
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix used for comparison.
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix used for comparison.
+   *
    * @returns {boolean} true, if the elements of the current matrix instance are less than
    * or equal to the elements of the "matrix" parameter, false otherwise.
    */
-  isLessThanOrEqual(matrix: Matrix | NumericMatrix | MatrixType): boolean {
-    const m: MatrixType | NumericMatrix = Matrix.isMatrix(matrix as Matrix)
-      ? (matrix as Matrix)._M
-      : (matrix as NumericMatrix | MatrixType);
-    if (this.rows !== m.length || this.columns !== m[0].length) return false;
-    else return models.CompareMatrices(this._M, m, "leq");
+  static isLessThanOrEqual(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "leq");
   }
 
   /**
@@ -367,54 +288,52 @@ export class Matrix {
    *
    * @param options - The "from" and "to" indices needed for the method
    *   (by default set to [0, 0] and [rows - 1, columns - 1]).
-   * @returns {Matrix} The block as Matrix
+   * @returns {MatrixType | NumericMatrix} The block as Matrix
    */
   @ifFromOrToParametersAreIncorrectlyDefinedThrow(
     errors.IncorrectFromAndToParametersInGetBlock,
   )
-  getBlock(
+  static getBlock(
+    matrix: MatrixType | NumericMatrix,
     options?: MatrixBlockOptions,
-  ): Matrix {
-    const { from, to } = options as MatrixBlockOptions;
-    const block = new Matrix();
-    block._M = models.GetBlock(this._M, from, to, this._type);
-
-    return block;
+  ): MatrixType | NumericMatrix {
+    const { from, to, type } = options as MatrixBlockOptions;
+    return models.GetBlock(matrix, from, to, type || Matrix._type);
   }
 
   /**
    * Sets the elements of a block/ sub - matrix of the current Matrix
    * instance with the elements of the "block" parameter.
    *
-   * @param options - The "block", "from," and "to" parameters needed for the method.
-   * @returns {Matrix} The updated Matrix instance.
+   * @param{MatrixType | NumericMatrix} matrix - The matrix which will be
+   * changed.
+   * @param{MatrixType | NumericMatrix} block - The submatrix which will
+   * be put in the maatrix.
+   * @param {MatrixBlockOptions} options - The "from" and "to" parameters needed for the method.
+   * @returns {MatrixType | NumericMatrix} The updated Matrix instance.
    */
   @ifFromOrToParametersAreIncorrectlyDefinedThrow(
     errors.IncorrectFromAndToParametersInSetBlock,
   )
-  setBlock(
-    options: MatrixBlockOptions & {
-      block: NumericMatrix | Matrix | MatrixType;
-    },
-  ): Matrix {
-    let b: NumericMatrix | MatrixType | null = null;
-    const { block, from, to } = options;
+  static setBlock(
+    matrix: MatrixType | NumericMatrix,
+    block: MatrixType | NumericMatrix,
+    options: MatrixBlockOptions,
+  ): MatrixType | NumericMatrix {
+    const { from, to } = options;
 
-    if (Matrix.isMatrix(block as Matrix)) {
-      b = (block as Matrix)._M;
-    } else b = block as NumericMatrix;
-    if (conditions.IsArrayOfArraysWithEqualSize(b as NumericMatrix)) {
+    if (conditions.IsArrayOfArraysWithEqualSize(block as NumericMatrix)) {
       if (
-        (b as NumericMatrix).length > (to[0] - from[0] + 1) ||
-        (b as NumericMatrix)[0].length > (to[1] - from[1] + 1)
+        (block as NumericMatrix).length > (to[0] - from[0] + 1) ||
+        (block as NumericMatrix)[0].length > (to[1] - from[1] + 1)
       ) {
         errors.IncorrectBlockParameterInSetBlock();
       }
     }
 
-    models.SetBlock(this._M, b as NumericMatrix, from, to);
+    models.SetBlock(matrix, block as NumericMatrix, from, to);
 
-    return this;
+    return matrix;
   }
   /**
    * Retrieves a specific row from the matrix based on the provided row index
@@ -425,15 +344,19 @@ export class Matrix {
    * @param {Integer} [toColumnIndex=this.columns - 1] - The ending column index (default is the last column).
    * @returns {Matrix} - The extracted row as a Matrix.
    */
-  getRow(
+  static getRow(
+    matrix: MatrixType | NumericMatrix,
     rowIndex: Integer,
     fromColumnIndex: Integer = 0,
-    toColumnIndex: Integer = this.columns - 1,
-  ): Matrix {
-    return this.getBlock({
-      from: [rowIndex, fromColumnIndex],
-      to: [rowIndex, toColumnIndex],
-    });
+    toColumnIndex: Integer = matrix[0].length,
+  ): MatrixType | NumericMatrix {
+    return Matrix.getBlock(
+      matrix,
+      {
+        from: [rowIndex, fromColumnIndex],
+        to: [rowIndex, toColumnIndex],
+      },
+    );
   }
 
   /**
@@ -446,17 +369,21 @@ export class Matrix {
    * @param {NumericMatrix | Matrix} row - The values to set in the specified row.
    * @returns {Matrix} - The updated matrix instance.
    */
-  setRow(
+  static setRow(
+    matrix: MatrixType | NumericMatrix,
+    row: NumericMatrix | NumericMatrix,
     rowIndex: Integer,
     fromColumnIndex: Integer,
     toColumnIndex: Integer,
-    row: NumericMatrix | Matrix,
-  ): Matrix {
-    return this.setBlock({
-      from: [rowIndex, fromColumnIndex],
-      to: [rowIndex, toColumnIndex],
-      block: row,
-    });
+  ): MatrixType | NumericMatrix {
+    return Matrix.setBlock(
+      matrix,
+      row,
+      {
+        from: [rowIndex, fromColumnIndex],
+        to: [rowIndex, toColumnIndex],
+      },
+    );
   }
 
   /**
@@ -468,13 +395,16 @@ export class Matrix {
    * @param {Integer} toColumn - The ending column index (exclusive).
    * @returns {Matrix} The updated Matrix instance (The initial matrix is not copied).
    */
-  exchangeRows(
+  static exchangeRows(
+    matrix: MatrixType | NumericMatrix,
     row1: Integer,
     row2: Integer,
     fromColumn: Integer = 0,
-    toColumn: Integer = this.columns - 1,
-  ): Matrix {
-    if (row1 < 0 || row1 >= this.rows || row2 < 0 || row2 >= this.rows) {
+    toColumn: Integer = matrix[0].length - 1,
+  ): MatrixType | NumericMatrix {
+    if (
+      row1 < 0 || row1 >= matrix.length || row2 < 0 || row2 >= matrix.length
+    ) {
       errors.IncorrectRowIndexParametersInExchangeRows();
     }
 
@@ -482,13 +412,13 @@ export class Matrix {
       errors.IncorrectFromColumnIndexParameterInExchangeRows();
     }
 
-    if (toColumn < fromColumn || toColumn > this.columns || toColumn < 0) {
+    if (toColumn < fromColumn || toColumn > matrix[0].length || toColumn < 0) {
       errors.IncorrectToColumnIndexParameterInExcangeRows();
     }
 
-    models.ExchangeRows(this._M, row1, row2, fromColumn, toColumn);
+    models.ExchangeRows(matrix, row1, row2, fromColumn, toColumn);
 
-    return this;
+    return matrix;
   }
 
   /**
@@ -501,12 +431,16 @@ export class Matrix {
    * @returns {Matrix} The updated matrix instance (the previous values are not copied)
    */
   exchangeColumns(
+    matrix: MatrixType | NumericMatrix,
     col1: Integer,
     col2: Integer,
     fromRow: Integer = 0,
-    toRow: Integer = this.rows - 1,
-  ): Matrix {
-    if (col1 < 0 || col1 > this.columns || col2 < 0 || col2 >= this.columns) {
+    toRow: Integer = matrix.length - 1,
+  ): MatrixType | NumericMatrix {
+    if (
+      col1 < 0 || col1 > matrix[0].length || col2 < 0 ||
+      col2 >= matrix[0].length
+    ) {
       errors.IncorrectColumnIndexParametersInExchangeColumns();
     }
 
@@ -514,13 +448,13 @@ export class Matrix {
       errors.IncorrectFromRowIndexParameterInExchangeColumns();
     }
 
-    if (toRow < 0 || toRow >= this.rows) {
+    if (toRow < 0 || toRow >= matrix.length) {
       errors.IncorrectToRowIndexParameterInExchangeColumns();
     }
 
-    models.ExchangeColumns(this._M, col1, col2, fromRow, toRow);
+    models.ExchangeColumns(matrix, col1, col2, fromRow, toRow);
 
-    return this;
+    return matrix;
   }
 
   /**
@@ -529,30 +463,29 @@ export class Matrix {
    * @param {Integer} row - The row index for subdiagonal (default is 0).
    * @returns {Matrix} - The diagonal or subdiagonal as a Matrix.
    */
-  getDiagonal(row: Integer = 0): Matrix {
-    if (row < 0 || row >= this.rows) {
+  static getDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    row: Integer = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (row < 0 || row >= matrix.length) {
       errors.IncorrectRowIndexParameterInGetDiagonal();
     }
 
-    const typedArray = models.CreateTypedArrayConstructor(this.type);
-    const diagonalMatrix = new Matrix();
-    diagonalMatrix._M = models.GetDiagonal(this._M, row, typedArray);
-    diagonalMatrix._type = this._type;
-
-    return diagonalMatrix;
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GetDiagonal(matrix, row, typedArray);
   }
   /**
    * Converts the current matrix into collection of
    * diagonal matrix blocks.
    *
-   * @returns {Matrix} - The resulting diagonal matrix.
+   * @returns {MatrixType | NumericMatrix} - The resulting diagonal matrix.
    */
-  toDiagonalMatrix(): Matrix {
-    const diagMatrix = new Matrix();
-    diagMatrix._M = models.ToDiagonalMatrix(this._M, this.type);
-    diagMatrix._type = this._type;
-
-    return diagMatrix;
+  static toDiagonalMatrix(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.ToDiagonalMatrix(matrix, type);
   }
 
   /**
@@ -561,62 +494,50 @@ export class Matrix {
    * @param {NumericMatrix | MatrixType | Matrix} block - The block to append.
    * @returns {Matrix} - The extended matrix instance.
    */
-  appendBlockRight(block: NumericMatrix | MatrixType | Matrix): Matrix {
-    let blockData: MatrixType | undefined;
-    if (Matrix.isMatrix(block)) {
-      blockData = (block as Matrix)._M;
-    } else {
-      blockData = new Matrix(block)._M;
-    }
-    if (!conditions.IsEmpty(blockData)) {
-      if (blockData.length !== this.rows) {
+  static appendBlockRight(
+    matrix: MatrixType | NumericMatrix,
+    block: NumericMatrix | MatrixType,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsEmpty(block)) {
+      if (block.length !== matrix.length) {
         errors.IncorrectBlockParameterInAppendBlockRight();
       }
-      const typedArray = models.CreateTypedArrayConstructor(this.type);
-      const extendedMatrix = new Matrix();
-      extendedMatrix._M = models.AppendBlockRight(
-        this._M,
-        blockData,
+      const typedArray = models.CreateTypedArrayConstructor(type);
+      return models.AppendBlockRight(
+        matrix,
+        block,
         typedArray,
       );
-      extendedMatrix._type = this._type;
-
-      return extendedMatrix;
     }
-    return this;
+    return matrix;
   }
 
   /**
    * Appends a block to the bottom of the current matrix instance.
    *
-   * @param {NumericMatrix | MatrixType | Matrix} block - The block to append.
-   * @returns {Matrix} - The extended matrix instance.
+   * @param {NumericMatrix | MatrixType} matrix - The initial matrix.
+   * @param {NumericMatrix | MatrixType} block - The block to append.
+   * @returns {MatrixType | NumericMatrix} - The extended matrix instance.
    */
-  appendBlockBottom(block: NumericMatrix | MatrixType | Matrix): Matrix {
-    let blockData: MatrixType | undefined;
-    if (Matrix.isMatrix(block)) {
-      blockData = (block as Matrix)._M;
-    } else {
-      blockData = new Matrix(block)._M;
-    }
-
-    if (!conditions.IsEmpty(blockData)) {
-      if (blockData[0].length !== this.columns) {
+  static appendBlockBottom(
+    matrix: MatrixType | NumericMatrix,
+    block: NumericMatrix | MatrixType,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsEmpty(block)) {
+      if (block[0].length !== matrix[0].length) {
         errors.IncorrectBlockParameterInAppendBlockBottom();
       }
-      const typedArray = models.CreateTypedArrayConstructor(this.type);
-      const extendedMatrix = new Matrix();
-      extendedMatrix._M = models.AppendBlockBottom(
-        this._M,
-        blockData,
+      const typedArray = models.CreateTypedArrayConstructor(type);
+      return models.AppendBlockBottom(
+        matrix,
+        block,
         typedArray,
       );
-      extendedMatrix._type = this._type;
-
-      return extendedMatrix;
     }
 
-    return this;
+    return matrix;
   }
 
   // 6. Matrix operations and
@@ -635,66 +556,70 @@ export class Matrix {
   @ifRowsAndColumnsAreInappropriatelyDefinedThrow(
     errors.IncorrectRowsAndColumnsParametersInReshape,
   )
-  reshape(rows: Integer, columns: Integer): Matrix {
-    const reshaped = new Matrix();
-    if (rows === this.rows && columns === this.columns) return this;
-    const typedArray = models.CreateTypedArrayConstructor(this.type);
-    reshaped._M = models.Reshape(
-      this._M,
-      this.rows,
-      this.columns,
+  static reshape(
+    matrix: MatrixType | NumericMatrix,
+    rows: Integer,
+    columns: Integer,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (rows === matrix.length && columns === matrix[0].length) return matrix;
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.Reshape(
+      matrix,
+      matrix.length,
+      matrix[0].length,
       rows,
       columns,
       typedArray,
     );
-    reshaped._type = this._type;
-
-    return reshaped;
   }
 
   /**
    * Transposes the current matrix,
    * swapping its rows and columns.
    *
-   * @returns {Matrix} A new Matrix
+   * @returns {MatrixType | NumericMatrix} A new Matrix
    * instance representing the transposed matrix.
    */
-  transpose(): Matrix {
-    if (this.rows === 1 && this.columns === 1) return this;
-    const typedArray = models.CreateTypedArrayConstructor(this.type);
-    const transposed = new Matrix();
-    transposed._M = models.TransposeMatrix(
-      this._M,
-      this.rows,
-      this.columns,
+  static transpose(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (matrix.length === 1 && matrix[0].length === 1) return matrix;
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.TransposeMatrix(
+      matrix,
+      matrix.length,
+      matrix[0].length,
       typedArray,
     );
-    transposed._type = this._type;
-
-    return transposed;
   }
 
   /**
    * Transposes the current Matrix instance,
    * swapping its row and column elements.
    *
-   * @returns {Matrix} A new Matrix instance
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance
    * representing the transposed matrix.
    */
-  get T(): Matrix {
-    return this.transpose();
+  static T(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return Matrix.transpose(matrix, type);
   }
 
   /**
    * Calculates the Frobenius norm of a matrix.
    *
-   * @readonly
+   * @param{MatrixType | NumericMatrix} matrix - the matrix
+   * whose norm has to be computed.
    * @throws {Error} If the matrix is not valid.
    * @returns {number} The Frobenius (Euclidean)
    * norm of the matrix.
    */
-  get FrobeniusNorm(): number {
-    return models.FrobeniusNorm(this._M);
+  static FrobeniusNorm(matrix: MatrixType | NumericMatrix): number {
+    return models.FrobeniusNorm(matrix);
   }
 
   /**
@@ -703,6 +628,8 @@ export class Matrix {
    * It is calculated as the maximum sum of absolute values of each row.
    * If the matrix is empty or contains non-numeric elements, an internal error is thrown.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
+   * has to be computed.
    * @returns {number} The infinity norm of the matrix.
    * @throws {Error} Throws an internal error if the matrix is empty or contains non-numeric elements.
    *
@@ -710,8 +637,8 @@ export class Matrix {
    * const matrix = new Matrix([[1, 2, 3], [-4, 5, 6], [7, 8, 9]]);
    * const infinityNorm = matrix.infinityNorm; // Returns 24
    */
-  get infinityNorm(): number {
-    const infNorm = models.MatrixReduce(this._M, "infNorm");
+  static infinityNorm(matrix: MatrixType | NumericMatrix): number {
+    const infNorm = models.MatrixReduce(matrix, "infNorm");
     if (infNorm < 0 || isNaN(infNorm)) {
       errors.InternalErrorInInfinityNorm();
     }
@@ -723,14 +650,16 @@ export class Matrix {
    * Obtains the maximum absolute element norm of the matrix.
    * The maximum absolute element norm is the maximum absolute value of any element in the matrix.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
+   * have to be computed.
    * @returns {number} The maximum absolute element norm of the matrix.
    *
    * @example
    * const matrix = new Matrix([[1, 2, 3], [-4, 5, 6], [7, 8, 9]]);
    * const maxNorm = matrix.maxNorm; // Returns 9 (maximum absolute value in the matrix)
    */
-  get maxNorm(): number {
-    const maxNorm = models.MatrixReduce(this._M, "maxNorm");
+  static maxNorm(matrix: MatrixType | NumericMatrix): number {
+    const maxNorm = models.MatrixReduce(matrix, "maxNorm");
     if (maxNorm < 0 || isNaN(maxNorm)) {
       errors.InternalErrorInMaxNorm();
     }
@@ -741,11 +670,13 @@ export class Matrix {
   /**
    * Computes the 1-norm (maximum column sum) of the matrix.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose norm has to be computed.
    * @returns {number} The 1-norm of the matrix.
    * @throws {Error} If the calculation of the method is NaN.
    */
-  get norm1(): number {
-    const norm1 = models.MatrixReduce(this._M, "norm1");
+  static norm1(matrix: MatrixType | NumericMatrix): number {
+    const norm1 = models.MatrixReduce(matrix, "norm1");
     if (norm1 < 0 || isNaN(norm1)) {
       errors.InternalErrorInNorm1();
     }
@@ -756,11 +687,13 @@ export class Matrix {
   /**
    * Computes the superior norm of the matrix.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be examined.
    * @returns {number} The superior norm.
    * @throws {Error} If the calculation result is NaN.
    */
-  get superior(): number {
-    const superior = models.MatrixReduce(this._M, "sup");
+  static superior(matrix: MatrixType | NumericMatrix): number {
+    const superior = models.MatrixReduce(matrix, "sup");
     if (isNaN(superior)) {
       errors.InternalErrorInSuperiorNorm();
     }
@@ -771,11 +704,13 @@ export class Matrix {
   /**
    * Computes the inferior norm of the matrix.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be examined.
    * @returns {number} The inferior norm.
    * @throws {Error} If the calculation result is NaN.
    */
-  get inferior(): number {
-    const inferior = models.MatrixReduce(this._M, "inf");
+  static inferior(matrix: MatrixType | NumericMatrix): number {
+    const inferior = models.MatrixReduce(matrix, "inf");
     if (isNaN(inferior)) {
       errors.InternalErrorInInferiorNorm();
     }
@@ -786,11 +721,13 @@ export class Matrix {
   /**
    * Computes the sum of all elements in the matrix.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be added.
    * @returns {number} The sum of all elements.
    * @throws {Error} If the calculation result is NaN.
    */
-  get sumOfAllElements(): number {
-    const sum = models.MatrixReduce(this._M, "sum");
+  static sumOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const sum = models.MatrixReduce(matrix, "sum");
     if (isNaN(sum)) errors.InternalErrorInSum();
 
     return sum;
@@ -799,11 +736,13 @@ export class Matrix {
   /**
    * Computes the sum of all elements in the matrix.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be multiplied.
    * @returns {number} The product of all elements.
    * @throws {Error} If the calculation result is NaN.
    */
-  get productOfAllElements(): number {
-    const product = models.MatrixReduce(this._M, "product");
+  static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const product = models.MatrixReduce(matrix, "product");
     if (isNaN(product)) errors.InternalErrorInProduct();
 
     return product;
@@ -812,12 +751,14 @@ export class Matrix {
   /**
    * Computes the sum of the squares of all matrix elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for computation.
    * @returns {number} The sum of squares of all matrix elements.
    * @throws {Error} If some  of the elements of the matrix is NaN
    * or the result of the computation is negative.
    */
-  get sumOfSquaresOfAllElements(): number {
-    const squares = models.MatrixReduce(this._M, "square");
+  static sumOfSquaresOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const squares = models.MatrixReduce(matrix, "square");
     if (isNaN(squares) || squares < 0) {
       errors.InternalErrorInSquares();
     }
@@ -828,11 +769,13 @@ export class Matrix {
   /**
    * Computes the sum of the cubes of all matrix elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elelements will be used for computations.
    * @returns {number} The calculated result of the method.
    * @throws {Error} If the calculated result is NaN.
    */
-  get sumOfCubesOfAllElements(): number {
-    const cubes = models.MatrixReduce(this._M, "cube");
+  static sumOfCubesOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const cubes = models.MatrixReduce(matrix, "cube");
     if (isNaN(cubes)) errors.InternalErrorInCubes();
 
     return cubes;
@@ -843,31 +786,33 @@ export class Matrix {
    * value or the corresponding element in the input matrix (m), then the output element
    * will be 1; otherwise, it will be 0.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * which will be examined.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The value or matrix to compare against.
+   * @param {NumericType} type - The type of the matrix elements.
    * @returns {Matrix} A matrix with elements 0/1 based on the comparison.
    * @throws {Error} If the "m" parameter is not a number or a matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("gt"))
-  gt(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static gt(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (typeof m !== "number") {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("gt")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "gt",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -876,34 +821,36 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
+   * @param {MatrixType |NumericMatrix} matrix - The matrix
+   * whose elements will be compared.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
    * or matrix for pointwise comparison.
+   * @param {NumericType} type - The type of the matrix elements.
    * @returns {Matrix} A new matrix resulting from the pointwise
    * "greater than or equal to" operation.
    * @throws {Error} If the "m" parameter is
    * not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("geq"))
-  geq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static geq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | Matrix | MatrixType | NumericMatrix,
+    type: NumericType,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("geq")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "geq",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
   /**
    * Generates a matrix with elements 0/1. If the element is
@@ -911,34 +858,36 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
    * or matrix for pointwise comparison.
+   * @param {NumericType} type - the type of the matrix elements.
    * @returns {Matrix} A new matrix resulting from the
    * pointwise "equal to" operation.
    * @throws {Error} If the "m" parameter is not a
    * number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("eq"))
-  eq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static eq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("eq")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "eq",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
   /**
    * Generates a matrix with elements 0/1. If the element is
@@ -946,6 +895,8 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
+   * @param {MatrixType | NumericMatrix} matrix - the matrix whose elements
+   * will be examined.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
    * or matrix for pointwise comparison.
    * @returns {Matrix} A new matrix resulting
@@ -954,26 +905,25 @@ export class Matrix {
    * a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("neq"))
-  neq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static neq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | Matrix | MatrixType | NumericMatrix,
+    type: NumericType,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("neq")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "neq",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -982,6 +932,8 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The
    * number or matrix for pointwise comparison.
    * @returns {Matrix} A new matrix resulting
@@ -990,26 +942,25 @@ export class Matrix {
    * not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("lt"))
-  lt(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static lt(
+    matrix: MatrixType | NumericMatrix,
+    m: number | Matrix | MatrixType | NumericMatrix,
+    type: NumericType,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("lt")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "lt",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1018,34 +969,35 @@ export class Matrix {
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The
    * number or matrix for pointwise comparison.
-   * @returns {Matrix} A new matrix resulting
+   * @returns {MatrixType} A new matrix resulting
    * from the pointwise "less than or equal to" operation.
    * @throws {Error} If the "m" parameter is not a number
    * or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("leq"))
-  leq(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static leq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("leq")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "leq",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1055,32 +1007,34 @@ export class Matrix {
    * a matrix with the same dimensions as the current matrix, the logical OR
    * operation is applied element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise OR operation.
-   * @returns {Matrix} A new matrix resulting from the pointwise bitwise OR operation.
+   * @param {NumericType} type - the type of the matrix elements.
+   * @returns {MatrixType \ NumericMatrix} A new matrix resulting from the pointwise bitwise OR operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"))
-  or(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static or(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("or")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "or",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1093,34 +1047,34 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix
+   * @param {number | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise OR operation.
-   * @returns {Matrix} A new matrix resulting from the pointwise bitwise OR operation.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise OR operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("bitwiseOr"),
   )
-  bitwiseOr(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static bitwiseOr(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("bitwiseOr")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "bor",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1130,32 +1084,34 @@ export class Matrix {
    * a matrix with the same dimensions as the current matrix, the logical AND
    * operation is applied element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whoolse element
+   * will be used for logical and operation.
    * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
    * matrix for the bitwise AND operation.
+   * @param {NumericType} type - The type of the matrix elements.
    * @returns {Matrix} A new matrix resulting from the pointwise bitwise AND operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"))
-  and(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static and(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("and")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "and",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1168,34 +1124,36 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix
+   * used for the bitwise and operation.
    * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
    * matrix for the bitwise AND operation.
-   * @returns {Matrix} A new matrix resulting from the pointwise bitwise AND operation.
+   * @param{NumericType} type - The type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise AND operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("bitwiseAnd"),
   )
-  bitwiseAnd(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static bitwiseAnd(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("bitwiseAnd")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "band",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1208,31 +1166,33 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be used for xor operation.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix for the bitwise XOR operation.
-   * @returns {Matrix} A new matrix resulting from the pointwise bitwise XOR operation.
+   * @param {NumericType} type - The type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise XOR operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"))
-  xor(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static xor(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("xor")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "xor",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1246,34 +1206,37 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix used for
+   * right shifting of its elements.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise right shift operation.
-   * @returns {Matrix} A new matrix resulting from the pointwise bitwise right shift operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise right shift operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("rightShiftBy"),
   )
-  rightShiftBy(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static rightShiftBy(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("rightShiftBy")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "rightShiftBy",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1287,34 +1250,36 @@ export class Matrix {
    * NB! Note that in JavaScript and in TypeScript respectively the logical
    * bitwise operations are limited to 32-bit numbers.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will
+   * bitwise shifted to the left.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the bitwise left shift operation.
-   * @returns {Matrix } A new matrix resulting from the pointwise bitwise left shift operation.
-   * @throws {ErrorI} f the "m" parameter is not a number or Matrix-like structure.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix } A new matrix resulting from the pointwise bitwise left shift operation.
+   * @throws {Error} f the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
   )
-  leftShiftBy(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static leftShiftBy(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("leftShiftBy")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "leftShiftBy",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1324,34 +1289,36 @@ export class Matrix {
    * If the input is a matrix with the same dimensions as the current matrix,
    * the addition operation is applied element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for the addition
+   * operation.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the addition operation.
-   * @returns {Matrix}  A new matrix resulting from the pointwise addition operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the pointwise addition operation.
    * @throws {Error } If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("plus"),
   )
-  plus(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static plus(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("plus")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "plus",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1361,34 +1328,36 @@ export class Matrix {
    * with the same dimensions as the current matrix, the subtraction operation
    * is applied element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
+   * the subtraction operation.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
    * matrix for the subtraction operation.
-   * @returns {MatrixA}  new matrix resulting from the pointwise subtraction operation.
-   * @throws {ErrorI} f the "m" parameter is not a number or Matrix-like structure.
+   * @param {NumericType} type - The type of the elements of the output matrix.
+   * @returns {MatrixType | NumericMatrix}  new matrix resulting from the pointwise subtraction operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("minus"),
   )
-  minus(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static minus(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("minus")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "minus",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1398,34 +1367,37 @@ export class Matrix {
    * with the same dimensions as the current matrix, the exponentiation operation
    * is applied element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which elements will be
+   * power-ised.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
    * for the exponentiation operation.
-   * @returns {Matrix} A new matrix resulting from the pointwise exponentiation operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise exponentiation operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("power"),
   )
-  power(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static power(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (!conditions.IsNumber(m)) {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("power")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "power",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1435,34 +1407,36 @@ export class Matrix {
    * is a matrix with the same dimensions as the current matrix, the Hadamard
    * product is applied element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
+   * the pointwise multiplicaton.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
    * for the Hadamard product.
-   * @returns {Matrix} A new matrix resulting from the Hadamard product operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the Hadamard product operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("Hadamard"),
   )
-  Hadamard(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static Hadamard(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (typeof m !== "number") {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("Hadamard")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+    return models.BinaryPointwise(
+      matrix,
       m as number | MatrixType | NumericMatrix,
       "Hadamard",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1472,32 +1446,34 @@ export class Matrix {
    * dimensions as the current matrix, division is applied element-wise between
    * corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix, whose elements will
+   * be divided.
    * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
    * matrix for the element-wise division.
-   *
-   * @returns {Matrix}  A new matrix resulting from the element-wise division operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the element-wise division operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
-  divide(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static divide(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (typeof m !== "number") {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("divide")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+
+    return models.BinaryPointwise(
+      matrix,
       m as MatrixType | NumericMatrix,
       "divide",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1507,44 +1483,50 @@ export class Matrix {
    * with the same dimensions as the current matrix, modulus operation is applied
    * element-wise between corresponding elements.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
+   * the modulus operation.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
    * for the element-wise modulus operation.
-   * @returns {Matrix} A new matrix resulting from the element-wise modulus operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the element-wise modulus operation.
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
-  modulus(m: number | Matrix | MatrixType | NumericMatrix): Matrix {
-    const output = new Matrix();
-    if (Matrix.isMatrix(m)) m = (m as Matrix)._M;
+  static modulus(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
     if (typeof m !== "number") {
       if (
-        (m as MatrixType | NumericMatrix).length !== this.rows &&
-        (m as MatrixType | NumericMatrix)[0].length !== this.columns
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
       ) {
         errors.IncorrectMatrixParameterInPointwise("modulus")();
       }
     }
-    output._M = models.BinaryPointwise(
-      this._M,
+
+    return models.BinaryPointwise(
+      matrix,
       m as MatrixType | NumericMatrix,
       "modulus",
-      this._type,
+      type,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
    * Performs a unary point-wise negation.
    *
-   * @returns {Matrix} A new Matrix instance with negated elements.
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose
+   * elements will be negated.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance with negated elements.
    */
-  negate(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "neg", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static negate(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "neg", type, weight, bias);
   }
 
   /**
@@ -1553,20 +1535,23 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to
    * each element.
    *
-   * @returns {Matrix} A new Matrix instance with bitwise negated elements.
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be bitwise negated.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance with bitwise negated elements.
    */
-  bitwiseNegate(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static bitwiseNegate(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "bneg",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1575,16 +1560,20 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the sine.
    * The resulting value is computed as `Math.sin(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be transformed to its sine values.
    * @param {number} [weight=1] - The weight to multiply each matrix element before applying the sine function.
    * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @param {NumericType} type - The type of the output matrix elements.
    * @returns {Matrix} A new matrix with the sine function applied to its elements.
    */
-  sin(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "sin", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static sin(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "sin", type, weight, bias);
   }
 
   /**
@@ -1593,16 +1582,20 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the cosine.
    * The resulting value is computed as `Math.cos(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be
+   * transformed to its cosine value.
    * @param {number} [weight=1] - The weight to multiply each matrix element before applying the cosine function.
    * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @param {NumericType} type - The type of the output matrix elements.
    * @returns {Matrix} A new matrix with the cosine function applied to its elements.
    */
-  cos(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "cos", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static cos(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "cos", type, weight, bias);
   }
 
   /**
@@ -1611,16 +1604,20 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the tangent.
    * The resulting value is computed as `Math.tan(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * to provide a new matrix with its tangent values.
    * @param {number} [weight=1] - The weight to multiply each matrix element before applying the tangent function.
    * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @param {NumericType} type - The type of the output matrix elements.
    * @returns {Matrix} A new matrix with the tangent function applied to its elements.
    */
-  tan(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "tan", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static tan(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "tan", type, weight, bias);
   }
 
   /**
@@ -1629,22 +1626,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the cotangent.
    * The resulting value is computed as `Math.cotan(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will
+   * be used for providing of a matrix with its cotangent values.
    * @param {number} [weight=1] - The weight to multiply each matrix element before applying the cotangent function.
    * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
-   * @returns {Matrix} A new matrix with the cotangent function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the cotangent function applied to its elements.
    */
-  cotan(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static cotan(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "cotan",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1653,16 +1654,20 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the exponent.
    * The resulting value is computed as `Math.exp(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be
+   * used for providing of a matrix with its exponent values.
    * @param {number} weight - A number to multiply each element before applying the exponential function.
    * @param {number} bias - A number to be added to each element before applying the exponential function.
-   * @returns {Matrix} A new matrix with the exponential function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the exponential function applied to its elements.
    */
-  exp(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "exp", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static exp(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "exp", type, weight, bias);
   }
 
   /**
@@ -1671,22 +1676,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the hyperbolic sine.
    * The resulting value is computed as `Math.sinh(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be
+   * used to be produces a new matrix with its hyperbolic sine values.
    * @param {number} weight - A number to multiply each element before applying the hyperbolic sine function.
    * @param {number} bias - A number to be added to each element before applying the hyperbolic sine function.
+   * @param {NumericType} type - The type of the output matrix elements.
    * @returns {Matrix} A new matrix with the hyperbolic sine function applied to its elements.
    */
-  sinh(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static sinh(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "sinh",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1695,22 +1704,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the hyperbolic cosine.
    * The resulting value is computed as `Math.cosh(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericType} matrix - The matrix which will be used
+   * for computing and creation of matrix with its hyperbolic cosine values.
    * @param {number} weight - A number to multiply each element before applying the hyperbolic cosine function.
    * @param {number} bias - A number to be added to each element before applying the hyperbolic cosine function.
-   * @returns {Matrix} A new matrix with the hyperbolic cosine function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the hyperbolic cosine function applied to its elements.
    */
-  cosh(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static cosh(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "cosh",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1719,22 +1732,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the hyperbolic tangent.
    * The resulting value is computed as `Math.tanh(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for providing of a matrix with its hyperbolic tangent values.
    * @param {number} weight - A number to multiply each element before applying the hyperbolic tangent function.
    * @param {number} bias - A number to be added to each element before applying the hyperbolic tangent function.
-   * @returns {Matrix} A new matrix with the hyperbolic tangent function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the hyperbolic tangent function applied to its elements.
    */
-  tanh(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static tanh(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "tanh",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1743,22 +1760,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the hyperbolic cotangent.
    * The resulting value is computed as `cotanh(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for the generating of a matrix of its hyperbolic cotangent values.
    * @param {number} weight - A number to multiply each element before applying the hyperbolic cotangent function.
    * @param {number} bias - A number to be added to each element before applying the hyperbolic cotangent function.
-   * @returns {Matrix} A new matrix with the hyperbolic cotangent function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the hyperbolic cotangent function applied to its elements.
    */
-  cotanh(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static cotanh(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "cotanh",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1767,46 +1788,53 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the arcsine.
    * The resulting value is computed as `Math.asin(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be used for generating of a new matrix of its arcus sine values.
    * @param {number} weight - A number to multiply each element before applying the arcsine function.
    * @param {number} bias - A number to be added to each element before applying the arcsine function.
-   * @returns {Matrix} A new matrix with the arcsine function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the arcsine function applied to its elements.
    */
-  arcsin(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static arcsin(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "arcsin",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
-
   /**
    * Applies the point-wise arccosine function to the elements of the Matrix.
    *
    * Optionally, a weight and bias can be applied to each element before computing the arccosine.
    * The resulting value is computed as `Math.acos(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for generating of a matrix of its arcus cosine values.
    * @param {number} weight - A number to multiply each element before applying the arccosine function.
    * @param {number} bias - A number to be added to each element before applying the arccosine function.
-   * @returns {Matrix} A new matrix with the arccosine function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the arccosine function applied to its elements.
    */
-  arccos(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static arccos(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "arccos",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1815,22 +1843,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the arctangent.
    * The resulting value is computed as `Math.atan(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for the providing of new matrix of its arcus tangent values.
    * @param {number} weight - A number to multiply each element before applying the arctangent function.
    * @param {number} bias - A number to be added to each element before applying the arctangent function.
-   * @returns {Matrix} A new matrix with the arctangent function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the arctangent function applied to its elements.
    */
-  arctan(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static arctan(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "atan",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1839,22 +1871,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the arccotangent.
    * The resulting value is computed as `Math.acotan(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for generating of new matrix of its arcus tangent values.
    * @param {number} weight - A number to multiply each element before applying the arccotangent function.
    * @param {number} bias - A number to be added to each element before applying the arccotangent function.
-   * @returns {Matrix} A new matrix with the arccotangent function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the arccotangent function applied to its elements.
    */
-  arccotan(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static arccotan(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "acotan",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1863,16 +1899,19 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the absolute value.
    * The resulting value is computed as `Math.abs(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix -The matrix whose elements will be used
+   * to generate a new matrix of its absolute values.
    * @param {number} weight - A number to multiply each element before applying the absolute value function.
    * @param {number} bias - A number to be added to each element before applying the absolute value function.
-   * @returns {Matrix} A new matrix with the absolute value function applied to its elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the absolute value function applied to its elements.
    */
-  abs(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "abs", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static abs(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "abs", type, weight, bias);
   }
 
   /**
@@ -1881,22 +1920,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the sigmoid.
    * The resulting value is computed as `1 / (1 + Math.exp(-(weight * element + bias)))`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which elements
+   * will be used for generating of matrix of its sigmoid values.
    * @param {number} weight - A number to multiply each element before applying the sigmoid function.
    * @param {number} bias - A number to be added to each element before applying the sigmoid function.
-   * @returns {Matrix} A new matrix with the sigmoid function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the sigmoid function applied to its elements.
    */
-  sigmoid(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static sigmoid(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "sigmoid",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1905,22 +1948,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before rounding.
    * The resulting value is computed as `Math.round(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which elements will be
+   * used for generating of a new matrix of its rounded values.
    * @param {number} weight - A number to multiply each element before applying the rounding function.
    * @param {number} bias - A number to be added to each element before applying the rounding function.
-   * @returns {Matrix} A new matrix with the rounding function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the rounding function applied to its elements.
    */
-  round(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static round(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "round",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1929,22 +1976,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before ceiling.
    * The resulting value is computed as `Math.ceil(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which
+   * will be produces a new matrix of its ceiled valuss.
    * @param {number} weight - A number to multiply each element before applying the ceiling function.
    * @param {number} bias - A number to be added to each element before applying the ceiling function.
-   * @returns {Matrix} A new matrix with the ceiling function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the ceiling function applied to its elements.
    */
-  ceil(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static ceil(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "ceil",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1953,22 +2004,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the square root.
    * The resulting value is computed as `Math.sqrt(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which will
+   * be performaed a new matrix with elements equal to its square root values.
    * @param {number} weight - A number to multiply each element before applying the square root function.
    * @param {number} bias - A number to be added to each element before applying the square root function.
-   * @returns {Matrix} A new matrix with the square root function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the square root function applied to its elements.
    */
-  sqrt(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static sqrt(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "sqrt",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -1977,16 +2032,20 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the natural logarithm.
    * The resulting value is computed as `Math.log(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which will be
+   * performed a new matrix of tis logarithmic values.
    * @param {number} weight - A number to multiply each element before applying the natural logarithm function.
    * @param {number} bias - A number to be added to each element before applying the natural logarithm function.
-   * @returns {Matrix} A new matrix with the natural logarithm function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the natural logarithm function applied to its elements.
    */
-  log(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "log", this._type, weight, bias);
-    output._type = this._type;
-
-    return output;
+  static log(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "log", type, weight, bias);
   }
 
   /**
@@ -1995,22 +2054,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the floor.
    * The resulting value is computed as `Math.floor(weight * element + bias)`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which will
+   * be performed a matrix of its floored values.
    * @param {number} weight - A number to multiply each element before applying the floor function.
    * @param {number} bias - A number to be added to each element before applying the floor function.
-   * @returns {Matrix} A new matrix with the floor function applied to its elements.
+   * @param {NumricType} type - type - The type of output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the floor function applied to its elements.
    */
-  floor(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static floor(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "floor",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -2019,22 +2082,26 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the ReLU.
    * The resulting value is computed as `x <= 0 ? -1 : x`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which
+   * will be performed a new matrix of its ReLU values.
    * @param {number} weight - A number to multiply each element before applying the ReLU function.
    * @param {number} bias - A number to be added to each element before applying the ReLU function.
-   * @returns {Matrix} A new matrix with the ReLU function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericType} A new matrix with the ReLU function applied to its elements.
    */
-  ReLU(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  static ReLU(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "ReLU",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
   /**
@@ -2043,38 +2110,52 @@ export class Matrix {
    * Optionally, a weight and bias can be applied to each element before computing the step function.
    * The resulting value is computed as `x <= 0 ? -1 : 1`.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which will
+   * be performed a new matrix provided of its step function values.
    * @param {number} weight - A number to multiply each element before applying the step function.
    * @param {number} bias - A number to be added to each element before applying the step function.
-   * @returns {Matrix} A new matrix with the step function applied to its elements.
+   * @param {NumericType} type - The type of the output matrix elements
+   * @returns {MatrixType | NumericType} A new matrix with the step function applied to its elements.
    */
-  step(weight: number = 1, bias: number = 0): Matrix {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(
-      this._M,
+  step(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
       "step",
-      this._type,
+      type,
       weight,
       bias,
     );
-    output._type = this._type;
-
-    return output;
   }
 
-  copy() {
-    const output = new Matrix();
-    output._M = models.UnaryPointwise(this._M, "deepCopy", this._type, 1, 0);
-    output._type = this._type;
-
-    return output;
+  /**
+   * @param {MatrixType | NumericMatrix } matrix - The matrix which
+   * elements will be copied.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} a new matrix with the same
+   * elements of the "matrix" parameter.
+   */
+  static copy(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "deepCopy", type, 1, 0);
   }
 
   // 6. Numerical methods
 
-  LUPC(): { LU: Matrix; P: Integer[] } {
-    const LU = new Matrix();
-    const { lu, P } = models.CompactLUFactorizationWithPermutations(this._M);
-    LU._M = lu;
-    return { LU, P };
+  /**
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which will be
+   * factorized with the LU algorithm.
+   * @returns {{LU: MatrixType | NumericMatrix, P: Integer[]}}
+   */
+  LUPC(
+    matrix: MatrixType | NumericMatrix,
+  ): { LU: MatrixType | NumericMatrix; P: Integer[] } {
+    return models.CompactLUFactorizationWithPermutations(matrix);
   }
 }
