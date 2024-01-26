@@ -9,5 +9,5 @@ import validator from "@euriklis/validator";
  * @returns - True if "m" is a Matrix
  */
 export const IsMatrix = (m: Matrix): boolean => {
-  return new validator(m).isInstanceof(Matrix).answer;
+  return new validator(m).isArrayOfAbstractArraysWithEqualSize.answer;
 };
