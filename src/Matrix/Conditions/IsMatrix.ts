@@ -1,7 +1,6 @@
 "use strict";
 import { Matrix } from "../index.ts";
 import validator from "@euriklis/validator-ts";
-
 /**
  * Utility function for isMatrix method of the Matrix library.
  * Checks if an object is a Matrix instance.
