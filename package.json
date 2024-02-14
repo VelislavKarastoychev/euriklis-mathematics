@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "A mathematical library for numerical computations",
   "main": "./Tests/index.ts",
-  "type": "module",
   "scripts": {
-    "test": "node --trace-uncaught --no-warnings='ExperimantalWarning' --loader ts-node/esm ./Tests/index.ts",
+    "test": "ts-node ./Tests/index.ts",
     "build": "ts-node",
-    "start": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./src/index.ts",
-    "benchmark": "node --no-warnings='ExperimentalWarning' --loader ts-node/esm ./Benchmark/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "benchmark": "ts-node ./Benchmark/index.ts"
   },
   "keywords": [
     "Matrix",
