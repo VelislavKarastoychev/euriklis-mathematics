@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "../src/index.ts";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 new validator(Matrix.isMatrix([[1, 2, 3]]))
   .describe("isMatrix static method:").test({
     title: true,
