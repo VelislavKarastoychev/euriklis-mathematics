@@ -1,5 +1,5 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import { Integer } from "../src/Matrix/types.ts";
 const generateIdentityLikeMatrix = (rows: Integer, columns: Integer) =>
