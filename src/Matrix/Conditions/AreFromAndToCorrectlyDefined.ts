@@ -1,5 +1,5 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 /**
  * Checks if the from and to properties are
  * correctly defined. We make checking only

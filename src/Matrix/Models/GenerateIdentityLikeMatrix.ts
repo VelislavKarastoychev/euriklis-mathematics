@@ -1,8 +1,14 @@
 "use strict";
-import { Integer, MatrixType, NumericType } from "../types";
+import { win32 } from "path";
+import {
+  Integer,
+  MatrixType,
+  NumericType,
+  TypedArrayConstructor,
+} from "../types";
 import { ComputeBytesLength } from "./ComputeBytesLength.ts";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
-
+import { Replicate } from "./Replicate.ts";
 /**
  * Generates an identity-like matrix with specified dimensions.
  * The identity-like matrix has ones on its main diagonal (up to the minimum
@@ -18,17 +24,29 @@ export const GenerateIdentityLikeMatrix = (
   columns: Integer,
   type: NumericType,
 ): MatrixType => {
-  const I = [];
+  let I = [];
   const bytesLength = ComputeBytesLength(type) * columns;
   const buffer = new ArrayBuffer(bytesLength * rows);
   const typedArray = CreateTypedArrayConstructor(type);
   const k: Integer = rows < columns ? rows : columns;
   let i: Integer;
-  for (i = rows; i--;) {
-    I[i] = new typedArray(buffer, i * bytesLength, columns);
-    if (i < k) {
+  if (type === "generic") {
+    I = Replicate(0, rows, columns, "generic");
+    for (i = k;i--;) {
       I[i][i] = 1;
     }
+  } else {
+    for (i = rows; i--;) {
+      I[i] = new (typedArray as TypedArrayConstructor)(
+        buffer,
+        i * bytesLength,
+        columns,
+      );
+      if (i < k) {
+        I[i][i] = 1;
+      }
+    }
   }
+
   return I;
 };

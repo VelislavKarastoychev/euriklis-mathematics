@@ -1,6 +1,6 @@
 "use strict";
 
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 

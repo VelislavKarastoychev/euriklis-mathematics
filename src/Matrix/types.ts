@@ -7,7 +7,7 @@ export type IntegerNumericType =
   | "int32"
   | "unsignedInt32";
 export type FloatNumericType = "float32" | "float64";
-export type NumericType = IntegerNumericType | FloatNumericType;
+export type NumericType = IntegerNumericType | FloatNumericType | "generic";
 export type NumericMatrix = number[][];
 export type MatrixDeclaration = {
   M: NumericMatrix;

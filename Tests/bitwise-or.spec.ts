@@ -1,5 +1,5 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 const r1 = Matrix.random(3, 4, 1, 5);

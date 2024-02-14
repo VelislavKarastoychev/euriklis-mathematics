@@ -2,7 +2,7 @@
 
 import { Matrix } from "../src/index.ts";
 import {} from "../src/Matrix/types";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 const rand55 = Matrix.random(5, 5);
 const rand55M = rand55.M;
 new validator(rand55.getDiagonal().M[0])

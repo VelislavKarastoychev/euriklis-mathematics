@@ -1,5 +1,5 @@
 "use strjct";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 new validator(Matrix.identity(10).getBlock().M)
   .describe("The getBlockMethod:").test({

@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "../src/index.ts";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 const m = Matrix.random(31, 21);
 const mNorm = m.M.reduce((acc, row) => {
   acc = acc + row.reduce((acc1, element) => {

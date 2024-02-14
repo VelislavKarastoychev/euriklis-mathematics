@@ -1,23 +1,30 @@
 "use strict";
 
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
-
-const identity = Matrix.identityLike(5000, 5000);
-const numericIdentity = numeric.identity(5000);
-
-new validator(identity.isEqualTo(new Matrix(numericIdentity))).isSame(true)
-  .describe("Time performance of the identityLike method for matrix with dimension 500 x 5000")
-  .test({
-    title: true,
-    success: "green",
-    error: "red"
-  })
-  .on(true, () => {
-    const t1 = new validator(Matrix).benchmark((m) => m.identityLike(5000, 500)); 
-    const t2 = new validator(numeric).benchmark((n) => n.identity(5000));
-    console.table({"@euriklis/mathematics": t1, numericjs: t2});
-  });
-
-
+import { dimensions, startPerformanceTest } from "./utils.ts";
+(async () => {
+  const identity = Matrix.identityLike(dimensions[0], dimensions[1]);
+  const numericIdentity = numeric.identity(dimensions[0]);
+  const condition = Matrix.isEqualTo(identity, numericIdentity);
+  const euriklisTest = (m) => m.identityLike(dimensions[0], dimensions[1]);
+  const numericTest = (m) => m.identity(dimensions[0]);
+  startPerformanceTest(
+    "identitiLike and identity",
+    [{ param: "matrix", dimensions, "type": "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+  startPerformanceTest(
+    "identityLike and identity",
+    [{ param: "matrix", dimensions, type: "generic" }],
+    Matrix.isEqualTo(
+      Matrix.identityLike(41, 41, "generic"),
+      numeric.identity(41),
+    ),
+    (m) => m.identityLike(dimensions[0], dimensions[1], "generic"),
+    (m) => m.identity(dimensions[0]),
+  );
+})();

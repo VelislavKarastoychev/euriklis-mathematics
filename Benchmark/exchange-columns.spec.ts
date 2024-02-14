@@ -1,5 +1,5 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 function exchangeColumns(matrix, col1, col2, fromRow, toRow) {
   // Check if the matrix is valid

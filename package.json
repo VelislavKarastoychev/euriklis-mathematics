@@ -5,7 +5,7 @@
   "main": "./Tests/index.ts",
   "type": "module",
   "scripts": {
-    "test": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./Tests/index.ts",
+    "test": "node --trace-uncaught --no-warnings='ExperimantalWarning' --loader ts-node/esm ./Tests/index.ts",
     "build": "ts-node",
     "start": "node --no-warnings='ExperimantalWarning' --loader ts-node/esm ./src/index.ts",
     "benchmark": "node --no-warnings='ExperimentalWarning' --loader ts-node/esm ./Benchmark/index.ts"
@@ -23,7 +23,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@euriklis/validator": "^4.2.1",
+    "@euriklis/validator-ts": "^1.0.0",
     "numericjs": "^1.2.6"
   }
 }

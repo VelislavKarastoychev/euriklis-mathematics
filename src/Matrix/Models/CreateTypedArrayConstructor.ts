@@ -4,37 +4,29 @@ import { NumericType, TypedArrayConstructor } from "../types.ts";
 /**
  * Creates a TypedArray constructor based on the provided numeric type.
  * @param {NumericType} type - The numeric type.
- * @returns {TypedArrayConstructor} - The TypedArray constructor.
+ * @returns {TypedArrayConstructor | ArrayConstructor} - The TypedArray constructor.
  */
 export const CreateTypedArrayConstructor = (
   type: NumericType,
-): TypedArrayConstructor => {
-  let typedArray: TypedArrayConstructor;
+): TypedArrayConstructor | ArrayConstructor => {
   switch (type) {
     case "int8":
-      typedArray = Int8Array;
-      break;
+      return Int8Array;
     case "unsignedInt8":
-      typedArray = Uint8Array;
-      break;
+      return Uint8Array;
     case "int16":
-      typedArray = Int16Array;
-      break;
+      return Int16Array;
     case "unsignedInt16":
-      typedArray = Uint16Array;
-      break;
+      return Uint16Array;
     case "int32":
-      typedArray = Int32Array;
-      break;
+      return Int32Array;
     case "unsignedInt32":
-      typedArray = Uint32Array;
-      break;
+      return Uint32Array;
     case "float32":
-      typedArray = Float32Array;
-      break;
+      return Float32Array;
     case "float64":
-      typedArray = Float64Array;
-      break;
+      return Float64Array;
+    case "generic":
+      return Array;
   }
-  return typedArray;
 };

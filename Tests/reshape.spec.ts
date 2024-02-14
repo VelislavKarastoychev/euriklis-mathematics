@@ -1,7 +1,7 @@
 "use strict";
 import { Integer } from "../src/Matrix/types.ts";
 import { Matrix } from "../src/index.ts";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 
 const m = Matrix.random(3, 4);
 const reshaped = m.reshape(2, 6);

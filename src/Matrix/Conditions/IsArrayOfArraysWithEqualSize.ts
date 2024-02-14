@@ -1,5 +1,5 @@
 import { MatrixType, NumericMatrix } from "../types";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 /**
  * Checks if the input in the M setter is
  * a legal matrix object.

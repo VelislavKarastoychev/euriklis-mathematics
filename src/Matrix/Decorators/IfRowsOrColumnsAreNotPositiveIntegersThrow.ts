@@ -22,13 +22,15 @@ export function ifRowsOrColumnsAreNotPositiveIntegersThrow(
 ): (_: any, __: string, descriptor: PropertyDescriptor) => any {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {
     const methodFunction = descriptor.value;
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function (...args: any) {
       if (
         args[rowIndex] <= 0 || args[columnIndex] <= 0 ||
         !Number.isInteger(args[rowIndex]) ||
         !Number.isInteger(args[columnIndex])
-      ) error();
-      return methodFunction(...args);
+      ) {
+        return error();
+      }
+      return methodFunction.apply(this, args);
     };
   };
 }

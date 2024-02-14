@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "../src/index.ts";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 const a = Matrix.random(27, 23);
 new validator(a.transpose().M).forEvery((row, i) =>
   row.forEvery((el, j) => el.isSame(a.M[j as number][i as number]))

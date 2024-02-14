@@ -1,6 +1,5 @@
 "use strict";
-
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
 const mat6 = Matrix.random(6000, 6000);

@@ -1,31 +1,29 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
-import { title } from "process";
-
+import { dimensions, startPerformanceTest } from "./utils.ts";
 (async () => {
-  const z = Matrix.zero(5000);
-  const zm = numeric.rep([5000, 5000], 0);
-  new validator(z.isEqualTo(zm)).isSame(true)
-    .on(true, (v) => {
-      v.describe("Time performance for zeros method:")
-        .test({
-          title: true,
-          success: "green",
-          error: "red",
-        });
-      const t1 = new validator(Matrix).benchmark((m) => m.zero(5000));
-      const t2 = new validator(numeric).benchmark((num) =>
-        num.rep([5000, 5000], 0)
-      );
-      console.table({ "@euriklis/mathematics": t1, numericjs: t2 });
-    }).on(false, (v) => {
-      v.describe("Internal error in zero (zeros) method.")
-        .test({
-          title: true,
-          success: "red",
-          error: "green",
-        });
-    });
+  const z = Matrix.zeros(dimensions[0], dimensions[1]);
+  const zm = numeric.rep(dimensions, 0) as number[][];
+  const condition = Matrix.isEqualTo(z, zm);
+  const conditionGeneric = Matrix.isEqualTo(Matrix.zeros(501, 501), numeric.rep([501, 501], 0));
+  const euriklisTest = (m) => m.zeros(dimensions[0], dimensions[1]);
+  const euriklisTestGeneric = (m) => m.zeros(dimensions[0], dimensions[1], "generic");
+  const numericTest = (m) => m.rep(dimensions, 0);
+  startPerformanceTest(
+    "zeros and zero",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+
+  startPerformanceTest(
+    "zeros and zero",
+    [{ param: "matrix", dimensions, type: "generic" }],
+    conditionGeneric,
+    euriklisTestGeneric,
+    numericTest,
+  );
 })();

@@ -1,5 +1,5 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import { MatrixDeclaration } from "../types";
 
 export const IsMatrixDeclaration = (options: MatrixDeclaration): boolean => {

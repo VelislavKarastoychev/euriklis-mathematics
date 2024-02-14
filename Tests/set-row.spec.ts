@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "../src/index.ts";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 
 const mat45 = [
   [1, 2, 3, 4, 5],

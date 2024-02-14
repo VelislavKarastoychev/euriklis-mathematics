@@ -1,8 +1,8 @@
 "use strict";
-import validator from "@euriklis/validator";
+import validator from "@euriklis/validator-ts";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
-import { CompactLUFactorizationWithPermutations } from "../src/Matrix/Models/index.ts";
+// import { CompactLUFactorizationWithPermutations } from "../src/Matrix/Models/index.ts";
 
 (async () => {
   const m = numeric.random([1000, 1000]);

@@ -1,6 +1,6 @@
 "use strict";
 
-import { Integer, MatrixType, NumericType, TypedArray } from "../types";
+import { Integer, MatrixType, NumericMatrix, NumericType, TypedArray } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts"
 
 /**
@@ -19,7 +19,7 @@ export const GenerateRandomMatrix = (
   to: Integer,
   type: NumericType,
   seed: number,
-): MatrixType => {
+): MatrixType | NumericMatrix => {
   const d = [rows, columns];
   function RandomNumberGenerator(
     from: Integer,

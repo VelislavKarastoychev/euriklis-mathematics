@@ -76,8 +76,8 @@ const BinaryPointwiseIterator = (
   m1: NumericMatrix | MatrixType | NumericType,
   m2: number | MatrixType | NumericMatrix,
   operator: BinaryOperator,
-  typedArray: TypedArrayConstructor,
-): MatrixType => {
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix => {
   return new Function(
     "a",
     "b",
@@ -130,8 +130,8 @@ export const BinaryPointwise = (
   m2: number | MatrixType | NumericMatrix,
   action: BinaryPointwiseOperator,
   type: NumericType,
-): MatrixType => {
-  const typedArray: TypedArrayConstructor = CreateTypedArrayConstructor(type);
+): MatrixType | NumericMatrix => {
+  const typedArray: TypedArrayConstructor | ArrayConstructor = CreateTypedArrayConstructor(type);
   const operator = BinaryPointwiseExpression(action);
 
   return BinaryPointwiseIterator(m1, m2, operator, typedArray);
@@ -202,7 +202,7 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
     case "step":
       return "((x) => x <= 0 ? -1 : 1)";
     case "deepCopy":
-      return "Math.abs";
+      return "";
   }
 };
 
@@ -217,8 +217,8 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
 const UnaryPointwiseIterator = (
   matrix: MatrixType | NumericMatrix,
   operator: string,
-  typedArray: TypedArrayConstructor,
-): MatrixType =>
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix =>
   new Function(
     "matrix",
     `
@@ -258,10 +258,10 @@ const UnaryPointwiseIterator = (
 const UnaryPointwiseIteratorWithWeightAndBias = (
   matrix: MatrixType | NumericMatrix,
   operator: string,
-  typedArray: TypedArrayConstructor,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
   weight: number,
   bias: number,
-): MatrixType =>
+): MatrixType | NumericMatrix =>
   new Function(
     "matrix",
     `
@@ -301,8 +301,8 @@ export const UnaryPointwise = (
   type: NumericType,
   weight: number,
   bias: number,
-): MatrixType => {
-  const typedArray: TypedArrayConstructor = CreateTypedArrayConstructor(type);
+): MatrixType | NumericMatrix => {
+  const typedArray: TypedArrayConstructor | ArrayConstructor = CreateTypedArrayConstructor(type);
   const operator = UnaryPointwiseExpression(action);
   if (weight !== 1 || bias !== 0) {
     return UnaryPointwiseIteratorWithWeightAndBias(
