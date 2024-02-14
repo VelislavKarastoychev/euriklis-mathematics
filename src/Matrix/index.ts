@@ -20,7 +20,6 @@ import {
   TypedArray,
   TypedArrayConstructor,
 } from "./types";
-import { type } from "os";
 
 export class Matrix {
   // 1. Declaration of the private methods and properties
@@ -140,17 +139,17 @@ export class Matrix {
   /**
    * Creates a new Matrix instance with randomized values.
    *
-   * @param rows - The number of rows.
-   * @param columns - The number of columns.
-   * @param from - The minimum value for randomization.
-   * @param to - The maximum value for randomization.
-   * @param type - The numeric type of the matrix.
-   * @param seed - The seed for randomization.
-   * @returns A new Matrix instance.
+   * @param {Integer} rows - The number of rows.
+   * @param {Integer} columns - The number of columns.
+   * @param {number} from - The minimum value for randomization.
+   * @param {number} to - The maximum value for randomization.
+   * @param {NumericType} type - The numeric type of the matrix.
+   * @param {Integer} seed - The seed for randomization.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance.
    */
-  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-    errors.IncorrectRowsOrColumnsParameterInRandom,
-  )
+  // @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+  //   errors.IncorrectRowsOrColumnsParameterInRandom,
+  // )
   static random(
     rows: Integer,
     columns: Integer,
@@ -159,7 +158,23 @@ export class Matrix {
     type: NumericType = Matrix._type,
     seed: number = 123445,
   ): MatrixType | NumericMatrix {
-    return models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
+    if(type !== "generic") return models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
+    return models.GenerateRandomMatrixFast(rows, columns, from, to, type);
+  }
+
+  /**
+   */
+  // @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+  //   errors.IncorrectRowsOrColumnsParameterInRandom
+  // )
+  static randomFast (
+    rows: Integer,
+    columns: Integer,
+    from: Integer = 0,
+    to: Integer = 1,
+    type: NumericType = Matrix._type
+  ): MatrixType | NumericMatrix {
+    return models.GenerateRandomMatrixFast(rows, columns, from, to, type);
   }
 
   /**
