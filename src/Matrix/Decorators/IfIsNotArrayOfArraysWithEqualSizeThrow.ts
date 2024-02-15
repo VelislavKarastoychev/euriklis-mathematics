@@ -4,10 +4,10 @@ import { MatrixType, NumericMatrix } from "../types";
 
 export function ifIsNotArrayOfArraysWithEqualSizeThrow(error: Function) {
   return function (_: any, __: string, propertyDescriptor: PropertyDescriptor) {
-    const setter = propertyDescriptor.set as Function;
-    propertyDescriptor.set = function (matrix: MatrixType | NumericMatrix) {
+    const method = propertyDescriptor.value as Function;
+    propertyDescriptor.value = function (matrix: MatrixType | NumericMatrix, ...params: any[]) {
       if (!IsArrayOfArraysWithEqualSize(matrix)) error();
-      setter.call(this, matrix);
+      return method.call(this, matrix, ...params);
     };
   };
 }
