@@ -3,7 +3,8 @@
 // import "./zeros.spec.ts";
 // import "./identity-like.spec.ts";
 // import "./replicate.spec.ts";
-import "./random.spec.ts";
+// import "./random.spec.ts";
+import "./copy.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
@@ -74,5 +75,4 @@ import "./random.spec.ts";
 // import "./ReLU.spec.ts";
 // import "./step.spec.ts";
 // import "./is-symmetric.spec.ts";
-// import "./copy.spec.ts";
 // import "./LU.spec.ts";
