@@ -4,10 +4,10 @@
   "description": "A mathematical library for numerical computations",
   "main": "./Tests/index.ts",
   "scripts": {
-    "test": "ts-node ./Tests/index.ts",
+    "test": "nodemon ./Tests/index.ts",
     "build": "ts-node",
     "start": "ts-node ./src/index.ts",
-    "benchmark": "ts-node ./Benchmark/index.ts"
+    "benchmark": "nodemon ./Benchmark/index.ts"
   },
   "keywords": [
     "Matrix",
