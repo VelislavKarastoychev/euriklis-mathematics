@@ -5,6 +5,7 @@ import "./replicate.spec.ts"
 import "./zeros.spec.ts";
 import "./identity-like.spec.ts";
 import "./random-matrix.spec.ts";
+import "./copy.spec.ts";
 // import "./get-block.spec.ts";
 // import "./set-block.spec.ts";
 // import "./get-row.spec.ts";
@@ -75,5 +76,4 @@ import "./random-matrix.spec.ts";
 // import "./ReLU.spec.ts";
 // import "./step.spec.ts";
 // import "./is-symmetric.spec.ts";
-// import "./copy.spec.ts";
 // import "./LU.spec.ts";
