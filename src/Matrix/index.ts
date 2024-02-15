@@ -4,7 +4,7 @@ import * as models from "./Models/index.ts";
 import * as errors from "./Errors/index.ts";
 import {
   // ifFromOrToParametersAreIncorrectlyDefinedThrow,
-  // ifIsNotArrayOfArraysWithEqualSizeThrow,
+  ifIsNotArrayOfArraysWithEqualSizeThrow,
   // ifIsNotNumberOrMatrixThrow,
   // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
@@ -192,17 +192,27 @@ export class Matrix {
   }
 
   /**
+   * Creates a copy of the matrix parameter or a linary transformed
+   * matrix from the elements of the matrix parameter.
+   * 
    * @param {MatrixType | NumericMatrix } matrix - The matrix which
    * elements will be copied.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} a new matrix with the same
    * elements of the "matrix" parameter.
+   * @throws {Error} If the "matrix" parameter is not a table (array of arrays 
+   * with equal sizes).
    */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
   static copy(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
+    weight: number = 1,
+    bias: number = 0
   ): MatrixType | NumericMatrix {
-    return models.UnaryPointwise(matrix, "deepCopy", type, 1, 0);
+    return models.UnaryPointwise(matrix, "deepCopy", type, weight, bias);
   }
 
   // // 3. Constructor
