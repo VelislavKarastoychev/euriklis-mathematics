@@ -1,36 +1,44 @@
 "use strict";
 
-import { Integer, MatrixType, NumericMatrix, NumericType, TypedArray } from "../types";
-import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts"
+import {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  NumericType,
+  TypedArray,
+  TypedArrayConstructor,
+} from "../types";
 
 /**
- * @param rows - an integer number greater than zero.
- * @param columns - an integer
- * @param from - a real number
- * @param to - a real number
- * @param type {NumericType} - describes the type of the matrix elements.
- * @param seed - a real number
- * @returns a MatrixType (array of typed arrays)
+ * Generates a matrix with static random numbers.
+ * The utility function is generalized in order to
+ * creates tensors if dimensions is with length
+ * greater than two.
+ * @param {Integer[]} dimensions
+ * @param {number} from - a real number
+ * @param {number} to - a real number
+ * @param {NumericType} type - describes the type of the matrix elements.
+ * @param {number} seed - a real number
+ * @returns {MatrixType | NumericMatrix} (array of typed arrays)
  */
 export const GenerateRandomMatrix = (
-  rows: Integer,
-  columns: Integer,
+  dimensions: Integer[],
   from: Integer,
   to: Integer,
-  type: NumericType,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
   seed: number,
 ): MatrixType | NumericMatrix => {
-  const d = [rows, columns];
   function RandomNumberGenerator(
     from: Integer,
     to: Integer,
-    k: Integer,
-  ): MatrixType | TypedArray | never [] {
-    let n = d[k];
-    const typedArray = CreateTypedArrayConstructor(type);
-    const rand: TypedArray | MatrixType = k ? new typedArray(n) : Array(n);
-    if (k) {
+    k: Integer = 0,
+  ): MatrixType | TypedArray | never[] {
+    const n: Integer = dimensions[k];
+    const l: Integer = dimensions.length - 1;
+    let rand: TypedArray | MatrixType;
+    if (k === l) {
       let j = n;
+      rand = new typedArray(n);
       for (let i = n >> 1; i--;) {
         seed <<= 0;
         k = (seed / 127773) >> 0;
@@ -52,9 +60,12 @@ export const GenerateRandomMatrix = (
       }
       return rand as TypedArray;
     } else {
-      for (let i = n; i--;) rand[i] = RandomNumberGenerator(from, to, k + 1) as TypedArray;
+      rand = new Array(n);
+      for (let i = n; i--;) {
+        rand[i] = RandomNumberGenerator(from, to, k + 1) as TypedArray;
+      }
     }
     return rand;
   }
-  return RandomNumberGenerator(from, to, 0) as MatrixType;
+  return RandomNumberGenerator(from, to) as MatrixType;
 };
