@@ -31,6 +31,8 @@ export class Matrix {
    */
   private static _type: NumericType = "float64";
 
+  public static setType = (type: NumericType) => Matrix._type = type;
+
   // 2. Static methods
 
   /**
@@ -147,9 +149,9 @@ export class Matrix {
    * @param {Integer} seed - The seed for randomization.
    * @returns {MatrixType | NumericMatrix} A new Matrix instance.
    */
-  // @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-  //   errors.IncorrectRowsOrColumnsParameterInRandom,
-  // )
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom,
+  )
   static random(
     rows: Integer,
     columns: Integer,
@@ -158,23 +160,35 @@ export class Matrix {
     type: NumericType = Matrix._type,
     seed: number = 123445,
   ): MatrixType | NumericMatrix {
-    if(type !== "generic") return models.GenerateRandomMatrix(rows, columns, from, to, type, seed);
-    return models.GenerateRandomMatrixFast(rows, columns, from, to, type);
+    const dimensions = [rows, columns];
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateRandomMatrix(dimensions, from, to, typedArray, seed);
   }
 
   /**
+   * Generates a random matrix with unique values each time the method is called.
+   *
+   * @param {Integer} rows - The number of rows in the generated matrix.
+   * @param {Integer} columns - The number of columns in the generated matrix.
+   * @param {number} [from=0] - The lower bound of the random values range.
+   * @param {number} [to=1] - The upper bound of the random values range.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the elements in the generated matrix.
+   * @returns {MatrixType | NumericMatrix} A random matrix with unique values.
+   * @throws {Error} If the rows or columns parameters are not positive integers.
    */
-  // @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-  //   errors.IncorrectRowsOrColumnsParameterInRandom
-  // )
-  static randomFast (
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom,
+  )
+  static uniqueRandom(
     rows: Integer,
     columns: Integer,
     from: Integer = 0,
     to: Integer = 1,
-    type: NumericType = Matrix._type
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return models.GenerateRandomMatrixFast(rows, columns, from, to, type);
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    const dimensions: Integer[] = [rows, columns];
+    return models.GenerateRandomMatrix2(dimensions, from, to, typedArray);
   }
 
   /**
