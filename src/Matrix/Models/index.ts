@@ -4,7 +4,7 @@ export { CompareMatrices } from "./CompareMatrices.ts";
 export { GenerateZeroMatrix } from "./GenerateZeroMatrix.ts";
 export { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix.ts";
 export { GenerateRandomMatrix } from "./GenerateRandomMatrix.ts";
-export { GenerateRandomMatrixFast } from "./GenerateRandomMatrixFast.ts";
+export { GenerateRandomMatrix2 } from "./GenerateRandomMatrix2.ts";
 // export { InitializeMatrix } from "./InitializeMatrix.ts";
 // export { ObtainMatrixFromTypedMatrix } from "./ObtainMatrixFromTypedMatrix.ts";
 // export { GetBlock } from "./GetBlock.ts";
