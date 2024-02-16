@@ -230,19 +230,21 @@ export class Matrix {
   static isSquare(matrix: MatrixType | NumericMatrix): boolean {
     return matrix.length === matrix[0].length;
   }
-  //
-  // /**
-  //  * Checks if the matrix is symmetric.
-  //  *
-  //  * @returns {boolean} True if the matrix is symmetric, false otherwise.
-  //  */
-  // // TODO: check if the matrix is array of arrays with equal size.
-  // static isSymmetric(matrix: MatrixType | NumericMatrix): boolean {
-  //   if (!Matrix.isSquare(matrix)) return false;
-  //   return conditions.IsMatrixSymmetric(matrix);
-  // }
-  //
-  // // 5. Utility functions or operators
+
+  /**
+   * Checks if the matrix is symmetric.
+   *
+   * @returns {boolean} True if the matrix is symmetric, false otherwise.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static isSymmetric(matrix: MatrixType | NumericMatrix): boolean {
+    if (!Matrix.isSquare(matrix)) return false;
+    return conditions.IsMatrixSymmetric(matrix);
+  }
+
+  // // 4. Utility methods or operators
   // // for matrix manipulation.
 
   /**
