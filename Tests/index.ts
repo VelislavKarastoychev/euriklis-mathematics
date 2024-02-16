@@ -8,6 +8,7 @@ import "./random-matrix.spec.ts";
 import "./copy.spec.ts";
 import "./is-square.spec.ts";
 import "./is-symmetric.spec.ts";
+import "./is-equal-to.spec.ts";
 // import "./get-block.spec.ts";
 // import "./set-block.spec.ts";
 // import "./get-row.spec.ts";
@@ -19,7 +20,6 @@ import "./is-symmetric.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./transpose.spec.ts";
-// import "./is-equal-to.spec.ts";
 // import "./is-less-than.spec.ts"
 // import "./is-less-than-or-equal.spec.ts";
 // import "./is-greater-than.spec.ts";
