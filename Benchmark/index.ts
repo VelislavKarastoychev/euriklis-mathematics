@@ -4,7 +4,8 @@
 // import "./identity-like.spec.ts";
 // import "./replicate.spec.ts";
 // import "./random.spec.ts";
-import "./copy.spec.ts";
+// import "./copy.spec.ts";
+import "./is-square.spec";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
