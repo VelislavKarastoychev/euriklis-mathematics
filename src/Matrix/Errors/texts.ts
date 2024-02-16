@@ -60,3 +60,5 @@ export const InternalErrorInCubesTxt =
 export const IncorrectMatrixParameterInPointwiseTxt = (method: string) =>
   `Incorrect Matrix parameter in the ${method} method. Note that this parameter has to be either a number, a Matrix or Matrix - like object.`;
 export const MatrixDegenerateTxt = "Matrix degenerate. Small tolerance value.";
+export const IncorrectMatricesInput = (method: string): string =>
+  `Incorrect matrices input in the method ${method}. Some of the matrices is not a table or the elements are not numbers.`;
