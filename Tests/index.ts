@@ -10,6 +10,7 @@ import "./is-square.spec.ts";
 import "./is-symmetric.spec.ts";
 import "./is-equal-to.spec.ts";
 import "./is-greater-than.spec.ts";
+import "./is-greater-than-or-equal.spec.ts";
 // import "./get-block.spec.ts";
 // import "./set-block.spec.ts";
 // import "./get-row.spec.ts";
@@ -23,7 +24,6 @@ import "./is-greater-than.spec.ts";
 // import "./transpose.spec.ts";
 // import "./is-less-than.spec.ts"
 // import "./is-less-than-or-equal.spec.ts";
-// import "./is-greater-than-or-equal.spec.ts";
 // import "./frobenius-norm.spec.ts";
 // import "./infinity-norm.spec.ts";
 // import "./max-norm.spec.ts";
