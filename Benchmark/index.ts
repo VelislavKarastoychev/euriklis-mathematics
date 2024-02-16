@@ -5,7 +5,8 @@
 // import "./replicate.spec.ts";
 // import "./random.spec.ts";
 // import "./copy.spec.ts";
-import "./is-square.spec";
+// import "./is-square.spec";
+import "./is-symmetric.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
@@ -75,5 +76,4 @@ import "./is-square.spec";
 // import "./floor.spec.ts";
 // import "./ReLU.spec.ts";
 // import "./step.spec.ts";
-// import "./is-symmetric.spec.ts";
 // import "./LU.spec.ts";
