@@ -2,11 +2,12 @@
 
 export {
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
-} from "./IfRowsOrColumnsAreNotPositiveIntegersThrow.ts";
+} from "./IfRowsOrColumnsAreNotPositiveIntegersThrow";
 //
 export {
   ifIsNotArrayOfArraysWithEqualSizeThrow,
-} from "./IfIsNotArrayOfArraysWithEqualSizeThrow.ts";
+} from "./IfIsNotArrayOfArraysWithEqualSizeThrow";
+export { ifTheParametersAreNotMatricesThrow } from "./IfTheParametersAreNotMatricesThrow";
 // export { resetMatrix } from "./ResetMatrix.ts";
 // export { ifFromOrToParametersAreIncorrectlyDefinedThrow } from "./IfFromOrToParametersAreIncorrectlyDefinedThrow.ts";
 // export { ifRowsAndColumnsAreInappropriatelyDefinedThrow } from "./IfRowsAndColumnsAreInappropriatelyDefinedThrow.ts";
