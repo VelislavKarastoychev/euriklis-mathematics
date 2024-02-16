@@ -305,25 +305,30 @@ export class Matrix {
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     else return models.CompareMatrices(m1, m2, "gt");
   }
-  //
-  // /**
-  //  * Checks if the elements of the current Matrix are greater than or equal to
-  //  * the elements of the "matrix" parameter of the method.
-  //  *
-  //  * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
-  //  * for comparison
-  //  * @param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
-  //  * for comparison
-  //  * @returns {boolean} true, if the elements of the current matrix instance
-  //  * are greater than or equal to the elements of the "matrix" parameter, false otherwise.
-  //  */
-  // static isGreaterThanOrEqual(
-  //   m1: NumericMatrix | MatrixType,
-  //   m2: MatrixType | NumericMatrix,
-  // ): boolean {
-  //   if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
-  //   else return models.CompareMatrices(m1, m2, "geq");
-  // }
+
+  /**
+   * Checks if the elements of the first "matrix" are greater than or equal to
+   * the elements of the second "matrix" parameter of the method.
+   *
+   * @param {jNumericMatrix | MatrixType} m1 - The first matrix used
+   * for comparison
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix used
+   * for comparison
+   * @returns {boolean} true, if the elements of the current matrix instance
+   * are greater than or equal to the elements of the "matrix" parameter, false otherwise.
+   * @throws {Error} If some of the matrices is not a table.
+   */
+  @ifTheParametersAreNotMatricesThrow(
+    errors.IncorrectMatricesInput("isGreaterThanOrEqual")
+  )
+  static isGreaterThanOrEqual(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1 === m2) return true;
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "geq");
+  }
   //
   // /**
   //  * Checks if all elements of the current Matrix are less than the corresponding
