@@ -296,12 +296,13 @@ export class Matrix {
    * have rows with the same number of columns.
    */
   @ifTheParametersAreNotMatricesThrow(
-    errors.IncorrectMatricesInput("isGreaterThan")
+    errors.IncorrectMatricesInput("isGreaterThan"),
   )
   static isGreaterThan(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
+    if (m1 === m2) return false;
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     else return models.CompareMatrices(m1, m2, "gt");
   }
@@ -319,7 +320,7 @@ export class Matrix {
    * @throws {Error} If some of the matrices is not a table.
    */
   @ifTheParametersAreNotMatricesThrow(
-    errors.IncorrectMatricesInput("isGreaterThanOrEqual")
+    errors.IncorrectMatricesInput("isGreaterThanOrEqual"),
   )
   static isGreaterThanOrEqual(
     m1: NumericMatrix | MatrixType,
@@ -329,23 +330,29 @@ export class Matrix {
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     else return models.CompareMatrices(m1, m2, "geq");
   }
-  //
-  // /**
-  //  * Checks if all elements of the current Matrix are less than the corresponding
-  //  * elements of the provided matrix.
-  //  *
-  //  * @param {NumericMatrix | MatrixType} m1 - The first matrix for comparison.
-  //  * @param {NumericMatrix | MatrixType} m2 - The second matrix for comparison.
-  //  * @returns {boolean} True if all elements of the current matrix are less than
-  //  * the corresponding elements of the provided matrix, false otherwise.
-  //  */
-  // static isLessThan(
-  //   m1: NumericMatrix | MatrixType,
-  //   m2: MatrixType | NumericMatrix,
-  // ): boolean {
-  //   if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
-  //   else return models.CompareMatrices(m1, m2, "lt");
-  // }
+
+  /**
+   * Checks if all elements of the first "matrix" are less than the corresponding
+   * elements of second the provided matrix.
+   *
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix for comparison.
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix for comparison.
+   * @returns {boolean} True if all elements of the current matrix are less than
+   * the corresponding elements of the provided matrix, false otherwise.
+   * @throws {Error} If some of the "matrix" parameters are not tables, i.e.,
+   * every row of the matrices has the same number of columns.
+   */
+  @ifTheParametersAreNotMatricesThrow(
+    errors.IncorrectMatricesInput("isLessThan")
+  )
+  static isLessThan(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1 === m2) return false;
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    return models.CompareMatrices(m1, m2, "lt");
+  }
   //
   // /**
   //  * Checks if the elements of the current Matrix are less than or equal to
