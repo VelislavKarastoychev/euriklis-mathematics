@@ -1,7 +1,7 @@
 "use strict";
-import * as conditions from "./Conditions/index.ts";
-import * as models from "./Models/index.ts";
-import * as errors from "./Errors/index.ts";
+import * as conditions from "./Conditions";
+import * as models from "./Models";
+import * as errors from "./Errors";
 import {
   // ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
@@ -215,19 +215,21 @@ export class Matrix {
     return models.UnaryPointwise(matrix, "deepCopy", type, weight, bias);
   }
 
-  // // 3. Constructor
+  // // 3 Properties and utility fields
   //
-  // // 4. Properties and utility fields
-  //
-  // /**
-  //  * @returns {boolean} True if the matrix is squared
-  //  * and false otherwise.
-  //  */
-  // // TODO: check if the the matrix is an array of arrays
-  // // with equal size.
-  // static isSquare(matrix: MatrixType | NumericMatrix): boolean {
-  //   return matrix.length === matrix[0].length;
-  // }
+  /**
+   * Checks if the matrix is square, i.e. has the
+   * same number of rows and columns. 
+   * 
+   * @returns {boolean} True if the matrix is squared
+   * and false otherwise.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static isSquare(matrix: MatrixType | NumericMatrix): boolean {
+    return matrix.length === matrix[0].length;
+  }
   //
   // /**
   //  * Checks if the matrix is symmetric.
