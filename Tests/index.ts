@@ -6,6 +6,7 @@ import "./zeros.spec.ts";
 import "./identity-like.spec.ts";
 import "./random-matrix.spec.ts";
 import "./copy.spec.ts";
+import "./is-square.spec.ts";
 // import "./get-block.spec.ts";
 // import "./set-block.spec.ts";
 // import "./get-row.spec.ts";
