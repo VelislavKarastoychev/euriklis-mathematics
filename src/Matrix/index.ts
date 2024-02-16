@@ -295,6 +295,9 @@ export class Matrix {
    * @throws {Error} If the matrices are not tables, i.e., the matrices do not
    * have rows with the same number of columns.
    */
+  @ifTheParametersAreNotMatricesThrow(
+    errors.IncorrectMatricesInput("isGreaterThan")
+  )
   static isGreaterThan(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
