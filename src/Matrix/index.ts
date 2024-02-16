@@ -9,6 +9,7 @@ import {
   // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
+  ifTheParametersAreNotMatricesThrow,
 } from "./Decorators/index.ts";
 import {
   Integer,
@@ -39,7 +40,7 @@ export class Matrix {
    * Checks if the input parameter "m" is a Matrix
    * instance from the Matrix library of the @euriklis/mathematics.
    *
-   * @param m - A Matrix instance.
+   * @param {any} m - A Matrix candidate.
    * @returns {boolean} - True if the "m" parameter is a
    * Matrix and false otherwise.
    */
@@ -194,23 +195,23 @@ export class Matrix {
   /**
    * Creates a copy of the matrix parameter or a linary transformed
    * matrix from the elements of the matrix parameter.
-   * 
+   *
    * @param {MatrixType | NumericMatrix } matrix - The matrix which
    * elements will be copied.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} a new matrix with the same
    * elements of the "matrix" parameter.
-   * @throws {Error} If the "matrix" parameter is not a table (array of arrays 
+   * @throws {Error} If the "matrix" parameter is not a table (array of arrays
    * with equal sizes).
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
-    errors.IncorrectMatrixInput
+    errors.IncorrectMatrixInput,
   )
   static copy(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     weight: number = 1,
-    bias: number = 0
+    bias: number = 0,
   ): MatrixType | NumericMatrix {
     return models.UnaryPointwise(matrix, "deepCopy", type, weight, bias);
   }
@@ -219,13 +220,17 @@ export class Matrix {
   //
   /**
    * Checks if the matrix is square, i.e. has the
-   * same number of rows and columns. 
-   * 
+   * same number of rows and columns.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix parameter.
    * @returns {boolean} True if the matrix is squared
    * and false otherwise.
+   * @throws {Errors} If the matrix is not table, i.e.
+   * every row of the matrix does not have the same
+   * number of columns.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
-    errors.IncorrectMatrixInput
+    errors.IncorrectMatrixInput,
   )
   static isSquare(matrix: MatrixType | NumericMatrix): boolean {
     return matrix.length === matrix[0].length;
@@ -234,58 +239,67 @@ export class Matrix {
   /**
    * Checks if the matrix is symmetric.
    *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix parameter. 
    * @returns {boolean} True if the matrix is symmetric, false otherwise.
+   * @throws {Error} If the matrix is not table (every row does not have
+   * the same number of columns).
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
-    errors.IncorrectMatrixInput
+    errors.IncorrectMatrixInput,
   )
   static isSymmetric(matrix: MatrixType | NumericMatrix): boolean {
     if (!Matrix.isSquare(matrix)) return false;
     return conditions.IsMatrixSymmetric(matrix);
   }
 
-  // // 4. Utility methods or operators
-  // // for matrix manipulation.
+  // 4. Utility methods or operators
+  // for matrix manipulation.
 
   /**
    * Checks if the elements of the current Matrix are equal to
    * the corresponding elements of the provided matrix.
+   *
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix used
+   * for comparison
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix used
+   * for comparison
+
+   * @returns {boolean} True, if the elements of the current matrix instance
+   * are equal to the elements of the "matrix" parameter, false otherwise.
+   * @throws {Error} If some of the matrix parameters is not a table,i.e
+   * every rows of the both matrices do not have the same number of columns.
+   */
+  @ifTheParametersAreNotMatricesThrow(
+    errors.IncorrectMatricesInput("isEqualTo"),
+  )
+  static isEqualTo(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1 === m2) return true;
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    else return models.CompareMatrices(m1, m2, "eq");
+  }
+
+  /**
+   * Checks if the elements of the current Matrix are greater than
+   * the elements of the "matrix" parameter of the method.
    *
    * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
    * for comparison
    *@param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
    * for comparison
 
-   * @returns {boolean} True, if the elements of the current matrix instance
-   * are equal to the elements of the "matrix" parameter, false otherwise.
+   * @returns {boolean} true, if the elements of the current matrix instance
+   * are greater than the elements of the "matrix" parameter, false otherwise.
    */
-  static isEqualTo(
+  static isGreaterThan(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
-    else return models.CompareMatrices(m1, m2, "eq");
+    else return models.CompareMatrices(m1, m2, "gt");
   }
-  //
-  // /**
-  //  * Checks if the elements of the current Matrix are greater than
-  //  * the elements of the "matrix" parameter of the method.
-  //  *
-  //  * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
-  //  * for comparison
-  //  *@param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
-  //  * for comparison
-  //
-  //  * @returns {boolean} true, if the elements of the current matrix instance
-  //  * are greater than the elements of the "matrix" parameter, false otherwise.
-  //  */
-  // static isGreaterThan(
-  //   m1: NumericMatrix | MatrixType,
-  //   m2: MatrixType | NumericMatrix,
-  // ): boolean {
-  //   if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
-  //   else return models.CompareMatrices(m1, m2, "gt");
-  // }
   //
   // /**
   //  * Checks if the elements of the current Matrix are greater than or equal to
