@@ -1,16 +1,17 @@
 "use strict";
 // import "./matrix-constructor.spec.ts";
-import "./is-matrix.spec.ts";
-import "./replicate.spec.ts"
-import "./zeros.spec.ts";
-import "./identity-like.spec.ts";
-import "./random-matrix.spec.ts";
-import "./copy.spec.ts";
-import "./is-square.spec.ts";
-import "./is-symmetric.spec.ts";
-import "./is-equal-to.spec.ts";
-import "./is-greater-than.spec.ts";
-import "./is-greater-than-or-equal.spec.ts";
+import "./is-matrix.spec";
+import "./replicate.spec"
+import "./zeros.spec";
+import "./identity-like.spec";
+import "./random-matrix.spec";
+import "./copy.spec";
+import "./is-square.spec";
+import "./is-symmetric.spec";
+import "./is-equal-to.spec";
+import "./is-greater-than.spec";
+import "./is-greater-than-or-equal.spec";
+import "./is-less-than.spec";
 // import "./get-block.spec.ts";
 // import "./set-block.spec.ts";
 // import "./get-row.spec.ts";
@@ -22,7 +23,6 @@ import "./is-greater-than-or-equal.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./transpose.spec.ts";
-// import "./is-less-than.spec.ts"
 // import "./is-less-than-or-equal.spec.ts";
 // import "./frobenius-norm.spec.ts";
 // import "./infinity-norm.spec.ts";
