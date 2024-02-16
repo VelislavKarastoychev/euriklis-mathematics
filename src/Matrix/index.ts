@@ -239,7 +239,7 @@ export class Matrix {
   /**
    * Checks if the matrix is symmetric.
    *
-   * @param {MatrixType | NumericMatrix} matrix - The matrix parameter. 
+   * @param {MatrixType | NumericMatrix} matrix - The matrix parameter.
    * @returns {boolean} True if the matrix is symmetric, false otherwise.
    * @throws {Error} If the matrix is not table (every row does not have
    * the same number of columns).
@@ -256,7 +256,7 @@ export class Matrix {
   // for matrix manipulation.
 
   /**
-   * Checks if the elements of the current Matrix are equal to
+   * Checks if the elements of the first matrix are equal to
    * the corresponding elements of the provided matrix.
    *
    * @param {NumericMatrix | MatrixType} m1 - The first matrix used
@@ -282,16 +282,18 @@ export class Matrix {
   }
 
   /**
-   * Checks if the elements of the current Matrix are greater than
-   * the elements of the "matrix" parameter of the method.
+   * Checks if the elements of the first Matrix are greater than
+   * the elements of the second "matrix" parameter of the method.
    *
-   * @param {Matrix | NumericMatrix | MatrixType} m1 - The first matrix used
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix used
    * for comparison
-   *@param {Matrix | NumericMatrix | MatrixType} m2 - The second matrix used
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix used
    * for comparison
 
    * @returns {boolean} true, if the elements of the current matrix instance
    * are greater than the elements of the "matrix" parameter, false otherwise.
+   * @throws {Error} If the matrices are not tables, i.e., the matrices do not
+   * have rows with the same number of columns.
    */
   static isGreaterThan(
     m1: NumericMatrix | MatrixType,
