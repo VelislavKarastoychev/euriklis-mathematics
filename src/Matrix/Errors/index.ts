@@ -74,3 +74,5 @@ export const IncorrectMatrixParameterInPointwise =
     runError(texts.IncorrectMatrixParameterInPointwiseTxt(method));
 export const MatrixDegenerate = (): never =>
   runError(texts.MatrixDegenerateTxt);
+export const IncorrectMatricesInput = (method: string) =>
+  (): never => runError(texts.IncorrectMatricesInput(method));
