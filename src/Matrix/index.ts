@@ -433,7 +433,10 @@ export class Matrix {
    * number or Matrix-like structure.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("eq"), 1)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("eq"),
+    1,
+  )
   static eq(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
