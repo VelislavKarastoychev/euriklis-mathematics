@@ -2,7 +2,7 @@
 
 import { Matrix } from "../index.ts";
 import { IsArrayOfArraysWithEqualSize } from "../Conditions/index.ts";
-import { MatrixType, NumericMatrix } from "../types";
+import { Integer, MatrixType, NumericMatrix } from "../types";
 
 /**
  * Decorator function to check if the parameter is a number or a matrix-like structure,
@@ -13,21 +13,20 @@ import { MatrixType, NumericMatrix } from "../types";
  */
 export function ifIsNotNumberOrMatrixThrow(
   error: Function,
+  paramIndex: Integer = 0
 ): (_: any, __: string, descriptor: PropertyDescriptor) => any {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {
     const method: Function = descriptor.value;
-    descriptor.value = function (
-      m: number | Matrix | MatrixType | NumericMatrix,
-    ) {
+    descriptor.value = function (...args: any[]) {
+      const m = args[paramIndex];
       if (
-        !Matrix.isMatrix(m) &&
         !IsArrayOfArraysWithEqualSize(m as MatrixType | NumericMatrix) &&
         typeof m !== "number"
       ) error();
       else {
         return method.call(
           this,
-          m as number | Matrix | MatrixType | NumericMatrix,
+          ...args,
         );
       }
     };
