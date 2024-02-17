@@ -353,24 +353,30 @@ export class Matrix {
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     return models.CompareMatrices(m1, m2, "lt");
   }
-  //
-  // /**
-  //  * Checks if the elements of the current Matrix are less than or equal to
-  //  * the elements of the "matrix" parameter.
-  //  *
-  //  * @param {NumericMatrix | MatrixType} m1 - The first matrix used for comparison.
-  //  * @param {NumericMatrix | MatrixType} m2 - The second matrix used for comparison.
-  //  *
-  //  * @returns {boolean} true, if the elements of the current matrix instance are less than
-  //  * or equal to the elements of the "matrix" parameter, false otherwise.
-  //  */
-  // static isLessThanOrEqual(
-  //   m1: NumericMatrix | MatrixType,
-  //   m2: MatrixType | NumericMatrix,
-  // ): boolean {
-  //   if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
-  //   else return models.CompareMatrices(m1, m2, "leq");
-  // }
+
+  /**
+   * Checks if the elements of the first "matrix" are less than or equal to
+   * the elements of the second "matrix" parameter.
+   *
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix used for comparison.
+   * @param {NumericMatrix | MatrixType} m2 - The second matrix used for comparison.
+   *
+   * @returns {boolean} true, if the elements of the current matrix instance are less than
+   * or equal to the elements of the "matrix" parameter, false otherwise.
+   * @throws {Error} If some of the matrices if not a table, i.e.,
+   * some of the rows have not the same numbers of columns with the others.
+   */
+  @ifTheParametersAreNotMatricesThrow(
+    errors.IncorrectMatricesInput("isLessThanOrEqual")
+  )
+  static isLessThanOrEqual(
+    m1: NumericMatrix | MatrixType,
+    m2: MatrixType | NumericMatrix,
+  ): boolean {
+    if (m1 === m2) return true;
+    if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
+    return models.CompareMatrices(m1, m2, "leq");
+  }
   //
   // /**
   //  * Gets a block matrix by given starting and ending indices
