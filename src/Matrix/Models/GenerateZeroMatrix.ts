@@ -29,7 +29,7 @@ export const GenerateZeroMatrix = (
   type: NumericType,
 ): MatrixType | NumericMatrix => {
   const matrix: MatrixType | NumericMatrix = [];
-  const bytesLength: number = ComputeBytesLength(type) * columns;
+  const bytesLength: number = (ComputeBytesLength(type) as Integer) * columns;
   const buffer = new ArrayBuffer(bytesLength * rows);
   const typedArray = CreateTypedArrayConstructor(type);
   let i: Integer;
