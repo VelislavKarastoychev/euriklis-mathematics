@@ -7,9 +7,9 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 const m = Matrix.random(4, 5);
 const m1 = Matrix.random(4, 5);
 const onces = Matrix.replicate(1, 4, 5);
-const runEq = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(4, 5).eq(matrix);
-new validator(m.eq(m1).isEqualTo(onces))
+const runEq = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.eq(Matrix.random(4, 5), matrix);
+new validator(Matrix.isEqualTo(Matrix.eq(m, m1), onces))
   .describe("The eq method has to:")
   .test({
     title: true,
@@ -20,15 +20,15 @@ new validator(m.eq(m1).isEqualTo(onces))
     "1. return the correct result when the method parameter is a Matrix instance.",
   )
   .test();
-new validator(onces.eq(1).isEqualTo(onces))
+new validator(Matrix.isEqualTo(Matrix.eq(onces, 1), onces))
   .isSame(true)
   .describe(
     "2. return the correct result when the method parameter is a number.",
   )
   .test();
-new validator(m1.eq(m.M).isEqualTo(onces))
+new validator(Matrix.isEqualTo(Matrix.eq(m1, Matrix.copy(m)), onces))
   .and.bind(
-    new validator(m.eq(m1.data).isEqualTo(onces)),
+    new validator(Matrix.isEqualTo(Matrix.eq(Matrix.copy(m, "generic"), m1), onces)),
   ).isSame(true)
   .describe(
     "3. return the correct result when the argument is a numeric matrix or a typed matrix structure.",
