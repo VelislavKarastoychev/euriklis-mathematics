@@ -386,7 +386,7 @@ export class Matrix {
    * which will be examined.
    * @param {number | Matrix | MatrixType | NumericMatrix} m - The value or matrix to compare against.
    * @param {NumericType} type - The type of the matrix elements.
-   * @returns {Matrix} A matrix with elements 0/1 based on the comparison.
+   * @returns {MatrixType | NumericMatrix} A matrix with elements 0/1 based on the comparison.
    * @throws {Error} If the "m" parameter is not a number or a matrix-like structure.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
@@ -411,6 +411,48 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "gt",
+      type,
+    );
+  }
+
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * greater than or equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {MatrixType |NumericMatrix} matrix - The matrix
+   * whose elements will be compared.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
+   * or matrix for pointwise comparison.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise
+   * "greater than or equal to" operation.
+   * @throws {Error} If the "m" parameter is
+   * not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("geq"),
+    1,
+  )
+  static geq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | Matrix | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("geq")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "geq",
       type,
     );
   }
@@ -914,43 +956,6 @@ export class Matrix {
   //   return cubes;
   // }
   //
-  // /**
-  //  * Generates a matrix with elements 0/1. If the element is
-  //  * greater than or equal to the m (or m[i][j] in the case when the m
-  //  * is a Matrix or Matrix-like structure), then the output
-  //  * element will be 1 and zero otherwise.
-  //  *
-  //  * @param {MatrixType |NumericMatrix} matrix - The matrix
-  //  * whose elements will be compared.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
-  //  * or matrix for pointwise comparison.
-  //  * @param {NumericType} type - The type of the matrix elements.
-  //  * @returns {Matrix} A new matrix resulting from the pointwise
-  //  * "greater than or equal to" operation.
-  //  * @throws {Error} If the "m" parameter is
-  //  * not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("geq"))
-  // static geq(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | Matrix | MatrixType | NumericMatrix,
-  //   type: NumericType,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("geq")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "geq",
-  //     type,
-  //   );
-  // }
   // /**
   //  * Generates a matrix with elements 0/1. If the element is
   //  * equal to the m (or m[i][j] in the case when the m
