@@ -9,10 +9,10 @@ const result = [
   [0, 0, 0],
   [1, 1, 1],
 ];
-const runGt = (data: Matrix | MatrixType | NumericMatrix | number) =>
-  Matrix.random(4, 4).gt(data);
+const runGt = (data: MatrixType | NumericMatrix | number) =>
+  Matrix.gt(Matrix.random(4, 4), data);
 new validator(
-  m.gt(0.5).isEqualTo(result),
+  Matrix.isEqualTo(Matrix.gt(m, 0.5), result),
 ).describe("The gt method has to:")
   .test({
     title: true,
@@ -21,17 +21,29 @@ new validator(
   })
   .describe("1. return the correct answer when the input is a number.")
   .isSame(true).test();
-new validator(m.gt(Matrix.replicate(0.5, 3, 3)).isEqualTo(result))
+new validator(
+  Matrix.isEqualTo(Matrix.gt(m, Matrix.replicate(0.5, 3, 3)), result),
+)
   .describe(
     "2. return the correct output, when the method parameter is a Matrix type",
   )
   .isSame(true).test();
-new validator(m.gt(Matrix.replicate(0.5, 3, 3).M).isEqualTo(result))
+new validator(
+  Matrix.isEqualTo(
+    Matrix.gt(m, Matrix.copy(Matrix.replicate(0.5, 3, 3), "float64")),
+    result,
+  ),
+)
   .describe(
     "3. return the correct result when the method parameter is numeric matrix",
   )
   .isSame(true).test();
-new validator(m.gt(Matrix.replicate(0.5, 3, 3).data).isEqualTo(result))
+new validator(
+  Matrix.isEqualTo(
+    Matrix.gt(m, Matrix.copy(Matrix.replicate(0.5, 3, 3), "float32")),
+    result,
+  ),
+)
   .describe(
     "4. returns the correct result, when the method parameter is a typed matrix.",
   )
@@ -43,4 +55,8 @@ new validator(runGt).throwsErrorWith("3e")
   .describe(
     "6. throws error when the parameter of the method is not number, Matrix or Matrix - like object.",
   )
+  .test();
+new validator((data: MatrixType | NumericMatrix) => Matrix.gt(data, 12))
+  .throwsErrorWith([[1, 2, 3], [1, 23], [123]])
+  .describe("7. throws error when the first matrix parameter is not a table.")
   .test();
