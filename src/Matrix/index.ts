@@ -377,6 +377,7 @@ export class Matrix {
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     return models.CompareMatrices(m1, m2, "leq");
   }
+
   /**
    * Generates a matrix with elements 0/1. If the element is greater than the provided
    * value or the corresponding element in the input matrix (m), then the output element
@@ -411,6 +412,45 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "gt",
+      type,
+    );
+  }
+
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
+   * or matrix for pointwise comparison.
+   * @param {NumericType} type - the type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the
+   * pointwise "equal to" operation.
+   * @throws {Error} If the "m" parameter is not a
+   * number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("eq"), 1)
+  static eq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("eq")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "eq",
       type,
     );
   }
@@ -956,43 +996,6 @@ export class Matrix {
   //   return cubes;
   // }
   //
-  // /**
-  //  * Generates a matrix with elements 0/1. If the element is
-  //  * equal to the m (or m[i][j] in the case when the m
-  //  * is a Matrix or Matrix-like structure), then the output
-  //  * element will be 1 and zero otherwise.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be used for comparison.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
-  //  * or matrix for pointwise comparison.
-  //  * @param {NumericType} type - the type of the matrix elements.
-  //  * @returns {Matrix} A new matrix resulting from the
-  //  * pointwise "equal to" operation.
-  //  * @throws {Error} If the "m" parameter is not a
-  //  * number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("eq"))
-  // static eq(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("eq")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "eq",
-  //     type,
-  //   );
-  // }
   // /**
   //  * Generates a matrix with elements 0/1. If the element is
   //  * not equal to the m (or m[i][j] in the case when the m
