@@ -5,7 +5,7 @@ import * as errors from "./Errors";
 import {
   // ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
-  // ifIsNotNumberOrMatrixThrow,
+  ifIsNotNumberOrMatrixThrow,
   // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
@@ -343,7 +343,7 @@ export class Matrix {
    * every row of the matrices has the same number of columns.
    */
   @ifTheParametersAreNotMatricesThrow(
-    errors.IncorrectMatricesInput("isLessThan")
+    errors.IncorrectMatricesInput("isLessThan"),
   )
   static isLessThan(
     m1: NumericMatrix | MatrixType,
@@ -367,7 +367,7 @@ export class Matrix {
    * some of the rows have not the same numbers of columns with the others.
    */
   @ifTheParametersAreNotMatricesThrow(
-    errors.IncorrectMatricesInput("isLessThanOrEqual")
+    errors.IncorrectMatricesInput("isLessThanOrEqual"),
   )
   static isLessThanOrEqual(
     m1: NumericMatrix | MatrixType,
@@ -377,6 +377,44 @@ export class Matrix {
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     return models.CompareMatrices(m1, m2, "leq");
   }
+  /**
+   * Generates a matrix with elements 0/1. If the element is greater than the provided
+   * value or the corresponding element in the input matrix (m), then the output element
+   * will be 1; otherwise, it will be 0.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * which will be examined.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The value or matrix to compare against.
+   * @param {NumericType} type - The type of the matrix elements.
+   * @returns {Matrix} A matrix with elements 0/1 based on the comparison.
+   * @throws {Error} If the "m" parameter is not a number or a matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("gt"),
+    1,
+  )
+  static gt(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (typeof m !== "number") {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("gt")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "gt",
+      type,
+    );
+  }
+
   //
   // /**
   //  * Gets a block matrix by given starting and ending indices
@@ -874,40 +912,6 @@ export class Matrix {
   //   if (isNaN(cubes)) errors.InternalErrorInCubes();
   //
   //   return cubes;
-  // }
-  //
-  // /**
-  //  * Generates a matrix with elements 0/1. If the element is greater than the provided
-  //  * value or the corresponding element in the input matrix (m), then the output element
-  //  * will be 1; otherwise, it will be 0.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * which will be examined.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The value or matrix to compare against.
-  //  * @param {NumericType} type - The type of the matrix elements.
-  //  * @returns {Matrix} A matrix with elements 0/1 based on the comparison.
-  //  * @throws {Error} If the "m" parameter is not a number or a matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("gt"))
-  // static gt(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (typeof m !== "number") {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("gt")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "gt",
-  //     type,
-  //   );
   // }
   //
   // /**
