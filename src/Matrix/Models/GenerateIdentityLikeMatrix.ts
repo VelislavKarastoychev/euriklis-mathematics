@@ -4,6 +4,7 @@ import {
   Integer,
   MatrixType,
   NumericType,
+  NumericMatrix,
   TypedArrayConstructor,
 } from "../types";
 import { ComputeBytesLength } from "./ComputeBytesLength.ts";
@@ -23,9 +24,9 @@ export const GenerateIdentityLikeMatrix = (
   rows: Integer,
   columns: Integer,
   type: NumericType,
-): MatrixType => {
+): MatrixType | NumericMatrix => {
   let I = [];
-  const bytesLength = ComputeBytesLength(type) * columns;
+  const bytesLength = (ComputeBytesLength(type) as Integer) * columns;
   const buffer = new ArrayBuffer(bytesLength * rows);
   const typedArray = CreateTypedArrayConstructor(type);
   const k: Integer = rows < columns ? rows : columns;
