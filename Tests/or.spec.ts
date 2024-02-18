@@ -5,10 +5,10 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 
 const r = Matrix.random(3, 4, 1, 2);
 const r1 = Matrix.random(3, 4, 3, 4);
-const runOr = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  r.or(matrix);
+const runOr = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.or(r, matrix);
 
-new validator(r.or(r1).isEqualTo(r))
+new validator(Matrix.isEqualTo(Matrix.or(r, r1), r))
   .describe("The or method has to:")
   .test({
     title: true,
@@ -21,15 +21,17 @@ new validator(r.or(r1).isEqualTo(r))
   )
   .test();
 
-new validator(r.or(r1.M).isEqualTo(r.data))
+new validator(Matrix.isEqualTo(Matrix.or(r, Matrix.copy(r1, "float32")), r))
   .and.bind(
-    new validator(r.or(r1.data).isEqualTo(r)),
+    new validator(
+      Matrix.isEqualTo(Matrix.or(r, Matrix.copy(r1, "float64")), r),
+    ),
   ).describe(
     "2. return the correct result when the method's parameter is a Matrix - like structure.",
   )
   .isSame(true)
   .test();
-new validator(r.or(2).isEqualTo(r))
+new validator(Matrix.isEqualTo(Matrix.or(r, 2), r))
   .describe(
     "3. return the correct result when the method's parameter is a number.",
   )
