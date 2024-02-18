@@ -625,6 +625,44 @@ export class Matrix {
     );
   }
 
+  /**
+   * Performs a logical AND operation element-wise between the first matrix
+   * and the provided number or matrix. If second parameter is a number, each element
+   * of the first parameter is logical ANDed with that number. If the second parameter is
+   * a matrix with the same dimensions as the current matrix, the logical AND
+   * operation is applied element-wise between corresponding elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whoolse element
+   * will be used for logical and operation.
+   * @param {number | MatrixType | NumericMatrix} m -The number or
+   * matrix for the bitwise AND operation.
+   * @param {NumericType} type - The type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise AND operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"), 1)
+  static and(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("and")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "and",
+      type,
+    );
+  }
+
   //
   // /**
   //  * Gets a block matrix by given starting and ending indices
@@ -1204,42 +1242,6 @@ export class Matrix {
   //   );
   // }
   //
-  // /**
-  //  * Performs a logical AND operation element-wise between the current matrix
-  //  * and the provided number or matrix. If the input is a number, each element
-  //  * of the current matrix is logical ANDed with that number. If the input is
-  //  * a matrix with the same dimensions as the current matrix, the logical AND
-  //  * operation is applied element-wise between corresponding elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whoolse element
-  //  * will be used for logical and operation.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
-  //  * matrix for the bitwise AND operation.
-  //  * @param {NumericType} type - The type of the matrix elements.
-  //  * @returns {Matrix} A new matrix resulting from the pointwise bitwise AND operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"))
-  // static and(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("and")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "and",
-  //     type,
-  //   );
-  // }
   //
   // /**
   //  * Performs a bitwise AND operation element-wise between the current matrix
