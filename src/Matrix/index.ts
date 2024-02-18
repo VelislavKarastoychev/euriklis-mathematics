@@ -726,7 +726,10 @@ export class Matrix {
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"), 1)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("or"),
+    1,
+  )
   static or(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
@@ -744,6 +747,48 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "or",
+      type,
+    );
+  }
+
+  /**
+   * Performs a bitwise OR operation element-wise between the first matrix
+   * and the second number or matrix. If the second parameter is a number, each element
+   * of the first matrix is bitwise ORed with that number. If the second parameter is
+   * a matrix with the same dimensions as the first matrix, the bitwise OR
+   * operation is applied element-wise between corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix
+   * @param {number | MatrixType | NumericMatrix} m - The number or
+   * matrix for the bitwise OR operation.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise OR operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("bitwiseOr"),
+    1,
+  )
+  static bitwiseOr(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("bitwiseOr")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "bor",
       type,
     );
   }
@@ -1245,46 +1290,6 @@ export class Matrix {
   //   if (isNaN(cubes)) errors.InternalErrorInCubes();
   //
   //   return cubes;
-  // }
-  //
-  // /**
-  //  * Performs a bitwise OR operation element-wise between the current matrix
-  //  * and the provided number or matrix. If the input is a number, each element
-  //  * of the current matrix is bitwise ORed with that number. If the input is
-  //  * a matrix with the same dimensions as the current matrix, the bitwise OR
-  //  * operation is applied element-wise between corresponding elements.
-  //  *
-  //  * NB! Note that in JavaScript and in TypeScript respectively the logical
-  //  * bitwise operations are limited to 32-bit numbers.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The first matrix
-  //  * @param {number | MatrixType | NumericMatrix} m - The number or
-  //  * matrix for the bitwise OR operation.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise OR operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(
-  //   errors.IncorrectMatrixParameterInPointwise("bitwiseOr"),
-  // )
-  // static bitwiseOr(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("bitwiseOr")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "bor",
-  //     type,
-  //   );
   // }
   //
   // /**
