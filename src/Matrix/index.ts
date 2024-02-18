@@ -508,9 +508,10 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix
    * whose elements will be used for comparison.
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The
+   * @param {number | MatrixType | NumericMatrix} m - The
    * number or matrix for pointwise comparison.
-   * @returns {Matrix} A new matrix resulting
+   * @param {NumericType} type - the type of the resulting matrix.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting
    * from the pointwise "less than" operation.
    * @throws {Error} If the "m" parameter is
    * not a number or Matrix-like structure.
@@ -537,6 +538,48 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "lt",
+      type,
+    );
+  }
+
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * less than or equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
+   * @param {number | MatrixType | NumericMatrix} m - The
+   * number or matrix for pointwise comparison.
+   * @param {NumericType} type - The type of the resulting matrix.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting
+   * from the pointwise "less than or equal to" operation.
+   * @throws {Error} If the "m" parameter is not a number
+   * or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("leq"),
+    1,
+  )
+  static leq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("leq")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "leq",
       type,
     );
   }
@@ -1078,42 +1121,6 @@ export class Matrix {
   // }
   //
   //
-  // /**
-  //  * Generates a matrix with elements 0/1. If the element is
-  //  * less than or equal to the m (or m[i][j] in the case when the m
-  //  * is a Matrix or Matrix-like structure), then the output
-  //  * element will be 1 and zero otherwise.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be used for comparison.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The
-  //  * number or matrix for pointwise comparison.
-  //  * @returns {MatrixType} A new matrix resulting
-  //  * from the pointwise "less than or equal to" operation.
-  //  * @throws {Error} If the "m" parameter is not a number
-  //  * or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("leq"))
-  // static leq(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("leq")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "leq",
-  //     type,
-  //   );
-  // }
   //
   // /**
   //  * Performs a logical OR operation element-wise between the current matrix
