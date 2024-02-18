@@ -418,48 +418,6 @@ export class Matrix {
 
   /**
    * Generates a matrix with elements 0/1. If the element is
-   * equal to the m (or m[i][j] in the case when the m
-   * is a Matrix or Matrix-like structure), then the output
-   * element will be 1 and zero otherwise.
-   *
-   * @param {MatrixType | NumericMatrix} matrix - The matrix
-   * whose elements will be used for comparison.
-   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
-   * or matrix for pointwise comparison.
-   * @param {NumericType} type - the type of the matrix elements.
-   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the
-   * pointwise "equal to" operation.
-   * @throws {Error} If the "m" parameter is not a
-   * number or Matrix-like structure.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotNumberOrMatrixThrow(
-    errors.IncorrectMatrixParameterInPointwise("eq"),
-    1,
-  )
-  static eq(
-    matrix: MatrixType | NumericMatrix,
-    m: number | MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    if (!conditions.IsNumber(m)) {
-      if (
-        (m as MatrixType | NumericMatrix).length !== matrix.length &&
-        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-      ) {
-        errors.IncorrectMatrixParameterInPointwise("eq")();
-      }
-    }
-    return models.BinaryPointwise(
-      matrix,
-      m as number | MatrixType | NumericMatrix,
-      "eq",
-      type,
-    );
-  }
-
-  /**
-   * Generates a matrix with elements 0/1. If the element is
    * greater than or equal to the m (or m[i][j] in the case when the m
    * is a Matrix or Matrix-like structure), then the output
    * element will be 1 and zero otherwise.
@@ -496,6 +454,48 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "geq",
+      type,
+    );
+  }
+
+  /**
+   * Generates a matrix with elements 0/1. If the element is
+   * equal to the m (or m[i][j] in the case when the m
+   * is a Matrix or Matrix-like structure), then the output
+   * element will be 1 and zero otherwise.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number
+   * or matrix for pointwise comparison.
+   * @param {NumericType} type - the type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the
+   * pointwise "equal to" operation.
+   * @throws {Error} If the "m" parameter is not a
+   * number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("eq"),
+    1,
+  )
+  static eq(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("eq")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "eq",
       type,
     );
   }
