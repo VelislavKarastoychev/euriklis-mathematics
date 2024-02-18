@@ -793,6 +793,46 @@ export class Matrix {
     );
   }
 
+  /**
+   * Performs a bitwise XOR (exclusive OR) operation element-wise between the
+   * first matrix and the second number or matrix. If the second parameter is a number,
+   * each element of the first matrix is bitwise XORed with that number. If
+   * the second parameter is a matrix with the same dimensions as the first matrix, the
+   * bitwise XOR operation is applied element-wise between corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be used for xor operation.
+   * @param {number | MatrixType | NumericMatrix} m - The number or matrix for the bitwise XOR operation.
+   * @param {NumericType} type - The type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise XOR operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"), 1)
+  static xor(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("xor")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "xor",
+      type,
+    );
+  }
+
   //
   // /**
   //  * Gets a block matrix by given starting and ending indices
@@ -1292,44 +1332,6 @@ export class Matrix {
   //   return cubes;
   // }
   //
-  // /**
-  //  * Performs a bitwise XOR (exclusive OR) operation element-wise between the
-  //  * current matrix and the provided number or matrix. If the input is a number,
-  //  * each element of the current matrix is bitwise XORed with that number. If
-  //  * the input is a matrix with the same dimensions as the current matrix, the
-  //  * bitwise XOR operation is applied element-wise between corresponding elements.
-  //  *
-  //  * NB! Note that in JavaScript and in TypeScript respectively the logical
-  //  * bitwise operations are limited to 32-bit numbers.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
-  //  * will be used for xor operation.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix for the bitwise XOR operation.
-  //  * @param {NumericType} type - The type of the matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise XOR operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"))
-  // static xor(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("xor")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "xor",
-  //     type,
-  //   );
-  // }
   //
   // /**
   //  * Performs a bitwise right shift operation element-wise between the current
