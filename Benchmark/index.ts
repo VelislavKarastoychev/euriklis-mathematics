@@ -14,7 +14,8 @@
 // import "./is-less-than-or-equal.spec.ts";
 // import "./gt.spec.ts";
 // import "./geq.spec.ts";
-import "./eq.spec.ts";
+// import "./eq.spec.ts";
+import "./lt.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
@@ -37,7 +38,6 @@ import "./eq.spec.ts";
 // import "./product-of-all-elements.spec.ts";
 // import "./sum-of-squares-of-all-elements.spec.ts";
 // import "./sum-of-cubes-of-all-elements.spec.ts";
-// import "./lt.spec.ts";
 // import "./leq.spec.ts";
 // import "./neq.spec.ts";
 // import "./plus.spec.ts";
