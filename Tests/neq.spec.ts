@@ -4,16 +4,14 @@ import { Matrix } from "../src/index.ts";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 
 const m = Matrix.random(4, 5);
-const m1 = new Matrix(
-  Array.from({ length: 4 }).map((_) =>
-    Array.from({ length: 5 }).map(Math.random)
-  ),
+const m1 = Array.from({ length: 4 }).map((_) =>
+  Array.from({ length: 5 }).map(Math.random)
 );
-const runNeq = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(4, 5, -1, 1).neq(matrix);
+const runNeq = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.neq(Matrix.random(4, 5, -1, 1), matrix);
 const onces = Matrix.replicate(1, 4, 5);
 
-new validator(m.neq(m1).isEqualTo(onces))
+new validator(Matrix.isEqualTo(Matrix.neq(m, m1), onces))
   .describe("The neq method has to:")
   .test({
     title: true,
@@ -25,17 +23,24 @@ new validator(m.neq(m1).isEqualTo(onces))
   )
   .test();
 
-new validator(m.neq(m1.M).isEqualTo(onces.M))
+new validator(
+  Matrix.isEqualTo(
+    Matrix.neq(m, Matrix.copy(m1, "float32")),
+    Matrix.copy(onces, "float32"),
+  ),
+)
   .and.bind(
-    new validator(m.neq(m1.data).isEqualTo(onces.data)),
+    new validator(
+      Matrix.isEqualTo(Matrix.neq(m, Matrix.copy(m1, "generic")), onces),
+    ),
   ).describe(
     "2. return the correct result when the method's parameter is a Matrix - like structure.",
   )
   .isSame(true).test();
 
-new validator(m1.neq(1).isEqualTo(onces))
+new validator(Matrix.isEqualTo(Matrix.neq(m1, 1), onces))
   .and.bind(
-    new validator(m.neq(1).isEqualTo(onces)),
+    new validator(Matrix.isEqualTo(Matrix.neq(m, 1), onces)),
   ).isSame(true)
   .describe(
     "3. return the correct result when the method's paramaeter is a number.",
