@@ -687,7 +687,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("bitwiseAnd"),
-    1
+    1,
   )
   static bitwiseAnd(
     matrix: MatrixType | NumericMatrix,
@@ -706,6 +706,44 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "band",
+      type,
+    );
+  }
+
+  /**
+   * Performs a logical OR operation element-wise between the first matrix
+   * and the second number or matrix. If the second parameter is a number, each element
+   * of the first matrix is logical ORed with that number. If the second  parameter is
+   * a matrix with the same dimensions as the first matrix, the logical OR
+   * operation is applied element-wise between corresponding elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for comparison.
+   * @param {number | MatrixType | NumericMatrix} m - The number or
+   * matrix for the bitwise OR operation.
+   * @param {NumericType} type - the type of the matrix elements.
+   * @returns {MatrixType \ NumericMatrix} A new matrix resulting from the pointwise bitwise OR operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"), 1)
+  static or(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("or")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "or",
       type,
     );
   }
@@ -1207,46 +1245,6 @@ export class Matrix {
   //   if (isNaN(cubes)) errors.InternalErrorInCubes();
   //
   //   return cubes;
-  // }
-  //
-  //
-  //
-  //
-  // /**
-  //  * Performs a logical OR operation element-wise between the current matrix
-  //  * and the provided number or matrix. If the input is a number, each element
-  //  * of the current matrix is logical ORed with that number. If the input is
-  //  * a matrix with the same dimensions as the current matrix, the logical OR
-  //  * operation is applied element-wise between corresponding elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be used for comparison.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
-  //  * matrix for the bitwise OR operation.
-  //  * @param {NumericType} type - the type of the matrix elements.
-  //  * @returns {MatrixType \ NumericMatrix} A new matrix resulting from the pointwise bitwise OR operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("or"))
-  // static or(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("or")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "or",
-  //     type,
-  //   );
   // }
   //
   // /**
