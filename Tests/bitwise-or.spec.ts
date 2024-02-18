@@ -6,10 +6,10 @@ const r1 = Matrix.random(3, 4, 1, 5);
 const r2 = Matrix.random(3, 4, 5, 10);
 const result1 = [[6, 7, 5, 11], [7, 7, 7, 7], [5, 11, 11, 13]];
 const result2 = [[3, 3, 3, 3], [3, 3, 3, 3], [3, 3, 3, 7]];
-const runBitwiseOr = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  r1.bitwiseOr(matrix);
+const runBitwiseOr = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.bitwiseOr(r1, matrix);
 
-new validator(r1.bitwiseOr(r2).isEqualTo(result1))
+new validator(Matrix.isEqualTo(Matrix.bitwiseOr(r1, r2), result1))
   .describe("The bitwiseOr method has to:")
   .test({
     title: true,
@@ -21,15 +21,22 @@ new validator(r1.bitwiseOr(r2).isEqualTo(result1))
   .isSame(true)
   .test();
 
-new validator(r1.bitwiseOr(r2.M).isEqualTo(result1))
+new validator(
+  Matrix.isEqualTo(Matrix.bitwiseOr(r1, Matrix.copy(r2, "generic")), result1),
+)
   .and.bind(
-    new validator(r1.bitwiseOr(r2.data).isEqualTo(result2)),
+    new validator(
+      Matrix.isEqualTo(
+        Matrix.bitwiseOr(r1, Matrix.copy(r2, "float64")),
+        result2,
+      ),
+    ),
   ).describe(
     "2. return the correct result when the method's parameter is a Matrix - like structure.",
   )
   .isSame(true)
   .test();
-new validator(r1.bitwiseOr(3).isEqualTo(result2))
+new validator(Matrix.isEqualTo(Matrix.bitwiseOr(r1, 3), result2))
   .describe(
     "3. return the correct result when the method's parameter is a number.",
   )
