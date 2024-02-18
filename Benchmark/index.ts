@@ -19,7 +19,8 @@
 // import "./leq.spec.ts";
 // import "./neq.spec.ts";
 // import "./and.spec.ts";
-import "./bitwiseAnd.spec.ts";
+// import "./bitwiseAnd.spec.ts";
+import "./or.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
@@ -44,7 +45,6 @@ import "./bitwiseAnd.spec.ts";
 // import "./sum-of-cubes-of-all-elements.spec.ts";
 // import "./plus.spec.ts";
 // import "./bitwiseOr.spec.ts";
-// import "./or.spec.ts";
 // import "./minus.spec.ts";
 // import "./xor.spec.ts";
 // import "./right-shift-by.spec.ts";
