@@ -5,9 +5,9 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 
 const r = Matrix.random(3, 4, 1, 2);
 const r2 = Matrix.random(3, 4, 3, 4);
-const runAnd = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(3, 4).and(matrix);
-new validator(r.and(r2).isEqualTo(r2))
+const runAnd = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.and(Matrix.random(3, 4), matrix);
+new validator(Matrix.isEqualTo(Matrix.and(r, r2), r2))
   .describe("The and method has to:")
   .test({
     title: true,
@@ -19,16 +19,26 @@ new validator(r.and(r2).isEqualTo(r2))
   )
   .test();
 
-new validator(r.and(4).isEqualTo(Matrix.replicate(4, 3, 4)))
+new validator(Matrix.isEqualTo(Matrix.and(r, 4), Matrix.replicate(4, 3, 4)))
   .describe(
     "2. return the correct result when the method's parameter is a number.",
   )
   .isSame(true)
   .test();
 
-new validator(r.and(r2.M).isEqualTo(r2.M))
+new validator(
+  Matrix.isEqualTo(
+    Matrix.and(r, Matrix.copy(r2, "generic")),
+    Matrix.copy(r2, "generic"),
+  ),
+)
   .and.bind(
-    new validator(r.and(r2.data).isEqualTo(r2.data)),
+    new validator(
+      Matrix.isEqualTo(
+        Matrix.and(r, Matrix.copy(r2, "float32")),
+        Matrix.copy(r2, "float32"),
+      ),
+    ),
   ).describe(
     "3. return the correct result when the method's parameter is a Matrix - like structure.",
   )
