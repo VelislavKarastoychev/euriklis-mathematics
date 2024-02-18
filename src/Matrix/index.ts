@@ -641,7 +641,10 @@ export class Matrix {
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("and"), 1)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("and"),
+    1,
+  )
   static and(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
@@ -659,6 +662,50 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "and",
+      type,
+    );
+  }
+
+  /**
+   * Performs a bitwise AND operation element-wise between the current matrix
+   * and the provided number or matrix. If the input is a number, each element
+   * of the current matrix is bitwise ANDed with that number. If the input is
+   * a matrix with the same dimensions as the current matrix, the bitwise AND
+   * operation is applied element-wise between corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix
+   * used for the bitwise and operation.
+   * @param {number | MatrixType | NumericMatrix} m -The number or
+   * matrix for the bitwise AND operation.
+   * @param{NumericType} type - The type of the matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise AND operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("bitwiseAnd"),
+    1
+  )
+  static bitwiseAnd(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("bitwiseAnd")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "band",
       type,
     );
   }
@@ -1238,49 +1285,6 @@ export class Matrix {
   //     matrix,
   //     m as number | MatrixType | NumericMatrix,
   //     "bor",
-  //     type,
-  //   );
-  // }
-  //
-  //
-  // /**
-  //  * Performs a bitwise AND operation element-wise between the current matrix
-  //  * and the provided number or matrix. If the input is a number, each element
-  //  * of the current matrix is bitwise ANDed with that number. If the input is
-  //  * a matrix with the same dimensions as the current matrix, the bitwise AND
-  //  * operation is applied element-wise between corresponding elements.
-  //  *
-  //  * NB! Note that in JavaScript and in TypeScript respectively the logical
-  //  * bitwise operations are limited to 32-bit numbers.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The first matrix
-  //  * used for the bitwise and operation.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
-  //  * matrix for the bitwise AND operation.
-  //  * @param{NumericType} type - The type of the matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise AND operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(
-  //   errors.IncorrectMatrixParameterInPointwise("bitwiseAnd"),
-  // )
-  // static bitwiseAnd(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("bitwiseAnd")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "band",
   //     type,
   //   );
   // }
