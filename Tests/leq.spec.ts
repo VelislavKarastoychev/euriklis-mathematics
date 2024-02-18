@@ -3,12 +3,11 @@ import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 
-
 const m = Matrix.random(4, 5);
 const onces = Matrix.replicate(1, 4, 5);
-const runLeq = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(4, 5).leq(matrix);
-new validator(m.leq(onces).isEqualTo(onces))
+const runLeq = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.leq(Matrix.random(4, 5), matrix);
+new validator(Matrix.isEqualTo(Matrix.leq(m, onces), onces))
   .describe("The leq method has to:")
   .test({
     title: true,
@@ -19,15 +18,19 @@ new validator(m.leq(onces).isEqualTo(onces))
     "1. return the correct result when the method's parameter is a Matrix.",
   )
   .test();
-new validator(m.leq(1).isEqualTo(onces))
+new validator(Matrix.isEqualTo(Matrix.leq(m, 1), onces))
   .isSame(true)
   .describe(
     "2. return the correct result when the method's parameter is a number.",
   )
   .test();
-new validator(m.leq(onces.M).isEqualTo(onces))
+new validator(
+  Matrix.isEqualTo(Matrix.leq(m, Matrix.copy(onces, "float32")), onces),
+)
   .and.bind(
-    new validator(m.leq(onces.data).isEqualTo(onces)),
+    new validator(
+      Matrix.isEqualTo(Matrix.leq(m, Matrix.copy(onces, "int16")), onces),
+    ),
   ).isSame(true)
   .describe(
     "3. returns the correct result when the method's parameter is a Matrix - like structure.",
@@ -44,5 +47,7 @@ new validator(runLeq).throwsErrorWith([[12, 13]])
   )
   .test();
 new validator(runLeq).throwsErrorWith("this is not matrix")
-  .describe("6. throws error when the method's parameter is not number or Matrix or TypedMatrix or NumericMatrix.")
+  .describe(
+    "6. throws error when the method's parameter is not number or Matrix or TypedMatrix or NumericMatrix.",
+  )
   .test();
