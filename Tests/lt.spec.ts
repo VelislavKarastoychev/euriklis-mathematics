@@ -5,9 +5,9 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 
 const m = Matrix.random(4, 5);
 const onces = Matrix.replicate(1, 4, 5);
-const runLt = (matrix: number | Matrix | NumericMatrix | MatrixType) =>
-  Matrix.random(4, 5).lt(matrix);
-new validator(m.lt(1).isEqualTo(onces))
+const runLt = (matrix: number | NumericMatrix | MatrixType) =>
+  Matrix.lt(Matrix.random(4, 5), matrix);
+new validator(Matrix.isEqualTo(Matrix.lt(m, 1), onces))
   .describe("The lt method has to:")
   .test({
     title: true,
@@ -20,12 +20,14 @@ new validator(m.lt(1).isEqualTo(onces))
   .isSame(true)
   .test();
 
-new validator(m.lt(onces).isEqualTo(onces))
+new validator(Matrix.isEqualTo(Matrix.lt(m, onces), onces))
   .describe(
     "2. return the correct result when the method's parameter is a Matrix.",
   )
   .test();
-new validator(m.lt(onces.M).isEqualTo(onces.M))
+new validator(
+  Matrix.isEqualTo(Matrix.lt(m, Matrix.copy(onces, "float32")), onces),
+)
   .describe(
     "3. returns the correct result when the method's parameter is a Matrix - like structure.",
   )
