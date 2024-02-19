@@ -811,7 +811,10 @@ export class Matrix {
    * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"), 1)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("xor"),
+    1,
+  )
   public static xor(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
@@ -829,6 +832,97 @@ export class Matrix {
       matrix,
       m as number | MatrixType | NumericMatrix,
       "xor",
+      type,
+    );
+  }
+
+  /**
+   * Performs a bitwise left shift operation element-wise between the first
+   * matrix and the second number or matrix. If the second parameter is a number, each
+   * element of the first matrix is bitwise left-shifted by that number of
+   * positions. If the second parameter is a matrix with the same dimensions as the first
+   * matrix, the bitwise left shift operation is applied element-wise between
+   * corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will
+   * bitwise shifted to the left.
+   * @param {number | MatrixType | NumericMatrix} m - The number or
+   * matrix for the bitwise left shift operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix } A new matrix resulting from the pointwise bitwise left shift operation.
+   * @throws {Error} f the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
+    1
+  )
+  public static leftShiftBy(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("leftShiftBy")();
+      }
+    }
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "leftShiftBy",
+      type,
+    );
+  }
+
+  /**
+   * Performs a bitwise right shift operation element-wise between the first
+   * matrix and the second number or matrix. If the second parameter is a number, each
+   * element of the first matrix is bitwise right-shifted by that number of
+   * positions. If the second parameter is a matrix with the same dimensions as the first
+   * matrix, the bitwise right shift operation is applied element-wise between
+   * corresponding elements.
+   *
+   * NB! Note that in JavaScript and in TypeScript respectively the logical
+   * bitwise operations are limited to 32-bit numbers.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix used for
+   * right shifting of its elements.
+   * @param {number | MatrixType | NumericMatrix} m - The number or
+   * matrix for the bitwise right shift operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise right shift operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("rightShiftBy"),
+    1,
+  )
+  public static rightShiftBy(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (!conditions.IsNumber(m)) {
+      if (
+        (m as MatrixType | NumericMatrix).length !== matrix.length &&
+        (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
+      ) {
+        errors.IncorrectMatrixParameterInPointwise("rightShiftBy")();
+      }
+    }
+
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "rightShiftBy",
       type,
     );
   }
@@ -1332,93 +1426,6 @@ export class Matrix {
   //   return cubes;
   // }
   //
-  //
-  // /**
-  //  * Performs a bitwise right shift operation element-wise between the current
-  //  * matrix and the provided number or matrix. If the input is a number, each
-  //  * element of the current matrix is bitwise right-shifted by that number of
-  //  * positions. If the input is a matrix with the same dimensions as the current
-  //  * matrix, the bitwise right shift operation is applied element-wise between
-  //  * corresponding elements.
-  //  *
-  //  * NB! Note that in JavaScript and in TypeScript respectively the logical
-  //  * bitwise operations are limited to 32-bit numbers.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix used for
-  //  * right shifting of its elements.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
-  //  * matrix for the bitwise right shift operation.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise bitwise right shift operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(
-  //   errors.IncorrectMatrixParameterInPointwise("rightShiftBy"),
-  // )
-  // static rightShiftBy(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("rightShiftBy")();
-  //     }
-  //   }
-  //
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "rightShiftBy",
-  //     type,
-  //   );
-  // }
-  //
-  // /**
-  //  * Performs a bitwise left shift operation element-wise between the current
-  //  * matrix and the provided number or matrix. If the input is a number, each
-  //  * element of the current matrix is bitwise left-shifted by that number of
-  //  * positions. If the input is a matrix with the same dimensions as the current
-  //  * matrix, the bitwise left shift operation is applied element-wise between
-  //  * corresponding elements.
-  //  *
-  //  * NB! Note that in JavaScript and in TypeScript respectively the logical
-  //  * bitwise operations are limited to 32-bit numbers.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will
-  //  * bitwise shifted to the left.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
-  //  * matrix for the bitwise left shift operation.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix } A new matrix resulting from the pointwise bitwise left shift operation.
-  //  * @throws {Error} f the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(
-  //   errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
-  // )
-  // static leftShiftBy(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("leftShiftBy")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "leftShiftBy",
-  //     type,
-  //   );
-  // }
   //
   // /**
   //  * Performs a pointwise addition operation (classical matrix addition) between
