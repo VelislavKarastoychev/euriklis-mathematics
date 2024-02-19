@@ -3,13 +3,13 @@ import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 
-const r1 = Matrix.random(3, 4, 10, 20);
-const r2 = Matrix.random(3, 4, 1, 2).bitwiseOr(0);
-const r3 = r1.rightShiftBy(r2);
-const r4 = r1.leftShiftBy(r2);
-
-const m1 = r1.M;
-const m2 = r2.M;
+const m1 = Matrix.random(3, 4, 10, 20, "generic") as NumericMatrix;
+const m2 = Matrix.bitwiseOr(
+  Matrix.random(3, 4, 1, 2, "generic"),
+  0,
+) as NumericMatrix;
+const r3 = Matrix.rightShiftBy(m1, m2);
+const r4 = Matrix.leftShiftBy(m1, m2);
 
 const m3 = m1.map((r: number[], i: number) =>
   r.map((c: number, j: number) => c >> m2[i][j])
@@ -20,16 +20,17 @@ const m4 = m1.map((r: number[], i: number) =>
 );
 
 const runRightShiftBy = (
-  matrix: number | Matrix | MatrixType | NumericMatrix,
-) => Matrix.random(4, 5, 10, 20).rightShiftBy(matrix);
+  matrix: number | MatrixType | NumericMatrix,
+) => Matrix.rightShiftBy(Matrix.random(4, 5, 10, 20), matrix);
 
 const runLeftShiftBy = (
-  matrix: number | Matrix | MatrixType | NumericMatrix,
-) => Matrix.random(4, 5, 10, 20).leftShiftBy(matrix);
+  matrix: number | MatrixType | NumericMatrix,
+) => Matrix.leftShiftBy(Matrix.random(4, 5, 10, 20), matrix);
 
-new validator(r3.isEqualTo(m3))
+new validator(Matrix.isEqualTo(r3, m3))
+  .isSame(true)
   .and.bind(
-    new validator(r4.isEqualTo(m4)),
+    new validator(Matrix.isEqualTo(r4, m4)).isSame(true),
   ).describe("The righshiftBy and leftShiftBy methods have to:")
   .test({
     title: true,
@@ -38,22 +39,31 @@ new validator(r3.isEqualTo(m3))
   }).describe(
     "1. return the correct results when the methods parameters are Matrices.",
   )
-  .isSame(true)
   .test();
 
-new validator(r1.rightShiftBy(m2).isEqualTo(m3))
+new validator(Matrix.isEqualTo(Matrix.rightShiftBy(m1, m2), m3))
   .and.bind(
-    new validator(r1.leftShiftBy(r2.data).isEqualTo(m4)),
+    new validator(
+      Matrix.isEqualTo(Matrix.leftShiftBy(m1, Matrix.copy(m2, "float64")), m4),
+    ),
   ).isSame(true)
   .describe(
     "2. return the correct result when the methods parameters are Matrix like structure.",
   )
   .test();
 
-new validator(r1.rightShiftBy(1).isEqualTo(r1.Hadamard(0.5).bitwiseOr(0)))
+new validator(
+  Matrix.isEqualTo(
+    Matrix.rightShiftBy(m1, 1),
+    Matrix.bitwiseOr(Matrix.Hadamard(m1, 0.5), 0),
+  ),
+)
   .and.bind(
     new validator(
-      r1.leftShiftBy(1).isEqualTo(r1.bitwiseOr(0).Hadamard(2).bitwiseOr(0)),
+      Matrix.isEqualTo(
+        Matrix.leftShiftBy(m1, 1),
+        Matrix.bitwiseOr(Matrix.Hadamard(Matrix.bitwiseOr(m1, 0), 2), 0),
+      ),
     ),
   ).describe(
     "3. return the correct result when the methods parameters are numbers.",
