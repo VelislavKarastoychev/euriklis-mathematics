@@ -59,7 +59,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParametersInZeros,
   )
-  static zeros(
+  public static zeros(
     rows: Integer,
     columns: Integer,
     type: NumericType = "float64",
@@ -74,7 +74,7 @@ export class Matrix {
    * @param {NumericType} type - The type of each element of the Matrix
    * @returns {MatrixType | NumericMatrix} A square zero Matrix
    */
-  static zero(
+  public static zero(
     n: Integer,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
@@ -92,7 +92,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParametersInIdentityLike,
   )
-  static identityLike(
+  public static identityLike(
     rows: Integer,
     columns: Integer,
     type: NumericType = Matrix._type,
@@ -107,7 +107,7 @@ export class Matrix {
    * @param {NumericType} type - the type of the matrix elements.
    * @returns {MatrixType | NumericMatrix} The identity matrix
    */
-  static identity(
+  public static identity(
     n: Integer,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
@@ -130,7 +130,7 @@ export class Matrix {
     1,
     2,
   )
-  static replicate(
+  public static replicate(
     n: number,
     rows: Integer,
     columns: Integer,
@@ -153,7 +153,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
   )
-  static random(
+  public static random(
     rows: Integer,
     columns: Integer,
     from: Integer = 0,
@@ -180,7 +180,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
   )
-  static uniqueRandom(
+  public static uniqueRandom(
     rows: Integer,
     columns: Integer,
     from: Integer = 0,
@@ -207,7 +207,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static copy(
+  public static copy(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     weight: number = 1,
@@ -232,7 +232,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static isSquare(matrix: MatrixType | NumericMatrix): boolean {
+  public static isSquare(matrix: MatrixType | NumericMatrix): boolean {
     return matrix.length === matrix[0].length;
   }
 
@@ -247,7 +247,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static isSymmetric(matrix: MatrixType | NumericMatrix): boolean {
+  public static isSymmetric(matrix: MatrixType | NumericMatrix): boolean {
     if (!Matrix.isSquare(matrix)) return false;
     return conditions.IsMatrixSymmetric(matrix);
   }
@@ -272,7 +272,7 @@ export class Matrix {
   @ifTheParametersAreNotMatricesThrow(
     errors.IncorrectMatricesInput("isEqualTo"),
   )
-  static isEqualTo(
+  public static isEqualTo(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
@@ -298,7 +298,7 @@ export class Matrix {
   @ifTheParametersAreNotMatricesThrow(
     errors.IncorrectMatricesInput("isGreaterThan"),
   )
-  static isGreaterThan(
+  public static isGreaterThan(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
@@ -322,7 +322,7 @@ export class Matrix {
   @ifTheParametersAreNotMatricesThrow(
     errors.IncorrectMatricesInput("isGreaterThanOrEqual"),
   )
-  static isGreaterThanOrEqual(
+  public static isGreaterThanOrEqual(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
@@ -345,7 +345,7 @@ export class Matrix {
   @ifTheParametersAreNotMatricesThrow(
     errors.IncorrectMatricesInput("isLessThan"),
   )
-  static isLessThan(
+  public static isLessThan(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
@@ -369,7 +369,7 @@ export class Matrix {
   @ifTheParametersAreNotMatricesThrow(
     errors.IncorrectMatricesInput("isLessThanOrEqual"),
   )
-  static isLessThanOrEqual(
+  public static isLessThanOrEqual(
     m1: NumericMatrix | MatrixType,
     m2: MatrixType | NumericMatrix,
   ): boolean {
@@ -395,7 +395,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("gt"),
     1,
   )
-  static gt(
+  public static gt(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -437,7 +437,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("geq"),
     1,
   )
-  static geq(
+  public static geq(
     matrix: MatrixType | NumericMatrix,
     m: number | Matrix | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -479,7 +479,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("eq"),
     1,
   )
-  static eq(
+  public static eq(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -521,7 +521,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("lt"),
     1,
   )
-  static lt(
+  public static lt(
     matrix: MatrixType | NumericMatrix,
     m: number | Matrix | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -563,7 +563,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("leq"),
     1,
   )
-  static leq(
+  public static leq(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -604,7 +604,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("neq"),
     1,
   )
-  static neq(
+  public static neq(
     matrix: MatrixType | NumericMatrix,
     m: number | Matrix | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -645,7 +645,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("and"),
     1,
   )
-  static and(
+  public static and(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -689,7 +689,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("bitwiseAnd"),
     1,
   )
-  static bitwiseAnd(
+  public static bitwiseAnd(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -730,7 +730,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("or"),
     1,
   )
-  static or(
+  public static or(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -772,7 +772,7 @@ export class Matrix {
     errors.IncorrectMatrixParameterInPointwise("bitwiseOr"),
     1,
   )
-  static bitwiseOr(
+  public static bitwiseOr(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -812,7 +812,7 @@ export class Matrix {
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectMatrixParameterInPointwise("xor"), 1)
-  static xor(
+  public static xor(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
