@@ -947,41 +947,41 @@ export class Matrix {
     const { from, to, type } = options as MatrixBlockOptions;
     return models.GetBlock(matrix, from, to, type || Matrix._type);
   }
-  //
-  // /**
-  //  * Sets the elements of a block/ sub - matrix of the current Matrix
-  //  * instance with the elements of the "block" parameter.
-  //  *
-  //  * @param{MatrixType | NumericMatrix} matrix - The matrix which will be
-  //  * changed.
-  //  * @param{MatrixType | NumericMatrix} block - The submatrix which will
-  //  * be put in the maatrix.
-  //  * @param {MatrixBlockOptions} options - The "from" and "to" parameters needed for the method.
-  //  * @returns {MatrixType | NumericMatrix} The updated Matrix instance.
-  //  */
-  // @ifFromOrToParametersAreIncorrectlyDefinedThrow(
-  //   errors.IncorrectFromAndToParametersInSetBlock,
-  // )
-  // static setBlock(
-  //   matrix: MatrixType | NumericMatrix,
-  //   block: MatrixType | NumericMatrix,
-  //   options: MatrixBlockOptions,
-  // ): MatrixType | NumericMatrix {
-  //   const { from, to } = options;
-  //
-  //   if (conditions.IsArrayOfArraysWithEqualSize(block as NumericMatrix)) {
-  //     if (
-  //       (block as NumericMatrix).length > (to[0] - from[0] + 1) ||
-  //       (block as NumericMatrix)[0].length > (to[1] - from[1] + 1)
-  //     ) {
-  //       errors.IncorrectBlockParameterInSetBlock();
-  //     }
-  //   }
-  //
-  //   models.SetBlock(matrix, block as NumericMatrix, from, to);
-  //
-  //   return matrix;
-  // }
+
+  /**
+   * Sets the elements of a block/ sub - matrix of the first Matrix
+   * parameter with the elements of the "block" parameter.
+   *
+   * @param{MatrixType | NumericMatrix} matrix - The matrix which will be
+   * changed.
+   * @param {MatrixBlockOptions} options - The "from" and "to" parameters needed for the method.
+   *  @param{MatrixType | NumericMatrix} block - The submatrix which will
+   * be put in the maatrix.
+   * @returns {MatrixType | NumericMatrix} The updated Matrix instance.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifFromOrToParametersAreIncorrectlyDefinedThrow(
+    errors.IncorrectFromAndToParametersInSetBlock,
+  )
+  public static setBlock(
+    matrix: MatrixType | NumericMatrix,
+    options: MatrixBlockOptions,
+    block: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    const { from, to } = options;
+    if (conditions.IsArrayOfArraysWithEqualSize(block as NumericMatrix)) {
+      if (
+        (block as NumericMatrix).length > (to[0] - from[0] + 1) ||
+        (block as NumericMatrix)[0].length > (to[1] - from[1] + 1)
+      ) {
+        errors.IncorrectBlockParameterInSetBlock();
+      }
+    }
+
+    models.SetBlock(matrix, block as NumericMatrix, from, to);
+
+    return matrix;
+  }
   // /**
   //  * Retrieves a specific row from the matrix based on the provided row index
   //  * and optional column range.
