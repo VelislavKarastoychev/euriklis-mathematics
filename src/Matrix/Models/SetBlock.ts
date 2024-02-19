@@ -25,14 +25,17 @@ const SetBlockIterator = (
 ): void => {
   const n = to[k] - from[k] + 1;
   let i: Integer;
-  if (k) {
-    for (i = n; i--;) {
-      (matrix as TypedArray)[i + from[k]] = (block as TypedArray | number[])[i];
+  const p: Integer = from[k]; 
+  if (k === from.length - 1) {
+    for (i = n; i-- > 1;) {
+      (matrix as TypedArray)[i + p] = (block as TypedArray | number[])[i--];
+      (matrix as TypedArray)[i + p] = (block as TypedArray | number[])[i];
     }
+    if (i === 0) (matrix as TypedArray)[p] = (block as TypedArray | number[])[0];
   } else {
     for (i = n; i--;) {
       SetBlockIterator(
-        (matrix as MatrixType)[i + from[k]],
+        (matrix as MatrixType)[i + p],
         (block as NumericMatrix)[i],
         from,
         to,
