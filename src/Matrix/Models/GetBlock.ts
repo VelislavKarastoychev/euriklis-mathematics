@@ -25,7 +25,7 @@ const GetBlockIterator = (
   m: NumericMatrix | MatrixType | TypedArray,
   from: [Integer, Integer],
   to: [Integer, Integer],
-  typedArray: TypedArrayConstructor,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
   k: Integer,
 ): MatrixType | TypedArray => {
   let i: Integer,
@@ -69,7 +69,7 @@ export const GetBlock = (
   from: [Integer, Integer],
   to: [Integer, Integer],
   type: NumericType,
-): MatrixType => {
+): MatrixType | NumericMatrix => {
   const typedArray = CreateTypedArrayConstructor(type);
   
   return GetBlockIterator(m, from, to, typedArray, 0) as MatrixType;
