@@ -3,7 +3,7 @@ import * as conditions from "./Conditions";
 import * as models from "./Models";
 import * as errors from "./Errors";
 import {
-  // ifFromOrToParametersAreIncorrectlyDefinedThrow,
+  ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
   // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
@@ -858,7 +858,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("leftShiftBy"),
-    1
+    1,
   )
   public static leftShiftBy(
     matrix: MatrixType | NumericMatrix,
@@ -927,24 +927,26 @@ export class Matrix {
     );
   }
 
-  //
-  // /**
-  //  * Gets a block matrix by given starting and ending indices
-  //  *
-  //  * @param options - The "from" and "to" indices needed for the method
-  //  *   (by default set to [0, 0] and [rows - 1, columns - 1]).
-  //  * @returns {MatrixType | NumericMatrix} The block as Matrix
-  //  */
-  // @ifFromOrToParametersAreIncorrectlyDefinedThrow(
-  //   errors.IncorrectFromAndToParametersInGetBlock,
-  // )
-  // static getBlock(
-  //   matrix: MatrixType | NumericMatrix,
-  //   options?: MatrixBlockOptions,
-  // ): MatrixType | NumericMatrix {
-  //   const { from, to, type } = options as MatrixBlockOptions;
-  //   return models.GetBlock(matrix, from, to, type || Matrix._type);
-  // }
+  /**
+   * Gets a block matrix by given starting and ending indices
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix from which
+   * will be extracted a block element.
+   * @param {MatrixBlockOptions} options - The "from" and "to" indices needed for the method
+   *   (by default set to [0, 0] and [rows - 1, columns - 1]).
+   * @returns {MatrixType | NumericMatrix} The block as Matrix
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifFromOrToParametersAreIncorrectlyDefinedThrow(
+    errors.IncorrectFromAndToParametersInGetBlock,
+  )
+  static getBlock(
+    matrix: MatrixType | NumericMatrix,
+    options?: MatrixBlockOptions,
+  ): MatrixType | NumericMatrix {
+    const { from, to, type } = options as MatrixBlockOptions;
+    return models.GetBlock(matrix, from, to, type || Matrix._type);
+  }
   //
   // /**
   //  * Sets the elements of a block/ sub - matrix of the current Matrix
