@@ -1,8 +1,7 @@
 "use strict";
 
 import { MatrixBlockOptions, MatrixType, NumericMatrix } from "../types";
-import { AreFromAndToCorrectlyDefined } from "../Conditions/index.ts";
-import { Matrix } from "../index.ts";
+import { AreFromAndToCorrectlyDefined } from "../Conditions";
 
 /**
  * Initialize the from and to parameters of a block
