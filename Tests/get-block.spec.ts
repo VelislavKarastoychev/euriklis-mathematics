@@ -1,7 +1,12 @@
 "use strjct";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-new validator(Matrix.identity(10).getBlock().M)
+new validator(
+  Matrix.isEqualTo(
+    Matrix.getBlock(Matrix.identity(10)),
+    Matrix.identityLike(10, 10),
+  ),
+)
   .describe("The getBlockMethod:").test({
     title: true,
     success: "green",
@@ -10,16 +15,16 @@ new validator(Matrix.identity(10).getBlock().M)
   .describe(
     "1. Has to return the same matrix when is called without parameters.",
   )
-  .isSame(Matrix.identityLike(10, 10).M)
+  .isSame(true)
   .test();
-const dimensions: [number, number] = [6000, 6000],
-  from: [number, number] = [100, 101],
-  to: [number, number] = [5001, 5100];
-const randMatrix = Matrix.random(...dimensions).getBlock({ from, to });
-new validator(randMatrix.M)
+const dimensions: [number, number] = [60, 60],
+  from: [number, number] = [10, 11],
+  to: [number, number] = [51, 51];
+const randMatrix = Matrix.getBlock(Matrix.random(...dimensions), { from, to });
+new validator(randMatrix)
   .describe("2. Has to return matrix with the correct dimensions")
   .hasLength(to[0] - from[0] + 1).and.bind(
-    new validator(randMatrix.M).forEvery((row) =>
+    new validator(randMatrix).forEvery((row) =>
       row.hasLength(to[1] - from[1] + 1)
     ),
   ).test();
@@ -31,8 +36,10 @@ const numericArray = [
   [5, 6, 7, 8, 9, 10, 11, 12, 13],
   [6, 7, 8, 9, 10, 11, 12, 13, 14],
 ];
-const matrix = new Matrix({ M: numericArray, type: "int8" });
-new validator(matrix.getBlock({ from: [1, 0], to: [5, 4] }).M)
+const matrix = Matrix.copy(numericArray, "int8");
+new validator(
+  Matrix.getBlock(matrix, { from: [1, 0], to: [5, 4], type: "generic" }),
+)
   .describe("3. Has to returns the corresponding matrix elements")
   .isSame([
     [2, 3, 4, 5, 6],
@@ -42,17 +49,19 @@ new validator(matrix.getBlock({ from: [1, 0], to: [5, 4] }).M)
     [6, 7, 8, 9, 10],
   ])
   .and.bind(
-    new validator(matrix.getBlock({ from: [4, 7], to: [5, 8] }).M)
+    new validator(
+      Matrix.getBlock(matrix, { from: [4, 7], to: [5, 8], type: "generic" }),
+    )
       .isSame([
         [12, 13],
         [13, 14],
       ]),
   )
-  .test()
+  .test();
+
+new validator(() => Matrix.getBlock(matrix, { from: [0, 0], to: [200, 201] }))
+  .throwsErrorWith()
   .describe(
     "4. Throws error when the to parameters are incorrect (greater than the matrix dimensions)",
-  )
-  .and.bind(
-    new validator(() => matrix.getBlock({ from: [0, 0], to: [200, 201] }))
-      .throwsErrorWith(),
-  ).test()
+  ).test();
+
