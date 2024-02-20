@@ -2,8 +2,8 @@
 
 import {
   Integer,
-  NumericMatrix, 
   MatrixType,
+  NumericMatrix,
   NumericType,
   TypedArray,
   TypedArrayConstructor,
@@ -13,6 +13,8 @@ import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 /**
  * Recursively constructs a block matrix from the provided matrix
  * based on the specified starting and ending indices.
+ * This function is implemented in very abstract form in order
+ * to be applied for tensor structures.
  *
  * @param {NumericMatrix | MatrixType | TypedArray} m - The original matrix or typed array.
  * @param {Integer[]} from - The starting indices for the block.
@@ -32,25 +34,25 @@ const GetBlockIterator = (
     start: number = from[k],
     n: Integer = to[k] - start + 1,
     block: MatrixType | TypedArray;
-  if (k) {
+  const l = from.length;
+  if (k === l - 1) {
     block = new typedArray(n);
     for (i = n; i--;) {
       (block as TypedArray)[i] = (m as TypedArray)[i + start];
     }
     return block as TypedArray;
-  } else {
-    block = new Array(n);
-    for (i = n; i--;) {
-      block[i] = GetBlockIterator(
-        (m as MatrixType)[i + start],
-        from,
-        to,
-        typedArray,
-        k + 1,
-      ) as TypedArray;
-    }
   }
-  
+  block = new Array(n);
+  for (i = n; i--;) {
+    block[i] = GetBlockIterator(
+      (m as MatrixType)[i + start],
+      from,
+      to,
+      typedArray,
+      k + 1,
+    ) as TypedArray;
+  }
+
   return block as MatrixType;
 };
 
@@ -71,6 +73,6 @@ export const GetBlock = (
   type: NumericType,
 ): MatrixType | NumericMatrix => {
   const typedArray = CreateTypedArrayConstructor(type);
-  
+
   return GetBlockIterator(m, from, to, typedArray, 0) as MatrixType;
 };
