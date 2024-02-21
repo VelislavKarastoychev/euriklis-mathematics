@@ -962,7 +962,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifFromOrToParametersAreIncorrectlyDefinedThrow(
     errors.IncorrectFromAndToParametersInSetBlock,
-  ) 
+  )
   public static setBlock(
     matrix: MatrixType | NumericMatrix,
     options: MatrixBlockOptions,
@@ -982,7 +982,7 @@ export class Matrix {
 
     return matrix;
   }
-  
+
   /**
    * Retrieves a specific row from the matrix based on the provided row index
    * and optional column range.
@@ -1010,34 +1010,33 @@ export class Matrix {
       },
     );
   }
-  
-  //
-  // /**
-  //  * Sets the values of a specific row in the matrix based on the provided row index,
-  //  * column range, and values.
-  //  *
-  //  * @param {Integer} rowIndex - The index of the row to set.
-  //  * @param {Integer} fromColumnIndex - The starting column index.
-  //  * @param {Integer} toColumnIndex - The ending column index.
-  //  * @param {NumericMatrix | Matrix} row - The values to set in the specified row.
-  //  * @returns {Matrix} - The updated matrix instance.
-  //  */
-  // static setRow(
-  //   matrix: MatrixType | NumericMatrix,
-  //   row: NumericMatrix | NumericMatrix,
-  //   rowIndex: Integer,
-  //   fromColumnIndex: Integer,
-  //   toColumnIndex: Integer,
-  // ): MatrixType | NumericMatrix {
-  //   return Matrix.setBlock(
-  //     matrix,
-  //     row,
-  //     {
-  //       from: [rowIndex, fromColumnIndex],
-  //       to: [rowIndex, toColumnIndex],
-  //     },
-  //   );
-  // }
+
+  /**
+   * Sets the values of a specific row in the matrix based on the provided row index,
+   * column range, and values.
+   *
+   * @param {Integer} rowIndex - The index of the row to set.
+   * @param {Integer} fromColumnIndex - The starting column index.
+   * @param {Integer} toColumnIndex - The ending column index.
+   * @param {NumericMatrix | Matrix} row - The values to set in the specified row.
+   * @returns {Matrix} - The updated matrix instance.
+   */
+  static setRow(
+    matrix: MatrixType | NumericMatrix,
+    row: MatrixType | NumericMatrix,
+    rowIndex: Integer,
+    fromColumnIndex: Integer,
+    toColumnIndex: Integer,
+  ): MatrixType | NumericMatrix {
+    return Matrix.setBlock(
+      matrix,
+      {
+        from: [rowIndex, fromColumnIndex],
+        to: [rowIndex, toColumnIndex],
+      },
+      row,
+    );
+  }
   //
   // /**
   //  * Exchange rows in the matrix.
