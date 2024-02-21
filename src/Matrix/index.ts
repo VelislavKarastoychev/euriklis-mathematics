@@ -1015,11 +1015,11 @@ export class Matrix {
    * Sets the values of a specific row in the matrix based on the provided row index,
    * column range, and values.
    *
+   * @param {NumericMatrix | MatrixType} row - The values to set in the specified row.
    * @param {Integer} rowIndex - The index of the row to set.
    * @param {Integer} fromColumnIndex - The starting column index.
    * @param {Integer} toColumnIndex - The ending column index.
-   * @param {NumericMatrix | Matrix} row - The values to set in the specified row.
-   * @returns {Matrix} - The updated matrix instance.
+   * @returns {MatrixType | NumericMatrix} - The updated matrix instance.
    */
   static setRow(
     matrix: MatrixType | NumericMatrix,
