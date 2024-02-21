@@ -1,14 +1,15 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
-import { Matrix } from "../src/index.ts";
-import { Integer } from "../src/Matrix/types";
+import { Matrix } from "../src";
+import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import { dimensions, startPerformanceTest } from "./utils";
 
 function exchangeRows(
-  matrix: number[][],
-  fromCol: Integer,
-  toCol: Integer,
+  matrix: NumericMatrix | MatrixType,
   row1: Integer,
   row2: Integer,
+  fromCol: Integer = 0,
+  toCol: Integer = matrix.length - 1,
 ) {
   // Check if the matrix is valid
   if (!matrix || matrix.length === 0 || !matrix[0]) {
@@ -41,26 +42,23 @@ function exchangeRows(
   return matrix;
 }
 
-(async () =>
-  new validator(true)
-    .isBoolean
-    .describe(
-      "Time performance of the exchangeRows method with parameters matrix --> 6000 x 6000, row1 = 99, row2 = 5189, fromColumn = 99, toColumn = 5098",
-    )
-    .test({
-      title: true,
-      success: "green",
-      error: "red",
-    }).on(true, () => {
-      const m = Matrix.random(6000, 6000);
-      const benchmark1 = new validator(m).benchmark(
-        (matrix) => matrix.exchangeRows(99, 5189, 99, 5098),
-      );
-      const benchmark2 = new validator(m.M).benchmark((matrix) =>
-        exchangeRows(matrix, 99, 5189, 99, 5098)
-      );
-      console.table({
-        "@euriklis/mathematics": benchmark1,
-        "numericjs": benchmark2,
-      });
-    }))();
+(async () => {
+  const m = Matrix.uniqueRandom(...dimensions);
+  const r1 = Math.random() * dimensions[0] | 0;
+  const r2 = Math.random() * dimensions[1] | 0;
+  const condition = Matrix.isEqualTo(
+    Matrix.exchangeRows(Matrix.copy(m), r1, r2, 0, dimensions[0] - 1),
+    exchangeRows(m, r1, r2, 0, dimensions[1] - 1),
+  );
+  const euriklisTest = (matrix: any) =>
+    matrix.exchangeRows(m, r1, r2, 0, dimensions[0] - 1);
+  const numericTest = (matrix: any) =>
+    exchangeRows(m, r1, r2, 0, dimensions[1] - 1);
+  startPerformanceTest(
+    "exchangeRows",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+})();
