@@ -16,49 +16,59 @@ const result = [
 ];
 
 const rowAsArray = [[1, 1, 1]];
-const rowAsMatrx = new Matrix(rowAsArray);
+const rowAsMatrix = Matrix.copy(rowAsArray);
 
-new validator(new Matrix(mat45).setRow(2, 1, 3, rowAsArray).M)
+new validator(
+  Matrix.isEqualTo(
+    Matrix.setRow(mat45, rowAsArray, 2, 1, 3),
+    result,
+  ),
+)
   .describe("The setRow method:").test({
     title: true,
     success: "green",
     error: "red",
   })
-  .isSame(result)
+  .isSame(true)
   .describe(
     "1. Has to produce the correct result when the row is a numeric array.",
   )
-  .test()
+  .test();
+new validator(
+  Matrix.isEqualTo(
+    Matrix.setRow(mat45, rowAsMatrix, 2, 1, 3),
+    result,
+  ),
+).isSame(true)
   .describe("2. Has to produce the correct result when the row is a Matrix.")
-  .and.bind(
-    new validator(new Matrix(mat45).setRow(2, 1, 3, rowAsMatrx).M).isSame(
-      result,
-    ),
-  ).test()
+  .test();
+
+new validator(() => Matrix.setRow(mat45, rowAsArray, 200, 1, 3))
+  .throwsErrorWith()
   .describe("3. Has to throw error when the rowIndex parameter is incorrect.")
-  .and.bind(
-    new validator(() => new Matrix(mat45).setRow(200, 1, 3, rowAsArray).M)
-      .throwsErrorWith(),
-  ).test()
+  .test();
+
+new validator(() => Matrix.setRow(mat45, rowAsArray, 1, -1, 3))
+  .throwsErrorWith()
   .describe("4. Has to throw error when the fromColumnIndex is incorrect.")
-  .and.bind(
-    new validator(() => new Matrix(mat45).setRow(1, -1, 3, rowAsArray).M)
-      .throwsErrorWith(),
-  ).and.bind(
-    new validator(() => new Matrix(mat45).setRow(1, 11, 3, rowAsArray).M)
-      .throwsErrorWith(),
-  )
+  .test();
+
+new validator(() => Matrix.setRow(mat45, rowAsArray, 1, 11, 3))
+  .throwsErrorWith()
   .describe("5. Has to throw error when the toColumnIndex is incorrect.")
+  .test();
+
+new validator(() => Matrix.setRow(mat45, rowAsArray, 1, 1, -3))
+  .throwsErrorWith()
   .and.bind(
-    new validator(() => new Matrix(mat45).setRow(1, 1, -3, rowAsArray).M)
-      .throwsErrorWith(),
-  ).and.bind(
-    new validator(() => new Matrix(mat45).setRow(1, 1, 30, rowAsArray).M)
+    new validator(() => Matrix.setRow(mat45, rowAsArray, 1, 1, 30))
       .throwsErrorWith(),
   )
-  .describe("6. Has to throw error when the row element is incorrectly defined.")
+  .describe(
+    "6. Has to throw error when the row element is incorrectly defined.",
+  )
   .and.bind(
-    new validator(() => new Matrix(mat45).setRow(1, 1, 3, Matrix.random(244, 3)).M)
-      .throwsErrorWith()
+    new validator(() => Matrix.setRow(mat45, Matrix.random(244, 3), 1, 1, 3))
+      .throwsErrorWith(),
   )
   .test();
