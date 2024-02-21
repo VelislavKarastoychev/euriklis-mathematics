@@ -28,6 +28,7 @@
 // import "./get-block.spec.ts";
 // import "./set-block.spec.ts";
 import "./get-row.spec.ts";
+import "./set-row.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
@@ -36,7 +37,6 @@ import "./get-row.spec.ts";
 // import "./get-diagonal.spec.ts";
 // import "./reshape.spec.ts";
 // import "./max-norm.spec.ts";
-// import "./set-row.spec.ts";
 // import "./to-diagonal-matrix.spec.ts";
 // import "./transpose.spec.ts";
 // import "./infinity-norm.spec.ts";
