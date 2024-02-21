@@ -1,7 +1,15 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-function exchangeColumns(matrix, col1, col2, fromRow, toRow) {
+import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import { dimensions, startPerformanceTest } from "./utils.ts";
+function exchangeColumns(
+  matrix: MatrixType | NumericMatrix,
+  col1: Integer,
+  col2: Integer,
+  fromRow: Integer,
+  toRow: Integer,
+) {
   // Check if the matrix is valid
   if (!matrix || matrix.length === 0 || !matrix[0]) {
     console.error("Invalid matrix");
@@ -35,24 +43,24 @@ function exchangeColumns(matrix, col1, col2, fromRow, toRow) {
 
   return matrix;
 }
-(async () =>
-  new validator(true).describe(
-    " Time performance of exchangeColumns method for parameters matrix --> 6000 x 6000, col1 = 99, col2 = 5198, from = 99 to 5098",
-  ).test({
-    title: true,
-    success: "green",
-    error: "red",
-  }).isBoolean
-    .on(true, () => {
-      const m = Matrix.random(6000, 6000);
-      const benchmark1 = new validator(m).benchmark((
-        matrix,
-      ) => matrix.exchangeColumns(99, 5198, 99, 5098));
-      const benchmark2 = new validator(m.M).benchmark((matrix) => {
-        return exchangeColumns(matrix, 99, 5198, 99, 5098);
-      });
-      console.table({
-        "@euriklis/mathematics": benchmark1,
-        "numericjs": benchmark2,
-      });
-    }))();
+(async () => {
+  const m = Matrix.random(...dimensions);
+  const col1 = Math.random() * dimensions[1] | 0;
+  const col2 = Math.random() * dimensions[1] | 0;
+  const fromRow = Math.random() * dimensions[0] | 0;
+  const toRow = fromRow + Math.random() * (dimensions[0] - fromRow) | 0;
+  const condition = Matrix.isEqualTo(
+    Matrix.exchangeColumns(Matrix.copy(m), col1, col2, fromRow, toRow),
+    exchangeColumns(Matrix.copy(m), col1, col2, fromRow, toRow),
+  );
+  const euriklisTest = (matrix: any) => matrix.exchangeColumns(m, col1, col2);
+  const numericTest = (_: any) =>
+    exchangeColumns(m, col1, col2, 0, m[0].length - 1);
+  startPerformanceTest(
+    "exchangeColumns",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+})();
