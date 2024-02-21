@@ -1,38 +1,31 @@
 "use strict";
 
-import validator from "@euriklis/validator-ts";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
-  const row = Matrix.random(1, 5000);
-  const r = Matrix.random(4, 6000);
-  const m = r.M;
-  new validator(
-    r.setRow(2, 120, 5119, row).isEqualTo(
-      numeric.setBlock(m, [2, 120], [2, 5119], row.M),
+  const m = Matrix.random(...dimensions);
+  const row = Matrix.uniqueRandom(1, dimensions[1]);
+  const condition = Matrix.isEqualTo(
+    Matrix.setRow(
+      Matrix.copy(m),
+      row,
+      0,
+      0,
+      dimensions[0] - 1,
     ),
-  )
-    .isSame(true)
-    .on(true, (v) => {
-      const rowm = row.M;
-      v.describe("Time performance for setRow method:")
-        .test({
-          title: true,
-          success: "green",
-          error: "red",
-        });
-      const t1 = new validator(r).benchmark((m) => m.setRow(2, 120, 5119, row));
-      const t2 = new validator(r).benchmark((m) =>
-        numeric.setBlock(m, [2, 120], [2, 5119], rowm)
-      );
-      console.table({ "@euriklis/mathematics": t1, numericjs: t2 });
-    }).on(false, (v) => {
-      v.describe("Internal error in setRow benchmark.")
-        .test({
-          title: true,
-          success: "red",
-          error: "green",
-        });
-    });
+    numeric.setBlock(Matrix.copy(m), [0, 0], [0, dimensions[1] - 1], row),
+  );
+  const euriklisTest = (matrix: any) =>
+    matrix.setRow(m, row, 0, 0, dimensions[1] - 1);
+  const numericTest = (matrix: any) =>
+    matrix.setBlock(m, [0, 0], [0, dimensions[1] - 1], row);
+  startPerformanceTest(
+    "setRow",
+    [{ param: "matrix", dimensions, type: "float64", fromRow: 0, toColumn: dimensions[1] - 1 }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
 })();
