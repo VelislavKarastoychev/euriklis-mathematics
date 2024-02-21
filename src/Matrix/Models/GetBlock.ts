@@ -30,20 +30,27 @@ const GetBlockIterator = (
   typedArray: TypedArrayConstructor | ArrayConstructor,
   k: Integer,
 ): MatrixType | TypedArray => {
-  let i: Integer,
+  let i: Integer, j: Integer,
     start: number = from[k],
     n: Integer = to[k] - start + 1,
     block: MatrixType | TypedArray;
   const l = from.length;
   if (k === l - 1) {
     block = new typedArray(n);
-    for (i = n; i--;) {
-      (block as TypedArray)[i] = (m as TypedArray)[i + start];
+    for (i = 0; i < n >> 2;i++) {
+      j = i << 2;
+      (block as TypedArray)[j] = (m as TypedArray)[j++ + start];
+      (block as TypedArray)[j] = (m as TypedArray)[j++ + start];
+      (block as TypedArray)[j] = (m as TypedArray)[j++ + start]; 
+      (block as TypedArray)[j] = (m as TypedArray)[j + start];
+    }
+    for (j = i << 2;j < n;j++) {
+      (block as TypedArray)[j] = (m as TypedArray)[j + start];
     }
     return block as TypedArray;
   }
   block = new Array(n);
-  for (i = n; i--;) {
+  for (i = n;i--;) {
     block[i] = GetBlockIterator(
       (m as MatrixType)[i + start],
       from,
@@ -60,9 +67,9 @@ const GetBlockIterator = (
  * Constructs a block matrix from the provided original matrix
  * based on the specified starting and ending indices.
  *
- * @param {MatrixType} m - The original matrix.
- * @param {number[]} from - The starting indices for the block.
- * @param {number[]} to - The ending indices for the block.
+ * @param {MatrixType | NumericMatrix} m - The original matrix.
+ * @param {Integer[]} from - The starting indices for the block.
+ * @param {Integer[]} to - The ending indices for the block.
  * @param {NumericType} type - The numeric type of the matrix elements.
  * @returns {MatrixType} - The constructed block matrix.
  */
