@@ -14,7 +14,7 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
   const euriklisTest = (m: any) => m.getBlock(m1, { from, to });
   const numericTest = (m: any) => m.getBlock(m1, from, to);
   startPerformanceTest(
-    "getBlock with slightly changed numericjs implementation",
+    "getBlock",
     [{
       param: "matrix",
       dimensions,
