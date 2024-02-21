@@ -1,6 +1,6 @@
 export { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 export { CompareMatrices } from "./CompareMatrices.ts";
-// export { ExchangeRows } from "./ExchangeRows.ts";
+export { ExchangeRows } from "./ExchangeRows.ts";
 export { GenerateZeroMatrix } from "./GenerateZeroMatrix.ts";
 export { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix.ts";
 export { GenerateRandomMatrix } from "./GenerateRandomMatrix.ts";
@@ -9,7 +9,7 @@ export { GenerateRandomMatrix2 } from "./GenerateRandomMatrix2.ts";
 // export { ObtainMatrixFromTypedMatrix } from "./ObtainMatrixFromTypedMatrix.ts";
 export { GetBlock } from "./GetBlock.ts";
 export { SetBlock } from "./SetBlock.ts";
-// export { ExchangeColumns } from "./ExchangeColumns.ts";
+export { ExchangeColumns } from "./ExchangeColumns.ts";
 // export { GetDiagonal } from "./GetDiagonal.ts";
 // export { ToDiagonalMatrix } from "./ToDiagonalMatrix.ts";
 // export { AppendBlockRight } from "./AppendBlockRight.ts";
