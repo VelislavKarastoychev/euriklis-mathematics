@@ -24,14 +24,19 @@ const SetBlockIterator = (
   k: Integer,
 ): void => {
   const n = to[k] - from[k] + 1;
-  let i: Integer;
+  let i: Integer, j: Integer;
   const p: Integer = from[k]; 
   if (k === from.length - 1) {
-    for (i = n; i-- > 1;) {
-      (matrix as TypedArray)[i + p] = (block as TypedArray | number[])[i--];
-      (matrix as TypedArray)[i + p] = (block as TypedArray | number[])[i];
+    for (i = 0;i < n >> 2;i++) {
+      j = i << 2;
+      (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j++];
+      (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j++];
+      (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j++];
+      (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j];
     }
-    if (i === 0) (matrix as TypedArray)[p] = (block as TypedArray | number[])[0];
+    for (j = i << 2;j < n;j++) {
+      (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j];
+    }
   } else {
     for (i = n; i--;) {
       SetBlockIterator(
