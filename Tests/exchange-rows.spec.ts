@@ -36,21 +36,30 @@ const a1435 = [
   [3, 4, 5, 6, 7, 8, 9],
 ];
 
-new validator(new Matrix(a).exchangeRows(1, 4).M)
+new validator(
+  Matrix.isEqualTo(
+    Matrix.exchangeRows(Matrix.copy(a), 1, 4),
+    a14,
+  ),
+)
   .describe("Tne exchangeRows method:").test({
     title: true,
     success: "green",
     error: "red",
   })
-  .isSame(a14)
+  .isSame(true)
   .describe(
     "1. Has to exchange two rows when the fromColumn and toColumn parameters are not defined",
   )
-  .test()
-  .and.bind(
-    new validator(new Matrix(a).exchangeRows(1, 4, 3, 5).M)
-      .isSame(a1435),
-  ).describe(
+  .test();
+new validator(
+  Matrix.isEqualTo(
+    Matrix.exchangeRows(Matrix.copy(a), 1, 4, 3, 5),
+    a1435,
+  ),
+)
+  .isSame(true)
+  .describe(
     "2. Has to exchange a column range of two rows when the fromColumn and toColumn parameters are defined.",
   )
   .test();
