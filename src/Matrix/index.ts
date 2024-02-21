@@ -6,6 +6,7 @@ import {
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
+  ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
   // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
@@ -18,9 +19,10 @@ import {
   MatrixType,
   NumericMatrix,
   NumericType,
-  TypedArray,
-  TypedArrayConstructor,
+  // TypedArray,
+  // TypedArrayConstructor,
 } from "./types";
+// import { ifRowsAndColumnsAreInappropriatelyDefinedThrow } from "./Decorators/IfRowsAndColumnsAreInappropriatelyDefinedThrow.ts";
 
 export class Matrix {
   // 1. Declaration of the private methods and properties
@@ -940,7 +942,7 @@ export class Matrix {
   @ifFromOrToParametersAreIncorrectlyDefinedThrow(
     errors.IncorrectFromAndToParametersInGetBlock,
   )
-  static getBlock(
+  public static getBlock(
     matrix: MatrixType | NumericMatrix,
     options?: MatrixBlockOptions,
   ): MatrixType | NumericMatrix {
@@ -996,7 +998,7 @@ export class Matrix {
    * @throws {Error} If the row index or the fromIndex and toIndex parameters are
    * incorrectly defined.
    */
-  static getRow(
+  public static getRow(
     matrix: MatrixType | NumericMatrix,
     rowIndex: Integer,
     fromColumnIndex: Integer = 0,
@@ -1021,7 +1023,7 @@ export class Matrix {
    * @param {Integer} toColumnIndex - The ending column index.
    * @returns {MatrixType | NumericMatrix} - The updated matrix instance.
    */
-  static setRow(
+  public static setRow(
     matrix: MatrixType | NumericMatrix,
     row: MatrixType | NumericMatrix,
     rowIndex: Integer,
@@ -1037,77 +1039,73 @@ export class Matrix {
       row,
     );
   }
-  //
-  // /**
-  //  * Exchange rows in the matrix.
-  //  *
-  //  * @param {Integer} row1 - The index of the first row to exchange.
-  //  * @param {Integer} row2 - The index of the second row to exchange.
-  //  * @param {Integer} fromColumn - The starting column index (inclusive).
-  //  * @param {Integer} toColumn - The ending column index (exclusive).
-  //  * @returns {Matrix} The updated Matrix instance (The initial matrix is not copied).
-  //  */
-  // static exchangeRows(
-  //   matrix: MatrixType | NumericMatrix,
-  //   row1: Integer,
-  //   row2: Integer,
-  //   fromColumn: Integer = 0,
-  //   toColumn: Integer = matrix[0].length - 1,
-  // ): MatrixType | NumericMatrix {
-  //   if (
-  //     row1 < 0 || row1 >= matrix.length || row2 < 0 || row2 >= matrix.length
-  //   ) {
-  //     errors.IncorrectRowIndexParametersInExchangeRows();
-  //   }
-  //
-  //   if (fromColumn < 0 || fromColumn > toColumn) {
-  //     errors.IncorrectFromColumnIndexParameterInExchangeRows();
-  //   }
-  //
-  //   if (toColumn < fromColumn || toColumn > matrix[0].length || toColumn < 0) {
-  //     errors.IncorrectToColumnIndexParameterInExcangeRows();
-  //   }
-  //
-  //   models.ExchangeRows(matrix, row1, row2, fromColumn, toColumn);
-  //
-  //   return matrix;
-  // }
-  //
-  // /**
-  //  * Exchange columns in the matrix
-  //  *
-  //  * @param {Integer} col1 - The index of the first column to exchange
-  //  * @param {Integer} col2 - The index of the second column to exchange
-  //  * @param {Integer} fromRow - The starting row index
-  //  * @param {Integer} toRow - The ending row index
-  //  * @returns {Matrix} The updated matrix instance (the previous values are not copied)
-  //  */
-  // exchangeColumns(
-  //   matrix: MatrixType | NumericMatrix,
-  //   col1: Integer,
-  //   col2: Integer,
-  //   fromRow: Integer = 0,
-  //   toRow: Integer = matrix.length - 1,
-  // ): MatrixType | NumericMatrix {
-  //   if (
-  //     col1 < 0 || col1 > matrix[0].length || col2 < 0 ||
-  //     col2 >= matrix[0].length
-  //   ) {
-  //     errors.IncorrectColumnIndexParametersInExchangeColumns();
-  //   }
-  //
-  //   if (fromRow < 0 || fromRow > toRow) {
-  //     errors.IncorrectFromRowIndexParameterInExchangeColumns();
-  //   }
-  //
-  //   if (toRow < 0 || toRow >= matrix.length) {
-  //     errors.IncorrectToRowIndexParameterInExchangeColumns();
-  //   }
-  //
-  //   models.ExchangeColumns(matrix, col1, col2, fromRow, toRow);
-  //
-  //   return matrix;
-  // }
+
+  /**
+   * Exchange rows in the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose
+   * rows will be changed.
+   * @param {Integer} row1 - The index of the first row to exchange.
+   * @param {Integer} row2 - The index of the second row to exchange.
+   * @param {Integer} fromColumn - The starting column index (inclusive).
+   * @param {Integer} toColumn - The ending column index (exclusive).
+   * @returns {MatrixType | NumericMatrix} The updated Matrix instance
+   * (The initial matrix is not copied).
+   * @throws {Error} If the rows or the from column index or to column index
+   * is incorrectly defined (negative or greater than the matrix columns).
+   */
+  @ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow([
+    errors.IncorrectRowIndexParametersInExchangeRows,
+    errors.IncorrectFromColumnIndexParameterInExchangeRows,
+    errors.IncorrectToColumnIndexParameterInExcangeRows,
+  ])
+  public static exchangeRows(
+    matrix: MatrixType | NumericMatrix,
+    row1: Integer,
+    row2: Integer,
+    fromColumn: Integer = 0,
+    toColumn: Integer = matrix[0].length - 1,
+  ): MatrixType | NumericMatrix {
+    models.ExchangeRows(matrix, row1, row2, fromColumn, toColumn);
+    return matrix;
+  }
+
+  /**
+   * Exchange columns in the matrix
+   *
+   * @param {MatrixType | NumericMatrix}
+   * @param {Integer} col1 - The index of the first column to exchange
+   * @param {Integer} col2 - The index of the second column to exchange
+   * @param {Integer} fromRow - The starting row index
+   * @param {Integer} toRow - The ending row index
+   * @returns {MatrixType | NumericMatrix} The updated matrix instance (the previous values are not copied)
+   */
+  exchangeColumns(
+    matrix: MatrixType | NumericMatrix,
+    col1: Integer,
+    col2: Integer,
+    fromRow: Integer = 0,
+    toRow: Integer = matrix.length - 1,
+  ): MatrixType | NumericMatrix {
+    if (
+      col1 < 0 || col1 > matrix[0].length || col2 < 0 ||
+      col2 >= matrix[0].length
+    ) {
+      errors.IncorrectColumnIndexParametersInExchangeColumns();
+    }
+
+    if (fromRow < 0 || fromRow > toRow) {
+      errors.IncorrectFromRowIndexParameterInExchangeColumns();
+    }
+
+    if (toRow < 0 || toRow >= matrix.length) {
+      errors.IncorrectToRowIndexParameterInExchangeColumns();
+    }
+
+    models.ExchangeColumns(matrix, col1, col2, fromRow, toRow);
+
+    return matrix;
+  }
   //
   // /**
   //  * Gets the diagonal of the matrix or the subdiagonal when a row index is defined.
