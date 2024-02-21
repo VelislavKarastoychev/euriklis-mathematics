@@ -311,7 +311,7 @@ export class Matrix {
    * Checks if the elements of the first "matrix" are greater than or equal to
    * the elements of the second "matrix" parameter of the method.
    *
-   * @param {jNumericMatrix | MatrixType} m1 - The first matrix used
+   * @param {NumericMatrix | MatrixType} m1 - The first matrix used
    * for comparison
    * @param {NumericMatrix | MatrixType} m2 - The second matrix used
    * for comparison
@@ -962,7 +962,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifFromOrToParametersAreIncorrectlyDefinedThrow(
     errors.IncorrectFromAndToParametersInSetBlock,
-  )
+  ) 
   public static setBlock(
     matrix: MatrixType | NumericMatrix,
     options: MatrixBlockOptions,
@@ -982,29 +982,35 @@ export class Matrix {
 
     return matrix;
   }
-  // /**
-  //  * Retrieves a specific row from the matrix based on the provided row index
-  //  * and optional column range.
-  //  *
-  //  * @param {Integer} rowIndex - The index of the row to retrieve.
-  //  * @param {Integer} [fromColumnIndex=0] - The starting column index (default is 0).
-  //  * @param {Integer} [toColumnIndex=this.columns - 1] - The ending column index (default is the last column).
-  //  * @returns {Matrix} - The extracted row as a Matrix.
-  //  */
-  // static getRow(
-  //   matrix: MatrixType | NumericMatrix,
-  //   rowIndex: Integer,
-  //   fromColumnIndex: Integer = 0,
-  //   toColumnIndex: Integer = matrix[0].length,
-  // ): MatrixType | NumericMatrix {
-  //   return Matrix.getBlock(
-  //     matrix,
-  //     {
-  //       from: [rowIndex, fromColumnIndex],
-  //       to: [rowIndex, toColumnIndex],
-  //     },
-  //   );
-  // }
+  
+  /**
+   * Retrieves a specific row from the matrix based on the provided row index
+   * and optional column range.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix instance from which will
+   * be extracted the row.
+   * @param {Integer} rowIndex - The index of the row to retrieve.
+   * @param {Integer} [fromColumnIndex=0] - The starting column index (default is 0).
+   * @param {Integer} [toColumnIndex=this.columns - 1] - The ending column index (default is the last column).
+   * @returns {MatrixType | NumericMatrix} - The extracted row as a Matrix.
+   * @throws {Error} If the row index or the fromIndex and toIndex parameters are
+   * incorrectly defined.
+   */
+  static getRow(
+    matrix: MatrixType | NumericMatrix,
+    rowIndex: Integer,
+    fromColumnIndex: Integer = 0,
+    toColumnIndex: Integer = matrix[0].length - 1,
+  ): MatrixType | NumericMatrix {
+    return Matrix.getBlock(
+      matrix,
+      {
+        from: [rowIndex, fromColumnIndex],
+        to: [rowIndex, toColumnIndex],
+      },
+    );
+  }
+  
   //
   // /**
   //  * Sets the values of a specific row in the matrix based on the provided row index,
