@@ -3,6 +3,7 @@ import * as conditions from "./Conditions";
 import * as models from "./Models";
 import * as errors from "./Errors";
 import {
+  ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow,
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
@@ -15,7 +16,7 @@ import {
 import {
   Integer,
   MatrixBlockOptions,
-  MatrixDeclaration,
+  // MatrixDeclaration,
   MatrixType,
   NumericMatrix,
   NumericType,
@@ -1073,37 +1074,27 @@ export class Matrix {
   /**
    * Exchange columns in the matrix
    *
-   * @param {MatrixType | NumericMatrix}
+   * @param {MatrixType | NumericMatrix} matrix - The Matrix instance whose columns
+   * will be exchanged.
    * @param {Integer} col1 - The index of the first column to exchange
    * @param {Integer} col2 - The index of the second column to exchange
    * @param {Integer} fromRow - The starting row index
    * @param {Integer} toRow - The ending row index
    * @returns {MatrixType | NumericMatrix} The updated matrix instance (the previous values are not copied)
    */
-  exchangeColumns(
+  @ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow([
+    errors.IncorrectColumnIndexParametersInExchangeColumns,
+    errors.IncorrectFromRowIndexParameterInExchangeColumns,
+    errors.IncorrectToRowIndexParameterInExchangeColumns,
+  ])
+  public static exchangeColumns(
     matrix: MatrixType | NumericMatrix,
     col1: Integer,
     col2: Integer,
     fromRow: Integer = 0,
     toRow: Integer = matrix.length - 1,
   ): MatrixType | NumericMatrix {
-    if (
-      col1 < 0 || col1 > matrix[0].length || col2 < 0 ||
-      col2 >= matrix[0].length
-    ) {
-      errors.IncorrectColumnIndexParametersInExchangeColumns();
-    }
-
-    if (fromRow < 0 || fromRow > toRow) {
-      errors.IncorrectFromRowIndexParameterInExchangeColumns();
-    }
-
-    if (toRow < 0 || toRow >= matrix.length) {
-      errors.IncorrectToRowIndexParameterInExchangeColumns();
-    }
-
     models.ExchangeColumns(matrix, col1, col2, fromRow, toRow);
-
     return matrix;
   }
   //
