@@ -12,3 +12,4 @@ export { ifTheParametersAreNotMatricesThrow } from "./IfTheParametersAreNotMatri
 export { ifFromOrToParametersAreIncorrectlyDefinedThrow } from "./IfFromOrToParametersAreIncorrectlyDefinedThrow.ts";
 // export { ifRowsAndColumnsAreInappropriatelyDefinedThrow } from "./IfRowsAndColumnsAreInappropriatelyDefinedThrow.ts";
 export { ifIsNotNumberOrMatrixThrow } from "./IfIsNotNumberOrMatrixThrow.ts";
+export { ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow } from "./IfRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow.ts";
