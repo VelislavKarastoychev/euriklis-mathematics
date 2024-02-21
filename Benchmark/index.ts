@@ -25,8 +25,8 @@
 // import "./xor.spec.ts";
 // import "./right-shift-by.spec.ts";
 // import "./left-shift-by.spec.ts";
-import "./get-block.spec.ts";
-// import "./set-block.spec.ts";
+// import "./get-block.spec.ts";
+import "./set-block.spec.ts";
 // import "./append-block-bottom.spec.ts";
 // import "./append-block-right.spec.ts";
 // import "./exchange-columns.spec.ts";
