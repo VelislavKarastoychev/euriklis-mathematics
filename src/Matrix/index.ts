@@ -12,6 +12,7 @@ import {
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
   ifTheParametersAreNotMatricesThrow,
+  ifRowParameterIsInappropriatelyDefinedThrow
 } from "./Decorators/index.ts";
 import {
   Integer,
@@ -21,7 +22,7 @@ import {
   NumericMatrix,
   NumericType,
   // TypedArray,
-  // TypedArrayConstructor,
+  TypedArrayConstructor,
 } from "./types";
 // import { ifRowsAndColumnsAreInappropriatelyDefinedThrow } from "./Decorators/IfRowsAndColumnsAreInappropriatelyDefinedThrow.ts";
 
@@ -1097,25 +1098,26 @@ export class Matrix {
     models.ExchangeColumns(matrix, col1, col2, fromRow, toRow);
     return matrix;
   }
-  //
-  // /**
-  //  * Gets the diagonal of the matrix or the subdiagonal when a row index is defined.
-  //  *
-  //  * @param {Integer} row - The row index for subdiagonal (default is 0).
-  //  * @returns {Matrix} - The diagonal or subdiagonal as a Matrix.
-  //  */
-  // static getDiagonal(
-  //   matrix: MatrixType | NumericMatrix,
-  //   row: Integer = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (row < 0 || row >= matrix.length) {
-  //     errors.IncorrectRowIndexParameterInGetDiagonal();
-  //   }
-  //
-  //   const typedArray = models.CreateTypedArrayConstructor(type);
-  //   return models.GetDiagonal(matrix, row, typedArray);
-  // }
+
+  /**
+   * Gets the diagonal of the matrix or the subdiagonal when a row index is defined.
+   * @param {MatrixType | NumericMatrix} matrix - The matrix instance.
+   * @param {Integer} row - The row index for subdiagonal (default is 0).
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} - The diagonal or subdiagonal as a Matrix.
+   */
+  @ifRowParameterIsInappropriatelyDefinedThrow(
+    errors.IncorrectRowIndexParameterInGetDiagonal,
+  )
+  public static getDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    row: Integer = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GetDiagonal(matrix, row, typedArray);
+  }
+
   // /**
   //  * Converts the current matrix into collection of
   //  * diagonal matrix blocks.
