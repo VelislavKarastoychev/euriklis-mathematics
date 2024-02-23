@@ -8,11 +8,12 @@ import {
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
+  ifRowParameterIsInappropriatelyDefinedThrow,
   // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
   ifTheParametersAreNotMatricesThrow,
-  ifRowParameterIsInappropriatelyDefinedThrow
+  ifIsColumnVectorThrow,
 } from "./Decorators/index.ts";
 import {
   Integer,
@@ -1118,18 +1119,22 @@ export class Matrix {
     return models.GetDiagonal(matrix, row, typedArray);
   }
 
-  // /**
-  //  * Converts the current matrix into collection of
-  //  * diagonal matrix blocks.
-  //  *
-  //  * @returns {MatrixType | NumericMatrix} - The resulting diagonal matrix.
-  //  */
-  // static toDiagonalMatrix(
-  //   matrix: MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.ToDiagonalMatrix(matrix, type);
-  // }
+  /**
+   * Converts the current matrix into collection of
+   * diagonal matrix blocks.
+   * 
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which will be
+   * used for generating of Diagonal  - like matrices (matrix).
+   * @returns {MatrixType | NumericMatrix} - The resulting diagonal matrix.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsColumnVectorThrow(errors.InappropriateMatrixParameterInToDiagonalMatrix)
+  public static toDiagonalMatrix(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.ToDiagonalMatrix(matrix, type);
+  }
   //
   // /**
   //  * Appends a block to the right side of the current matrix instance.
