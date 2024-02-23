@@ -62,3 +62,5 @@ export const IncorrectMatrixParameterInPointwiseTxt = (method: string) =>
 export const MatrixDegenerateTxt = "Matrix degenerate. Small tolerance value.";
 export const IncorrectMatricesInput = (method: string): string =>
   `Incorrect matrices input in the method ${method}. Some of the matrices is not a table or the elements are not numbers.`;
+export const InappropriateMatrixParameterInToDiagonalMatrixTxt =
+  "Inappropriate matrix parameter in toDiagonalMatrix method. The matrix is probably a column vector. To use this method please insert a row vector or a matrix with columns greater than unit.";
