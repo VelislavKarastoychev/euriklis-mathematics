@@ -3,8 +3,10 @@ import * as conditions from "./Conditions";
 import * as models from "./Models";
 import * as errors from "./Errors";
 import {
+  ifBlockHasDifferentRowsFromTheMatrixThrow,
   ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow,
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
+  ifIsColumnVectorThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
@@ -13,7 +15,7 @@ import {
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
   ifTheParametersAreNotMatricesThrow,
-  ifIsColumnVectorThrow,
+  ifBlockIsEmptyReturnMatrix,
 } from "./Decorators/index.ts";
 import {
   Integer,
@@ -1120,9 +1122,9 @@ export class Matrix {
   }
 
   /**
-   * Converts the current matrix into collection of
+   * Converts the matrix parameter into collection of
    * diagonal matrix blocks.
-   * 
+   *
    * @param {MatrixType | NumericMatrix} matrix - The matrix which will be
    * used for generating of Diagonal  - like matrices (matrix).
    * @returns {MatrixType | NumericMatrix} - The resulting diagonal matrix.
@@ -1135,31 +1137,32 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     return models.ToDiagonalMatrix(matrix, type);
   }
-  //
-  // /**
-  //  * Appends a block to the right side of the current matrix instance.
-  //  *
-  //  * @param {NumericMatrix | MatrixType | Matrix} block - The block to append.
-  //  * @returns {Matrix} - The extended matrix instance.
-  //  */
-  // static appendBlockRight(
-  //   matrix: MatrixType | NumericMatrix,
-  //   block: NumericMatrix | MatrixType,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsEmpty(block)) {
-  //     if (block.length !== matrix.length) {
-  //       errors.IncorrectBlockParameterInAppendBlockRight();
-  //     }
-  //     const typedArray = models.CreateTypedArrayConstructor(type);
-  //     return models.AppendBlockRight(
-  //       matrix,
-  //       block,
-  //       typedArray,
-  //     );
-  //   }
-  //   return matrix;
-  // }
+
+  /**
+   * Appends a block to the right side of the first matrix instance.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The initial matrix instance.
+   * @param {NumericMatrix | MatrixType} block - The block to append.
+   * @returns {MatrixType | NumericMatrix} - The extended matrix instance.
+   * @throws {Error} If the Block matrix has rows which are
+   * not equal to the "matrix" parameter.
+   */
+  @ifBlockIsEmptyReturnMatrix()
+  @ifBlockHasDifferentRowsFromTheMatrixThrow(
+    errors.IncorrectBlockParameterInAppendBlockRight,
+  )
+  static appendBlockRight(
+    matrix: MatrixType | NumericMatrix,
+    block: NumericMatrix | MatrixType,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.AppendBlockRight(
+      matrix,
+      block,
+      typedArray,
+    );
+  }
   //
   // /**
   //  * Appends a block to the bottom of the current matrix instance.
