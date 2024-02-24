@@ -19,21 +19,26 @@ import {
 const AppendBlockRightIterator = (
   matrix: NumericMatrix | MatrixType | TypedArray,
   block: NumericMatrix | MatrixType | TypedArray,
-  typedArray: TypedArrayConstructor,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
   k: Integer,
-): MatrixType | TypedArray => {
-  const n1 = matrix.length;
-  const n2 = block.length;
-  const n = n1 + n2;
-  let temp: TypedArray | MatrixType;
+): MatrixType | NumericMatrix | TypedArray | number[] => {
+  const n1: Integer = matrix.length;
+  const n2: Integer = block.length;
+  const n: Integer = n1 + n2;
+  let i: Integer;
+  let temp: TypedArray | NumericMatrix | MatrixType | number[];
   if (k) {
     temp = new typedArray(n);
-    temp.set(matrix as TypedArray);
-    temp.set(block as TypedArray, n1);
-
-    return temp as TypedArray;
+    if (typedArray !== Array) {
+      (temp as TypedArray).set(matrix as TypedArray);
+      (temp as TypedArray).set(block as TypedArray, n1);
+    } else {
+      for (i = n1; i-- > 1;) temp[i] = matrix[i];
+      if (i === 0) temp[0] = matrix[0];
+      for (i = n2; i-- > 1;) temp[i + n1] = block[i];
+      if (i === 0) temp[n1] = block[0];
+    }
   } else {
-    let i: Integer;
     temp = [];
     for (i = 0; i < n1; i++) {
       temp[i] = AppendBlockRightIterator(
@@ -41,11 +46,11 @@ const AppendBlockRightIterator = (
         (block as MatrixType)[i],
         typedArray,
         k + 1,
-      ) as TypedArray;
+      ) as TypedArray | number[];
     }
-
-    return temp as MatrixType;
   }
+
+  return temp;
 };
 
 /**
@@ -59,6 +64,8 @@ const AppendBlockRightIterator = (
 export const AppendBlockRight = (
   matrix: NumericMatrix | MatrixType,
   block: NumericMatrix | MatrixType,
-  typedArray: TypedArrayConstructor,
-): MatrixType =>
-  AppendBlockRightIterator(matrix, block, typedArray, 0) as MatrixType;
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix =>
+  AppendBlockRightIterator(matrix, block, typedArray, 0) as
+    | MatrixType
+    | NumericMatrix;
