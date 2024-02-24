@@ -1,33 +1,45 @@
 "use strict";
 
-import validator from "@euriklis/validator-ts";
+import { Integer } from "../src/Matrix/types.ts";
 import { Matrix } from "../src/index.ts";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
-const m1 = Matrix.random(5000, 5000);
-const m2 = Matrix.random(5000, 5000);
-(async () =>
-  new validator(true).describe("appendBlockRight method performance:")
-    .test({
-      title: true,
-      success: "green",
-      error: "red",
-    }).isBoolean
-    .on(true, () => {
-      const r1 = m1.M;
-      const r2 = m2.M;
-      const benchmark1 = new validator(m1).benchmark((m) =>
-        m.appendBlockRight(m2)
-      );
-      const benchmark2 = new validator([r1, r2])
-        .benchmark((data) => {
-          const r3 = [];
-          for (let i = 0; i < r1.length; i++) {
-            r3[i] = [...data[0][i], ...data[1][i]];
-          }
-          return r3;
-        });
-      console.table({
-        "@euriklis/mathematics": benchmark1,
-        "numericjs": benchmark2,
-      });
-    }))();
+(async () => {
+  const m1 = Matrix.random(dimensions[0], 1);
+  const m2 = Matrix.random(...dimensions);
+  const numericTest = (_: any) => {
+    const matrix: number[][] = [];
+    const n = m1.length;
+    let i: Integer, j: Integer, n1: Integer, n2: Integer;
+    for (i = n; i--;) {
+      matrix[i] = [];
+      const m1i = m1[i];
+      const m2i = m2[i];
+      n1 = m1i.length;
+      n2 = m2i.length;
+      for (j = n1; j--;) {
+        matrix[i][j] = m1i[j];
+      }
+      for (j = n2; j--;) {
+        matrix[i][n1 + j] = m2i[j];
+      }
+    }
+    return matrix;
+  };
+  const condition = Matrix.isEqualTo(
+    Matrix.appendBlockRight(m1, m2),
+    numericTest(undefined),
+  );
+  const euriklisTest = (m: any) => m.appendBlockRight(m1, m2);
+  startPerformanceTest(
+    "appendBlockRight",
+    [{ param: "matrix", dimensions: [dimensions[0], 1], type: "float64" }, {
+      param: "block",
+      dimensions,
+      type: "float64",
+    }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+})();
