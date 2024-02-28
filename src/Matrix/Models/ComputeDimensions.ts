@@ -13,6 +13,6 @@ const ComputeDimensionsIterator = (
   return dimensions as Integer[];
 };
 export const ComputeDimensions = (m: MatrixType | NumericMatrix): number[] => {
-  const dimensions = [];
+  const dimensions: Integer[] = [];
   return ComputeDimensionsIterator(m, dimensions);
 };
