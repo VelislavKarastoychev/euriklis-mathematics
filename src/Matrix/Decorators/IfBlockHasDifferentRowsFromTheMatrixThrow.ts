@@ -16,7 +16,7 @@ export function ifBlockHasDifferentRowsFromTheMatrixThrow(
     descriptor.value = function (
       matrix: MatrixType | NumericMatrix,
       block: MatrixType | NumericMatrix,
-      type: MatrixType | NumericMatrix,
+      type: NumericType,
     ): MatrixType | NumericMatrix {
       if (matrix.length !== block.length) error();
 
