@@ -24,7 +24,7 @@ export const Reshape = (
   columns: Integer,
   typedArray: TypedArrayConstructor | ArrayConstructor,
 ): MatrixType | NumericMatrix=> {
-  const reshaped = [];
+  const reshaped: MatrixType | NumericMatrix = [];
   let i: Integer, j: Integer, r: Integer = mrows - 1, c: Integer = mcolumns - 1;
   for (i = rows; i--;) {
     reshaped[i] = new typedArray(columns);
