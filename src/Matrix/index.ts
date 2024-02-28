@@ -1258,19 +1258,6 @@ export class Matrix {
   //   );
   // }
   //
-  // /**
-  //  * Transposes the current Matrix instance,
-  //  * swapping its row and column elements.
-  //  *
-  //  * @returns {MatrixType | NumericMatrix} A new Matrix instance
-  //  * representing the transposed matrix.
-  //  */
-  // static T(
-  //   matrix: MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return Matrix.transpose(matrix, type);
-  // }
   //
   // /**
   //  * Calculates the Frobenius norm of a matrix.
