@@ -16,15 +16,15 @@ new validator(m)
     success: "green",
     error: "red",
   });
-new validator(reshaped).isArrayOfNumberArraysWithEqualSize
+new validator(reshaped).isArrayOfTypedArraysWithEqualSize
   .and.bind(
     new validator(reshaped.length).isSame(2),
   ).and.bind(
-    new validator(reshaped[0].length).isSame(6),
+    new validator(reshaped[0].length).isSame(6)
   ).and.bind(
     new validator(Matrix.isEqualTo(Matrix.reshape(reshaped, 3, 4), m)).isSame(
-      true,
-    ),
+      true
+    )
   )
   .describe(
     "1. Regroups the elements of the matrix according to the rows and the columns of the method.",
