@@ -1259,19 +1259,19 @@ export class Matrix {
     );
   }
 
-  //
-  // /**
-  //  * Calculates the Frobenius norm of a matrix.
-  //  *
-  //  * @param{MatrixType | NumericMatrix} matrix - the matrix
-  //  * whose norm has to be computed.
-  //  * @throws {Error} If the matrix is not valid.
-  //  * @returns {number} The Frobenius (Euclidean)
-  //  * norm of the matrix.
-  //  */
-  // static FrobeniusNorm(matrix: MatrixType | NumericMatrix): number {
-  //   return models.FrobeniusNorm(matrix);
-  // }
+  /**
+   * Calculates the Frobenius norm of a matrix.
+   *
+   * @param{MatrixType | NumericMatrix} matrix - the matrix
+   * whose norm has to be computed.
+   * @throws {Error} If the matrix is not valid.
+   * @returns {number} The Frobenius (Euclidean)
+   * norm of the matrix.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static FrobeniusNorm(matrix: MatrixType | NumericMatrix): number {
+    return models.FrobeniusNorm(matrix);
+  }
   //
   // /**
   //  * Obtains the infinity norm of the matrix.
