@@ -1272,30 +1272,32 @@ export class Matrix {
   static FrobeniusNorm(matrix: MatrixType | NumericMatrix): number {
     return models.FrobeniusNorm(matrix);
   }
-  //
-  // /**
-  //  * Obtains the infinity norm of the matrix.
-  //  * The infinity norm is the maximum absolute row sum of the matrix.
-  //  * It is calculated as the maximum sum of absolute values of each row.
-  //  * If the matrix is empty or contains non-numeric elements, an internal error is thrown.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
-  //  * has to be computed.
-  //  * @returns {number} The infinity norm of the matrix.
-  //  * @throws {Error} Throws an internal error if the matrix is empty or contains non-numeric elements.
-  //  *
-  //  * @example
-  //  * const matrix = new Matrix([[1, 2, 3], [-4, 5, 6], [7, 8, 9]]);
-  //  * const infinityNorm = matrix.infinityNorm; // Returns 24
-  //  */
-  // static infinityNorm(matrix: MatrixType | NumericMatrix): number {
-  //   const infNorm = models.MatrixReduce(matrix, "infNorm");
-  //   if (infNorm < 0 || isNaN(infNorm)) {
-  //     errors.InternalErrorInInfinityNorm();
-  //   }
-  //
-  //   return infNorm;
-  // }
+
+  /**
+   * Obtains the infinity norm of the matrix.
+   * The infinity norm is the maximum absolute row sum of the matrix.
+   * It is calculated as the maximum sum of absolute values of each row.
+   * If the matrix is empty or contains non-numeric elements, an internal error is thrown.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
+   * has to be computed.
+   * @returns {number} The infinity norm of the matrix.
+   * @throws {Error} Throws an internal error if the matrix 
+   * is empty or contains non-numeric elements or is incorrectly defined.
+   *
+   * @example
+   * const matrix = [[1, 2, 3], [-4, 5, 6], [7, 8, 9]];
+   * const infinityNorm = Matrix.infinityNorm(matrix); // Returns 24
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static infinityNorm(matrix: MatrixType | NumericMatrix): number {
+    const infNorm = models.MatrixReduce(matrix, "infNorm");
+    if (infNorm < 0 || isNaN(infNorm)) {
+      errors.InternalErrorInInfinityNorm();
+    }
+
+    return infNorm;
+  }
   //
   // /**
   //  * Obtains the maximum absolute element norm of the matrix.
