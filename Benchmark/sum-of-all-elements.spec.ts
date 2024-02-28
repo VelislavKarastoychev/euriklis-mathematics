@@ -2,30 +2,20 @@
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
-  const m = Matrix.random(5000, 5000, -1, 1);
-  const md = m.M;
-  new validator(m.sumOfAllElements - numeric.sum(md)).isInRange(-1e-8, 1e-8)
-    .on(true, (v) => {
-      v.describe("Time performance of the sumOfAllElements getter method:")
-        .test({
-          title: true,
-          success: "green",
-          "error": "red",
-        });
-      const t1 = new validator(m).benchmark((m) => m.sumOfAllElements);
-      const t2 = new validator(md).benchmark((m) => numeric.sum(m));
-      console.table({
-        "@euriklis/mathematics": t1,
-        numericjs: t2,
-      });
-    }).on(false, (v) => {
-      v.describe("Internal error in sumOfAllElements benchmark test.")
-        .test({
-          title: true,
-          success: "red",
-          error: "green",
-        });
-    });
+  const r = Matrix.uniqueRandom(...dimensions);
+  const cr = Matrix.copy(r, "generic");
+  const condition =
+    Math.abs(Matrix.sumOfAllElements(r) - numeric.sum(cr)) < 1e-8;
+  const euriklisTest = (m: any) => m.sumOfAllElements(r);
+  const numericTest = (m: any) => m.sum(cr);
+  startPerformanceTest(
+    "sumOfAllElements",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
 })();
