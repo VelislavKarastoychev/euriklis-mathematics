@@ -17,17 +17,17 @@ import {
  * number of rows in the original matrix.
  * @param {number} columns - The 
  * number of columns in the original matrix.
- * @param {TypedArrayConstructor} typedArray - The 
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The 
  * constructor for the TypedArray type used in the matrix.
- * @returns {MatrixType} - Returns 
+ * @returns {MatrixType | NumericMatrix} - Returns 
  * a new matrix representing the transposed matrix.
  */
 export const TransposeMatrix = (
   matrix: MatrixType | NumericMatrix,
   rows: number,
   columns: number,
-  typedArray: TypedArrayConstructor,
-): MatrixType => {
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix => {
   let i: Integer,
     j: Integer,
     transposed = Array(columns),
