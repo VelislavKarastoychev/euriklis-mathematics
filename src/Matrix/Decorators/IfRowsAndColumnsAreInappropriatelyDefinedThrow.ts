@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "..";
-import { Integer } from "../types";
+import { Integer, MatrixType, NumericMatrix } from "../types";
 /**
  * Validates that the provided rows and columns are appropriately defined,
  * throwing an error if conditions are not met.
@@ -14,15 +14,21 @@ export function ifRowsAndColumnsAreInappropriatelyDefinedThrow(
 ): Function {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {
     const method: Function = descriptor.value;
-    descriptor.value = function (rows: Integer, columns: Integer) {
+    descriptor.value = function (
+      matrix: MatrixType | NumericMatrix,
+      rows: Integer,
+      columns: Integer,
+    ) {
       if (
         rows < 0 || columns < 0 ||
-        (this as Matrix).rows * (this as Matrix).columns !== rows * columns ||
+        (matrix as MatrixType | NumericMatrix).length *
+              (matrix as MatrixType | NumericMatrix)[0].length !==
+          rows * columns ||
         !Number.isInteger(rows) || !Number.isInteger(columns)
       ) {
         error();
       }
-      return method.call(this, rows, columns);
+      return method.call(this, matrix, rows, columns);
     };
   };
 }
