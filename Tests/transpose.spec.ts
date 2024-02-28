@@ -1,8 +1,9 @@
 "use strict";
+import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 import { Matrix } from "../src/index.ts";
 import validator from "@euriklis/validator-ts";
 const a = Matrix.random(27, 23);
-const runTranspose = (m) => Matrix.transpose(m);
+const runTranspose = (m: MatrixType | NumericMatrix) => Matrix.transpose(m);
 new validator(Matrix.transpose(a, "generic")).forEvery((row, i) =>
   row.forEvery((el, j) => el.isSame(a[j as number][i as number]))
 ).describe("transpose method has to:").test({
