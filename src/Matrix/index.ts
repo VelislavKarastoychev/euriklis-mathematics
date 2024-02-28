@@ -3,7 +3,9 @@ import * as conditions from "./Conditions";
 import * as models from "./Models";
 import * as errors from "./Errors";
 import {
+  ifBlockHasDifferentColumnsFromTheMatrixThrow,
   ifBlockHasDifferentRowsFromTheMatrixThrow,
+  ifBlockIsEmptyReturnMatrix,
   ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow,
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsColumnVectorThrow,
@@ -11,11 +13,10 @@ import {
   ifIsNotNumberOrMatrixThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
   ifRowParameterIsInappropriatelyDefinedThrow,
-  // ifRowsAndColumnsAreInappropriatelyDefinedThrow,
+  ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
   ifTheParametersAreNotMatricesThrow,
-  ifBlockIsEmptyReturnMatrix,
 } from "./Decorators/index.ts";
 import {
   Integer,
@@ -53,6 +54,11 @@ export class Matrix {
    */
   public static isMatrix(m: any): boolean {
     return conditions.IsMatrix(m);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static dimensions(m: MatrixType | NumericMatrix): number[] {
+    return models.ComputeDimensions(m);
   }
 
   /**
@@ -1163,67 +1169,72 @@ export class Matrix {
       typedArray,
     );
   }
-  //
-  // /**
-  //  * Appends a block to the bottom of the current matrix instance.
-  //  *
-  //  * @param {NumericMatrix | MatrixType} matrix - The initial matrix.
-  //  * @param {NumericMatrix | MatrixType} block - The block to append.
-  //  * @returns {MatrixType | NumericMatrix} - The extended matrix instance.
-  //  */
-  // static appendBlockBottom(
-  //   matrix: MatrixType | NumericMatrix,
-  //   block: NumericMatrix | MatrixType,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsEmpty(block)) {
-  //     if (block[0].length !== matrix[0].length) {
-  //       errors.IncorrectBlockParameterInAppendBlockBottom();
-  //     }
-  //     const typedArray = models.CreateTypedArrayConstructor(type);
-  //     return models.AppendBlockBottom(
-  //       matrix,
-  //       block,
-  //       typedArray,
-  //     );
-  //   }
-  //
-  //   return matrix;
-  // }
-  //
-  // // 6. Matrix operations and
-  // // common linear algebra algorithms.
-  //
-  // /**
-  //  * Reshapes the matrix to have the specified number of rows and columns.
-  //  * Throws an error if the provided rows and columns are inappropriate.
-  //  *
-  //  * @param {Integer} rows - The desired number of rows for the reshaped matrix.
-  //  * @param {Integer} columns - The desired number of columns for the reshaped matrix.
-  //  * @returns {Matrix} The reshaped matrix.
-  //  * @throws {Error} Throws an error if the provided rows and columns are inappropriate.
-  //  * i.e. when they are not positive integers.
-  //  */
-  // @ifRowsAndColumnsAreInappropriatelyDefinedThrow(
-  //   errors.IncorrectRowsAndColumnsParametersInReshape,
-  // )
-  // static reshape(
-  //   matrix: MatrixType | NumericMatrix,
-  //   rows: Integer,
-  //   columns: Integer,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (rows === matrix.length && columns === matrix[0].length) return matrix;
-  //   const typedArray = models.CreateTypedArrayConstructor(type);
-  //   return models.Reshape(
-  //     matrix,
-  //     matrix.length,
-  //     matrix[0].length,
-  //     rows,
-  //     columns,
-  //     typedArray,
-  //   );
-  // }
+
+  /**
+   * Appends a block to the bottom of the first matrix parameter.
+   *
+   * @param {NumericMatrix | MatrixType} matrix - The initial matrix.
+   * @param {NumericMatrix | MatrixType} block - The block to append.
+   * @param {NumericType} type - The type of the extended matrix.
+   * @returns {MatrixType | NumericMatrix} - The extended matrix.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifBlockIsEmptyReturnMatrix()
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectBlockParameterInAppendBlockBottom,
+    1,
+  )
+  @ifBlockHasDifferentColumnsFromTheMatrixThrow(
+    errors.IncorrectBlockParameterInAppendBlockBottom,
+  )
+  static appendBlockBottom(
+    matrix: MatrixType | NumericMatrix,
+    block: NumericMatrix | MatrixType,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const dimensions = models.ComputeDimensions(matrix);
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.AppendBlockBottom(
+      matrix,
+      block,
+      typedArray,
+      dimensions.length,
+    );
+  }
+
+  // 6. Matrix operations and
+  // common linear algebra algorithms.
+
+  /**
+   * Reshapes the matrix to have the specified number of rows and columns.
+   * Throws an error if the provided rows and columns are inappropriate.
+   *
+   * @param {Integer} rows - The desired number of rows for the reshaped matrix.
+   * @param {Integer} columns - The desired number of columns for the reshaped matrix.
+   * @returns {MatrixType | NumericMatrix} The reshaped matrix.
+   * @throws {Error} Throws an error if the provided rows and columns are inappropriate.
+   * i.e. when they are not positive integers.
+   */
+  @ifRowsAndColumnsAreInappropriatelyDefinedThrow(
+    errors.IncorrectRowsAndColumnsParametersInReshape,
+  )
+  static reshape(
+    matrix: MatrixType | NumericMatrix,
+    rows: Integer,
+    columns: Integer,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (rows === matrix.length && columns === matrix[0].length) return matrix;
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.Reshape(
+      matrix,
+      matrix.length,
+      matrix[0].length,
+      rows,
+      columns,
+      typedArray,
+    );
+  }
   //
   // /**
   //  * Transposes the current matrix,
