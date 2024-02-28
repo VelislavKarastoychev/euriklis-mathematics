@@ -1236,28 +1236,29 @@ export class Matrix {
       typedArray,
     );
   }
-  //
-  // /**
-  //  * Transposes the current matrix,
-  //  * swapping its rows and columns.
-  //  *
-  //  * @returns {MatrixType | NumericMatrix} A new Matrix
-  //  * instance representing the transposed matrix.
-  //  */
-  // static transpose(
-  //   matrix: MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (matrix.length === 1 && matrix[0].length === 1) return matrix;
-  //   const typedArray = models.CreateTypedArrayConstructor(type);
-  //   return models.TransposeMatrix(
-  //     matrix,
-  //     matrix.length,
-  //     matrix[0].length,
-  //     typedArray,
-  //   );
-  // }
-  //
+
+  /**
+   * Transposes the current matrix,
+   * swapping its rows and columns.
+   *
+   * @returns {MatrixType | NumericMatrix} A new Matrix
+   * instance representing the transposed matrix.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static transpose(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    if (matrix.length === 1 && matrix[0].length === 1) return matrix;
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.TransposeMatrix(
+      matrix,
+      matrix.length,
+      matrix[0].length,
+      typedArray,
+    );
+  }
+
   //
   // /**
   //  * Calculates the Frobenius norm of a matrix.
