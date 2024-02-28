@@ -78,7 +78,7 @@ export const ToDiagonalMatrix = (
   matrix: MatrixType | NumericMatrix,
   type: NumericType,
 ): MatrixType | NumericMatrix => {
-  const bytes: Integer = ComputeBytesLength(type);
+  const bytes: Integer = ComputeBytesLength(type) as Integer;
   const typedArray: TypedArrayConstructor | ArrayConstructor =
     CreateTypedArrayConstructor(type);
   const buffer = new ArrayBuffer(
