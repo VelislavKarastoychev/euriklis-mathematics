@@ -15,7 +15,7 @@ export { GetDiagonal } from "./GetDiagonal";
 export { ToDiagonalMatrix } from "./ToDiagonalMatrix";
 export { AppendBlockRight } from "./AppendBlockRight";
 export { AppendBlockBottom } from "./AppendBlockBottom";
-// export { TransposeMatrix } from "./TransposeMatrix.ts";
+export { TransposeMatrix } from "./TransposeMatrix.ts";
 export { Replicate } from "./Replicate";
 // export { MatrixReduce } from "./MatrixReduce.ts";
 // export { FrobeniusNorm } from "./FrobeniusNorm.ts";
