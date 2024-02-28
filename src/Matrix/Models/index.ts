@@ -17,7 +17,7 @@ export { AppendBlockRight } from "./AppendBlockRight";
 export { AppendBlockBottom } from "./AppendBlockBottom";
 export { TransposeMatrix } from "./TransposeMatrix.ts";
 export { Replicate } from "./Replicate";
-// export { MatrixReduce } from "./MatrixReduce.ts";
+export { MatrixReduce } from "./MatrixReduce.ts";
 export { FrobeniusNorm } from "./FrobeniusNorm.ts";
 export { Reshape } from "./Reshape";
 export { BinaryPointwise, UnaryPointwise } from "./Pointwise";
