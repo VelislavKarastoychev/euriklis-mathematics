@@ -1215,6 +1215,7 @@ export class Matrix {
    * @throws {Error} Throws an error if the provided rows and columns are inappropriate.
    * i.e. when they are not positive integers.
    */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifRowsAndColumnsAreInappropriatelyDefinedThrow(
     errors.IncorrectRowsAndColumnsParametersInReshape,
   )
