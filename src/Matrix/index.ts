@@ -1282,7 +1282,7 @@ export class Matrix {
    * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
    * has to be computed.
    * @returns {number} The infinity norm of the matrix.
-   * @throws {Error} Throws an internal error if the matrix 
+   * @throws {Error} Throws an internal error if the matrix
    * is empty or contains non-numeric elements or is incorrectly defined.
    *
    * @example
@@ -1320,23 +1320,24 @@ export class Matrix {
 
     return maxNorm;
   }
-  //
-  // /**
-  //  * Computes the 1-norm (maximum column sum) of the matrix.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose norm has to be computed.
-  //  * @returns {number} The 1-norm of the matrix.
-  //  * @throws {Error} If the calculation of the method is NaN.
-  //  */
-  // static norm1(matrix: MatrixType | NumericMatrix): number {
-  //   const norm1 = models.MatrixReduce(matrix, "norm1");
-  //   if (norm1 < 0 || isNaN(norm1)) {
-  //     errors.InternalErrorInNorm1();
-  //   }
-  //
-  //   return norm1;
-  // }
+
+  /**
+   * Computes the 1-norm (maximum column sum) of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose norm has to be computed.
+   * @returns {number} The 1-norm of the matrix.
+   * @throws {Error} If the calculation of the method is NaN.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static norm1(matrix: MatrixType | NumericMatrix): number {
+    const norm1 = models.MatrixReduce(matrix, "norm1");
+    if (norm1 < 0 || isNaN(norm1)) {
+      errors.InternalErrorInNorm1();
+    }
+
+    return norm1;
+  }
   //
   // /**
   //  * Computes the superior norm of the matrix.
