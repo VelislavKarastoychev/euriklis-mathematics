@@ -13,8 +13,8 @@ import {
  * @param {Integer} mcolumns - The original number of columns in the matrix.
  * @param {Integer} rows - The number of rows for the reshaped matrix.
  * @param {Integer} columns - The number of columns for the reshaped matrix.
- * @param {TypedArrayConstructor} typedArray - The constructor for the typed array.
- * @returns {MatrixType} The reshaped matrix data.
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The constructor for the typed array.
+ * @returns {MatrixType | NumericMatrix} The reshaped matrix data.
  */
 export const Reshape = (
   matrix: MatrixType | NumericMatrix,
@@ -22,8 +22,8 @@ export const Reshape = (
   mcolumns: Integer,
   rows: Integer,
   columns: Integer,
-  typedArray: TypedArrayConstructor,
-): MatrixType => {
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix=> {
   const reshaped = [];
   let i: Integer, j: Integer, r: Integer = mrows - 1, c: Integer = mcolumns - 1;
   for (i = rows; i--;) {
