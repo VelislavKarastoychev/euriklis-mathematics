@@ -1,27 +1,24 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
+import { dimensions, startPerformanceTest } from "./utils.ts";
+import { NumericMatrix } from "../src/Matrix/types.ts";
 
-const m = Matrix.random(5000, 5000);
 (async () => {
-  new validator(Math.abs(m.infinityNorm - numeric.sup(m.M.map(numeric.norm1))) < 1e-8).isSame(true)
-    .on(true, (v) => {
-      v.describe("Time performance of the infinity norm method:")
-       .test({
-          title: true,
-          success: "green",
-          error: "red"
-        });
-      const t1 = new validator(m).benchmark((m) => m.infinityNorm);
-      const t2 = new validator(m.M).benchmark((m) => numeric.sup(m.map(numeric.norm1)));
-      console.table({"@euriklis/mathematics": t1, numericjs: t2});
-    }).on(false, (v) => {
-      v.describe("Internal error in infinity norm benchmark test.")
-       .test({
-          title: true, 
-          success: "red",
-          error: "green"
-        })
-    });
+  const r = Matrix.uniqueRandom(...dimensions);
+  const cr = Matrix.copy(r, "generic") as NumericMatrix;
+  const condition = Math.abs(
+    Matrix.infinityNorm(r) - numeric.sup(cr.map((row: number[]) =>
+      numeric.norm1(row)
+    )),
+  ) < 1e-8;
+  const euriklisTest = (m: any) => m.infinityNorm(r);
+  const numericTest = (m: any) => m.sup(cr.map((row) => numeric.norm1(row)));
+  startPerformanceTest(
+    "infinityNorm",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
 })();
