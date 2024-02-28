@@ -1,34 +1,45 @@
 "use strict";
 
-import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { Integer, NumericMatrix } from "../src/Matrix/types";
-function reshapeMatrix(matrix: NumericMatrix, newRows: Integer, newColumns: Integer) {
-  const flattened = matrix.flat(); // Convert matrix to a 1D array
-  const reshaped = [];
+import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import { dimensions, startPerformanceTest } from "./utils.ts";
+(async () => {
+  function reshapeMatrix(
+    matrix: NumericMatrix | MatrixType,
+    newRows: Integer,
+    newColumns: Integer,
+  ) {
+    const flattened = matrix.flat(); // Convert matrix to a 1D array
+    const reshaped = [];
 
-  for (let i = 0; i < newRows; i++) {
-    reshaped[i] = [];
-    for (let j = 0; j < newColumns; j++) {
-      const index = i * newColumns + j;
-      reshaped[i][j] = flattened[index];
+    for (let i = 0; i < newRows; i++) {
+      reshaped[i] = [];
+      for (let j = 0; j < newColumns; j++) {
+        const index = i * newColumns + j;
+        reshaped[i][j] = flattened[index];
+      }
     }
+
+    return reshaped;
   }
 
-  return reshaped;
-}
-const m = Matrix.random(5000, 5000);
-const reshaped = m.reshape(2500, 10000);
-(async () => new validator(reshaped.reshape(5000, 5000).isEqualTo(m))
-  .isSame(true)
-  .describe("Time performance of reshape method:")
-  .test({
-    title: true,
-    success: "green",
-    error: "red"
-  }).on(true, () => {
-    const t1 = new validator(m).benchmark((matrix) => matrix.reshape(2500, 10000))
-    // const t2 = new validator(m.M).benchmark((matrix) => reshapeMatrix(matrix, 2500, 10000));
-    console.table({"@euriklis/mathematics": t1});
-  })
-)();
+  const m = Matrix.random(dimensions[0], dimensions[1]);
+  const m1 = Matrix.copy(m, "generic");
+  const reshaped = Matrix.reshape(m, dimensions[0] >> 1, dimensions[1] << 1);
+
+  const condition = Matrix.isEqualTo(reshaped, reshapeMatrix(m1, dimensions[0] >> 1, dimensions[1] << 1));
+  const euriklisTest = (matrix: any) =>
+    matrix.reshape(m, dimensions[0] >> 1, dimensions[1] << 1);
+  const numericTest = (_: any) =>
+    reshapeMatrix(m1, dimensions[0] >> 1, dimensions[1] << 1);
+  startPerformanceTest(
+    "reshape",
+    [{ param: "matrix", dimensions, type: "float64" }, {
+      param: "rows",
+      size: dimensions[0] >> 1,
+    }, { param: "columns", size: dimensions[1] << 1 }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+})();
