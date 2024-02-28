@@ -1338,40 +1338,42 @@ export class Matrix {
 
     return norm1;
   }
-  //
-  // /**
-  //  * Computes the superior norm of the matrix.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be examined.
-  //  * @returns {number} The superior norm.
-  //  * @throws {Error} If the calculation result is NaN.
-  //  */
-  // static superior(matrix: MatrixType | NumericMatrix): number {
-  //   const superior = models.MatrixReduce(matrix, "sup");
-  //   if (isNaN(superior)) {
-  //     errors.InternalErrorInSuperiorNorm();
-  //   }
-  //
-  //   return superior;
-  // }
-  //
-  // /**
-  //  * Computes the inferior norm of the matrix.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be examined.
-  //  * @returns {number} The inferior norm.
-  //  * @throws {Error} If the calculation result is NaN.
-  //  */
-  // static inferior(matrix: MatrixType | NumericMatrix): number {
-  //   const inferior = models.MatrixReduce(matrix, "inf");
-  //   if (isNaN(inferior)) {
-  //     errors.InternalErrorInInferiorNorm();
-  //   }
-  //
-  //   return inferior;
-  // }
+
+  /**
+   * Computes the superior norm of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be examined.
+   * @returns {number} The superior norm.
+   * @throws {Error} If the calculation result is NaN.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static superior(matrix: MatrixType | NumericMatrix): number {
+    const superior = models.MatrixReduce(matrix, "sup");
+    if (isNaN(superior)) {
+      errors.InternalErrorInSuperiorNorm();
+    }
+
+    return superior;
+  }
+
+  /**
+   * Computes the inferior norm of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be examined.
+   * @returns {number} The inferior norm.
+   * @throws {Error} If the calculation result is NaN.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static inferior(matrix: MatrixType | NumericMatrix): number {
+    const inferior = models.MatrixReduce(matrix, "inf");
+    if (isNaN(inferior)) {
+      errors.InternalErrorInInferiorNorm();
+    }
+
+    return inferior;
+  }
   //
   // /**
   //  * Computes the sum of all elements in the matrix.
