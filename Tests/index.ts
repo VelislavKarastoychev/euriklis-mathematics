@@ -34,7 +34,7 @@ import "./exchange-columns.spec.ts";
 import "./get-diagonal.spec.ts";
 import "./to-diagonal-matrix.spec.ts";
 import "./append-block-right.spec.ts";
-// import "./append-block-bottom.spec.ts";
+import "./append-block-bottom.spec.ts";
 // import "./transpose.spec.ts";
 // import "./frobenius-norm.spec.ts";
 // import "./infinity-norm.spec.ts";
