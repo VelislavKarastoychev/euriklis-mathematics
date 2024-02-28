@@ -1298,27 +1298,28 @@ export class Matrix {
 
     return infNorm;
   }
-  //
-  // /**
-  //  * Obtains the maximum absolute element norm of the matrix.
-  //  * The maximum absolute element norm is the maximum absolute value of any element in the matrix.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
-  //  * have to be computed.
-  //  * @returns {number} The maximum absolute element norm of the matrix.
-  //  *
-  //  * @example
-  //  * const matrix = new Matrix([[1, 2, 3], [-4, 5, 6], [7, 8, 9]]);
-  //  * const maxNorm = matrix.maxNorm; // Returns 9 (maximum absolute value in the matrix)
-  //  */
-  // static maxNorm(matrix: MatrixType | NumericMatrix): number {
-  //   const maxNorm = models.MatrixReduce(matrix, "maxNorm");
-  //   if (maxNorm < 0 || isNaN(maxNorm)) {
-  //     errors.InternalErrorInMaxNorm();
-  //   }
-  //
-  //   return maxNorm;
-  // }
+
+  /**
+   * Obtains the maximum absolute element norm of the matrix.
+   * The maximum absolute element norm is the maximum absolute value of any element in the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose norm
+   * have to be computed.
+   * @returns {number} The maximum absolute element norm of the matrix.
+   *
+   * @example
+   * const matrix = [[1, 2, 3], [-4, 5, 6], [7, 8, 9]];
+   * const maxNorm = Matrix.maxNorm(matrix); // Returns 9 (maximum absolute value in the matrix)
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static maxNorm(matrix: MatrixType | NumericMatrix): number {
+    const maxNorm = models.MatrixReduce(matrix, "maxNorm");
+    if (maxNorm < 0 || isNaN(maxNorm)) {
+      errors.InternalErrorInMaxNorm();
+    }
+
+    return maxNorm;
+  }
   //
   // /**
   //  * Computes the 1-norm (maximum column sum) of the matrix.
