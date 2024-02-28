@@ -39,7 +39,7 @@ import "./reshape.spec.ts";
 import "./transpose.spec.ts";
 import "./frobenius-norm.spec.ts";
 import "./infinity-norm.spec.ts";
-// import "./max-norm.spec.ts";
+import "./max-norm.spec.ts";
 // import "./norm1.spec.ts";
 // import "./superior.spec.ts";
 // import "./inferior.spec.ts";
