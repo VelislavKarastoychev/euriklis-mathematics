@@ -1374,21 +1374,23 @@ export class Matrix {
 
     return inferior;
   }
-  //
-  // /**
-  //  * Computes the sum of all elements in the matrix.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be added.
-  //  * @returns {number} The sum of all elements.
-  //  * @throws {Error} If the calculation result is NaN.
-  //  */
-  // static sumOfAllElements(matrix: MatrixType | NumericMatrix): number {
-  //   const sum = models.MatrixReduce(matrix, "sum");
-  //   if (isNaN(sum)) errors.InternalErrorInSum();
-  //
-  //   return sum;
-  // }
+
+  /**
+   * Computes the sum of all elements in the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be added.
+   * @returns {number} The sum of all elements.
+   * @throws {Error} If the calculation result is NaN or if
+   * the matrix is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static sumOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const sum = models.MatrixReduce(matrix, "sum");
+    if (isNaN(sum)) errors.InternalErrorInSum();
+
+    return sum;
+  }
   //
   // /**
   //  * Computes the sum of all elements in the matrix.
