@@ -1,29 +1,22 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
-(async () =>
-  new validator(true)
-    .isBoolean
-    .describe(
-      "Time performance of the FrobeniusNorm method for Matrix with dimension 5000 x 5000:",
-    ).test({
-      title: true,
-      success: "green",
-      error: "red",
-    }).on(true, () => {
-      const m = Matrix.random(5000, 5000);
-      const t1 = new validator(m).benchmark(
-        (matrix) => matrix.FrobeniusNorm,
-        100,
-      );
-      const vec = m.M.flat();
-      const t2 = new validator(vec).benchmark((v) => {
-        return numeric.norm2(v);
-      });
-      console.table({
-        "@euriklis/mathematics": t1,
-        "numericjs": t2,
-      });
-    }))();
+(async () => {
+  const r = Matrix.uniqueRandom(dimensions[0], dimensions[1]);
+  const cr = Matrix.copy(r, "generic");
+  const condition =
+    Math.abs(Matrix.FrobeniusNorm(r) - numeric.norm2(cr.flat())) < 1e-8;
+  const euriklisTest = (m: any) => m.FrobeniusNorm(r);
+  const numericTest = (m: any) => m.norm2(cr.flat());
+  startPerformanceTest(
+    "Frobenius norm",
+    [
+      { param: "matrix", dimensions, type: "float64" },
+    ],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
+})();
