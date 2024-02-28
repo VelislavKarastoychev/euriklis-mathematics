@@ -30,14 +30,15 @@ const AppendBlockBottomIterator = (
   dimensions: Integer,
   k: Integer = 0,
 ): MatrixType | NumericMatrix | TypedArray | number[] => {
-  const n1 = x.length;
-  const n2 = y.length;
+  const n1 = x.length || 0;
+  const n2 = y.length || 0;
+  const n = Math.max(n1, n2);
   let i: Integer, j: Integer;
   let z: MatrixType | NumericMatrix | TypedArray | number[];
   if (k === dimensions - 1) {
     if (typedArray === Array) {
-      z = new typedArray(n1);
-      for (i = 0; i < n1 >> 2; i++) {
+      z = new typedArray(n);
+      for (i = 0; i < n >> 2; i++) {
         j = i << 2;
         z[j] = x[j++];
         z[j] = x[j++];
@@ -45,30 +46,31 @@ const AppendBlockBottomIterator = (
         z[j] = x[j];
       }
 
-      for (j = i << 2; j < n1; j++) {
+      for (j = i << 2; j < n; j++) {
         z[j] = x[j];
       }
     } else z = new (typedArray as TypedArrayConstructor)(x as TypedArray);
   } else {
     z = new Array(n1 + n2);
-    for (i = n1; i--;) {
-      z[i] = AppendBlockBottomIterator(
-        (x as MatrixType | NumericMatrix)[i],
-        (y as MatrixType | NumericMatrix)[i],
-        typedArray,
-        dimensions,
-        k + 1,
-      ) as TypedArray | number[];
-    }
-
-    for (i = n2; i--;) {
-      z[i + n1] = AppendBlockBottomIterator(
-        (y as MatrixType | NumericMatrix)[i],
-        (x as MatrixType | NumericMatrix)[i],
-        typedArray,
-        dimensions,
-        k + 1,
-      ) as TypedArray | number[];
+    for (i = n; i--;) {
+      if (i < n1) {
+        z[i] = AppendBlockBottomIterator(
+          (x as MatrixType | NumericMatrix)[i] || [],
+          (y as MatrixType | NumericMatrix)[i] || [],
+          typedArray,
+          dimensions,
+          k + 1,
+        ) as TypedArray | number[];
+      }
+      if (i < n2) {
+        z[i + n1] = AppendBlockBottomIterator(
+          (y as MatrixType | NumericMatrix)[i] || [],
+          (x as MatrixType | NumericMatrix)[i] || [],
+          typedArray,
+          dimensions,
+          k + 1,
+        ) as TypedArray | number[];
+      }
     }
   }
 
