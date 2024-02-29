@@ -1400,6 +1400,7 @@ export class Matrix {
    * @returns {number} The product of all elements.
    * @throws {Error} If the calculation result is NaN.
    */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
     const product = models.MatrixReduce(matrix, "product");
     if (isNaN(product)) errors.InternalErrorInProduct();
