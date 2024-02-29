@@ -1427,21 +1427,22 @@ export class Matrix {
 
     return squares;
   }
-  //
-  // /**
-  //  * Computes the sum of the cubes of all matrix elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elelements will be used for computations.
-  //  * @returns {number} The calculated result of the method.
-  //  * @throws {Error} If the calculated result is NaN.
-  //  */
-  // static sumOfCubesOfAllElements(matrix: MatrixType | NumericMatrix): number {
-  //   const cubes = models.MatrixReduce(matrix, "cube");
-  //   if (isNaN(cubes)) errors.InternalErrorInCubes();
-  //
-  //   return cubes;
-  // }
+
+  /**
+   * Computes the sum of the cubes of all matrix elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elelements will be used for computations.
+   * @returns {number} The calculated result of the method.
+   * @throws {Error} If the calculated result is NaN.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static sumOfCubesOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const cubes = models.MatrixReduce(matrix, "cube");
+    if (isNaN(cubes)) errors.InternalErrorInCubes();
+
+    return cubes;
+  }
   //
   //
   // /**
