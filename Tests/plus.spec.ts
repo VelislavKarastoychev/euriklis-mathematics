@@ -6,10 +6,10 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 const m = Matrix.replicate(1, 4, 5);
 const onces = Matrix.replicate(1, 4, 5);
 const twoes = Matrix.replicate(2, 4, 5);
-const runPlus = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.replicate(1, 4, 5).plus(matrix);
+const runPlus = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.plus(Matrix.replicate(1, 4, 5), matrix);
 
-new validator(m.plus(onces).isEqualTo(twoes))
+new validator(Matrix.isEqualTo(Matrix.plus(m, onces), twoes))
   .isSame(true)
   .describe("The plus method has to:")
   .test({
@@ -17,36 +17,38 @@ new validator(m.plus(onces).isEqualTo(twoes))
     success: "green",
     error: "red",
   }).describe(
-    "1. returns the correct result when the method's parameter is a Matrix."
+    "1. return the correct result when the method's parameter is a Matrix.",
   )
   .test();
 
-new validator(m.plus(1).isEqualTo(twoes))
+new validator(Matrix.isEqualTo(Matrix.plus(m, 1), twoes))
   .describe(
-    "2. returns the correct result when the method's parameter is a number"
+    "2. return the correct result when the method's parameter is a number",
   )
   .isSame(true).test();
 
-new validator(m.plus(onces.M).isEqualTo(twoes))
+new validator(
+  Matrix.isEqualTo(Matrix.plus(m, Matrix.copy(onces, "generic")), twoes),
+)
   .and.bind(
-    new validator(m.plus(onces.data).isEqualTo(twoes))
+    new validator(Matrix.isEqualTo(Matrix.plus(m, Matrix.copy(onces, "float32")), twoes)),
   ).describe(
-    "3. returns the correct result when the method's parameter is a Matrix - like structure."
+    "3. return the correct result when the method's parameter is a Matrix - like structure.",
   )
   .isSame(true).test();
 
 new validator(runPlus).throwsErrorWith(Matrix.random(2, 2))
   .describe(
-    "4. throws error when the method's parameter is a Matrix with inappropriate dimension."
+    "4. throw error when the method's parameter is a Matrix with inappropriate dimension.",
   )
   .test();
 new validator(runPlus).throwsErrorWith([[12, 13]])
   .describe(
-    "5. throws error when the method's parameter is a Matrix - like structure with inappropriate size."
+    "5. throw error when the method's parameter is a Matrix - like structure with inappropriate size.",
   )
   .test();
 new validator(runPlus).throwsErrorWith("incorrect")
   .describe(
-    "6. throws error when the method's parameter is not a number or Matrix or MatrixType or NumericMatrix."
+    "6. throw error when the method's parameter is not a number or Matrix or MatrixType or NumericMatrix.",
   )
   .test();
