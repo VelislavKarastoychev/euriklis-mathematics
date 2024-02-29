@@ -1391,21 +1391,21 @@ export class Matrix {
 
     return sum;
   }
-  //
-  // /**
-  //  * Computes the sum of all elements in the matrix.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be multiplied.
-  //  * @returns {number} The product of all elements.
-  //  * @throws {Error} If the calculation result is NaN.
-  //  */
-  // static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
-  //   const product = models.MatrixReduce(matrix, "product");
-  //   if (isNaN(product)) errors.InternalErrorInProduct();
-  //
-  //   return product;
-  // }
+
+  /**
+   * Computes the sum of all elements in the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be multiplied.
+   * @returns {number} The product of all elements.
+   * @throws {Error} If the calculation result is NaN.
+   */
+  static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const product = models.MatrixReduce(matrix, "product");
+    if (isNaN(product)) errors.InternalErrorInProduct();
+
+    return product;
+  }
   //
   // /**
   //  * Computes the sum of the squares of all matrix elements.
