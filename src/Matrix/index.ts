@@ -1398,7 +1398,8 @@ export class Matrix {
    * @param {MatrixType | NumericMatrix} matrix - The matrix
    * whose elements will be multiplied.
    * @returns {number} The product of all elements.
-   * @throws {Error} If the calculation result is NaN.
+   * @throws {Error} If the calculation result is NaN or the
+   * matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
@@ -1407,24 +1408,25 @@ export class Matrix {
 
     return product;
   }
-  //
-  // /**
-  //  * Computes the sum of the squares of all matrix elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix
-  //  * whose elements will be used for computation.
-  //  * @returns {number} The sum of squares of all matrix elements.
-  //  * @throws {Error} If some  of the elements of the matrix is NaN
-  //  * or the result of the computation is negative.
-  //  */
-  // static sumOfSquaresOfAllElements(matrix: MatrixType | NumericMatrix): number {
-  //   const squares = models.MatrixReduce(matrix, "square");
-  //   if (isNaN(squares) || squares < 0) {
-  //     errors.InternalErrorInSquares();
-  //   }
-  //
-  //   return squares;
-  // }
+
+  /**
+   * Computes the sum of the squares of all matrix elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix
+   * whose elements will be used for computation.
+   * @returns {number} The sum of squares of all matrix elements.
+   * @throws {Error} If some  of the elements of the matrix is NaN
+   * or the result of the computation is negative.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static sumOfSquaresOfAllElements(matrix: MatrixType | NumericMatrix): number {
+    const squares = models.MatrixReduce(matrix, "square");
+    if (isNaN(squares) || squares < 0) {
+      errors.InternalErrorInSquares();
+    }
+
+    return squares;
+  }
   //
   // /**
   //  * Computes the sum of the cubes of all matrix elements.
