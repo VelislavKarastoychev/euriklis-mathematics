@@ -16,6 +16,7 @@ export { ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow } from "./IfRowOrFro
 export { ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow } from "./IfColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow.ts";
 export { ifRowParameterIsInappropriatelyDefinedThrow } from "./IfRowParameterIsInappropriatelyDefinedThrow";
 export { ifIsColumnVectorThrow } from "./IfIsColumnVectorThrow";
-export {ifBlockHasDifferentRowsFromTheMatrixThrow} from "./IfBlockHasDifferentRowsFromTheMatrixThrow.ts";
-export { ifBlockIsEmptyReturnMatrix} from "./IfBlockIsEmptyReturnMatrix.ts";
-export { ifBlockHasDifferentColumnsFromTheMatrixThrow } from "./IfBlockHasDifferentColumnsFromTheMatrixThrow"
+export { ifBlockHasDifferentRowsFromTheMatrixThrow } from "./IfBlockHasDifferentRowsFromTheMatrixThrow.ts";
+export { ifBlockIsEmptyReturnMatrix } from "./IfBlockIsEmptyReturnMatrix.ts";
+export { ifBlockHasDifferentColumnsFromTheMatrixThrow } from "./IfBlockHasDifferentColumnsFromTheMatrixThrow";
+export { ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow } from "./IfIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow";
