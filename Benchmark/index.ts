@@ -44,8 +44,8 @@
 // import "./superior.spec.ts"
 // import "./inferior.spec.ts";
 // import "./sum-of-all-elements.spec.ts";
-import "./product-of-all-elements.spec.ts";
-// import "./sum-of-squares-of-all-elements.spec.ts";
+// import "./product-of-all-elements.spec.ts";
+import "./sum-of-squares-of-all-elements.spec.ts";
 // import "./sum-of-cubes-of-all-elements.spec.ts";
 // import "./plus.spec.ts";
 // import "./minus.spec.ts";
