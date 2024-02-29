@@ -17,7 +17,8 @@ import {
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
   ifTheParametersAreNotMatricesThrow,
-} from "./Decorators/index.ts";
+  ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow,
+} from "./Decorators";
 import {
   Integer,
   MatrixBlockOptions,
@@ -1443,46 +1444,43 @@ export class Matrix {
 
     return cubes;
   }
-  //
-  //
-  // /**
-  //  * Performs a pointwise addition operation (classical matrix addition) between
-  //  * the current matrix and the provided number or matrix. If the input is a
-  //  * number, each element of the current matrix is added by that number.
-  //  * If the input is a matrix with the same dimensions as the current matrix,
-  //  * the addition operation is applied element-wise between corresponding elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for the addition
-  //  * operation.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
-  //  * matrix for the addition operation.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the pointwise addition operation.
-  //  * @throws {Error } If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(
-  //   errors.IncorrectMatrixParameterInPointwise("plus"),
-  // )
-  // static plus(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("plus")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "plus",
-  //     type,
-  //   );
-  // }
+
+  /**
+   * Performs a pointwise addition operation (classical matrix addition) between
+   * the first matrix and the provided number or matrix. If the input is a
+   * number, each element of the current matrix is added by that number.
+   * If the input is a matrix with the same dimensions as the first matrix,
+   * the addition operation is applied element-wise between corresponding elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for the addition
+   * operation.
+   * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
+   * matrix for the addition operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the pointwise addition operation.
+   * @throws {Error } If the "m" parameter is not a number or Matrix-like structure 
+   * or has inappropriate dimensions.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("plus"),
+    1,
+  )
+  @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
+    errors.IncorrectMatrixParameterInPointwise("plus")
+  )
+  static plus(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "plus",
+      type,
+    );
+  }
   //
   // /**
   //  * Performs a pointwise subtraction operation between the current matrix and
