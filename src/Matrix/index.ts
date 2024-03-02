@@ -1773,28 +1773,31 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     return models.UnaryPointwise(matrix, "cos", type, weight, bias);
   }
-  //
-  // /**
-  //  * Applies the tangent function point-wise to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the tangent.
-  //  * The resulting value is computed as `Math.tan(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
-  //  * to provide a new matrix with its tangent values.
-  //  * @param {number} [weight=1] - The weight to multiply each matrix element before applying the tangent function.
-  //  * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {Matrix} A new matrix with the tangent function applied to its elements.
-  //  */
-  // static tan(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(matrix, "tan", type, weight, bias);
-  // }
+
+  /**
+   * Applies the tangent function point-wise to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the tangent.
+   * The resulting value is computed as `Math.tan(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * to provide a new matrix with its tangent values.
+   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the tangent function.
+   * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the tangent function applied to its elements.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static tan(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "tan", type, weight, bias);
+  }
   //
   // /**
   //  * Applies the cotangent function point-wise to the elements of the Matrix.
