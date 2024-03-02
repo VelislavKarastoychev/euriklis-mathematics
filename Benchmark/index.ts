@@ -51,8 +51,8 @@
 // import "./minus.spec.ts";
 // import "./power.spec.ts";
 // import "./Hadamard.spec.ts";
-import "./divide.spec.ts";
-// import "./modulus.spec.ts";
+// import "./divide.spec.ts";
+import "./modulus.spec.ts";
 // import "./negate.spec.ts";
 // import "./bitwise-negate.spec.ts";
 // import "./sin.spec.ts";
