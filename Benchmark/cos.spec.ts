@@ -1,35 +1,20 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
-  const r = Matrix.random(5000, 5000);
-  const m = r.M;
-  new validator(r.cos().isEqualTo(numeric.cos(m)))
-    .isSame(true)
-    .on(true, (v) => {
-      v.describe(
-        "Time performance of the cos method with matrix with dimension 5000 x 5000.",
-      )
-        .test({
-          title: true,
-          success: "green",
-          error: "red",
-        });
-      const t1 = new validator(r).benchmark((m) => m.cos());
-      const t2 = new validator(m).benchmark((m) => numeric.cos(m));
-      console.table({
-        "@euriklis/mathematics": t1,
-        numericjs: t2,
-      });
-    })
-    .on(false, (v) => {
-      v.describe("Internal error in cos benchmark test method.")
-        .test({
-          title: true,
-          success: "red",
-          error: "green",
-        });
-    });
+  const r = Matrix.uniqueRandom(...dimensions);
+  const condition = Matrix.isEqualTo(
+    Matrix.cos(r),
+    numeric.cos(r),
+  );
+  const test = (lib: any) => lib.cos(r);
+  startPerformanceTest(
+    "cos",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    test,
+    test,
+  );
 })();
