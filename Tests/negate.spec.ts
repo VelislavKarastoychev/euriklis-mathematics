@@ -10,7 +10,7 @@ const callNegate = (matrix: MatrixType | NumericMatrix) =>
 new validator(
   Matrix.isEqualTo(Matrix.plus(r1, Matrix.negate(r1)), zeros),
 )
-  .describe("The negate getter method has to:")
+  .describe("The negate static method has to:")
   .test({
     title: true,
     success: "green",
