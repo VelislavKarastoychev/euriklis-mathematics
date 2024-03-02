@@ -1500,6 +1500,7 @@ export class Matrix {
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("minus"),
+    1,
   )
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("minus"),
@@ -1530,10 +1531,12 @@ export class Matrix {
    * for the exponentiation operation.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} A new matrix resulting from the pointwise exponentiation operation.
-   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure
+   * or has different dimensions than the "matrix" parameter.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("power"),
+    1,
   )
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("power"),
@@ -1564,10 +1567,12 @@ export class Matrix {
    * for the Hadamard product.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} A new matrix resulting from the Hadamard product operation.
-   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure
+   * or has different dimensions than the "matrix" parameter.
    */
   @ifIsNotNumberOrMatrixThrow(
     errors.IncorrectMatrixParameterInPointwise("Hadamard"),
+    1,
   )
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("Hadamard"),
@@ -1584,43 +1589,42 @@ export class Matrix {
       type,
     );
   }
-  //
-  // /**
-  //  * Performs element-wise division between the current matrix and the provided
-  //  * number or matrix. If the input is a number, each element of the current
-  //  * matrix is divided by that number. If the input is a matrix with the same
-  //  * dimensions as the current matrix, division is applied element-wise between
-  //  * corresponding elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix, whose elements will
-  //  * be divided.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m -The number or
-  //  * matrix for the element-wise division.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the element-wise division operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // static divide(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (typeof m !== "number") {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("divide")();
-  //     }
-  //   }
-  //
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as MatrixType | NumericMatrix,
-  //     "divide",
-  //     type,
-  //   );
-  // }
+
+  /**
+   * Performs element-wise division between the current matrix and the provided
+   * number or matrix. If the input is a number, each element of the current
+   * matrix is divided by that number. If the input is a matrix with the same
+   * dimensions as the current matrix, division is applied element-wise between
+   * corresponding elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix, whose elements will
+   * be divided.
+   * @param {number | MatrixType | NumericMatrix} m -The number or
+   * matrix for the element-wise division.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the element-wise division operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure
+   * or has different dimensions than the "matrix" parameter.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("divide"),
+    1,
+  )
+  @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
+    errors.IncorrectMatrixParameterInPointwise("divide"),
+  )
+  static divide(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.BinaryPointwise(
+      matrix,
+      m as MatrixType | NumericMatrix,
+      "divide",
+      type,
+    );
+  }
   //
   // /**
   //  * Performs element-wise modulus operation between the current matrix and the
