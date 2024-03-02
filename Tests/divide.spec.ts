@@ -1,22 +1,21 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
-import { run } from "node:test";
+import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 
 const r1 = Matrix.random(4, 5, 2, 3);
 const r2 = Matrix.random(4, 5, 1, 2);
 
-const m1 = r1.M;
-const m2 = r2.M;
+const m1 = Matrix.copy(r1, "generic") as NumericMatrix;
+const m2 = Matrix.copy(r2, "generic") as NumericMatrix;
 const m3 = m1.map((r: number[], i: number) =>
   r.map((c: number, j: number) => c / m2[i][j])
 );
 
-const runDivide = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(4, 5).divide(matrix);
+const runDivide = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.divide(Matrix.random(4, 5), matrix);
 
-new validator(r1.divide(r2).isEqualTo(m3))
+new validator(Matrix.isEqualTo(Matrix.divide(r1, r2), m3))
   .describe("The divide method has to:")
   .test({
     title: true,
@@ -28,18 +27,23 @@ new validator(r1.divide(r2).isEqualTo(m3))
   )
   .test();
 
-new validator(r1.divide(r2.M).isEqualTo(m3))
+new validator(Matrix.isEqualTo(Matrix.divide(r1, m2), m3))
   .and.bind(
-    new validator(r1.divide(r2.data).isEqualTo(m3)),
+    new validator(Matrix.isEqualTo(Matrix.divide(r1, r2), m3)),
   ).describe(
     "2. return the correct result when the method's parameter is Matrix - like structure.",
   )
   .isSame(true)
   .test();
 
-new validator(r1.divide(1).isEqualTo(r1))
+new validator(Matrix.isEqualTo(Matrix.divide(r1, 1), r1))
   .and.bind(
-    new validator(r1.divide(0.5).isEqualTo(r1.Hadamard(2))),
+    new validator(
+      Matrix.isEqualTo(
+        Matrix.divide(r1, 0.5),
+        Matrix.Hadamard(r1, 2),
+      ),
+    ),
   ).isSame(true)
   .describe(
     "3. return the correct result when the method's parameter is a number.",
