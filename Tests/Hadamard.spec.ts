@@ -6,17 +6,17 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 const r1 = Matrix.random(4, 5);
 const r2 = Matrix.random(4, 5, 1, 2);
 
-const m1 = r1.M;
-const m2 = r2.M;
+const m1 = Matrix.copy(r1, "generic") as NumericMatrix;
+const m2 = Matrix.copy(r2, "generic") as NumericMatrix;
 const m3 = m1.map((r: number[], i: number) =>
   r.map((c: number, j: number) => c * m2[i][j])
 );
 
 const m4 = m1.map((r: number[]) => r.map((c: number) => c * 2));
-const runHadamard = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(3, 4).Hadamard(matrix);
+const runHadamard = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.Hadamard(Matrix.random(3, 4), matrix);
 
-new validator(r1.Hadamard(r2).isEqualTo(m3))
+new validator(Matrix.isEqualTo(Matrix.Hadamard(r1, r2), m3))
   .isSame(true)
   .describe("The Hadamard method has to:")
   .test({
@@ -28,16 +28,16 @@ new validator(r1.Hadamard(r2).isEqualTo(m3))
   )
   .test();
 
-new validator(r1.Hadamard(m2).isEqualTo(m3))
+new validator(Matrix.isEqualTo(Matrix.Hadamard(r1, m2), m3))
   .and.bind(
-    new validator(r1.Hadamard(r2.data).isEqualTo(m3)),
+    new validator(Matrix.isEqualTo(Matrix.Hadamard(r1, r2), m3)),
   ).isSame(true)
   .describe(
     "2. return the correct result when the method's parameter is a MatrixType or NumericMatrix",
   )
   .test();
 
-new validator(r1.Hadamard(2).isEqualTo(m4))
+new validator(Matrix.isEqualTo(Matrix.Hadamard(r1, 2), m4))
   .describe(
     "3. reuturn the correct result when the method's parameter is a number.",
   )
