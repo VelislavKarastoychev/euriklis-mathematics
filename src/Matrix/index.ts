@@ -1721,28 +1721,31 @@ export class Matrix {
       bias,
     );
   }
-  //
-  // /**
-  //  * Applies the sine function point-wise to the elements of the matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the sine.
-  //  * The resulting value is computed as `Math.sin(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
-  //  * will be transformed to its sine values.
-  //  * @param {number} [weight=1] - The weight to multiply each matrix element before applying the sine function.
-  //  * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {Matrix} A new matrix with the sine function applied to its elements.
-  //  */
-  // static sin(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(matrix, "sin", type, weight, bias);
-  // }
+
+  /**
+   * Applies the sine function point-wise to the elements of the matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the sine.
+   * The resulting value is computed as `Math.sin(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be transformed to its sine values.
+   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the sine function.
+   * @param {number} [bias=0] - The bias to be added to each element after the weiht multiplication.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {Matrix} A new matrix with the sine function applied to its elements.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static sin(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "sin", type, weight, bias);
+  }
   //
   // /**
   //  * Applies the cosine function point-wise to the elements of the Matrix.
