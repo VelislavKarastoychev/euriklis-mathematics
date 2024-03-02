@@ -9,6 +9,7 @@ import {
   ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow,
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsColumnVectorThrow,
+  ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
@@ -17,7 +18,6 @@ import {
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   //  resetMatrix,
   ifTheParametersAreNotMatricesThrow,
-  ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow,
 } from "./Decorators";
 import {
   Integer,
@@ -1458,7 +1458,7 @@ export class Matrix {
    * matrix for the addition operation.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix}  A new matrix resulting from the pointwise addition operation.
-   * @throws {Error } If the "m" parameter is not a number or Matrix-like structure 
+   * @throws {Error } If the "m" parameter is not a number or Matrix-like structure
    * or has inappropriate dimensions.
    */
   @ifIsNotNumberOrMatrixThrow(
@@ -1466,14 +1466,13 @@ export class Matrix {
     1,
   )
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
-    errors.IncorrectMatrixParameterInPointwise("plus")
+    errors.IncorrectMatrixParameterInPointwise("plus"),
   )
   static plus(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    
     return models.BinaryPointwise(
       matrix,
       m as number | MatrixType | NumericMatrix,
@@ -1481,45 +1480,42 @@ export class Matrix {
       type,
     );
   }
-  //
-  // /**
-  //  * Performs a pointwise subtraction operation between the current matrix and
-  //  * the provided number or matrix. If the input is a number, each element of
-  //  * the current matrix is subtracted by that number. If the input is a matrix
-  //  * with the same dimensions as the current matrix, the subtraction operation
-  //  * is applied element-wise between corresponding elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
-  //  * the subtraction operation.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or
-  //  * matrix for the subtraction operation.
-  //  * @param {NumericType} type - The type of the elements of the output matrix.
-  //  * @returns {MatrixType | NumericMatrix}  new matrix resulting from the pointwise subtraction operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // @ifIsNotNumberOrMatrixThrow(
-  //   errors.IncorrectMatrixParameterInPointwise("minus"),
-  // )
-  // static minus(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (!conditions.IsNumber(m)) {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("minus")();
-  //     }
-  //   }
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as number | MatrixType | NumericMatrix,
-  //     "minus",
-  //     type,
-  //   );
-  // }
+
+  /**
+   * Performs a pointwise subtraction operation between the first matrix and
+   * the provided number or matrix. If the input is a number, each element of
+   * the first matrix is subtracted by that number. If the input is a matrix
+   * with the same dimensions as the current matrix, the subtraction operation
+   * is applied element-wise between corresponding elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
+   * the subtraction operation.
+   * @param {number | MatrixType | NumericMatrix} m - The number or
+   * matrix for the subtraction operation.
+   * @param {NumericType} type - The type of the elements of the output matrix.
+   * @returns {MatrixType | NumericMatrix}  new matrix resulting from the pointwise subtraction operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure
+   * or has dimensions which are not equal to the dimensions of the "matrix"
+   * parameter.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("minus"),
+  )
+  @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
+    errors.IncorrectMatrixParameterInPointwise("minus"),
+  )
+  static minus(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.BinaryPointwise(
+      matrix,
+      m as number | MatrixType | NumericMatrix,
+      "minus",
+      type,
+    );
+  }
   //
   // /**
   //  * Performs a pointwise exponentiation operation between the current matrix and
