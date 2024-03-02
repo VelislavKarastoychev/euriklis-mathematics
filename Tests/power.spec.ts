@@ -6,8 +6,8 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 const r1 = Matrix.random(3, 4);
 const r2 = Matrix.random(3, 4);
 
-const m1 = r1.M;
-const m2 = r2.M;
+const m1 = Matrix.copy(r1, "generic") as NumericMatrix;
+const m2 = Matrix.copy(r2, "generic") as NumericMatrix;
 
 const m3 = m1.map((r: number[], i: number) =>
   r.map((c: number, j: number) => c ** m2[i][j])
@@ -15,9 +15,9 @@ const m3 = m1.map((r: number[], i: number) =>
 
 const m4 = m1.map((r: number[]) => r.map((c: number) => c ** 2));
 
-const runPower = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(3, 4).power(matrix);
-new validator(r1.power(r2).isEqualTo(m3))
+const runPower = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.power(Matrix.random(3, 4), matrix);
+new validator(Matrix.isEqualTo(Matrix.power(r1, r2), m3))
   .describe("The power method has to:")
   .test({
     title: true,
@@ -29,16 +29,16 @@ new validator(r1.power(r2).isEqualTo(m3))
   .isSame(true)
   .test();
 
-new validator(r1.power(r2.M).isEqualTo(m3))
+new validator(Matrix.isEqualTo(Matrix.power(r1, m2), m3))
   .and.bind(
-    new validator(r1.power(r2.data).isEqualTo(m3)),
+    new validator(Matrix.isEqualTo(Matrix.power(r1, r2), m3)),
   ).describe(
     "2. return the correct result when the method's parameter is a Matrix - like structure.",
   )
   .isSame(true)
   .test();
 
-new validator(r1.power(2).isEqualTo(m4))
+new validator(Matrix.isEqualTo(Matrix.power(r1, 2), m4))
   .describe(
     "3. return the correct result when the method's parameter is a number.",
   )
