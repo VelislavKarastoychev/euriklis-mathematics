@@ -1671,12 +1671,12 @@ export class Matrix {
    * @param {number} [bias = 0] - The bias (real number) which will be added to
    * each element of the matrix after the weight multiplication and before the
    * negation operation.
-   * @param {NumericMatrix} type - The type of the resulting matrix.
+   * @param {NumericMatrix} type? - The type of the resulting matrix.
    * @returns {MatrixType | NumericMatrix} A new Matrix instance with negated elements.
    * @throws {Error} If the matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
-    errors.IncorrectMatrixInput
+    errors.IncorrectMatrixInput,
   )
   static negate(
     matrix: MatrixType | NumericMatrix,
@@ -1686,31 +1686,41 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     return models.UnaryPointwise(matrix, "neg", type, weight, bias);
   }
-  //
-  // /**
-  //  * Performs a unary point-wise bitwise negation.
-  //  *
-  //  * Optionally, a weight and bias can be applied to
-  //  * each element.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
-  //  * will be bitwise negated.
-  //  * @returns {MatrixType | NumericMatrix} A new Matrix instance with bitwise negated elements.
-  //  */
-  // static bitwiseNegate(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "bneg",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Performs a unary point-wise bitwise negation.
+   *
+   * Optionally, a weight and bias can be applied to
+   * each element.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be bitwise negated.
+   * @param {number} [weight = 1] - The weight (real number) which will multiply
+   * each element of the matrix before the bitwise negation operation.
+   * @param {number} [bias = 0] - The bias (real number) which will be added to
+   * each element of the matrix after the weight multiplication and before the
+   * bitwise negation operation.
+   * @param {NumericType} type? - The type of the resulting matrix.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance with bitwise negated elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput,
+  )
+  static bitwiseNegate(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "bneg",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   // /**
   //  * Applies the sine function point-wise to the elements of the matrix.
