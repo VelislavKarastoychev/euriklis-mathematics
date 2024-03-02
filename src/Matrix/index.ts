@@ -1625,43 +1625,41 @@ export class Matrix {
       type,
     );
   }
-  //
-  // /**
-  //  * Performs element-wise modulus operation between the current matrix and the
-  //  * provided number or matrix. If the input is a number, each element of the
-  //  * current matrix is computed modulo that number. If the input is a matrix
-  //  * with the same dimensions as the current matrix, modulus operation is applied
-  //  * element-wise between corresponding elements.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
-  //  * the modulus operation.
-  //  * @param {number | Matrix | MatrixType | NumericMatrix} m - The number or matrix
-  //  * for the element-wise modulus operation.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix resulting from the element-wise modulus operation.
-  //  * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
-  //  */
-  // static modulus(
-  //   matrix: MatrixType | NumericMatrix,
-  //   m: number | MatrixType | NumericMatrix,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   if (typeof m !== "number") {
-  //     if (
-  //       (m as MatrixType | NumericMatrix).length !== matrix.length &&
-  //       (m as MatrixType | NumericMatrix)[0].length !== matrix[0].length
-  //     ) {
-  //       errors.IncorrectMatrixParameterInPointwise("modulus")();
-  //     }
-  //   }
-  //
-  //   return models.BinaryPointwise(
-  //     matrix,
-  //     m as MatrixType | NumericMatrix,
-  //     "modulus",
-  //     type,
-  //   );
-  // }
+
+  /**
+   * Performs element-wise modulus operation between the first matrix and the
+   * provided number or matrix. If the input is a number, each element of the
+   * first matrix is computed modulo that number. If the input is a matrix
+   * with the same dimensions as the first matrix, modulus operation is applied
+   * element-wise between corresponding elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The first matrix needed for
+   * the modulus operation.
+   * @param {number | MatrixType | NumericMatrix} m - The number or matrix
+   * for the element-wise modulus operation.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix resulting from the element-wise modulus operation.
+   * @throws {Error} If the "m" parameter is not a number or Matrix-like structure.
+   */
+  @ifIsNotNumberOrMatrixThrow(
+    errors.IncorrectMatrixParameterInPointwise("modulus"),
+    1,
+  )
+  @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
+    errors.IncorrectMatrixParameterInPointwise("modulus"),
+  )
+  static modulus(
+    matrix: MatrixType | NumericMatrix,
+    m: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.BinaryPointwise(
+      matrix,
+      m as MatrixType | NumericMatrix,
+      "modulus",
+      type,
+    );
+  }
   //
   // /**
   //  * Performs a unary point-wise negation.
