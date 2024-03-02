@@ -56,7 +56,7 @@ import "./modulus.spec.ts";
 import "./negate.spec.ts";
 import "./bitwise-nagate.spec.ts";
 import "./sin.spec.ts";
-// import "./cos.spec.ts";
+import "./cos.spec.ts";
 // import "./tan.spec.ts";
 // import "./cotan.spec.ts";
 // import "./exp.spec.ts";
