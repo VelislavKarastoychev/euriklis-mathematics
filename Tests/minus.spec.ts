@@ -1,14 +1,18 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
-import { Matrix } from "../src/index.ts";
+import { epsilon, Matrix } from "../src";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 
 const r1 = Matrix.random(3, 4);
 const r2 = Matrix.random(3, 4, 1, 2);
-const runMinus = (matrix: number | Matrix | MatrixType | NumericMatrix) =>
-  Matrix.random(3, 4).minus(matrix);
-new validator(r2.minus(r1).minus(Matrix.replicate(1, 3, 4)).FrobeniusNorm)
-  .isInRange(-Matrix.epsilon, Matrix.epsilon)
+const runMinus = (matrix: number | MatrixType | NumericMatrix) =>
+  Matrix.minus(Matrix.random(3, 4), matrix);
+new validator(
+  Matrix.FrobeniusNorm(
+    Matrix.minus(Matrix.minus(r2, r1), Matrix.replicate(1, 3, 4)),
+  ),
+)
+  .isInRange(-epsilon, epsilon)
   .describe("The minus method has to:")
   .test({
     title: true,
@@ -20,19 +24,39 @@ new validator(r2.minus(r1).minus(Matrix.replicate(1, 3, 4)).FrobeniusNorm)
   )
   .test();
 
-new validator(r2.minus(r1.M).minus(Matrix.replicate(1, 3, 4).M).FrobeniusNorm)
+new validator(
+  Matrix.FrobeniusNorm(
+    Matrix.copy(
+      Matrix.minus(
+        Matrix.minus(r2, Matrix.copy(r1, "generic")),
+        Matrix.replicate(1, 3, 4),
+      ),
+      "generic",
+    ),
+  ),
+)
   .and.bind(
     new validator(
-      r2.minus(r1.data).minus(Matrix.replicate(1, 3, 4).data).FrobeniusNorm,
+      Matrix.FrobeniusNorm(
+        Matrix.minus(
+          Matrix.minus(r2, Matrix.copy(r1, "float32")),
+          Matrix.copy(Matrix.replicate(1, 3, 4), "float32"),
+        ),
+      ),
     ),
   )
-  .isInRange(-Matrix.epsilon, Matrix.epsilon)
+  .isInRange(-epsilon, epsilon)
   .describe(
     "2. return the correct result when the method's parameter is Matrix - like structure.",
   )
   .test();
 
-new validator(Matrix.replicate(1, 3, 4).minus(1).isEqualTo(Matrix.zeros(3, 4)))
+new validator(
+  Matrix.isEqualTo(
+    Matrix.minus(Matrix.replicate(1, 3, 4), 1),
+    Matrix.zeros(3, 4),
+  ),
+)
   .isSame(true)
   .describe(
     "3. return the correct result when the method's parameter is a number.",
