@@ -1660,22 +1660,32 @@ export class Matrix {
       type,
     );
   }
-  //
-  // /**
-  //  * Performs a unary point-wise negation.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose
-  //  * elements will be negated.
-  //  * @returns {MatrixType | NumericMatrix} A new Matrix instance with negated elements.
-  //  */
-  // static negate(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(matrix, "neg", type, weight, bias);
-  // }
+
+  /**
+   * Performs a unary point-wise negation.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose
+   * elements will be negated.
+   * @param {number} [weight = 1] - The weight (real number) which will be used
+   * to multiply the matrix elements before applied the negate operation.
+   * @param {number} [bias = 0] - The bias (real number) which will be added to
+   * each element of the matrix after the weight multiplication and before the
+   * negation operation.
+   * @param {NumericMatrix} type - The type of the resulting matrix.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance with negated elements.
+   * @throws {Error} If the matrix is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static negate(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "neg", type, weight, bias);
+  }
   //
   // /**
   //  * Performs a unary point-wise bitwise negation.
