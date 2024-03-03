@@ -72,8 +72,8 @@
 // import "./sigmoid.spec.ts";
 // import "./round.spec.ts";
 // import "./ceil.spec.ts";
-import "./sqrt.spec.ts";
-// import "./log.spec.ts";
+// import "./sqrt.spec.ts";
+import "./log.spec.ts";
 // import "./floor.spec.ts";
 // import "./ReLU.spec.ts";
 // import "./step.spec.ts";
