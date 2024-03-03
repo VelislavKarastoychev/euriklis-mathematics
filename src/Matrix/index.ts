@@ -2047,34 +2047,38 @@ export class Matrix {
       bias,
     );
   }
-  //
-  // /**
-  //  * Applies the point-wise arctangent function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the arctangent.
-  //  * The resulting value is computed as `Math.atan(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
-  //  * for the providing of new matrix of its arcus tangent values.
-  //  * @param {number} weight - A number to multiply each element before applying the arctangent function.
-  //  * @param {number} bias - A number to be added to each element before applying the arctangent function.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix with the arctangent function applied to its elements.
-  //  */
-  // static arctan(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "atan",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise arctangent function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the arctangent.
+   * The resulting value is computed as `Math.atan(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for the providing of new matrix of its arcus tangent values.
+   * @param {number} weight - A number to multiply each element before applying the arctangent function.
+   * @param {number} bias - A number to be added to each element before applying the arctangent function.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the arctangent function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static arctan(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "atan",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   // /**
   //  * Applies the point-wise arccotangent function to the elements of the Matrix.
