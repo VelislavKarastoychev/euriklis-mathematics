@@ -1,32 +1,20 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
-  const r = Matrix.random(5000, 5000, -10, 10);
-  const m = r.M;
-  new validator(r.round().isEqualTo(numeric.round(m)))
-    .isSame(true)
-    .on(true, (v) => {
-      v.describe("Time performance of the round method:")
-        .test({
-          title: true,
-          success: "green",
-          error: "red",
-        });
-      const t1 = new validator(r).benchmark((m) => m.round());
-      const t2 = new validator(m).benchmark((m) => numeric.round(m));
-      console.table({
-        "@euriklis/mathematics": t1,
-        numericjs: t2,
-      });
-    }).on(false, (v) => {
-      v.describe("Internal error in the round benchmark test method.")
-        .test({
-          title: true,
-          success: "green",
-          error: "red",
-        });
-    });
+  const r = Matrix.uniqueRandom(dimensions[0], dimensions[1], -2, 2);
+  const condition = Matrix.isEqualTo(
+    Matrix.round(r),
+    numeric.round(r),
+  );
+  const test = (lib: any) => lib.round(r);
+  startPerformanceTest(
+    "round",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    test,
+    test,
+  );
 })();
