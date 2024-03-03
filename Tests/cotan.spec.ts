@@ -1,14 +1,18 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
+import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 
 const r = Matrix.random(3, 4);
-const cotan = r.M.map((r: number[]) => r.map((c: number) => 1/Math.tan(c)));
-const cotanWeighted = r.M.map((r: number[]) =>
-  r.map((c: number) => 1/Math.tan(2 * c + 3))
+const cotan = (Matrix.copy(r, "generic") as NumericMatrix).map((r: number[]) =>
+  r.map((c: number) => 1 / Math.tan(c))
 );
+const cotanWeighted = (Matrix.copy(r, "generic") as NumericMatrix).map((
+  r: number[],
+) => r.map((c: number) => 1 / Math.tan(2 * c + 3)));
 
-new validator(r.cotan().isEqualTo(cotan))
+const callCotan = (m: MatrixType | NumericMatrix) => Matrix.cotan(m);
+new validator(Matrix.isEqualTo(Matrix.cotan(r), cotan))
   .describe("The cotan method has to:")
   .test({
     title: true,
@@ -18,7 +22,13 @@ new validator(r.cotan().isEqualTo(cotan))
   .describe("1. return the correct result without method parameters")
   .test();
 
-new validator(r.cotan(2, 3).isEqualTo(cotanWeighted))
+new validator(Matrix.isEqualTo(Matrix.cotan(r, 2, 3), cotanWeighted))
   .isSame(true)
   .describe("2. return the correct result when the method has parameters.")
+  .test();
+
+new validator(callCotan)
+  .throwsErrorWith([[1, 2, 3], [1, 23], [123]])
+  .and.throwsErrorWith("this throws!")
+  .describe("3. throw error when the matrix parameter is incorrectly defined.")
   .test();
