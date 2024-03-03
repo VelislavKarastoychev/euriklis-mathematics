@@ -1937,7 +1937,7 @@ export class Matrix {
    * @throws {Errors} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
-    errors.IncorrectMatrixInput
+    errors.IncorrectMatrixInput,
   )
   static tanh(
     matrix: MatrixType | NumericMatrix,
@@ -1953,34 +1953,38 @@ export class Matrix {
       bias,
     );
   }
-  //
-  // /**
-  //  * Applies the point-wise hyperbolic cotangent function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the hyperbolic cotangent.
-  //  * The resulting value is computed as `cotanh(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
-  //  * for the generating of a matrix of its hyperbolic cotangent values.
-  //  * @param {number} weight - A number to multiply each element before applying the hyperbolic cotangent function.
-  //  * @param {number} bias - A number to be added to each element before applying the hyperbolic cotangent function.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix with the hyperbolic cotangent function applied to its elements.
-  //  */
-  // static cotanh(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "cotanh",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise hyperbolic cotangent function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the hyperbolic cotangent.
+   * The resulting value is computed as `cotanh(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be used
+   * for the generating of a matrix of its hyperbolic cotangent values.
+   * @param {number} weight - A number to multiply each element before applying the hyperbolic cotangent function.
+   * @param {number} bias - A number to be added to each element before applying the hyperbolic cotangent function.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the hyperbolic cotangent function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static cotanh(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "cotanh",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   // /**
   //  * Applies the point-wise arcsine function to the elements of the Matrix.
