@@ -2282,34 +2282,36 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     return models.UnaryPointwise(matrix, "log", type, weight, bias);
   }
-  //
-  // /**
-  //  * Applies the point-wise floor function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the floor.
-  //  * The resulting value is computed as `Math.floor(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which will
-  //  * be performed a matrix of its floored values.
-  //  * @param {number} weight - A number to multiply each element before applying the floor function.
-  //  * @param {number} bias - A number to be added to each element before applying the floor function.
-  //  * @param {NumricType} type - type - The type of output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix with the floor function applied to its elements.
-  //  */
-  // static floor(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "floor",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise floor function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the floor.
+   * The resulting value is computed as `Math.floor(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which will
+   * be performed a matrix of its floored values.
+   * @param {number} weight - A number to multiply each element before applying the floor function.
+   * @param {number} bias - A number to be added to each element before applying the floor function.
+   * @param {NumricType} type - type - The type of output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the floor function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static floor(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "floor",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   // /**
   //  * Applies the point-wise Rectified Linear Unit (ReLU) function to the elements of the Matrix.
