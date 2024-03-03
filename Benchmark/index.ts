@@ -62,7 +62,8 @@
 // import "./exp.spec.ts";
 // import "./sinh.spec.ts"
 // import "./cosh.spec.ts";
-import "./tanh.spec.ts";
+// import "./tanh.spec.ts";
+import "./cotanh.spec.ts";
 // import "./arcsin.spec.ts";
 // import "./arccos.spec.ts";
 // import "./arctan.spec.ts";
