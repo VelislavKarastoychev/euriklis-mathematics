@@ -59,8 +59,8 @@
 // import "./cos.spec.ts";
 // import "./tan.spec.ts";
 // import "./cotan.spec.ts";
-import "./exp.spec.ts";
-// import "./sinh.spec.ts"
+// import "./exp.spec.ts";
+import "./sinh.spec.ts"
 // import "./cosh.spec.ts";
 // import "./tanh.spec.ts";
 // import "./arcsin.spec.ts";
