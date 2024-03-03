@@ -2205,8 +2205,8 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which
    * will be produces a new matrix of its ceiled valuss.
-   * @param {number} weight - A number to multiply each element before applying the ceiling function.
-   * @param {number} bias - A number to be added to each element before applying the ceiling function.
+   * @param {number} [weight = 1] - A number to multiply each element before applying the ceiling function.
+   * @param {number} [bias = 0] - A number to be added to each element before applying the ceiling function.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} A new matrix with the ceiling function applied to its elements.
    * @throws {Error} If the matrix parameter is incorrectly defined.
@@ -2237,8 +2237,8 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which will
    * be performaed a new matrix with elements equal to its square root values.
-   * @param {number} weight - A number to multiply each element before applying the square root function.
-   * @param {number} bias - A number to be added to each element before applying the square root function.
+   * @param {number} [weight = 1] - A number to multiply each element before applying the square root function.
+   * @param {number} [bias = 0] - A number to be added to each element before applying the square root function.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} A new matrix with the square root function applied to its elements.
    * @throws {Error} If the matrix parameter is incorrectly defined.
@@ -2267,8 +2267,8 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which will be
    * performed a new matrix of tis logarithmic values.
-   * @param {number} weight - A number to multiply each element before applying the natural logarithm function.
-   * @param {number} bias - A number to be added to each element before applying the natural logarithm function.
+   * @param {number} [weight = 1] - A number to multiply each element before applying the natural logarithm function.
+   * @param {number} [bias = 0] - A number to be added to each element before applying the natural logarithm function.
    * @param {NumericType} type - The type of the output matrix elements.
    * @returns {MatrixType | NumericMatrix} A new matrix with the natural logarithm function applied to its elements.
    * @throws {Error} If the matrix parameter is incorrectly defined.
@@ -2291,8 +2291,8 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which will
    * be performed a matrix of its floored values.
-   * @param {number} weight - A number to multiply each element before applying the floor function.
-   * @param {number} bias - A number to be added to each element before applying the floor function.
+   * @param {number} [weight = 1] - A number to multiply each element before applying the floor function.
+   * @param {number} [bias = 0] - A number to be added to each element before applying the floor function.
    * @param {NumricType} type - type - The type of output matrix elements.
    * @returns {MatrixType | NumericMatrix} A new matrix with the floor function applied to its elements.
    * @throws {Error} If the matrix parameter is incorrectly defined.
@@ -2312,62 +2312,66 @@ export class Matrix {
       bias,
     );
   }
-  //
-  // /**
-  //  * Applies the point-wise Rectified Linear Unit (ReLU) function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the ReLU.
-  //  * The resulting value is computed as `x <= 0 ? -1 : x`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which
-  //  * will be performed a new matrix of its ReLU values.
-  //  * @param {number} weight - A number to multiply each element before applying the ReLU function.
-  //  * @param {number} bias - A number to be added to each element before applying the ReLU function.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericType} A new matrix with the ReLU function applied to its elements.
-  //  */
-  // static ReLU(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "ReLU",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
-  //
-  // /**
-  //  * Applies the point-wise step function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the step function.
-  //  * The resulting value is computed as `x <= 0 ? -1 : 1`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which will
-  //  * be performed a new matrix provided of its step function values.
-  //  * @param {number} weight - A number to multiply each element before applying the step function.
-  //  * @param {number} bias - A number to be added to each element before applying the step function.
-  //  * @param {NumericType} type - The type of the output matrix elements
-  //  * @returns {MatrixType | NumericType} A new matrix with the step function applied to its elements.
-  //  */
-  // step(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "step",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise Rectified Linear Unit (ReLU) function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the ReLU.
+   * The resulting value is computed as `x <= 0 ? -1 : x`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which
+   * will be performed a new matrix of its ReLU values.
+   * @param {number} [weight = 1] - A number to multiply each element before applying the ReLU function.
+   * @param {number} [bias = 0] - A number to be added to each element before applying the ReLU function.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericType} A new matrix with the ReLU function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static ReLU(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "ReLU",
+      type,
+      weight,
+      bias,
+    );
+  }
+
+  /**
+   * Applies the point-wise step function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the step function.
+   * The resulting value is computed as `x <= 0 ? -1 : 1`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix from the elements of which will
+   * be performed a new matrix provided of its step function values.
+   * @param {number} weight - A number to multiply each element before applying the step function.
+   * @param {number} bias - A number to be added to each element before applying the step function.
+   * @param {NumericType} type - The type of the output matrix elements
+   * @returns {MatrixType | NumericType} A new matrix with the step function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static step(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "step",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   //
   // // 6. Numerical methods
