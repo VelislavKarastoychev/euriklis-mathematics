@@ -1969,7 +1969,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
-    errors.IncorrectMatrixInput
+    errors.IncorrectMatrixInput,
   )
   static cotanh(
     matrix: MatrixType | NumericMatrix,
@@ -1985,34 +1985,38 @@ export class Matrix {
       bias,
     );
   }
-  //
-  // /**
-  //  * Applies the point-wise arcsine function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the arcsine.
-  //  * The resulting value is computed as `Math.asin(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
-  //  * will be used for generating of a new matrix of its arcus sine values.
-  //  * @param {number} weight - A number to multiply each element before applying the arcsine function.
-  //  * @param {number} bias - A number to be added to each element before applying the arcsine function.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix with the arcsine function applied to its elements.
-  //  */
-  // static arcsin(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "arcsin",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise arcsine function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the arcsine.
+   * The resulting value is computed as `Math.asin(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
+   * will be used for generating of a new matrix of its arcus sine values.
+   * @param {number} weight - A number to multiply each element before applying the arcsine function.
+   * @param {number} bias - A number to be added to each element before applying the arcsine function.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the arcsine function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput
+  )
+  static arcsin(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "arcsin",
+      type,
+      weight,
+      bias,
+    );
+  }
   // /**
   //  * Applies the point-wise arccosine function to the elements of the Matrix.
   //  *
