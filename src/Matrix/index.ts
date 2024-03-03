@@ -2196,34 +2196,36 @@ export class Matrix {
       bias,
     );
   }
-  //
-  // /**
-  //  * Applies the point-wise ceiling function to the elements of the Matrix.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before ceiling.
-  //  * The resulting value is computed as `Math.ceil(weight * element + bias)`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which
-  //  * will be produces a new matrix of its ceiled valuss.
-  //  * @param {number} weight - A number to multiply each element before applying the ceiling function.
-  //  * @param {number} bias - A number to be added to each element before applying the ceiling function.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix with the ceiling function applied to its elements.
-  //  */
-  // static ceil(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "ceil",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise ceiling function to the elements of the Matrix.
+   *
+   * Optionally, a weight and bias can be applied to each element before ceiling.
+   * The resulting value is computed as `Math.ceil(weight * element + bias)`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix of the elements of which
+   * will be produces a new matrix of its ceiled valuss.
+   * @param {number} weight - A number to multiply each element before applying the ceiling function.
+   * @param {number} bias - A number to be added to each element before applying the ceiling function.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the ceiling function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  static ceil(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "ceil",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   // /**
   //  * Applies the point-wise square root function to the elements of the Matrix.
