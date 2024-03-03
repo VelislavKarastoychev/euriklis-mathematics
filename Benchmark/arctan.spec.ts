@@ -1,35 +1,21 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
+import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
-  const r = Matrix.random(5000, 5000);
-  const m = r.M;
-  new validator(r.arctan().isEqualTo(numeric.atan(m)))
-    .isSame(true)
-    .on(true, (v) => {
-      v.describe(
-        "Time performance of the arctan method with matrix with dimension 5000 x 5000.",
-      )
-        .test({
-          title: true,
-          success: "green",
-          error: "red",
-        });
-      const t1 = new validator(r).benchmark((m) => m.arctan());
-      const t2 = new validator(m).benchmark((m) => numeric.atan(m));
-      console.table({
-        "@euriklis/mathematics": t1,
-        numericjs: t2,
-      });
-    })
-    .on(false, (v) => {
-      v.describe("Internal error in arctan benchmark test method.")
-        .test({
-          title: true,
-          success: "red",
-          error: "green",
-        });
-    });
+  const r = Matrix.uniqueRandom(...dimensions);
+  const condition = Matrix.isEqualTo(
+    Matrix.arctan(r),
+    numeric.atan(r),
+  );
+  const euriklisTest = (m: any) => m.arctan(r);
+  const numericTest = (m: any) => m.atan(r);
+  startPerformanceTest(
+    "arctan",
+    [{ param: "matrix", dimensions, type: "float64" }],
+    condition,
+    euriklisTest,
+    numericTest,
+  );
 })();
