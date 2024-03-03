@@ -2134,34 +2134,38 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     return models.UnaryPointwise(matrix, "abs", type, weight, bias);
   }
-  //
-  // /**
-  //  * Applies the point-wise sigmoid function to the elements of the matrix or array.
-  //  *
-  //  * Optionally, a weight and bias can be applied to each element before computing the sigmoid.
-  //  * The resulting value is computed as `1 / (1 + Math.exp(-(weight * element + bias)))`.
-  //  *
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix which elements
-  //  * will be used for generating of matrix of its sigmoid values.
-  //  * @param {number} weight - A number to multiply each element before applying the sigmoid function.
-  //  * @param {number} bias - A number to be added to each element before applying the sigmoid function.
-  //  * @param {NumericType} type - The type of the output matrix elements.
-  //  * @returns {MatrixType | NumericMatrix} A new matrix with the sigmoid function applied to its elements.
-  //  */
-  // static sigmoid(
-  //   matrix: MatrixType | NumericMatrix,
-  //   weight: number = 1,
-  //   bias: number = 0,
-  //   type: NumericType = Matrix._type,
-  // ): MatrixType | NumericMatrix {
-  //   return models.UnaryPointwise(
-  //     matrix,
-  //     "sigmoid",
-  //     type,
-  //     weight,
-  //     bias,
-  //   );
-  // }
+
+  /**
+   * Applies the point-wise sigmoid function to the elements of the matrix or array.
+   *
+   * Optionally, a weight and bias can be applied to each element before computing the sigmoid.
+   * The resulting value is computed as `1 / (1 + Math.exp(-(weight * element + bias)))`.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which elements
+   * will be used for generating of matrix of its sigmoid values.
+   * @param {number} weight - A number to multiply each element before applying the sigmoid function.
+   * @param {number} bias - A number to be added to each element before applying the sigmoid function.
+   * @param {NumericType} type - The type of the output matrix elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the sigmoid function applied to its elements.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(
+    errors.IncorrectMatrixInput,
+  )
+  static sigmoid(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(
+      matrix,
+      "sigmoid",
+      type,
+      weight,
+      bias,
+    );
+  }
   //
   // /**
   //  * Applies the point-wise rounding function to the elements of the Matrix.
