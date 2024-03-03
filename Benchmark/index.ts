@@ -57,8 +57,8 @@
 // import "./bitwise-negate.spec.ts";
 // import "./sin.spec.ts";
 // import "./cos.spec.ts";
-import "./tan.spec.ts";
-// import "./cotan.spec.ts";
+// import "./tan.spec.ts";
+import "./cotan.spec.ts";
 // import "./exp.spec.ts";
 // import "./sinh.spec.ts"
 // import "./cosh.spec.ts";
