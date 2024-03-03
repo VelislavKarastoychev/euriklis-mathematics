@@ -1,14 +1,19 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
+import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 
 const r = Matrix.random(3, 4);
-const cosh = r.M.map((r: number[]) => r.map((c: number) => Math.cosh(c)));
-const coshWeighted = r.M.map((r: number[]) =>
-  r.map((c: number) => Math.cosh(2 * c + 3))
+const cosh = (Matrix.copy(r, "generic") as NumericMatrix).map((r: number[]) =>
+  r.map((c: number) => Math.cosh(c))
 );
+const coshWeighted = (Matrix.copy(r, "generic") as NumericMatrix).map((
+  r: number[],
+) => r.map((c: number) => Math.cosh(2 * c + 3)));
 
-new validator(r.cosh().isEqualTo(cosh))
+const callCosh = (m: MatrixType | NumericMatrix): MatrixType | NumericMatrix =>
+  Matrix.cosh(m);
+new validator(Matrix.isEqualTo(Matrix.cosh(r), cosh))
   .describe("The cosh method has to:")
   .test({
     title: true,
@@ -18,7 +23,13 @@ new validator(r.cosh().isEqualTo(cosh))
   .describe("1. return the correct result without method parameters")
   .test();
 
-new validator(r.cosh(2, 3).isEqualTo(coshWeighted))
+new validator(Matrix.isEqualTo(Matrix.cosh(r, 2, 3), coshWeighted))
   .isSame(true)
   .describe("2. return the correct result when the method has parameters.")
+  .test();
+
+new validator(callCosh)
+  .throwsErrorWith([[1, 2, 3], [1, 23], [123]])
+  .and.throwsErrorWith("this throws")
+  .describe("3. throw error when the matrix is incorrectly defined.")
   .test();
