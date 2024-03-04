@@ -1158,7 +1158,7 @@ export class Matrix {
   @ifBlockHasDifferentRowsFromTheMatrixThrow(
     errors.IncorrectBlockParameterInAppendBlockRight,
   )
-  static appendBlockRight(
+  public static appendBlockRight(
     matrix: MatrixType | NumericMatrix,
     block: NumericMatrix | MatrixType,
     type: NumericType = Matrix._type,
@@ -1188,7 +1188,7 @@ export class Matrix {
   @ifBlockHasDifferentColumnsFromTheMatrixThrow(
     errors.IncorrectBlockParameterInAppendBlockBottom,
   )
-  static appendBlockBottom(
+  public static appendBlockBottom(
     matrix: MatrixType | NumericMatrix,
     block: NumericMatrix | MatrixType,
     type: NumericType = Matrix._type,
@@ -1220,7 +1220,7 @@ export class Matrix {
   @ifRowsAndColumnsAreInappropriatelyDefinedThrow(
     errors.IncorrectRowsAndColumnsParametersInReshape,
   )
-  static reshape(
+  public static reshape(
     matrix: MatrixType | NumericMatrix,
     rows: Integer,
     columns: Integer,
@@ -1246,7 +1246,7 @@ export class Matrix {
    * instance representing the transposed matrix.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static transpose(
+  public static transpose(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
@@ -1270,7 +1270,7 @@ export class Matrix {
    * norm of the matrix.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static FrobeniusNorm(matrix: MatrixType | NumericMatrix): number {
+  public static FrobeniusNorm(matrix: MatrixType | NumericMatrix): number {
     return models.FrobeniusNorm(matrix);
   }
 
@@ -1291,7 +1291,7 @@ export class Matrix {
    * const infinityNorm = Matrix.infinityNorm(matrix); // Returns 24
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static infinityNorm(matrix: MatrixType | NumericMatrix): number {
+  public static infinityNorm(matrix: MatrixType | NumericMatrix): number {
     const infNorm = models.MatrixReduce(matrix, "infNorm");
     if (infNorm < 0 || isNaN(infNorm)) {
       errors.InternalErrorInInfinityNorm();
@@ -1313,7 +1313,7 @@ export class Matrix {
    * const maxNorm = Matrix.maxNorm(matrix); // Returns 9 (maximum absolute value in the matrix)
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static maxNorm(matrix: MatrixType | NumericMatrix): number {
+  public static maxNorm(matrix: MatrixType | NumericMatrix): number {
     const maxNorm = models.MatrixReduce(matrix, "maxNorm");
     if (maxNorm < 0 || isNaN(maxNorm)) {
       errors.InternalErrorInMaxNorm();
@@ -1331,7 +1331,7 @@ export class Matrix {
    * @throws {Error} If the calculation of the method is NaN.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static norm1(matrix: MatrixType | NumericMatrix): number {
+  public static norm1(matrix: MatrixType | NumericMatrix): number {
     const norm1 = models.MatrixReduce(matrix, "norm1");
     if (norm1 < 0 || isNaN(norm1)) {
       errors.InternalErrorInNorm1();
@@ -1349,7 +1349,7 @@ export class Matrix {
    * @throws {Error} If the calculation result is NaN.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static superior(matrix: MatrixType | NumericMatrix): number {
+  public static superior(matrix: MatrixType | NumericMatrix): number {
     const superior = models.MatrixReduce(matrix, "sup");
     if (isNaN(superior)) {
       errors.InternalErrorInSuperiorNorm();
@@ -1367,7 +1367,7 @@ export class Matrix {
    * @throws {Error} If the calculation result is NaN.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static inferior(matrix: MatrixType | NumericMatrix): number {
+  public static inferior(matrix: MatrixType | NumericMatrix): number {
     const inferior = models.MatrixReduce(matrix, "inf");
     if (isNaN(inferior)) {
       errors.InternalErrorInInferiorNorm();
@@ -1386,7 +1386,7 @@ export class Matrix {
    * the matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static sumOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static sumOfAllElements(matrix: MatrixType | NumericMatrix): number {
     const sum = models.MatrixReduce(matrix, "sum");
     if (isNaN(sum)) errors.InternalErrorInSum();
 
@@ -1403,7 +1403,7 @@ export class Matrix {
    * matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
     const product = models.MatrixReduce(matrix, "product");
     if (isNaN(product)) errors.InternalErrorInProduct();
 
@@ -1420,7 +1420,7 @@ export class Matrix {
    * or the result of the computation is negative.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static sumOfSquaresOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static sumOfSquaresOfAllElements(matrix: MatrixType | NumericMatrix): number {
     const squares = models.MatrixReduce(matrix, "square");
     if (isNaN(squares) || squares < 0) {
       errors.InternalErrorInSquares();
@@ -1438,7 +1438,7 @@ export class Matrix {
    * @throws {Error} If the calculated result is NaN.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static sumOfCubesOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static sumOfCubesOfAllElements(matrix: MatrixType | NumericMatrix): number {
     const cubes = models.MatrixReduce(matrix, "cube");
     if (isNaN(cubes)) errors.InternalErrorInCubes();
 
@@ -1468,7 +1468,7 @@ export class Matrix {
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("plus"),
   )
-  static plus(
+  public static plus(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -1505,7 +1505,7 @@ export class Matrix {
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("minus"),
   )
-  static minus(
+  public static minus(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -1541,7 +1541,7 @@ export class Matrix {
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("power"),
   )
-  static power(
+  public static power(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -1577,7 +1577,7 @@ export class Matrix {
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("Hadamard"),
   )
-  static Hadamard(
+  public static Hadamard(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -1613,7 +1613,7 @@ export class Matrix {
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("divide"),
   )
-  static divide(
+  public static divide(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -1648,7 +1648,7 @@ export class Matrix {
   @ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
     errors.IncorrectMatrixParameterInPointwise("modulus"),
   )
-  static modulus(
+  public static modulus(
     matrix: MatrixType | NumericMatrix,
     m: number | MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -1678,7 +1678,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static negate(
+  public static negate(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1707,7 +1707,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static bitwiseNegate(
+  public static bitwiseNegate(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1739,7 +1739,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static sin(
+  public static sin(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1765,7 +1765,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static cos(
+  public static cos(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1791,7 +1791,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static tan(
+  public static tan(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1817,7 +1817,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static cotan(
+  public static cotan(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1849,7 +1849,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static exp(
+  public static exp(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1875,7 +1875,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static sinh(
+  public static sinh(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1907,7 +1907,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static cosh(
+  public static cosh(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1939,7 +1939,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static tanh(
+  public static tanh(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -1971,7 +1971,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static cotanh(
+  public static cotanh(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2003,7 +2003,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static arcsin(
+  public static arcsin(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2033,7 +2033,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static arccos(
+  public static arccos(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2065,7 +2065,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static arctan(
+  public static arctan(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2097,7 +2097,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static arccotan(
+  public static arccotan(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2126,7 +2126,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static abs(
+  public static abs(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2152,7 +2152,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
     errors.IncorrectMatrixInput,
   )
-  static sigmoid(
+  public static sigmoid(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2182,7 +2182,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static round(
+  public static round(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2212,7 +2212,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static ceil(
+  public static ceil(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2244,7 +2244,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static sqrt(
+  public static sqrt(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2274,7 +2274,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static log(
+  public static log(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2298,7 +2298,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static floor(
+  public static floor(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2328,7 +2328,7 @@ export class Matrix {
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  static ReLU(
+  public static ReLU(
     matrix: MatrixType | NumericMatrix,
     weight: number = 1,
     bias: number = 0,
@@ -2372,18 +2372,19 @@ export class Matrix {
       bias,
     );
   }
-  //
-  //
-  // // 6. Numerical methods
-  //
-  // /**
-  //  * @param {MatrixType | NumericMatrix} matrix - The matrix which will be
-  //  * factorized with the LU algorithm.
-  //  * @returns {{LU: MatrixType | NumericMatrix, P: Integer[]}}
-  //  */
-  // LUPC(
-  //   matrix: MatrixType | NumericMatrix,
-  // ): { LU: MatrixType | NumericMatrix; P: Integer[] } {
-  //   return models.CompactLUFactorizationWithPermutations(matrix);
-  // }
+
+  // 6. Numerical methods
+
+  /**
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which will be
+   * factorized with the LU algorithm.
+   * @returns {{LU: MatrixType | NumericMatrix, P: Integer[]}}
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static LUPC(
+    matrix: MatrixType | NumericMatrix,
+  ): { LU: MatrixType | NumericMatrix; P: Integer[] } {
+    return models.CompactLUFactorizationWithPermutations(matrix);
+  }
 }
