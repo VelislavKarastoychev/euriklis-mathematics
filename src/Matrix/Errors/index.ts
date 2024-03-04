@@ -74,11 +74,15 @@ export const IncorrectMatrixParameterInPointwise =
     runError(texts.IncorrectMatrixParameterInPointwiseTxt(method));
 export const MatrixDegenerate = (): never =>
   runError(texts.MatrixDegenerateTxt);
-export const IncorrectMatricesInput = (method: string) =>
-  (): never => runError(texts.IncorrectMatricesInput(method));
+export const IncorrectMatricesInput = (method: string) => (): never =>
+  runError(texts.IncorrectMatricesInput(method));
 export const InappropriateMatrixParameterInToDiagonalMatrix = (): never =>
   runError(texts.InappropriateMatrixParameterInToDiagonalMatrixTxt);
 export const NonPositiveSemidefinedMatrixInCholeskyLL = (): never =>
   runError(texts.NonPositiveSemidefinedMatrixInCholeskyLLTxt);
 export const NonSymmetricMatrixInLL = (): never =>
   runError(texts.NonSymmetricMatrixInLLTxt);
+export const NonSquareMatrixInLDL = (): never =>
+  runError(texts.NonSquareMatrixInLDLTxt);
+export const DiagonalElementClosedToZeroInLDL = (): never =>
+  runError(texts.DiagonalElementClosedToZeroInLDLTxt);
