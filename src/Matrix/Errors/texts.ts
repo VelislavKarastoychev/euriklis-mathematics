@@ -67,3 +67,5 @@ export const InappropriateMatrixParameterInToDiagonalMatrixTxt =
 export const NonPositiveSemidefinedMatrixInCholeskyLLTxt =
   "Non positive semidefined matrix parameter in Cholesky LL method. Some of the diagonal elements is zero.";
 export const NonSymmetricMatrixInLLTxt = "Non symmetric matrix parameter in the LL Cholesky factorization method.";
+export const NonSquareMatrixInLDLTxt = "Non square matrix in LDL method. To use the LDL you have to use a matrix with the same rows and columns.";
+export const DiagonalElementClosedToZeroInLDLTxt = "The element L[i][i] or D[i] is closed to zero. Matrix degenerate.";
