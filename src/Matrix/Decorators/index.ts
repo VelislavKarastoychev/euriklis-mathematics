@@ -21,3 +21,4 @@ export { ifBlockIsEmptyReturnMatrix } from "./IfBlockIsEmptyReturnMatrix.ts";
 export { ifBlockHasDifferentColumnsFromTheMatrixThrow } from "./IfBlockHasDifferentColumnsFromTheMatrixThrow";
 export { ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow } from "./IfIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow";
 export { ifSecureAndNotSymmetricThrow } from "./IfSecureAndNotSymmetricThrow";
+export { ifIsNotSquareMatrixThrow } from "./IfIsNotSquareMatrixThrow";
