@@ -2,7 +2,7 @@
 import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
 export const CompactLUFactorizationWithPermutations = (
   M: MatrixType | NumericMatrix,
-): { LU: MatrixType | NumericMatrix; P: Integer[] } => {
+): { LU: MatrixType | NumericMatrix; P: Integer[], permutations: Integer } => {
   const n = M.length;
   const P = [];
   const abs = Math.abs;
@@ -13,14 +13,14 @@ export const CompactLUFactorizationWithPermutations = (
     c: Integer,
     k: Integer,
     pmax: Integer,
+    permutations: Integer = 0,
     maxmp: number,
     absm: number,
-    mr: TypedArray,
-    mr1: TypedArray,
+    mr: TypedArray | number [],
+    mr1: TypedArray | number [],
     s1: number,
     s2: number;
   for (p = n; p--;) P[p] = p;
-  P[n] = 0;
   // start the factorization:
   for (p = 0; p < n; p++) {
     // execute pivot strategy:
@@ -43,11 +43,10 @@ export const CompactLUFactorizationWithPermutations = (
         pmax = k;
       }
     }
-
     // swap the p with pmax
     if (pmax !== p) {
       [M[p], M[pmax], P[p], P[pmax]] = [M[pmax], M[p], P[pmax], P[p]];
-      P[n]++;
+      permutations++;
     }
 
     // execute the LU factoriization:
@@ -85,5 +84,5 @@ export const CompactLUFactorizationWithPermutations = (
       }
     }
   }
-  return { LU: M, P };
+  return { LU: M, P, permutations };
 };
