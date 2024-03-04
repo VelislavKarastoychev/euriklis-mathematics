@@ -16,20 +16,16 @@ import {
   ifRowParameterIsInappropriatelyDefinedThrow,
   ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
-  //  resetMatrix,
+  ifSecureAndNotSymmetricThrow,
   ifTheParametersAreNotMatricesThrow,
 } from "./Decorators";
 import {
   Integer,
   MatrixBlockOptions,
-  // MatrixDeclaration,
   MatrixType,
   NumericMatrix,
   NumericType,
-  // TypedArray,
-  TypedArrayConstructor,
 } from "./types";
-// import { ifRowsAndColumnsAreInappropriatelyDefinedThrow } from "./Decorators/IfRowsAndColumnsAreInappropriatelyDefinedThrow.ts";
 
 export class Matrix {
   // 1. Declaration of the private methods and properties
@@ -230,7 +226,7 @@ export class Matrix {
     return models.UnaryPointwise(matrix, "deepCopy", type, weight, bias);
   }
 
-  // // 3 Properties and utility fields
+  // 2 Utility methods
   //
   /**
    * Checks if the matrix is square, i.e. has the
@@ -266,7 +262,7 @@ export class Matrix {
     return conditions.IsMatrixSymmetric(matrix);
   }
 
-  // 4. Utility methods or operators
+  // 3. Utility methods or operators
   // for matrix manipulation.
 
   /**
@@ -1203,7 +1199,7 @@ export class Matrix {
     );
   }
 
-  // 6. Matrix operations and
+  // 4. Matrix operations and
   // common linear algebra algorithms.
 
   /**
@@ -1403,7 +1399,9 @@ export class Matrix {
    * matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  public static productOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static productOfAllElements(
+    matrix: MatrixType | NumericMatrix,
+  ): number {
     const product = models.MatrixReduce(matrix, "product");
     if (isNaN(product)) errors.InternalErrorInProduct();
 
@@ -1420,7 +1418,9 @@ export class Matrix {
    * or the result of the computation is negative.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  public static sumOfSquaresOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static sumOfSquaresOfAllElements(
+    matrix: MatrixType | NumericMatrix,
+  ): number {
     const squares = models.MatrixReduce(matrix, "square");
     if (isNaN(squares) || squares < 0) {
       errors.InternalErrorInSquares();
@@ -1438,7 +1438,9 @@ export class Matrix {
    * @throws {Error} If the calculated result is NaN.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  public static sumOfCubesOfAllElements(matrix: MatrixType | NumericMatrix): number {
+  public static sumOfCubesOfAllElements(
+    matrix: MatrixType | NumericMatrix,
+  ): number {
     const cubes = models.MatrixReduce(matrix, "cube");
     if (isNaN(cubes)) errors.InternalErrorInCubes();
 
@@ -2373,7 +2375,7 @@ export class Matrix {
     );
   }
 
-  // 6. Numerical methods
+  // 5. Numerical methods
 
   /**
    * @param {MatrixType | NumericMatrix} matrix - The matrix which will be
@@ -2386,5 +2388,25 @@ export class Matrix {
     matrix: MatrixType | NumericMatrix,
   ): { LU: MatrixType | NumericMatrix; P: Integer[] } {
     return models.CompactLUFactorizationWithPermutations(matrix);
+  }
+
+  /**
+   * Performs the Cholesky LL factorization on a given symmetric positive definite matrix.
+   *
+   * Cholesky LL factorization decomposes a symmetric positive definite matrix into
+   * the product of a lower triangular matrix and its transpose.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix to be factorized.
+   * @param {boolean} [secure = false] - Optional. Indicates whether to perform secure operations.
+   * @returns {MatrixType | NumericMatrix} The lower triangular matrix resulting from the LL factorization.
+   * @throws {Error} If the input matrix is not symmetric positive definite or is incorrectly declared.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifSecureAndNotSymmetricThrow(errors.NonSymmetricMatrixInLL)
+  public static LL(
+    matrix: MatrixType | NumericMatrix,
+    secure: boolean = false,
+  ): MatrixType | NumericMatrix {
+    return models.CholeskyBanachiewiczAlgorithm(matrix, secure);
   }
 }
