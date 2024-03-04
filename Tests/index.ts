@@ -79,3 +79,4 @@ import "./ReLU.spec.ts";
 import "./step.spec.ts";
 import "./LU.spec.ts";
 import "./LL.spec.ts";
+import "./LDL.spec.ts";
