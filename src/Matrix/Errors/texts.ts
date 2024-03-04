@@ -64,3 +64,6 @@ export const IncorrectMatricesInput = (method: string): string =>
   `Incorrect matrices input in the method ${method}. Some of the matrices is not a table or the elements are not numbers.`;
 export const InappropriateMatrixParameterInToDiagonalMatrixTxt =
   "Inappropriate matrix parameter in toDiagonalMatrix method. The matrix is probably a column vector. To use this method please insert a row vector or a matrix with columns greater than unit.";
+export const NonPositiveSemidefinedMatrixInCholeskyLLTxt =
+  "Non positive semidefined matrix parameter in Cholesky LL method. Some of the diagonal elements is zero.";
+export const NonSymmetricMatrixInLLTxt = "Non symmetric matrix parameter in the LL Cholesky factorization method.";
