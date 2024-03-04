@@ -28,14 +28,13 @@ const m = [
   ],
 ];
 const r = Matrix.random(4, 4);
-const lupc = r.LUPC();
-console.log(lupc.LU.M, m);
-new validator(lupc.LU.isEqualTo(m))
+const lupc = Matrix.LUPC(r);
+new validator(Matrix.isEqualTo(lupc.LU, m))
   .describe("The LU compact factorization with permutations has to:")
   .test({
     title: true,
     success: "green",
-    error: "red"
+    error: "red",
   }).describe("1. return the correct result")
   .isSame(true)
   .test();
