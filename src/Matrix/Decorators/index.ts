@@ -20,3 +20,4 @@ export { ifBlockHasDifferentRowsFromTheMatrixThrow } from "./IfBlockHasDifferent
 export { ifBlockIsEmptyReturnMatrix } from "./IfBlockIsEmptyReturnMatrix.ts";
 export { ifBlockHasDifferentColumnsFromTheMatrixThrow } from "./IfBlockHasDifferentColumnsFromTheMatrixThrow";
 export { ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow } from "./IfIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow";
+export { ifSecureAndNotSymmetricThrow } from "./IfSecureAndNotSymmetricThrow";
