@@ -1,8 +1,15 @@
 "use strict";
+import { epsilon } from "../..";
 import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import { MatrixDegenerate } from "../Errors";
+/**
+ * @param {MatrixType | NumericMatrix} M - the matrix which will be decomposed.
+ * @returns {{LU: MatrixType | NumericMatrix, P: Integer[], permutations: Integer}}
+ * @throws {Error} If some of the division elements is too small.
+ */
 export const CompactLUFactorizationWithPermutations = (
   M: MatrixType | NumericMatrix,
-): { LU: MatrixType | NumericMatrix; P: Integer[], permutations: Integer } => {
+): { LU: MatrixType | NumericMatrix; P: Integer[]; permutations: Integer } => {
   const n = M.length;
   const P = [];
   const abs = Math.abs;
@@ -16,8 +23,8 @@ export const CompactLUFactorizationWithPermutations = (
     permutations: Integer = 0,
     maxmp: number,
     absm: number,
-    mr: TypedArray | number [],
-    mr1: TypedArray | number [],
+    mr: TypedArray | number[],
+    mr1: TypedArray | number[],
     s1: number,
     s2: number;
   for (p = n; p--;) P[p] = p;
@@ -43,6 +50,7 @@ export const CompactLUFactorizationWithPermutations = (
         pmax = k;
       }
     }
+    if (maxmp < 0.5 * epsilon) MatrixDegenerate();
     // swap the p with pmax
     if (pmax !== p) {
       [M[p], M[pmax], P[p], P[pmax]] = [M[pmax], M[p], P[pmax], P[p]];
