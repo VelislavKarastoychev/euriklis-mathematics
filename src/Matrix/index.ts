@@ -12,6 +12,7 @@ import {
   ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
+  ifIsNotSquareMatrixThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
   ifRowParameterIsInappropriatelyDefinedThrow,
   ifRowsAndColumnsAreInappropriatelyDefinedThrow,
@@ -2408,5 +2409,31 @@ export class Matrix {
     secure: boolean = false,
   ): MatrixType | NumericMatrix {
     return models.CholeskyBanachiewiczAlgorithm(matrix, secure);
+  }
+
+  /**
+   * Performs the LDL decomposition on a given symmetric positive definite matrix.
+   * The LDL decomposition factors a symmetric positive definite matrix A into the product L * D * L^T,
+   * where L is a lower triangular matrix with unit diagonal elements, and D is a diagonal matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The symmetric positive definite matrix to be decomposed.
+   * @param {NumericType} type - The type of the matrix elements.
+   * @returns {{ L: MatrixType | NumericMatrix; D: MatrixType | NumericMatrix }} The lower triangular 
+   * matrix L and the diagonal matrix D resulting from the LDL decomposition.
+   * @throws {Error} If the input matrix is not a square matrix.
+   * @throws {Error} If the input matrix is not symmetric positive definite.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.NonSquareMatrixInLDL)
+  public static LDL(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): { L: MatrixType | NumericMatrix; D: MatrixType | NumericMatrix } {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.CholeskyLDL(matrix, typedArray);
+  }
+
+  public static QR (matrix: MatrixType | NumericMatrix) {
+    return matrix;
   }
 }
