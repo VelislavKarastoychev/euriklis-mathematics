@@ -78,3 +78,7 @@ export const IncorrectMatricesInput = (method: string) =>
   (): never => runError(texts.IncorrectMatricesInput(method));
 export const InappropriateMatrixParameterInToDiagonalMatrix = (): never =>
   runError(texts.InappropriateMatrixParameterInToDiagonalMatrixTxt);
+export const NonPositiveSemidefinedMatrixInCholeskyLL = (): never =>
+  runError(texts.NonPositiveSemidefinedMatrixInCholeskyLLTxt);
+export const NonSymmetricMatrixInLL = (): never =>
+  runError(texts.NonSymmetricMatrixInLLTxt);
