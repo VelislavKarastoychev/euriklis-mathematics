@@ -18,6 +18,7 @@ import {
   ifRowsAndColumnsAreInappropriatelyDefinedThrow,
   ifRowsOrColumnsAreNotPositiveIntegersThrow,
   ifSecureAndNotSymmetricThrow,
+  ifTheParametersAreMatricesWithInappropriateSizeThrow,
   ifTheParametersAreNotMatricesThrow,
 } from "./Decorators";
 import {
@@ -26,6 +27,7 @@ import {
   MatrixType,
   NumericMatrix,
   NumericType,
+  TypedArray,
 } from "./types";
 
 export class Matrix {
@@ -2376,6 +2378,54 @@ export class Matrix {
     );
   }
 
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes)
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes, 1)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static times(
+    a: number | MatrixType | NumericMatrix,
+    b: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+
+    if (conditions.IsNumber(a) && conditions.IsNumber(b)) {
+      return [new typedArray(...[(a as number) * (b as number)])] as
+        | MatrixType
+        | NumericMatrix;
+    }
+
+    if (conditions.IsNumber(a) && !conditions.IsNumber(b)) {
+      return Matrix.Hadamard(b as MatrixType | NumericMatrix, a);
+    }
+
+    if (!conditions.IsNumber(a) && conditions.IsNumber(b)) {
+      return Matrix.Hadamard(a as MatrixType | NumericMatrix, b);
+    }
+
+    if (!conditions.IsNumber(a) && !conditions.IsNumber(b)) {
+      if (
+        (a as MatrixType | NumericMatrix).length === 1 &&
+        (a as MatrixType | NumericMatrix)[0].length === 1
+      ) {
+        return Matrix.Hadamard(b as MatrixType | NumericMatrix, a[0]);
+      }
+
+      if (
+        (b as MatrixType | NumericMatrix).length === 1 &&
+        (b as MatrixType | NumericMatrix)[0].length === 1
+      ) {
+        return Matrix.Hadamard(a as MatrixType | NumericMatrix, b[0]);
+      }
+    }
+    return models.MultiplyMatrices(
+      a as MatrixType | NumericMatrix,
+      b as MatrixType | NumericMatrix,
+      typedArray,
+    );
+  }
+
   // 5. Numerical methods
 
   /**
@@ -2418,7 +2468,7 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The symmetric positive definite matrix to be decomposed.
    * @param {NumericType} type - The type of the matrix elements.
-   * @returns {{ L: MatrixType | NumericMatrix; D: MatrixType | NumericMatrix }} The lower triangular 
+   * @returns {{ L: MatrixType | NumericMatrix; D: MatrixType | NumericMatrix }} The lower triangular
    * matrix L and the diagonal matrix D resulting from the LDL decomposition.
    * @throws {Error} If the input matrix is not a square matrix.
    * @throws {Error} If the input matrix is not symmetric positive definite.
@@ -2433,7 +2483,7 @@ export class Matrix {
     return models.CholeskyLDL(matrix, typedArray);
   }
 
-  public static QR (matrix: MatrixType | NumericMatrix) {
+  public static QR(matrix: MatrixType | NumericMatrix) {
     return matrix;
   }
 }
