@@ -69,3 +69,4 @@ export const NonPositiveSemidefinedMatrixInCholeskyLLTxt =
 export const NonSymmetricMatrixInLLTxt = "Non symmetric matrix parameter in the LL Cholesky factorization method.";
 export const NonSquareMatrixInLDLTxt = "Non square matrix in LDL method. To use the LDL you have to use a matrix with the same rows and columns.";
 export const DiagonalElementClosedToZeroInLDLTxt = "The element L[i][i] or D[i] is closed to zero. Matrix degenerate.";
+export const IncorrectParametersInTimesTxt = "Incorrectly defined parameters in the times method. Note that this method requires a matrix as first argument and a number or matrix with rows which are equals to the first matrix columns.";
