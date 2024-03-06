@@ -2,7 +2,7 @@
 import { Matrix } from "..";
 import { MatrixType, NumericMatrix, NumericType } from "../types";
 
-export function ifIsNotSquareMatrixThrow(error) {
+export function ifIsNotSquareMatrixThrow(error: Function) {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {
     const method: (
       matrix: MatrixType | NumericMatrix,
