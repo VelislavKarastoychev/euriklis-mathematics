@@ -24,3 +24,4 @@ export { BinaryPointwise, UnaryPointwise } from "./Pointwise";
 export { CompactLUFactorizationWithPermutations } from "./CompactLUFactorizationWithPermutations";
 export { CholeskyBanachiewiczAlgorithm } from "./CholeskyLLFactorization";
 export { CholeskyLDL } from "./CholeskyLDL";
+export { MultiplyMatrices } from "./MultiplyMatrices";
