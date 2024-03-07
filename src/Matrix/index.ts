@@ -2378,6 +2378,17 @@ export class Matrix {
     );
   }
 
+  /**
+   * Performs multiplication of two matrices or a matrix and a scalar.
+   * If both inputs are matrices, performs matrix multiplication.
+   * If one input is a scalar and the other is a matrix, performs scalar multiplication.
+   *
+   * @param {number | MatrixType | NumericMatrix} a - The first operand.
+   * @param {number | MatrixType | NumericMatrix} b - The second operand.
+   * @param {NumericType} [type=Matrix._type] - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the multiplication.
+   * @throws {Error} If any input parameter is invalid.
+   */
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes)
   @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes, 1)
   @ifTheParametersAreMatricesWithInappropriateSizeThrow(
@@ -2389,41 +2400,42 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+    const aIsNumber = typeof a === "number";
+    const bIsNumber = typeof b === "number";
 
-    if (conditions.IsNumber(a) && conditions.IsNumber(b)) {
-      return [new typedArray(...[(a as number) * (b as number)])] as
-        | MatrixType
-        | NumericMatrix;
+    if (!aIsNumber && !bIsNumber) {
+      let ar: Integer, ac: Integer, br: Integer, bc: Integer;
+      [ar, ac] = Matrix.dimensions(a as MatrixType | NumericMatrix);
+      [br, bc] = Matrix.dimensions(b as MatrixType | NumericMatrix);
+      if (ar === 1 && ac === 1) {
+        return Matrix.Hadamard(b as MatrixType | NumericMatrix, a[0][0]);
+      }
+
+      if (br === 1 && bc === 1) {
+        return Matrix.Hadamard(a as MatrixType | NumericMatrix, b[0][0]);
+      }
+
+      return models.MultiplyMatrices(
+        a as MatrixType | NumericMatrix,
+        b as MatrixType | NumericMatrix,
+        typedArray,
+      );
+    }
+    if (aIsNumber && bIsNumber) {
+      const c: number[] | TypedArray = new typedArray(1);
+      c[0] = (a as number) * (b as number);
+      return [c] as MatrixType | NumericMatrix;
     }
 
-    if (conditions.IsNumber(a) && !conditions.IsNumber(b)) {
+    if (aIsNumber && !bIsNumber) {
       return Matrix.Hadamard(b as MatrixType | NumericMatrix, a);
     }
 
-    if (!conditions.IsNumber(a) && conditions.IsNumber(b)) {
+    if (!aIsNumber && bIsNumber) {
       return Matrix.Hadamard(a as MatrixType | NumericMatrix, b);
     }
 
-    if (!conditions.IsNumber(a) && !conditions.IsNumber(b)) {
-      if (
-        (a as MatrixType | NumericMatrix).length === 1 &&
-        (a as MatrixType | NumericMatrix)[0].length === 1
-      ) {
-        return Matrix.Hadamard(b as MatrixType | NumericMatrix, a[0]);
-      }
-
-      if (
-        (b as MatrixType | NumericMatrix).length === 1 &&
-        (b as MatrixType | NumericMatrix)[0].length === 1
-      ) {
-        return Matrix.Hadamard(a as MatrixType | NumericMatrix, b[0]);
-      }
-    }
-    return models.MultiplyMatrices(
-      a as MatrixType | NumericMatrix,
-      b as MatrixType | NumericMatrix,
-      typedArray,
-    );
+    return errors.IncorrectParametersInTimes();
   }
 
   // 5. Numerical methods
