@@ -7,9 +7,9 @@ const ComputeDimensionsIterator = (
   dimensions: number[],
 ): Integer[] => {
   if (typeof m !== "number") {
-    dimensions.push(m.length)
+    dimensions.push(m.length);
     ComputeDimensionsIterator(m[0], dimensions);
-  }
+  } else dimensions.push(0);
   return dimensions as Integer[];
 };
 export const ComputeDimensions = (m: MatrixType | NumericMatrix): number[] => {
