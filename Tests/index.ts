@@ -81,3 +81,8 @@ import "./LU.spec.ts";
 import "./LL.spec.ts";
 import "./LDL.spec.ts";
 import "./times.spec.ts";
+import "./multiply-lower-lower-triangular.spec.ts"
+import "./multiply-upper-upper-triangular-matrices.spec.ts";
+import "./multiply-lower-upper-triangular-matrices.spec.ts";
+import "./multiply-upper-lower-triangular-matrices.spec.ts";
+import "./lower-and-upper-triangular-matrix.spec.ts";
