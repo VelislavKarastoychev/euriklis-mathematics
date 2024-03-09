@@ -111,3 +111,140 @@ export function MultiplyMatrices(
 
   return c;
 }
+
+/**
+ * Multiplies two lower triangular matrices efficiently using optimized techniques.
+ * Both matrices must be square and have equal dimensions.
+ *
+ * @param {MatrixType | NumericMatrix} a - The first lower triangular matrix.
+ * @param {MatrixType | NumericMatrix} b - The second lower triangular matrix.
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The constructor for the typed array.
+ * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+ */
+export function MultiplyLL(
+  a: MatrixType | NumericMatrix,
+  b: MatrixType | NumericMatrix,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix {
+  const n = a.length;
+  const c: MatrixType | NumericMatrix = new Array(n);
+  let ai: TypedArray | number[];
+  let ci: TypedArray | number[];
+  let i: Integer, j: Integer, k: Integer;
+  for (i = n; i--;) c[i] = new typedArray(n);
+  for (i = n; i--;) {
+    ai = a[i];
+    ci = c[i];
+    for (j = n; j--;) {
+      ci[j] = 0;
+      if (j <= i) {
+        for (k = j; k < i;) {
+          ci[j] += ai[k] * b[k++][j];
+          ci[j] += ai[k] * b[k++][j];
+        }
+
+        if (k === i) ci[j] += ai[k] * b[i][j];
+      }
+    }
+  }
+  return c;
+}
+
+/**
+ * Multiplies two upper triangular matrices efficiently using optimized techniques.
+ * Both matrices must be square and have equal dimensions.
+ *
+ * @param {MatrixType | NumericMatrix} a - The first upper triangular matrix.
+ * @param {MatrixType | NumericMatrix} b - The second upper triangular matrix.
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The constructor for the typed array.
+ * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+ */
+export function MultiplyUU(
+  a: MatrixType | NumericMatrix,
+  b: MatrixType | NumericMatrix,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix {
+  const n = a.length;
+  const c: MatrixType | NumericMatrix = new Array(n);
+  let i: Integer,
+    j: Integer,
+    k: Integer,
+    ai: TypedArray | number[],
+    ci: TypedArray | number[];
+
+  for (i = n; i--;) c[i] = new typedArray(n);
+  for (i = n; i--;) {
+    ai = a[i];
+    ci = c[i];
+    for (j = n; j--;) {
+      ci[j] = 0;
+      if (j >= i) {
+        for (k = j; k > i;) {
+          ci[j] += ai[k] * b[k--][j];
+          ci[j] += ai[k] * b[k--][j];
+        }
+
+        if (k === i) ci[j] += ai[i] * b[i][j];
+      }
+    }
+  }
+  return c;
+}
+
+export function MultiplyLU(
+  a: MatrixType | NumericMatrix,
+  b: MatrixType | NumericMatrix,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix {
+  const n = a.length;
+  const c: MatrixType | NumericMatrix = new Array(n);
+  let i: Integer,
+    j: Integer,
+    k: Integer,
+    ai: TypedArray | number[],
+    ci: TypedArray | number[];
+
+  for (i = n; i--;) c[i] = new typedArray(n);
+  for (i = n; i--;) {
+    ai = a[i];
+    ci = c[i];
+    for (j = n; j--;) {
+      ci[j] = 0;
+      for (k = 0;k <= i && k <= j;k++) {
+        ci[j] += ai[k] * b[k][j];
+      }
+    }
+  }
+
+  return c;
+}
+
+export function MultiplyUL(
+  a: MatrixType | NumericMatrix,
+  b: MatrixType | NumericMatrix,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
+): MatrixType | NumericMatrix {
+  const n = a.length;
+  const c: MatrixType | NumericMatrix = new Array(n);
+  let i: Integer,
+    j: Integer,
+    k: Integer,
+    ai: TypedArray | number[],
+    ci: TypedArray | number[];
+
+  for (i = n; i--;) c[i] = new typedArray(n);
+  for (i = n; i--;) {
+    ai = a[i];
+    ci = c[i];
+    for (j = n; j--;) {
+      ci[j] = 0;
+      for (k = n - 1;k >= i && k >= j;k--) {
+        ci[j] += ai[k] * b[k][j];
+      }
+    }
+  }
+
+  return c;
+}
+
+
