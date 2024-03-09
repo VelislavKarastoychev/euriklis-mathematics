@@ -153,7 +153,7 @@ export class Matrix {
   }
 
   /**
-   * Creates a new Matrix instance with randomized values.
+   * Creates a new Matrix with randomized values by rows and columns.
    *
    * @param {Integer} rows - The number of rows.
    * @param {Integer} columns - The number of columns.
@@ -162,6 +162,7 @@ export class Matrix {
    * @param {NumericType} type - The numeric type of the matrix.
    * @param {Integer} seed - The seed for randomization.
    * @returns {MatrixType | NumericMatrix} A new Matrix instance.
+   * @throws {Error} If the rows or columns parameter is not positive integer.
    */
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
