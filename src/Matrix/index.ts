@@ -180,8 +180,24 @@ export class Matrix {
     return models.GenerateRandomMatrix(dimensions, from, to, typedArray, seed);
   }
 
+  /**
+   * Creates a lower triangular matrix with randomized values by rows and columns.
+   * NB! By definition the lower triangular matrix is SQUARE, but the method allows
+   * the creation of peudo - lower triangular matrix, i.e. the non zero elements will
+   * be equivallent to the elements of an lower triangular matrix if the matrix was
+   * squared.
+   *
+   * @param {Integer} rows - The number of rows.
+   * @param {Integer} columns - The number of columns.
+   * @param {number} from - The minimum value for randomization.
+   * @param {number} to - The maximum value for randomization.
+   * @param {NumericType} type - The numeric type of the matrix.
+   * @param {Integer} seed - The seed for randomization.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance.
+   * @throws {Error} If the rows or columns parameter is not positive integer.
+   */
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-    errors.IncorrectRowsOrColumnsParameterInRandom
+    errors.IncorrectRowsOrColumnsParameterInRandom,
   )
   public static lowerTriangularRandom(
     rows: Integer,
@@ -201,8 +217,24 @@ export class Matrix {
     );
   }
 
+  /**
+   * Creates an upper triangular matrix with randomized values by rows and columns.
+   * NB! By definition the upper triangular matrix is SQUARE matrix, but the method
+   * allows the creation of pseudo - upper triangular matrix, i.e. the non zero elements
+   * will be equivallent to the elements of an upper triangular matrix if the matrix
+   * was square.
+   *
+   * @param {Integer} rows - The number of rows.
+   * @param {Integer} columns - The number of columns.
+   * @param {number} from - The minimum value for randomization.
+   * @param {number} to - The maximum value for randomization.
+   * @param {NumericType} type - The numeric type of the matrix.
+   * @param {Integer} seed - The seed for randomization.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance.
+   * @throws {Error} If the rows or columns parameter is not positive integer.
+   */
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-    errors.IncorrectRowsOrColumnsParameterInRandom
+    errors.IncorrectRowsOrColumnsParameterInRandom,
   )
   public static upperTriangularRandom(
     rows: Integer,
@@ -222,8 +254,24 @@ export class Matrix {
     );
   }
 
+  /**
+   * Creates a lower triangular matrix with randomized values by rows and columns.
+   * The method make use of the Math.random method of JavaScript.
+   * NB! By definition the lower triangular matrix is a SQUARE matrix, but the method
+   * allows the creation of pseudo - lower triangular matrix, i.e., the non zero
+   * elements will be equivallent to the elements of a lower triangular matrix if
+   * the rows and the columns was equal.
+   *
+   * @param {Integer} rows - The number of rows.
+   * @param {Integer} columns - The number of columns.
+   * @param {number} from - The minimum value for randomization.
+   * @param {number} to - The maximum value for randomization.
+   * @param {NumericType} type - The numeric type of the matrix.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance.
+   * @throws {Error} If the rows or columns parameter is not positive integer.
+   */
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-    errors.IncorrectRowsOrColumnsParameterInRandom
+    errors.IncorrectRowsOrColumnsParameterInRandom,
   )
   public static lowerTriangularUniqueRandom(
     rows: Integer,
@@ -241,8 +289,25 @@ export class Matrix {
     );
   }
 
+  /**
+   * Creates an upper triangular matrix with randomized values by rows and columns.
+   * The method make use of the Math.random method of JavaScript.
+   * NB! By definition the upper triangular matrix is a SQUARE matrix, but the method
+   * allows the creation of pseudo - upper triangular matrix, i.e., the non zero
+   * elements will be equivallent to the elements of an upper triangular matrix if
+   * the rows and the columns was equal.
+   *
+   * @param {Integer} rows - The number of rows.
+   * @param {Integer} columns - The number of columns.
+   * @param {number} from - The minimum value for randomization.
+   * @param {number} to - The maximum value for randomization.
+   * @param {NumericType} type - The numeric type of the matrix.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance.
+   * @throws {Error} If the rows or columns parameter is not positive integer.
+   */
+
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
-    errors.IncorrectRowsOrColumnsParameterInRandom
+    errors.IncorrectRowsOrColumnsParameterInRandom,
   )
   public static upperTriangularUniqueRandom(
     rows: Integer,
@@ -282,7 +347,12 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
-    return models.GenerateUniqueRandomMatrix([rows, columns], from, to, typedArray);
+    return models.GenerateUniqueRandomMatrix(
+      [rows, columns],
+      from,
+      to,
+      typedArray,
+    );
   }
 
   /**
