@@ -4,7 +4,14 @@ export { CompareMatrices } from "./CompareMatrices";
 export { ExchangeRows } from "./ExchangeRows";
 export { GenerateZeroMatrix } from "./GenerateZeroMatrix";
 export { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
-export { GenerateRandomMatrix } from "./GenerateRandomMatrix";
+export {
+  GenerateLowerRandomTriangularMatrix,
+  GenerateRandomMatrix,
+  GenerateUniqueRandomLowerTriangularMatrix,
+  GenerateUniqueRandomMatrix,
+  GenerateUniqueRandomUpperTriangularMatrix,
+  GenerateUpperRandomTriangularMatrix,
+} from "./GenerateRandomMatrix";
 export { GenerateRandomMatrix2 } from "./GenerateRandomMatrix2";
 // export { InitializeMatrix } from "./InitializeMatrix.ts";
 // export { ObtainMatrixFromTypedMatrix } from "./ObtainMatrixFromTypedMatrix.ts";
@@ -24,4 +31,12 @@ export { BinaryPointwise, UnaryPointwise } from "./Pointwise";
 export { CompactLUFactorizationWithPermutations } from "./CompactLUFactorizationWithPermutations";
 export { CholeskyBanachiewiczAlgorithm } from "./CholeskyLLFactorization";
 export { CholeskyLDL } from "./CholeskyLDL";
-export { MultiplyMatrices, GetColumnAsArray, ScalarMultiplicationOfVecotors } from "./MultiplyMatrices";
+export {
+  GetColumnAsArray,
+  MultiplyLL,
+  MultiplyLU,
+  MultiplyMatrices,
+  MultiplyUL,
+  MultiplyUU,
+  ScalarMultiplicationOfVecotors,
+} from "./MultiplyMatrices";
