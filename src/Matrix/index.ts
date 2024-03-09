@@ -179,6 +179,86 @@ export class Matrix {
     return models.GenerateRandomMatrix(dimensions, from, to, typedArray, seed);
   }
 
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom
+  )
+  public static lowerTriangularRandom(
+    rows: Integer,
+    columns: Integer,
+    from: Integer = 0,
+    to: Integer = 1,
+    type: NumericType = Matrix._type,
+    seed: number = 123456,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateLowerRandomTriangularMatrix(
+      [rows, columns],
+      from,
+      to,
+      typedArray,
+      seed,
+    );
+  }
+
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom
+  )
+  public static upperTriangularRandom(
+    rows: Integer,
+    columns: Integer,
+    from: number = 0,
+    to: number = 1,
+    type: NumericType = Matrix._type,
+    seed: number = 123456,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateUpperRandomTriangularMatrix(
+      [rows, columns],
+      from,
+      to,
+      typedArray,
+      seed,
+    );
+  }
+
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom
+  )
+  public static lowerTriangularUniqueRandom(
+    rows: Integer,
+    columns: Integer,
+    from: number = 1,
+    to: number = 0,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateUniqueRandomLowerTriangularMatrix(
+      [rows, columns],
+      from,
+      to,
+      typedArray,
+    );
+  }
+
+  @ifRowsOrColumnsAreNotPositiveIntegersThrow(
+    errors.IncorrectRowsOrColumnsParameterInRandom
+  )
+  public static upperTriangularUniqueRandom(
+    rows: Integer,
+    columns: Integer,
+    from: number = 0,
+    to: number = 1,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateUniqueRandomUpperTriangularMatrix(
+      [rows, columns],
+      from,
+      to,
+      typedArray,
+    );
+  }
+
   /**
    * Generates a random matrix with unique values each time the method is called.
    *
@@ -201,8 +281,7 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
-    const dimensions: Integer[] = [rows, columns];
-    return models.GenerateRandomMatrix2(dimensions, from, to, typedArray);
+    return models.GenerateUniqueRandomMatrix([rows, columns], from, to, typedArray);
   }
 
   /**
@@ -2436,6 +2515,97 @@ export class Matrix {
     }
 
     return errors.IncorrectParametersInTimes();
+  }
+
+  /**
+   * Performs matrix multiplication of two lower triangular matrices.
+   * Both matrices must be square and have equal dimensions.
+   *
+   * @param {MatrixType | NumericMatrix} m1 - The first lower triangular matrix.
+   * @param {MatrixType | NumericMatrix} m2 - The second lower triangular matrix.
+   * @param {NumericType} [type=Matrix._type] - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+   * @throws {Error} If any input parameter is invalid or if the matrices are not square.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput, 1)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static multiplyLL(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyLL(m1, m2, typedArray);
+  }
+
+  /**
+   * Performs matrix multiplication of two upper triangular matrices.
+   * Both matrices must be square and have equal dimensions.
+   *
+   * @param {MatrixType | NumericMatrix} m1 - The first upper triangular matrix.
+   * @param {MatrixType | NumericMatrix} m2 - The second upper triangular matrix.
+   * @param {NumericType} type - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+   * @throws {Error} If any of the input parameter is invalid or if the matrices are not square.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static multiplyUU(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyUU(m1, m2, typedArray);
+  }
+
+  /**
+   * Performs matrix multiplication of lower and upper triangular matrices.
+   * Both matrices must be square and have equal dimensions.
+   *
+   * @param {MatrixType | NumericMatrix} m1 - The first lower triangular matrix.
+   * @param {MatrixType | NumericMatrix} m2 - The second upper triangular matrix.
+   * @param {NumericType} type - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+   * @throws {Error} If any of the input parameter is invalid or if the matrices are not square.
+   */
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static multiplyLU(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyLU(m1, m2, typedArray);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput, 1)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectMatrixInput,
+  )
+  public static multiplyUL(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyUL(m1, m2, typedArray);
   }
 
   // 5. Numerical methods
