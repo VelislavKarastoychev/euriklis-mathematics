@@ -199,7 +199,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
   )
-  public static lowerTriangularRandom(
+  public static randomLowerTriangular(
     rows: Integer,
     columns: Integer,
     from: Integer = 0,
@@ -236,7 +236,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
   )
-  public static upperTriangularRandom(
+  public static randomUpperTriangular(
     rows: Integer,
     columns: Integer,
     from: number = 0,
@@ -273,7 +273,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
   )
-  public static lowerTriangularUniqueRandom(
+  public static uniqueRandomLowerTriangular(
     rows: Integer,
     columns: Integer,
     from: number = 1,
@@ -309,7 +309,7 @@ export class Matrix {
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
     errors.IncorrectRowsOrColumnsParameterInRandom,
   )
-  public static upperTriangularUniqueRandom(
+  public static uniqueRandomUpperTriangular(
     rows: Integer,
     columns: Integer,
     from: number = 0,
