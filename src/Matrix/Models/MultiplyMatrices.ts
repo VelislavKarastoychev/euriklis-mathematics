@@ -198,20 +198,21 @@ export function MultiplyLU(
 ): MatrixType | NumericMatrix {
   const n = a.length;
   const c: MatrixType | NumericMatrix = new Array(n);
+  const m = b.length;
   let i: Integer,
     j: Integer,
     k: Integer,
-    ai: TypedArray | number[],
-    ci: TypedArray | number[];
+    aj: TypedArray | number[],
+    bi: TypedArray | number[] = new typedArray(m);
 
   for (i = n; i--;) c[i] = new typedArray(n);
   for (i = n; i--;) {
-    ai = a[i];
-    ci = c[i];
+    GetColumnAsArray(b, i, b.length, bi);
     for (j = n; j--;) {
-      ci[j] = 0;
-      for (k = 0;k <= i && k <= j;k++) {
-        ci[j] += ai[k] * b[k][j];
+      aj = a[j];
+      c[j][i] = 0;
+      for (k = 0; k <= i && k <= j; k++) {
+        c[j][i] += aj[k] * bi[k];
       }
     }
   }
@@ -225,26 +226,24 @@ export function MultiplyUL(
   typedArray: TypedArrayConstructor | ArrayConstructor,
 ): MatrixType | NumericMatrix {
   const n = a.length;
+  const m = b.length;
   const c: MatrixType | NumericMatrix = new Array(n);
   let i: Integer,
     j: Integer,
     k: Integer,
-    ai: TypedArray | number[],
-    ci: TypedArray | number[];
-
+    aj: TypedArray | number[],
+    bi: TypedArray | number[] = new typedArray(m);
   for (i = n; i--;) c[i] = new typedArray(n);
   for (i = n; i--;) {
-    ai = a[i];
-    ci = c[i];
+    GetColumnAsArray(b, i, m, bi);
     for (j = n; j--;) {
-      ci[j] = 0;
-      for (k = n - 1;k >= i && k >= j;k--) {
-        ci[j] += ai[k] * b[k][j];
+      aj = a[j];
+      c[j][i] = 0;
+      for (k = n - 1; k >= i && k >= j; k--) {
+        c[j][i] += aj[k] * bi[k];
       }
     }
   }
 
   return c;
 }
-
-
