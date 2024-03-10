@@ -2,7 +2,6 @@
 
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import numeric from "numericjs";
 
 const a = [
   [Math.random(), 0, 0, 0, 0],
