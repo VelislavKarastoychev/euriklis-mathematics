@@ -4,11 +4,11 @@ import { Matrix } from "../src";
 import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
 
 const n = Math.random() * 100 >> 0;
-const l1 = Matrix.lowerTriangularRandom(n, n, -1, 1);
-const l2 = Matrix.lowerTriangularUniqueRandom(n, n, -1, 1);
+const l1 = Matrix.randomLowerTriangular(n, n, -1, 1);
+const l2 = Matrix.uniqueRandomLowerTriangular(n, n, -1, 1);
 
-const u1 = Matrix.upperTriangularRandom(n, n, -1, 1);
-const u2 = Matrix.upperTriangularUniqueRandom(n, n, -1, 1);
+const u1 = Matrix.randomUpperTriangular(n, n, -1, 1);
+const u2 = Matrix.uniqueRandomUpperTriangular(n, n, -1, 1);
 
 const callLowerTriangularRandom = (
   rows: Integer,
@@ -16,12 +16,12 @@ const callLowerTriangularRandom = (
   from: number,
   to: number,
 ): MatrixType | NumericMatrix =>
-  Matrix.lowerTriangularRandom(rows, columns, from, to);
+  Matrix.randomLowerTriangular(rows, columns, from, to);
 
 const callUpperTriangularRandom = (
   rows: Integer,
   columns: Integer,
-) => Matrix.upperTriangularRandom(rows, columns);
+) => Matrix.randomUpperTriangular(rows, columns);
 const epsilon = 1e-8;
 new validator(
   Matrix.FrobeniusNorm(
