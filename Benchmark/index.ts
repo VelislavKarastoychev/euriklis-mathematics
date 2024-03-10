@@ -80,4 +80,7 @@
 // import "./LU.spec.ts";
 // import "./LL.spec.ts"
 // import "./times.spec.ts"
-import "./multiply-LL.spec.ts";
+// import "./multiply-LL.spec";
+// import "./multiplyLU.spec";
+// import "./multiplyUL.spec";
+// import "./multiplyUU.spec";
