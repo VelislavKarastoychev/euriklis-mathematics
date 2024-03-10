@@ -4,8 +4,8 @@ import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
 
 (async () => {
-  const l1 = Matrix.lowerTriangularRandom(dimensions[0] / 10, dimensions[1] / 10);
-  const l2 = Matrix.lowerTriangularUniqueRandom(dimensions[0] / 10, dimensions[1] / 10);
+  const l1 = Matrix.randomLowerTriangular(dimensions[0] / 10, dimensions[1] / 10);
+  const l2 = Matrix.uniqueRandomLowerTriangular(dimensions[0] / 10, dimensions[1] / 10);
   const tiny = 1e-8;
 
   const condition = Matrix.FrobeniusNorm(
