@@ -19,15 +19,15 @@ const b = [
   [Math.random(), Math.random(), Math.random(), Math.random(), Math.random()],
 ];
 
-const l1 = Matrix.lowerTriangularRandom(2, 2, -1, 1, "generic");
-const l2 = Matrix.lowerTriangularUniqueRandom(3, 3, -1, 1);
-const u1 = Matrix.upperTriangularRandom(3, 3, -1, 1, "generic");
-const u2 = Matrix.upperTriangularUniqueRandom(3, 6, -1, 1, "generic");
+const l1 = Matrix.randomLowerTriangular(2, 2, -1, 1, "generic");
+const l2 = Matrix.uniqueRandomLowerTriangular(3, 3, -1, 1);
+const u1 = Matrix.randomUpperTriangular(3, 3, -1, 1, "generic");
+const u2 = Matrix.uniqueRandomUpperTriangular(3, 3, -1, 1, "generic");
 new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(
-      Matrix.multiplyUL(a, b),
-      Matrix.times(a, b),
+      Matrix.multiplyUL(u2, l2),
+      Matrix.times(u2, l2),
     ),
   ),
 ).describe("The multiplyUL method has to:")
