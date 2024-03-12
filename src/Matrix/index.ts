@@ -23,6 +23,8 @@ import {
 } from "./Decorators";
 import {
   Integer,
+  InverseMethods,
+  IterativeInversionInitialApproximationApproach,
   MatrixBlockOptions,
   MatrixType,
   NumericMatrix,
@@ -1842,6 +1844,14 @@ export class Matrix {
     return models.UnaryPointwise(matrix, "neg", type, weight, bias);
   }
 
+  public static inverted(
+    matrix: MatrixType | NumericMatrix,
+    weight: number = 1,
+    bias: number = 0,
+    type = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return models.UnaryPointwise(matrix, "inverted", type, weight, bias);
+  }
   /**
    * Performs a unary point-wise bitwise negation.
    *
@@ -2679,6 +2689,43 @@ export class Matrix {
     return models.MultiplyUL(m1, m2, typedArray);
   }
 
+  /**
+   * Implements the matrix inversion algorithms.
+   * The method implements the Gauss, LU inversion and
+   * iterative approach for matrix inversion.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which will be inversed.
+   * @param {NumericType} [type = Matrix._type] - The type of the inversed matrix.
+   * @param {InverseMethods} [method = "Gauss"] - The method which
+   * will be used for matrix inversion.
+   * @param {IterativeInversionInitialApproximationApproach} initialValue
+   * @returns {MatrixType | NumericMatrix} The inverse matrix.
+   * @throws {Error} If the matrix is incorrectly defined or if is non square.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.NonSquareMatrixInInverse)
+  public static inverse(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    method: InverseMethods = "Gauss",
+    initialValue: IterativeInversionInitialApproximationApproach = "Grozz",
+  ): MatrixType | NumericMatrix {
+    const a = Matrix.copy(matrix);
+    if (method === "Gauss") return models.InverseMatrixGauss(a, type);
+    if (method === "LU") {
+      const LUPC = Matrix.LUPC(a);
+      return models.InverseMatrixLU(LUPC.LU, LUPC.P, type);
+    }
+    if (method === "iterative Soleymani") {
+      return [];
+    }
+    if (method === "iterative") {
+      return [];
+    }
+
+    return errors.IncorrectMethodParameterInInverse();
+  }
+
   // 5. Numerical methods
 
   /**
@@ -2738,5 +2785,59 @@ export class Matrix {
 
   public static QR(matrix: MatrixType | NumericMatrix) {
     return matrix;
+  }
+
+  /**
+   * Computes the initial inverse approximation
+   * according to the Pan and Schreiber article
+   * V.Y. Pan, R. Schreiber, "An improved Newton
+   * iteration for the generalized inverse of
+   * a matrix with applications", SIAM J. Sci.
+   * Stat. Comput. 12 (1991) 1109–1131.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whose inverse will be
+   * approximated.
+   * @returns {MatrixType | NumericMatrix} The resulting of the computational procedure.
+   * @throws {Error} If the matrix is incorrectly defined.
+   */
+  public static inverseApproximationPanSchreiber2(
+    matrix: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.InverseApproximationPanSchreiber2(matrix);
+  }
+
+  /**
+   * Computes the initial inverse approximation
+   * according to the Grosz article:
+   * L. Grosz, "Preconditioning by incomplete block elimination",
+   * Numer. Linear Algebra Appl. 7 (2000) 527–541.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix input parameter.
+   * @returns {MatrixType | NumericMatrix} The resulting matrix from the
+   * computational procedure.
+   * @throws {Error} If the matrix is icorrectly defined.
+   */
+  public static inverseApproximationGrosz(
+    matrix: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.InverseApproximationGrosz(matrix);
+  }
+
+  /**
+   * Computes the initial inverse approximation
+   * according to the Codevico et al article:
+   * G. Codevico, V.Y. Pan, M.V. Barel,
+   * "Newton-like iteration based on a cubic polynomial
+   * for structured matrices", Numer. Algorith. 36 (2004) 365–380.
+   *
+   * @param {MatrixType | NumericMatrix} symmetricMatrix - The input matrix parameter.
+   * @returns {MatrixType | NumericMatrix} The resulting matrix from the computation
+   * procedure.
+   * @throws {Error} If the matrix parameter is incorrectly defined.
+   */
+  public static invesionApproximationCodevico(
+    symmetricMatrix: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.InverseApproximationCodevico(symmetricMatrix);
   }
 }
