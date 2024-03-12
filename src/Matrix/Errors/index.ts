@@ -88,3 +88,7 @@ export const DiagonalElementClosedToZeroInLDL = (): never =>
   runError(texts.DiagonalElementClosedToZeroInLDLTxt);
 export const IncorrectParametersInTimes = (): never => 
   runError(texts.IncorrectParametersInTimesTxt);
+export const NonSquareMatrixInInverse = (): never =>
+  runError(texts.NonSquareMatrixInInverseTxt);
+export const IncorrectMethodParameterInInverse =(): never =>
+  runError(texts.IncorrectMethodParameterInInverseTxt);
