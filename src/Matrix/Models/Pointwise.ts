@@ -203,6 +203,8 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return "((x) => x <= 0 ? -1 : 1)";
     case "deepCopy":
       return "";
+    case "inverted":
+      return "((x) => (x !== 0) ? 1 / x : throw new Error('division with zero error in unaryPointwise!'))"
   }
 };
 
