@@ -122,4 +122,17 @@ export type UnaryPointwiseOperator =
   | "floor"
   | "ReLU"
   | "step"
-  | "deepCopy";
+  | "deepCopy"
+  | "inverted";
+export type InverseMethods = 
+| "Gauss"
+| "LU"
+| "iterative Soleymani"
+| "iterative";
+export type IterativeInversionInitialApproximationApproach = 
+| "Pan and Schreiber"
+| "Ben - Israel and Greville"
+| "Grozz"
+| "Pan and Schreiber 2"
+| "Soleymani and TouTounian";
+
