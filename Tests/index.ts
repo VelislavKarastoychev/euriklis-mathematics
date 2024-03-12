@@ -86,3 +86,4 @@ import "./multiply-upper-upper-triangular-matrices.spec.ts";
 import "./multiply-lower-upper-triangular-matrices.spec.ts";
 import "./multiply-upper-lower-triangular-matrices.spec.ts";
 import "./lower-and-upper-triangular-matrix.spec.ts";
+import "./inverse.spec";
