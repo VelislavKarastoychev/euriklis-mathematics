@@ -12,7 +12,6 @@ export {
   GenerateUniqueRandomUpperTriangularMatrix,
   GenerateUpperRandomTriangularMatrix,
 } from "./GenerateRandomMatrix";
-export { GenerateRandomMatrix2 } from "./GenerateRandomMatrix2";
 // export { InitializeMatrix } from "./InitializeMatrix.ts";
 // export { ObtainMatrixFromTypedMatrix } from "./ObtainMatrixFromTypedMatrix.ts";
 export { GetBlock } from "./GetBlock";
@@ -40,3 +39,12 @@ export {
   MultiplyUU,
   ScalarMultiplicationOfVecotors,
 } from "./MultiplyMatrices";
+export {
+  InverseMatrixGauss,
+  InverseMatrixLU,
+} from "./InverseMatrix";
+export {
+  InverseApproximationCodevico,
+  InverseApproximationGrosz,
+  InverseApproximationPanSchreiber2,
+} from "./InverseApproximations";
