@@ -84,25 +84,26 @@ const GenerateMapReduceExpression = (mapReduceExpression: string): {
       };
     case "colSumAsColumn":
       return {
-        init: `const add = (a, b) => {
-          if (a) {
-            const k = b.length;
+        init: `
+        const add = (a, b) => {
+          if(a){
             let i;
+            const k = b.length;
             for (i = k;i-- > 1;) {
-              b[i][0] += a[i--][0]; 
-              b[i][0] += a[i][0]; 
+              b[i] += a[i--];
+              b[i] += a[i];
             }
-            if (i === 0) b[0][0] += a[0][0];
-          }
+            if (i === 0) b[0] += a[0];
+          }           
           return b;
-        }`,
+        }
+        `,
         rowInit: "let accum;",
-        colInit:
-          "const accum1 = [];for (i = n;i--;) accum1[i] = new typedArray(1);",
-        rowAccumulator: "return accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator: "for (i = accum.length;i--;)accum[i] = [accum[i]];return accum;",
         colAccumulator: "return accum1;",
         rowSetup: "accum = add(accum, ai);",
-        colSetup: "accum1[i][0] = aij;",
+        colSetup: "accum1[i] = aij;",
       };
     case "colSumNoDiagAsRow":
       return {
