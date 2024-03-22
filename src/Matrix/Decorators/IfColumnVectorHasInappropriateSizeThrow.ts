@@ -1,5 +1,6 @@
 "use strict";
 
+import { IsArrayOfArraysWithEqualSize } from "../Conditions";
 import { Integer, MatrixType, NumericMatrix } from "../types";
 
 export function ifColumnVectorHasInappropriateSizeThrow(
@@ -17,7 +18,8 @@ export function ifColumnVectorHasInappropriateSizeThrow(
       const r = v.length;
       const c = v[0].length;
       const n = Math.min(matrix.length, matrix[0].length);
-      if (r !== n && c !== 1) error();
+      
+      if (!IsArrayOfArraysWithEqualSize(v) || r !== n || c !== 1) error();
       return method.call(this, matrix, v);
     };
   };
