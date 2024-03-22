@@ -92,3 +92,9 @@ export const NonSquareMatrixInInverse = (): never =>
   runError(texts.NonSquareMatrixInInverseTxt);
 export const IncorrectMethodParameterInInverse =(): never =>
   runError(texts.IncorrectMethodParameterInInverseTxt);
+export const IncorrectRowVectorInAddToDiagonal = (): never =>
+  runError(texts.IncorrectRowVectorInAddToDiagonalTxt);
+export const IncorrectColumnVectorInAddToDiagonal = (): never => 
+  runError(texts.IncorrectColumnVectorInAddToDiagonalTxt);
+export const IncorrectNumberParameterInAddNumberToDiagonal = (): never => 
+  runError(texts.IncorrectNumberParameterInAddNumberToDiagonalTxt);
