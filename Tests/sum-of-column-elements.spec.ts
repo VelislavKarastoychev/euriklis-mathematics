@@ -7,7 +7,6 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 const r = Matrix.uniqueRandom(4, 7);
 const sum = Matrix.sumOfColumnElements(r);
 const sum1 = Matrix.sumOfColumnElements(r, undefined, "column");
-
 new validator(
   Matrix.isEqualTo(
     Matrix.transpose(sum1),
