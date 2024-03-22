@@ -5,4 +5,5 @@ export { IsMatrix } from "./IsMatrix.ts";
 export { IsMatrixDeclaration } from "./IsMatrixDeclaration.ts";
 export { IsTypedArrayOrArray } from "./IsTypedArrayOrArray.ts";
 export { IsNumber } from "./IsNumber.ts";
+export { IsNumberArray } from "./IsNumberArray.ts";
 export { IsMatrixSymmetric } from "./IsMatrixSymmetric.ts";
