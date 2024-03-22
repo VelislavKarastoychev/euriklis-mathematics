@@ -9,7 +9,7 @@ const addRowVectorToDiagonal = (
   v:
     | NumericMatrix
     | MatrixType,
-) => numeric.mapreduce(`accum[i][i] += ${v[0]}[i]`, "accum = x")(m);
+) => numeric.mapreduce(`accum[i][i] += ${v[0]}[i]`, `accum = x;`)(m);
 const r = Matrix.uniqueRandom(...dimensions);
 const rowVector = Matrix.replicate(Math.E, 1, dimensions[1]);
 const cr = Matrix.copy(r);
