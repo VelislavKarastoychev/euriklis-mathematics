@@ -28,3 +28,18 @@ export const GetDiagonal = (
   }
   return [diag] as MatrixType | NumericMatrix;
 };
+
+export const GetDiagonalAsColumn = (
+matrix: MatrixType | NumericMatrix,
+row: Integer,
+typedArray: TypedArrayConstructor | ArrayConstructor = Float64Array
+): MatrixType | NumericMatrix => {
+  const n = matrix.length - row;
+  const diag: MatrixType | NumericMatrix = [];
+  let i: Integer, di: number[] | TypedArray;
+  for (i = n;i--;) {
+    di = new typedArray(1)
+    di[0] = matrix[i + row][i];
+    diag[i] = di;
+  } return diag;
+}
