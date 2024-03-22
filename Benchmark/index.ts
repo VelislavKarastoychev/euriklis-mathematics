@@ -87,4 +87,5 @@
 // import "./inverse.spec";
 // import "./addNumberToDiagonal.spec";
 // import "./addRowVectorToDiagonal.spec";
-import "./addColumnVectorToDiagonal.spec";
+// import "./addColumnVectorToDiagonal.spec";
+import "./sum-of-row-elements.spec";
