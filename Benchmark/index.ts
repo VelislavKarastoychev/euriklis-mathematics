@@ -86,3 +86,4 @@
 // import "./multiplyUU.spec";
 // import "./inverse.spec";
 import "./addNumberToDiagonal.spec";
+import "./addRowVectorToDiagonal.spec";
