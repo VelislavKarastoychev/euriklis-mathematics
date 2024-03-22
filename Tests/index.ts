@@ -93,3 +93,4 @@ import "./sum-of-column-elements.spec";
 import "./sum-of-column-elements-except-diagonal.spec";
 import "./add-number-to-diagonal.spec";
 import "./add-row-vector-to-diagonal.spec";
+import "./add-column-vector-to-diagonal.spec";
