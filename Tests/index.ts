@@ -1,7 +1,7 @@
 "use strict";
 // import "./matrix-constructor.spec.ts";
 import "./is-matrix.spec";
-import "./replicate.spec"
+import "./replicate.spec";
 import "./zeros.spec";
 import "./identity-like.spec";
 import "./random-matrix.spec";
@@ -43,7 +43,7 @@ import "./max-norm.spec";
 import "./norm1.spec";
 import "./superior.spec";
 import "./inferior.spec";
-import "./sum-of-all-elements.spec"
+import "./sum-of-all-elements.spec";
 import "./product-of-all-elements.spec";
 import "./sum-of-squares-of-all-elements.spec";
 import "./sum-of-cubes-of-all-elements.spec";
@@ -81,14 +81,15 @@ import "./LU.spec";
 import "./LL.spec";
 import "./LDL.spec";
 import "./times.spec";
-import "./multiply-lower-lower-triangular.spec"
+import "./multiply-lower-lower-triangular.spec";
 import "./multiply-upper-upper-triangular-matrices.spec";
 import "./multiply-lower-upper-triangular-matrices.spec";
 import "./multiply-upper-lower-triangular-matrices.spec";
 import "./lower-and-upper-triangular-matrix.spec";
 import "./inverse.spec";
 import "./sum-of-row-elements.spec";
-import "./sum-of-row-elements-except-diagonal.spec"
+import "./sum-of-row-elements-except-diagonal.spec";
 import "./sum-of-column-elements.spec";
-import "./sum-of-column-elements-except-diagonal.spec"
+import "./sum-of-column-elements-except-diagonal.spec";
 import "./add-number-to-diagonal.spec";
+import "./add-row-vector-to-diagonal.spec";
