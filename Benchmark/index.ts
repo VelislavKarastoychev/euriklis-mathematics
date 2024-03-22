@@ -84,4 +84,5 @@
 // import "./multiplyLU.spec";
 // import "./multiplyUL.spec";
 // import "./multiplyUU.spec";
-import "./inverse.spec";
+// import "./inverse.spec";
+import "./addNumberToDiagonal.spec";
