@@ -2869,8 +2869,12 @@ export class Matrix {
   public static absoluteSumOfRowElements(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
-    return [];
+    const modeExtension = mode === "column"
+      ? "rowNorm1AsColumn"
+      : "rowNorm1AsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
