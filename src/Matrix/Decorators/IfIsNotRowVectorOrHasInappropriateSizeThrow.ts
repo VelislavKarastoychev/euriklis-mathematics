@@ -15,9 +15,9 @@ export function ifIsNotRowVectorOrHasInappropriateSizeThrow(
       v: MatrixType | NumericMatrix,
     ) {
       const r: Integer = v.length;
-      const c: Integer = v.length;
+      const c: Integer = v[0].length;
       const n = Math.min(matrix.length, matrix[0].length);
-      if (r !== 1 && c !== n) error();
+      if (r !== 1 || c !== n) error();
       return method.call(this, matrix, v);
     };
   };
