@@ -8,14 +8,14 @@ const r1 = Matrix.uniqueRandom(...dimensions);
 const r2 = Matrix.copy(r1);
 const sumOfRowElementsAsRow = (m: MatrixType | NumericMatrix) =>
   numeric.mapreduce2(
-    "sum = 0;for (j = xi.length;j--;) {xij = xi[j]; sum += xij;}\n accum[0][i] = sum;",
-    "let j, xij, accum = [[]];",
+    "sum = 0;for (j = xi.length;j--;) { sum += xi[j];}\n accum[0][i] = sum;",
+    "let j, sum, accum = [[]];",
   )(m);
 
 const sumOfRowElementsAsColumn = (m: MatrixType | NumericMatrix) =>
   numeric.mapreduce2(
-    "sum = 0;for (j = xi.length;j--;) {xij = xi[j]; sum += xij;}\n accum[i] = [sum];",
-    "let j, xij, accum = [];",
+    "sum = 0;for (j = xi.length;j--;) { sum += xi[j];}\n accum[i] = [sum];",
+    "let j, sum, xij, accum = [];",
   )(m);
 const condition = Matrix.FrobeniusNorm(
       Matrix.minus(
