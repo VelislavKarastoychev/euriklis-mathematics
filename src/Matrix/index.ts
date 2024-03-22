@@ -7,11 +7,14 @@ import {
   ifBlockHasDifferentRowsFromTheMatrixThrow,
   ifBlockIsEmptyReturnMatrix,
   ifColumnsOrFromRowIndexOrToRowIndexIsIncorrectlyDefinedThrow,
+  ifColumnVectorHasInappropriateSizeThrow,
   ifFromOrToParametersAreIncorrectlyDefinedThrow,
   ifIsColumnVectorThrow,
   ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow,
   ifIsNotArrayOfArraysWithEqualSizeThrow,
   ifIsNotNumberOrMatrixThrow,
+  ifIsNotNumberThrow,
+  ifIsNotRowVectorOrHasInappropriateSizeThrow,
   ifIsNotSquareMatrixThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
   ifRowParameterIsInappropriatelyDefinedThrow,
@@ -1265,6 +1268,7 @@ export class Matrix {
    * @param {MatrixType | NumericMatrix} matrix - The matrix instance.
    * @param {Integer} row - The row index for subdiagonal (default is 0).
    * @param {NumericType} type - The type of the output matrix elements.
+   * @param {"row" | "column"} mode - The format of the output.
    * @returns {MatrixType | NumericMatrix} - The diagonal or subdiagonal as a Matrix.
    */
   @ifRowParameterIsInappropriatelyDefinedThrow(
@@ -1274,8 +1278,12 @@ export class Matrix {
     matrix: MatrixType | NumericMatrix,
     row: Integer = 0,
     type: NumericType = Matrix._type,
+    mode: string = "row",
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+    if (mode === "column") {
+      return models.GetDiagonalAsColumn(matrix, row, typedArray);
+    }
     return models.GetDiagonal(matrix, row, typedArray);
   }
 
@@ -2726,6 +2734,168 @@ export class Matrix {
     return errors.IncorrectMethodParameterInInverse();
   }
 
+  /**
+   * Adds a number or elements of vector, or
+   * elements of an array to the diagonal
+   * of a matrix.
+   * NB!The matrix is not copied.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The initial matrix.
+   * @param {number} v - A number which will be added to all diagonal
+   * elements.
+   *
+   * @returns {MatrixType | NumericMatrix} The matrix with the updated
+   * diagonal.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberThrow(errors.IncorrectNumberParameterInAddNumberToDiagonal, 1)
+  public static addNumberToDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    v: number,
+  ): MatrixType | NumericMatrix {
+    return models.AddNumberToDiagonal(matrix, v);
+  }
+
+  /**
+   * Adds a row vector to diagonal or throws error
+   * when the size of the row vector is inappropriate.
+   * NB!The method does not make copy of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The initial matrix
+   * @param {[number[] | TypedArray]} v - The row vector with size
+   * min(r, c), where the r and c are the rows and the columns of
+   * the "matrix" parameter.
+   * @returns {MatrixType | NumericMatrix} The transformed matrix.
+   * @throws {Error} If the matrix parameter is icorrectly defined
+   * or if the rows vector has inappropriate size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotRowVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectRowVectorInAddToDiagonal,
+  )
+  public static addRowVectorToDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.AddArrayToDiagonal(matrix, v[0]);
+  }
+
+  /**
+   * Adds the elements of each row to the equivallent diagonal
+   * elements of the matrix.
+   * NB! The method does not make copy of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whoose
+   * diagonal will be transformed.
+   * @param {MatrixType | NumericMatrix} v - The column vector, which will
+   * be added to the diagonal.
+   * @returns {MatrixType | NumericMatrix} The transformed matrix.
+   * @throws {Error} If the "matrix" parameter is incorrectly defined or
+   * if the second parameter is not column vector witth appropriate size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifColumnVectorHasInappropriateSizeThrow(
+    errors.IncorrectColumnVectorInAddToDiagonal,
+  )
+  public static addColumnVectorToDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.AddVectorToDiagonal(matrix, v);
+  }
+
+  /**
+   * Obtains the circles of Gershgorin of a matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix instance.
+   * @param {NumericType} [type=Matrix._type] - The type of the resulting
+   * matrix.
+   * @returns {MatrixType | NumericMatrix}
+   * @throws {Error} If the "matrix" parameter is incorrectly declared.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static GershgorinCircles(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return [];
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfRowElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "row" ? "rowSumAsRow" : "rowSumAsColumn";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfRowElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ) {
+    const modeExtension = mode === "column"
+      ? "rowSumNoDiagAsColumn"
+      : "rowSumNoDiagAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfColumnElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column" ? "colSumAsColumn" : "colSumAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfColumnElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "colSumNoDiagAsColumn"
+      : "colSumNoDiagAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static absoluteSumOfRowElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return [];
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static absoluteSumOfRowElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return [];
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static absoluteSumOfColumnElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return [];
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static absoluteSumOfColumnElementsExceptTheDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return [];
+  }
   // 5. Numerical methods
 
   /**
