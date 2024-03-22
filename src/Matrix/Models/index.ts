@@ -17,7 +17,7 @@ export {
 export { GetBlock } from "./GetBlock";
 export { SetBlock } from "./SetBlock";
 export { ExchangeColumns } from "./ExchangeColumns";
-export { GetDiagonal } from "./GetDiagonal";
+export { GetDiagonal, GetDiagonalAsColumn } from "./GetDiagonal";
 export { ToDiagonalMatrix } from "./ToDiagonalMatrix";
 export { AppendBlockRight } from "./AppendBlockRight";
 export { AppendBlockBottom } from "./AppendBlockBottom";
@@ -39,12 +39,16 @@ export {
   MultiplyUU,
   ScalarMultiplicationOfVecotors,
 } from "./MultiplyMatrices";
-export {
-  InverseMatrixGauss,
-  InverseMatrixLU,
-} from "./InverseMatrix";
+export { InverseMatrixGauss, InverseMatrixLU } from "./InverseMatrix";
 export {
   InverseApproximationCodevico,
   InverseApproximationGrosz,
   InverseApproximationPanSchreiber2,
 } from "./InverseApproximations";
+export {
+  AddArrayToDiagonal,
+  AddNumberToDiagonal,
+  AddVectorToDiagonal,
+} from "./AddToDiagonal";
+export { GershgorinCircles } from "./GershgorinCircles";
+export { MatrixMapReduce } from "./MatrixMapReduce"
