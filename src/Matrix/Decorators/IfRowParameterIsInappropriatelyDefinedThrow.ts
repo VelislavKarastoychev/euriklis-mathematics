@@ -18,12 +18,13 @@ export function ifRowParameterIsInappropriatelyDefinedThrow(
       matrix: MatrixType | NumericMatrix,
       row: Integer = 0,
       type: NumericType,
+      mode: "row" | "column",
     ) {
       if (row < 0 || row >= matrix.length) {
         error();
       }
 
-      return method.call(this, matrix, row, type);
+      return method.call(this, matrix, row, type, mode);
     };
   };
 }
