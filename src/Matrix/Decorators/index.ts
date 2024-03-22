@@ -22,4 +22,7 @@ export { ifBlockHasDifferentColumnsFromTheMatrixThrow } from "./IfBlockHasDiffer
 export { ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow } from "./IfIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow";
 export { ifSecureAndNotSymmetricThrow } from "./IfSecureAndNotSymmetricThrow";
 export { ifIsNotSquareMatrixThrow } from "./IfIsNotSquareMatrixThrow";
-export { ifTheParametersAreMatricesWithInappropriateSizeThrow } from "./IfTheParametersAreMatricesWithInappropriateSizeThrow"
+export { ifTheParametersAreMatricesWithInappropriateSizeThrow } from "./IfTheParametersAreMatricesWithInappropriateSizeThrow";
+export { ifIsNotRowVectorOrHasInappropriateSizeThrow } from "./IfIsNotRowVectorOrHasInappropriateSizeThrow";
+export { ifColumnVectorHasInappropriateSizeThrow } from "./IfColumnVectorHasInappropriateSizeThrow";
+export { ifIsNotNumberThrow } from "./IfIsNotNumberThrow";
