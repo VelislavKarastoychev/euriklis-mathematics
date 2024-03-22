@@ -101,7 +101,7 @@ const GenerateMapReduceExpression = (mapReduceExpression: string): {
         rowInit: "let accum;",
         colInit: "let accum1 = new typedArray(n);",
         rowAccumulator:
-          "for (i = accum.length;i--;)accum[i] = [accum[i]];return accum;",
+          "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
         colAccumulator: "return accum1;",
         rowSetup: "accum = add(accum, ai);",
         colSetup: "accum1[i] = aij;",
@@ -148,7 +148,7 @@ const GenerateMapReduceExpression = (mapReduceExpression: string): {
         rowInit: "let accum;",
         colInit: "let accum1 = new typedArray(n);",
         rowAccumulator:
-          "for (i = accum.length;i--;)accum[i] = [accum[i]];return accum;",
+          "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
         colAccumulator: "return accum1;",
         rowSetup: "accum = add(accum, ai);",
         colSetup: "accum1[i] = (i !== row) * aij;",
