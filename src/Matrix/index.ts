@@ -2881,8 +2881,12 @@ export class Matrix {
   public static absoluteSumOfRowElementsExceptDiagonal(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
-    return [];
+    const modeExtension = mode === "column"
+      ? "rowNorm1NoDiagAsColumn"
+      : "rowNorm1NoDiagAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
