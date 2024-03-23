@@ -93,3 +93,4 @@
 // import "./sum-of-column-elements.spec";
 // import "./sumOfColumnElementsExceptDiagonal.spec";
 import "./absolute-sum-of-row-elements.spec";
+import "./absolute-sum-of-row-elements-except-diagonal.spec";
