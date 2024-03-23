@@ -173,6 +173,26 @@ const GenerateMapReduceExpression = (mapReduceExpression: string): {
         rowSetup: "accum[i] = new typedArray([ai]);",
         colSetup: "accum1 += abs(aij);",
       };
+    case "rowNorm1NoDiagAsRow":
+      return {
+        init: "const abs = Math.abs;let accum, accum1 = 0;",
+        rowInit: "accum = new typedArray(n)",
+        colInit: "",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum[i] = ai;",
+        colSetup: "accum1 += +(i !== row) * abs(aij);", // use the coersion feature of JS!
+      };
+    case "rowNorm1NoDiagAsColumn":
+      return {
+        init: "const abs = Math.abs;let accum = [], accum1 = 0;",
+        rowInit: "",
+        colInit: "",
+        rowAccumulator: "return accum;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum[i] = new typedArray([ai]);",
+        colSetup: "accum1 += +(i !== row) * abs(aij);",
+      };
   }
 };
 
