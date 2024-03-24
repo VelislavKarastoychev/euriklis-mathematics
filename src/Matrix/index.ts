@@ -2821,6 +2821,16 @@ export class Matrix {
     return [];
   }
 
+  /**
+   * Calculates the sum of elements in each row of a matrix.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x rows).
+   * If mode is "column", returns a column vector (rows x 1).
+   * @returns {MatrixType | NumericMatrix} The result of summing each row or column elements.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfRowElements(
     matrix: MatrixType | NumericMatrix,
@@ -2831,18 +2841,39 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the sum of elements in each row of a matrix,
+   * excluding diagonal elements.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x rows) excluding diagonal elements.
+   * If mode is "column", returns a column vector (rows x 1) excluding diagonal elements.
+   * @returns {MatrixType | NumericMatrix} The result of summation.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfRowElementsExceptDiagonal(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     mode: "row" | "column" = "row",
-  ) {
+  ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column"
       ? "rowSumNoDiagAsColumn"
       : "rowSumNoDiagAsRow";
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the sum of elements in each column of a matrix.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x columns).
+   * If mode is "column", returns a column vector (columns x 1).
+   * @returns {MatrixType | NumericMatrix} The result of summing each column.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfColumnElements(
     matrix: MatrixType | NumericMatrix,
@@ -2853,6 +2884,16 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the sum of elements in each column of a matrix, excluding the diagonal elements.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x columns).
+   * If mode is "column", returns a column vector (columns x 1).
+   * @returns {MatrixType | NumericMatrix} The result of summing each column excluding the diagonal elements.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfColumnElementsExceptDiagonal(
     matrix: MatrixType | NumericMatrix,
@@ -2865,6 +2906,16 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the absolute sum of elements in each row of a matrix.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x rows) containing the absolute sum of each row.
+   * If mode is "column", returns a column vector (rows x 1) containing the absolute sum of each column.
+   * @returns {MatrixType | NumericMatrix} The result of summing the absolute values of each row.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfRowElements(
     matrix: MatrixType | NumericMatrix,
@@ -2877,6 +2928,16 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the absolute sum of elements in each row of a matrix, excluding diagonal elements.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x rows) containing the absolute sum of each row.
+   * If mode is "column", returns a column vector (rows x 1) containing the absolute sum of each column.
+   * @returns {MatrixType | NumericMatrix} The result.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfRowElementsExceptDiagonal(
     matrix: MatrixType | NumericMatrix,
@@ -2889,20 +2950,48 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the absolute sum of elements in each column of a matrix.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x columns) containing the absolute sum of each column.
+   * If mode is "column", returns a column vector (columns x 1) containing the absolute sum of each row.
+   * @returns {MatrixType | NumericMatrix} The result of summing the absolute values of each column.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfColumnElements(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
-    return [];
+    const modeExtension = mode === "column"
+      ? "colNorm1AsColumn"
+      : "colNorm1AsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the absolute sum of elements in each column of a matrix, excluding diagonal elements.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x columns).
+   * If mode is "column", returns a column vector (columns x 1).
+   * @returns {MatrixType | NumericMatrix} The result
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  public static absoluteSumOfColumnElementsExceptTheDiagonal(
+  public static absoluteSumOfColumnElementsExceptDiagonal(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
-    return [];
+    const modeExtension = mode === "column"
+      ? "colNorm1NoDiagAsColumn"
+      : "colNorm1NoDiagAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
   }
   // 5. Numerical methods
 
