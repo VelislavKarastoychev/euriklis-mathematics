@@ -1,6 +1,8 @@
 "use strict";
 
 import {
+  Integer,
+  MapReduceExpression,
   MatrixType,
   NumericMatrix,
   NumericType,
@@ -9,7 +11,22 @@ import {
 import { ComputeDimensions } from "./ComputeDimensions";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor";
 
-const GenerateMapReduceExpression = (mapReduceExpression: string): {
+/**
+ * Generates map-reduce expressions based on the specified map-reducer type.
+ * @param {MapReduceExpression} mapReduceExpression - The type of map-reduce operation.
+ * @returns {{
+ *   init: string,
+ *   rowInit: string,
+ *   colInit: string,
+ *   rowAccumulator: string,
+ *   colAccumulator: string,
+ *   rowSetup: string,
+ *   colSetup: string
+ * }} The generated map-reduce expressions.
+ */
+const GenerateMapReduceExpression = (
+  mapReduceExpression: MapReduceExpression,
+): {
   init: string;
   rowInit: string;
   colInit: string;
@@ -193,9 +210,121 @@ const GenerateMapReduceExpression = (mapReduceExpression: string): {
         rowSetup: "accum[i] = new typedArray([ai]);",
         colSetup: "accum1 += +(i !== row) * abs(aij);",
       };
+    case "colNorm1AsRow":
+      return {
+        init: `
+        const abs = Math.abs;
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = abs(aij);",
+      };
+    case "colNorm1AsColumn":
+      return {
+        init: `
+        const abs = Math.abs;
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator:
+          "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = abs(aij);",
+      };
+    case "colNorm1NoDiagAsRow":
+      return {
+        init: `
+        const abs = Math.abs;
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = (i !== row) * abs(aij);",
+      };
+    case "colNorm1NoDiagAsColumn":
+      return {
+        init: `
+        const abs = Math.abs;
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator:
+          "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = (i !== row) * abs(aij);",
+      };
   }
 };
 
+/**
+ * Executes matrix map-reduce operations recursively.
+ * @param {MatrixType | NumericMatrix} a - The input matrix.
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The constructor function for typed arrays.
+ * @param {string} init - The initialization code for the map-reduce operation.
+ * @param {string} rowInit - The initialization code for row operations.
+ * @param {string} colInit - The initialization code for column operations.
+ * @param {string} rowSetup - The setup code for row operations.
+ * @param {string} colSetup - The setup code for column operations.
+ * @param {string} rowAccumulator - The accumulator code for row operations.
+ * @param {string} colAccumulator - The accumulator code for column operations.
+ * @param {Integer[]} dim - The dimensions of the matrix.
+ * @returns {MatrixType | NumericMatrix} The result of the map-reduce operation.
+ */
 const ExecuteMatrixMapReduce = (
   a: MatrixType | NumericMatrix,
   typedArray: TypedArrayConstructor | ArrayConstructor,
@@ -206,8 +335,8 @@ const ExecuteMatrixMapReduce = (
   colSetup: string,
   rowAccumulator: string,
   colAccumulator: string,
-  dim: number[],
-) =>
+  dim: Integer[],
+): MatrixType | NumericMatrix =>
   Function(
     "a",
     `typedArray = ${typedArray.name}`,
@@ -243,11 +372,18 @@ const ExecuteMatrixMapReduce = (
     `,
   )(a, typedArray);
 
+/**
+ * Executes map-reduce operations on a matrix.
+ * @param {MatrixType | NumericMatrix} a - The input matrix.
+ * @param {NumericType} type - The numeric type of the output matrix.
+ * @param {MapReduceExpression} mapReducer - The type of map-reduce operation to perform.
+ * @returns {MatrixType | NumericMatrix} The result of the map-reduce operation.
+ */
 export const MatrixMapReduce = (
   a: MatrixType | NumericMatrix,
   type: NumericType,
-  mapReducer: string,
-) => {
+  mapReducer: MapReduceExpression,
+): MatrixType | NumericMatrix => {
   const typedArray = CreateTypedArrayConstructor(type);
   const {
     init,
