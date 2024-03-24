@@ -135,4 +135,20 @@ export type IterativeInversionInitialApproximationApproach =
 | "Grozz"
 | "Pan and Schreiber 2"
 | "Soleymani and TouTounian";
-
+export type MapReduceExpression = 
+| "rowSumAsRow"
+| "rowSumAsColumn"
+| "rowSumNoDiagAsRow"
+| "rowSumNoDiagAsColumn"
+| "colSumAsRow"
+| "colSumNoDiagAsRow"
+| "colSumAsColumn"
+| "colSumNoDiagAsColumn"
+| "rowNorm1AsRow"
+| "rowNorm1AsColumn"
+| "rowNorm1NoDiagAsRow"
+| "rowNorm1NoDiagAsColumn"
+| "colNorm1AsColumn"
+| "colNorm1AsRow"
+| "colNorm1NoDiagAsRow"
+| "colNorm1NoDiagAsColumn";
