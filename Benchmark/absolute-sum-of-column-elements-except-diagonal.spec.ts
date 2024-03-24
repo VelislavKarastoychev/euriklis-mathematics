@@ -37,9 +37,9 @@ import { dimensions, startPerformanceTest } from "./utils";
         ),
       ) < 1e-8;
   const euriklisTestRowMode = (m: any) =>
-    Matrix.absoluteSumOfColumnElementsExceptDiagonal(r1);
+    m.absoluteSumOfColumnElementsExceptDiagonal(r1);
   const euriklisTestColumnMode = (m: any) =>
-    Matrix.absoluteSumOfColumnElementsExceptDiagonal(r1, undefined, "column");
+    m.absoluteSumOfColumnElementsExceptDiagonal(r1, undefined, "column");
   const numericTestRowMode = (_: any) =>
     absoluteSumOfColumnElementsExceptDiagonalRowMode(r2);
   const numericTestColumnMode = (_: any) =>
