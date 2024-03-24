@@ -10,7 +10,7 @@ export function ifColumnVectorHasInappropriateSizeThrow(
     const method: (
       matrix: MatrixType | NumericMatrix,
       v: MatrixType | NumericMatrix,
-    ) => void = descriptor.value;
+    ) => MatrixType | NumericMatrix = descriptor.value;
     descriptor.value = function (
       matrix: MatrixType | NumericMatrix,
       v: MatrixType | NumericMatrix,
