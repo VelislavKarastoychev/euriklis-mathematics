@@ -34,11 +34,10 @@ import { dimensions, startPerformanceTest } from "./utils";
         ),
       ) < 1e-8;
 
-  const euriklisTestAsRow = (m: any) =>
-    Matrix.sumOfRowElementsExceptDiagonal(r2);
+  const euriklisTestAsRow = (m: any) => m.sumOfRowElementsExceptDiagonal(r2);
   const numericTestAsRow = (_: any) => sumOfRowElementsExceptDiagonalAsRow(r2);
   const euriklisTestAsColumn = (m: any) =>
-    Matrix.sumOfRowElementsExceptDiagonal(r1, undefined, "column");
+    m.sumOfRowElementsExceptDiagonal(r1, undefined, "column");
   const numericTestAsColumn = (_: any) =>
     sumOfRowElementsExceptDiagonalAsColumn(r2);
 
