@@ -1401,7 +1401,10 @@ export class Matrix {
    * Transposes the current matrix,
    * swapping its rows and columns.
    *
-   * @returns {MatrixType | NumericMatrix} A new Matrix
+   * 
+   * @param {MatrixType | NumericMatrix} matrix - The matrix argument.
+   * @param {NumericType} type - the type of the output.
+   * @returns {MatrixType | NumericMatrix} A new Matrix.
    * instance representing the transposed matrix.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
@@ -2991,6 +2994,75 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "colNorm1NoDiagAsColumn"
       : "colNorm1NoDiagAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  /**
+   * Calculates the sum of squares of elements in each row of a matrix.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x rows).
+   * If mode is "column", returns a column vector (rows x 1).
+   * @returns {MatrixType | NumericMatrix} The result of summing the squares of each row.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfSquaresOfRowElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "rowSumSquaresAsColumn"
+      : "rowSumSquaresAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public sumOfSquaresOfColumnElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "colSumSquaresAsColumn"
+      : "colSumSquaresAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  /**
+   * Calculates the sum of squares of elements in each row of a matrix, excluding diagonal elements.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode of summation:
+   * If mode is "row", returns a row vector (1 x columns).
+   * If mode is "column", returns a column vector (columns x 1).
+   * @returns {MatrixType | NumericMatrix} The result of summing the squares of each row,
+   * excluding diagonal elements.
+   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfSquaresOfRowElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "rowSumSquaresNoDiagAsColumn"
+      : "rowSumSquaresNoDiagAsRow";
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static sumOfSquaresOfColumnElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "colSumSquaresNoDiagAsColumn"
+      : "colSumSquaresNoDiagAsRow";
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
   // 5. Numerical methods
