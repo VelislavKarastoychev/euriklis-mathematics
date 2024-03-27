@@ -124,31 +124,40 @@ export type UnaryPointwiseOperator =
   | "step"
   | "deepCopy"
   | "inverted";
-export type InverseMethods = 
-| "Gauss"
-| "LU"
-| "iterative Soleymani"
-| "iterative";
-export type IterativeInversionInitialApproximationApproach = 
-| "Pan and Schreiber"
-| "Ben - Israel and Greville"
-| "Grozz"
-| "Pan and Schreiber 2"
-| "Soleymani and TouTounian";
-export type MapReduceExpression = 
-| "rowSumAsRow"
-| "rowSumAsColumn"
-| "rowSumNoDiagAsRow"
-| "rowSumNoDiagAsColumn"
-| "colSumAsRow"
-| "colSumNoDiagAsRow"
-| "colSumAsColumn"
-| "colSumNoDiagAsColumn"
-| "rowNorm1AsRow"
-| "rowNorm1AsColumn"
-| "rowNorm1NoDiagAsRow"
-| "rowNorm1NoDiagAsColumn"
-| "colNorm1AsColumn"
-| "colNorm1AsRow"
-| "colNorm1NoDiagAsRow"
-| "colNorm1NoDiagAsColumn";
+export type InverseMethods =
+  | "Gauss"
+  | "LU"
+  | "iterative Soleymani"
+  | "iterative";
+export type IterativeInversionInitialApproximationApproach =
+  | "Pan and Schreiber"
+  | "Ben - Israel and Greville"
+  | "Grozz"
+  | "Pan and Schreiber 2"
+  | "Soleymani and TouTounian";
+export type MapReduceExpression =
+  | "rowSumAsRow"
+  | "rowSumAsColumn"
+  | "rowSumNoDiagAsRow"
+  | "rowSumNoDiagAsColumn"
+  | "colSumAsRow"
+  | "colSumNoDiagAsRow"
+  | "colSumAsColumn"
+  | "colSumNoDiagAsColumn"
+  | "rowNorm1AsRow"
+  | "rowNorm1AsColumn"
+  | "rowNorm1NoDiagAsRow"
+  | "rowNorm1NoDiagAsColumn"
+  | "colNorm1AsColumn"
+  | "colNorm1AsRow"
+  | "colNorm1NoDiagAsRow"
+  | "colNorm1NoDiagAsColumn"
+  | "rowSumSquaresAsRow"
+  | "rowSumSquaresAsColumn"
+  | "colSumSquaresAsRow"
+  | "colSumSquaresAsRow"
+  | "colSumSquaresAsColumn"
+  | "rowSumSquaresNoDiagAsRow"
+  | "rowSumSquaresNoDiagAsColumn"
+  | "colSumSquaresNoDiagAsRow"
+  | "colSumSquaresNoDiagAsColumn";
