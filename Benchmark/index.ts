@@ -96,4 +96,5 @@
 // import "./absolute-sum-of-row-elements-except-diagonal.spec";
 // import "./absolute-sum-of-column-elements.spec";
 // import "./absolute-sum-of-column-elements-except-diagonal.spec";
-import "./sum-of-squares-of-row-elements.spec";
+// import "./sum-of-squares-of-row-elements.spec";
+import "./sum-of-squares-of-row-elements-except-diagonal.spec";
