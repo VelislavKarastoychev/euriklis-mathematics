@@ -383,7 +383,7 @@ const GenerateMapReduceExpression = (
         rowAccumulator: "return [accum];",
         colAccumulator: "return accum1;",
         rowSetup: "accum[i] = ai;",
-        colSetup: "accum1 += (i !== row) * aij * ai;",
+        colSetup: "accum1 += +(i !== row) * aij * aij;",
       };
     case "rowSumSquaresNoDiagAsColumn":
       return {
@@ -416,7 +416,7 @@ const GenerateMapReduceExpression = (
         rowAccumulator: "return [accum];",
         colAccumulator: "return accum1;",
         rowSetup: "accum = add(accum, ai);",
-        colSetup: "accum1[i] = (i !== row) * aij * aij;",
+        colSetup: "accum1[i] = +(i !== row) * aij * aij;",
       };
     case "colSumSquaresNoDiagAsColumn":
       return {
