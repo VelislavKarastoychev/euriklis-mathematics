@@ -308,6 +308,140 @@ const GenerateMapReduceExpression = (
         rowSetup: "accum = add(accum, ai);",
         colSetup: "accum1[i] = (i !== row) * abs(aij);",
       };
+    case "rowSumSquaresAsRow":
+      return {
+        init: "let accum, accum1 = 0;",
+        rowInit: "accum = new typedArray(n)",
+        colInit: "",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum[i] = ai;",
+        colSetup: "accum1 += aij * aij;",
+      };
+    case "rowSumSquaresAsColumn":
+      return {
+        init: "let accum = [], accum1 = 0;",
+        rowInit: "",
+        colInit: "",
+        rowAccumulator: "return accum;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum[i] = new typedArray([ai]);",
+        colSetup: "accum1 += aij * aij;",
+      };
+    case "colSumSquaresAsRow":
+      return {
+        init: `
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = aij * aij;",
+      };
+    case "colSumSquaresAsColumn":
+      return {
+        init: `
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator:
+          "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = aij * aij;",
+      };
+    case "rowSumSquaresNoDiagAsRow":
+      return {
+        init: "let accum, accum1 = 0;",
+        rowInit: "accum = new typedArray(n);",
+        colInit: "",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum[i] = ai;",
+        colSetup: "accum1 += (i !== row) * aij * ai;",
+      };
+    case "rowSumSquaresNoDiagAsColumn":
+      return {
+        init: "let accum = [], accum1 = 0;",
+        rowInit: "",
+        colInit: "",
+        rowAccumulator: "return accum;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum[i] = new typedArray([ai]);",
+        colSetup: "accum1 += (i !== row) * aij * aij;",
+      };
+    case "colSumSquaresNoDiagAsRow":
+      return {
+        init: `
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator: "return [accum];",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = (i !== row) * aij * aij;",
+      };
+    case "colSumSquaresNoDiagAsColumn":
+      return {
+        init: `
+        const add = (a, b) => {
+          if(a){
+            let i;
+            const k = b.length;
+            for (i = k;i-- > 1;) {
+              b[i] += a[i--];
+              b[i] += a[i];
+            }
+            if (i === 0) b[0] += a[0];
+          }           
+          return b;
+        }
+        `,
+        rowInit: "let accum;",
+        colInit: "let accum1 = new typedArray(n);",
+        rowAccumulator:
+          "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
+        colAccumulator: "return accum1;",
+        rowSetup: "accum = add(accum, ai);",
+        colSetup: "accum1[i] = (i !== row) * aij * aij;",
+      };
   }
 };
 
