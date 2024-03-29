@@ -3020,7 +3020,7 @@ export class Matrix {
   }
 
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  public sumOfSquaresOfColumnElements(
+  public static sumOfSquaresOfColumnElements(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     mode: "row" | "column" = "row",
