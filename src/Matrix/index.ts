@@ -2870,6 +2870,15 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  public static addVectorToMatrixByRowAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    return [];// models.ApplyVectorOperationToMatrix(matrix, vector, type, modeExtension);
+  }
+
   /**
    * Performs multiplication of two matrices or a matrix and a scalar.
    * If both inputs are matrices, performs matrix multiplication.
