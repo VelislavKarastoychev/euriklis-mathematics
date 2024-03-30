@@ -140,7 +140,8 @@ export class Matrix {
    * @param {Integer} rows - The number of rows in the new matrix.
    * @param {Integer} columns - The number of columns in the new matrix.
    * @param {NumericType} [type="float64"] - The numeric type of the matrix elements.
-   * @returns {MatrixType | NumericMatrix} A new Matrix with the specified dimensions and replicated numeric value.
+   * @returns {MatrixType | NumericMatrix} A new Matrix with the specified dimensions
+   * and replicated numeric value.
    * @throws {Error} If rows or columns are not positive.
    */
   @ifRowsOrColumnsAreNotPositiveIntegersThrow(
@@ -337,7 +338,8 @@ export class Matrix {
    * @param {Integer} columns - The number of columns in the generated matrix.
    * @param {number} [from=0] - The lower bound of the random values range.
    * @param {number} [to=1] - The upper bound of the random values range.
-   * @param {NumericType} [type=Matrix._type] - The numeric type of the elements in the generated matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the
+   * elements in the generated matrix.
    * @returns {MatrixType | NumericMatrix} A random matrix with unique values.
    * @throws {Error} If the rows or columns parameters are not positive integers.
    */
@@ -1401,7 +1403,6 @@ export class Matrix {
    * Transposes the current matrix,
    * swapping its rows and columns.
    *
-   * 
    * @param {MatrixType | NumericMatrix} matrix - The matrix argument.
    * @param {NumericType} type - the type of the output.
    * @returns {MatrixType | NumericMatrix} A new Matrix.
@@ -1877,7 +1878,8 @@ export class Matrix {
    * each element of the matrix after the weight multiplication and before the
    * bitwise negation operation.
    * @param {NumericType} type? - The type of the resulting matrix.
-   * @returns {MatrixType | NumericMatrix} A new Matrix instance with bitwise negated elements.
+   * @returns {MatrixType | NumericMatrix} A new Matrix instance with
+   * bitwise negated elements.
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
@@ -1901,15 +1903,19 @@ export class Matrix {
   /**
    * Applies the sine function point-wise to the elements of the matrix.
    *
-   * Optionally, a weight and bias can be applied to each element before computing the sine.
+   * Optionally, a weight and bias can be applied to each element before
+   * computing the sine.
    * The resulting value is computed as `Math.sin(weight * element + bias)`.
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements
    * will be transformed to its sine values.
-   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the sine function.
-   * @param {number} [bias=0] - The bias to be added to each element after the weiht multiplication.
+   * @param {number} [weight=1] - The weight to multiply each matrix element
+   * before applying the sine function.
+   * @param {number} [bias=0] - The bias to be added to each element after
+   * the weiht multiplication.
    * @param {NumericType} type - The type of the output matrix elements.
-   * @returns {MatrixType | NumericMatrix} A new matrix with the sine function applied to its elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the sine function
+   * applied to its elements.
    * @throws {Error} If the "matrix" parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
@@ -1927,15 +1933,18 @@ export class Matrix {
   /**
    * Applies the cosine function point-wise to the elements of the Matrix.
    *
-   * Optionally, a weight and bias can be applied to each element before computing the cosine.
+   * Optionally, a weight and bias can be applied to each element before
+   * computing the cosine.
    * The resulting value is computed as `Math.cos(weight * element + bias)`.
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix whose elements will be
    * transformed to its cosine value.
-   * @param {number} [weight=1] - The weight to multiply each matrix element before applying the cosine function.
+   * @param {number} [weight=1] - The weight to multiply each matrix element before
+   * applying the cosine function.
    * @param {number} [bias=0] - The bias to be added to each element after the multiplication.
    * @param {NumericType} type - The type of the output matrix elements.
-   * @returns {MatrixType | NumericMatrix} A new matrix with the cosine function applied to its elements.
+   * @returns {MatrixType | NumericMatrix} A new matrix with the cosine function
+   * applied to its elements.
    * @throws {Error} If the "matrix" parameter is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(
@@ -2550,6 +2559,76 @@ export class Matrix {
   }
 
   /**
+   * Adds a number or elements of vector, or
+   * elements of an array to the diagonal
+   * of a matrix.
+   * NB!The matrix is not copied.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The initial matrix.
+   * @param {number} v - A number which will be added to all diagonal
+   * elements.
+   *
+   * @returns {MatrixType | NumericMatrix} The matrix with the updated
+   * diagonal.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberThrow(errors.IncorrectNumberParameterInAddNumberToDiagonal, 1)
+  public static addNumberToDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    v: number,
+  ): MatrixType | NumericMatrix {
+    return models.AddNumberToDiagonal(matrix, v);
+  }
+
+  /**
+   * Adds a row vector to diagonal or throws error
+   * when the size of the row vector is inappropriate.
+   * NB!The method does not make copy of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The initial matrix
+   * @param {[number[] | TypedArray]} v - The row vector with size
+   * min(r, c), where the r and c are the rows and the columns of
+   * the "matrix" parameter.
+   * @returns {MatrixType | NumericMatrix} The transformed matrix.
+   * @throws {Error} If the matrix parameter is icorrectly defined
+   * or if the rows vector has inappropriate size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotRowVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectRowVectorInAddToDiagonal,
+  )
+  public static addRowVectorToDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.AddArrayToDiagonal(matrix, v[0]);
+  }
+
+  /**
+   * Adds the elements of each row to the equivallent diagonal
+   * elements of the matrix.
+   * NB! The method does not make copy of the matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix whoose
+   * diagonal will be transformed.
+   * @param {MatrixType | NumericMatrix} v - The column vector, which will
+   * be added to the diagonal.
+   * @returns {MatrixType | NumericMatrix} The transformed matrix.
+   * @throws {Error} If the "matrix" parameter is incorrectly defined or
+   * if the second parameter is not column vector witth appropriate size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifColumnVectorHasInappropriateSizeThrow(
+    errors.IncorrectColumnVectorInAddToDiagonal,
+  )
+  public static addColumnVectorToDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.AddVectorToDiagonal(matrix, v);
+  }
+
+  /**
    * Performs multiplication of two matrices or a matrix and a scalar.
    * If both inputs are matrices, performs matrix multiplication.
    * If one input is a scalar and the other is a matrix, performs scalar multiplication.
@@ -2735,76 +2814,6 @@ export class Matrix {
     }
 
     return errors.IncorrectMethodParameterInInverse();
-  }
-
-  /**
-   * Adds a number or elements of vector, or
-   * elements of an array to the diagonal
-   * of a matrix.
-   * NB!The matrix is not copied.
-   *
-   * @param {MatrixType | NumericMatrix} matrix - The initial matrix.
-   * @param {number} v - A number which will be added to all diagonal
-   * elements.
-   *
-   * @returns {MatrixType | NumericMatrix} The matrix with the updated
-   * diagonal.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotNumberThrow(errors.IncorrectNumberParameterInAddNumberToDiagonal, 1)
-  public static addNumberToDiagonal(
-    matrix: MatrixType | NumericMatrix,
-    v: number,
-  ): MatrixType | NumericMatrix {
-    return models.AddNumberToDiagonal(matrix, v);
-  }
-
-  /**
-   * Adds a row vector to diagonal or throws error
-   * when the size of the row vector is inappropriate.
-   * NB!The method does not make copy of the matrix.
-   *
-   * @param {MatrixType | NumericMatrix} matrix - The initial matrix
-   * @param {[number[] | TypedArray]} v - The row vector with size
-   * min(r, c), where the r and c are the rows and the columns of
-   * the "matrix" parameter.
-   * @returns {MatrixType | NumericMatrix} The transformed matrix.
-   * @throws {Error} If the matrix parameter is icorrectly defined
-   * or if the rows vector has inappropriate size.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotRowVectorOrHasInappropriateSizeThrow(
-    errors.IncorrectRowVectorInAddToDiagonal,
-  )
-  public static addRowVectorToDiagonal(
-    matrix: MatrixType | NumericMatrix,
-    v: MatrixType | NumericMatrix,
-  ): MatrixType | NumericMatrix {
-    return models.AddArrayToDiagonal(matrix, v[0]);
-  }
-
-  /**
-   * Adds the elements of each row to the equivallent diagonal
-   * elements of the matrix.
-   * NB! The method does not make copy of the matrix.
-   *
-   * @param {MatrixType | NumericMatrix} matrix - The matrix whoose
-   * diagonal will be transformed.
-   * @param {MatrixType | NumericMatrix} v - The column vector, which will
-   * be added to the diagonal.
-   * @returns {MatrixType | NumericMatrix} The transformed matrix.
-   * @throws {Error} If the "matrix" parameter is incorrectly defined or
-   * if the second parameter is not column vector witth appropriate size.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifColumnVectorHasInappropriateSizeThrow(
-    errors.IncorrectColumnVectorInAddToDiagonal,
-  )
-  public static addColumnVectorToDiagonal(
-    matrix: MatrixType | NumericMatrix,
-    v: MatrixType | NumericMatrix,
-  ): MatrixType | NumericMatrix {
-    return models.AddVectorToDiagonal(matrix, v);
   }
 
   /**
