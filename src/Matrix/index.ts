@@ -2629,211 +2629,6 @@ export class Matrix {
   }
 
   /**
-   * Performs multiplication of two matrices or a matrix and a scalar.
-   * If both inputs are matrices, performs matrix multiplication.
-   * If one input is a scalar and the other is a matrix, performs scalar multiplication.
-   *
-   * @param {number | MatrixType | NumericMatrix} a - The first operand.
-   * @param {number | MatrixType | NumericMatrix} b - The second operand.
-   * @param {NumericType} [type=Matrix._type] - The type of the resulting matrix elements.
-   * @returns {MatrixType | NumericMatrix} The result of the multiplication.
-   * @throws {Error} If any input parameter is invalid.
-   */
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes)
-  @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes, 1)
-  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
-    errors.IncorrectParametersInTimes,
-  )
-  public static times(
-    a: number | MatrixType | NumericMatrix,
-    b: number | MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    const typedArray = models.CreateTypedArrayConstructor(type);
-    const aIsNumber = typeof a === "number";
-    const bIsNumber = typeof b === "number";
-
-    if (!aIsNumber && !bIsNumber) {
-      let ar: Integer, ac: Integer, br: Integer, bc: Integer;
-      [ar, ac] = Matrix.dimensions(a as MatrixType | NumericMatrix);
-      [br, bc] = Matrix.dimensions(b as MatrixType | NumericMatrix);
-      if (ar === 1 && ac === 1) {
-        return Matrix.Hadamard(b as MatrixType | NumericMatrix, a[0][0]);
-      }
-
-      if (br === 1 && bc === 1) {
-        return Matrix.Hadamard(a as MatrixType | NumericMatrix, b[0][0]);
-      }
-
-      return models.MultiplyMatrices(
-        a as MatrixType | NumericMatrix,
-        b as MatrixType | NumericMatrix,
-        typedArray,
-      );
-    }
-    if (aIsNumber && bIsNumber) {
-      const c: number[] | TypedArray = new typedArray(1);
-      c[0] = (a as number) * (b as number);
-      return [c] as MatrixType | NumericMatrix;
-    }
-
-    if (aIsNumber && !bIsNumber) {
-      return Matrix.Hadamard(b as MatrixType | NumericMatrix, a);
-    }
-
-    if (!aIsNumber && bIsNumber) {
-      return Matrix.Hadamard(a as MatrixType | NumericMatrix, b);
-    }
-
-    return errors.IncorrectParametersInTimes();
-  }
-
-  /**
-   * Performs matrix multiplication of two lower triangular matrices.
-   * Both matrices must be square and have equal dimensions.
-   *
-   * @param {MatrixType | NumericMatrix} m1 - The first lower triangular matrix.
-   * @param {MatrixType | NumericMatrix} m2 - The second lower triangular matrix.
-   * @param {NumericType} [type=Matrix._type] - The type of the resulting matrix elements.
-   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
-   * @throws {Error} If any input parameter is invalid or if the matrices are not square.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput, 1)
-  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
-  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
-    errors.IncorrectParametersInTimes,
-  )
-  public static multiplyLL(
-    m1: MatrixType | NumericMatrix,
-    m2: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    const typedArray = models.CreateTypedArrayConstructor(type);
-    return models.MultiplyLL(m1, m2, typedArray);
-  }
-
-  /**
-   * Performs matrix multiplication of two upper triangular matrices.
-   * Both matrices must be square and have equal dimensions.
-   *
-   * @param {MatrixType | NumericMatrix} m1 - The first upper triangular matrix.
-   * @param {MatrixType | NumericMatrix} m2 - The second upper triangular matrix.
-   * @param {NumericType} type - The type of the resulting matrix elements.
-   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
-   * @throws {Error} If any of the input parameter is invalid or if the matrices are not square.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
-  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
-    errors.IncorrectParametersInTimes,
-  )
-  public static multiplyUU(
-    m1: MatrixType | NumericMatrix,
-    m2: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    const typedArray = models.CreateTypedArrayConstructor(type);
-    return models.MultiplyUU(m1, m2, typedArray);
-  }
-
-  /**
-   * Performs matrix multiplication of lower and upper triangular matrices.
-   * Both matrices must be square and have equal dimensions.
-   *
-   * @param {MatrixType | NumericMatrix} m1 - The first lower triangular matrix.
-   * @param {MatrixType | NumericMatrix} m2 - The second upper triangular matrix.
-   * @param {NumericType} type - The type of the resulting matrix elements.
-   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
-   * @throws {Error} If any of the input parameter is invalid or if the matrices are not square.
-   */
-
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
-  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
-    errors.IncorrectParametersInTimes,
-  )
-  public static multiplyLU(
-    m1: MatrixType | NumericMatrix,
-    m2: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    const typedArray = models.CreateTypedArrayConstructor(type);
-    return models.MultiplyLU(m1, m2, typedArray);
-  }
-
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput, 1)
-  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
-  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
-    errors.IncorrectMatrixInput,
-  )
-  public static multiplyUL(
-    m1: MatrixType | NumericMatrix,
-    m2: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    const typedArray = models.CreateTypedArrayConstructor(type);
-    return models.MultiplyUL(m1, m2, typedArray);
-  }
-
-  /**
-   * Implements the matrix inversion algorithms.
-   * The method implements the Gauss, LU inversion and
-   * iterative approach for matrix inversion.
-   *
-   * @param {MatrixType | NumericMatrix} matrix - The matrix which will be inversed.
-   * @param {NumericType} [type = Matrix._type] - The type of the inversed matrix.
-   * @param {InverseMethods} [method = "Gauss"] - The method which
-   * will be used for matrix inversion.
-   * @param {IterativeInversionInitialApproximationApproach} initialValue
-   * @returns {MatrixType | NumericMatrix} The inverse matrix.
-   * @throws {Error} If the matrix is incorrectly defined or if is non square.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotSquareMatrixThrow(errors.NonSquareMatrixInInverse)
-  public static inverse(
-    matrix: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-    method: InverseMethods = "Gauss",
-    initialValue: IterativeInversionInitialApproximationApproach = "Grozz",
-  ): MatrixType | NumericMatrix {
-    const a = Matrix.copy(matrix);
-    if (method === "Gauss") return models.InverseMatrixGauss(a, type);
-    if (method === "LU") {
-      const LUPC = Matrix.LUPC(a);
-      return models.InverseMatrixLU(LUPC.LU, LUPC.P, type);
-    }
-    if (method === "iterative Soleymani") {
-      return [];
-    }
-    if (method === "iterative") {
-      return [];
-    }
-
-    return errors.IncorrectMethodParameterInInverse();
-  }
-
-  /**
-   * Obtains the circles of Gershgorin of a matrix.
-   *
-   * @param {MatrixType | NumericMatrix} matrix - The matrix instance.
-   * @param {NumericType} [type=Matrix._type] - The type of the resulting
-   * matrix.
-   * @returns {MatrixType | NumericMatrix}
-   * @throws {Error} If the "matrix" parameter is incorrectly declared.
-   */
-  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  public static GershgorinCircles(
-    matrix: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
-  ): MatrixType | NumericMatrix {
-    return [];
-  }
-
-  /**
    * Calculates the sum of elements in each row of a matrix.
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
@@ -3074,6 +2869,212 @@ export class Matrix {
       : "colSumSquaresNoDiagAsRow";
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
+
+  /**
+   * Performs multiplication of two matrices or a matrix and a scalar.
+   * If both inputs are matrices, performs matrix multiplication.
+   * If one input is a scalar and the other is a matrix, performs scalar multiplication.
+   *
+   * @param {number | MatrixType | NumericMatrix} a - The first operand.
+   * @param {number | MatrixType | NumericMatrix} b - The second operand.
+   * @param {NumericType} [type=Matrix._type] - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the multiplication.
+   * @throws {Error} If any input parameter is invalid.
+   */
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes)
+  @ifIsNotNumberOrMatrixThrow(errors.IncorrectParametersInTimes, 1)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static times(
+    a: number | MatrixType | NumericMatrix,
+    b: number | MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    const aIsNumber = typeof a === "number";
+    const bIsNumber = typeof b === "number";
+
+    if (!aIsNumber && !bIsNumber) {
+      let ar: Integer, ac: Integer, br: Integer, bc: Integer;
+      [ar, ac] = Matrix.dimensions(a as MatrixType | NumericMatrix);
+      [br, bc] = Matrix.dimensions(b as MatrixType | NumericMatrix);
+      if (ar === 1 && ac === 1) {
+        return Matrix.Hadamard(b as MatrixType | NumericMatrix, a[0][0]);
+      }
+
+      if (br === 1 && bc === 1) {
+        return Matrix.Hadamard(a as MatrixType | NumericMatrix, b[0][0]);
+      }
+
+      return models.MultiplyMatrices(
+        a as MatrixType | NumericMatrix,
+        b as MatrixType | NumericMatrix,
+        typedArray,
+      );
+    }
+    if (aIsNumber && bIsNumber) {
+      const c: number[] | TypedArray = new typedArray(1);
+      c[0] = (a as number) * (b as number);
+      return [c] as MatrixType | NumericMatrix;
+    }
+
+    if (aIsNumber && !bIsNumber) {
+      return Matrix.Hadamard(b as MatrixType | NumericMatrix, a);
+    }
+
+    if (!aIsNumber && bIsNumber) {
+      return Matrix.Hadamard(a as MatrixType | NumericMatrix, b);
+    }
+
+    return errors.IncorrectParametersInTimes();
+  }
+
+  /**
+   * Performs matrix multiplication of two lower triangular matrices.
+   * Both matrices must be square and have equal dimensions.
+   *
+   * @param {MatrixType | NumericMatrix} m1 - The first lower triangular matrix.
+   * @param {MatrixType | NumericMatrix} m2 - The second lower triangular matrix.
+   * @param {NumericType} [type=Matrix._type] - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+   * @throws {Error} If any input parameter is invalid or if the matrices are not square.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput, 1)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static multiplyLL(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyLL(m1, m2, typedArray);
+  }
+
+  /**
+   * Performs matrix multiplication of two upper triangular matrices.
+   * Both matrices must be square and have equal dimensions.
+   *
+   * @param {MatrixType | NumericMatrix} m1 - The first upper triangular matrix.
+   * @param {MatrixType | NumericMatrix} m2 - The second upper triangular matrix.
+   * @param {NumericType} type - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+   * @throws {Error} If any of the input parameter is invalid or if the matrices are not square.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static multiplyUU(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyUU(m1, m2, typedArray);
+  }
+
+  /**
+   * Performs matrix multiplication of lower and upper triangular matrices.
+   * Both matrices must be square and have equal dimensions.
+   *
+   * @param {MatrixType | NumericMatrix} m1 - The first lower triangular matrix.
+   * @param {MatrixType | NumericMatrix} m2 - The second upper triangular matrix.
+   * @param {NumericType} type - The type of the resulting matrix elements.
+   * @returns {MatrixType | NumericMatrix} The result of the matrix multiplication.
+   * @throws {Error} If any of the input parameter is invalid or if the matrices are not square.
+   */
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectParametersInTimes,
+  )
+  public static multiplyLU(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyLU(m1, m2, typedArray);
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput, 1)
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  @ifTheParametersAreMatricesWithInappropriateSizeThrow(
+    errors.IncorrectMatrixInput,
+  )
+  public static multiplyUL(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.MultiplyUL(m1, m2, typedArray);
+  }
+
+  /**
+   * Implements the matrix inversion algorithms.
+   * The method implements the Gauss, LU inversion and
+   * iterative approach for matrix inversion.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix which will be inversed.
+   * @param {NumericType} [type = Matrix._type] - The type of the inversed matrix.
+   * @param {InverseMethods} [method = "Gauss"] - The method which
+   * will be used for matrix inversion.
+   * @param {IterativeInversionInitialApproximationApproach} initialValue
+   * @returns {MatrixType | NumericMatrix} The inverse matrix.
+   * @throws {Error} If the matrix is incorrectly defined or if is non square.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(errors.NonSquareMatrixInInverse)
+  public static inverse(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    method: InverseMethods = "Gauss",
+    initialValue: IterativeInversionInitialApproximationApproach = "Grozz",
+  ): MatrixType | NumericMatrix {
+    const a = Matrix.copy(matrix);
+    if (method === "Gauss") return models.InverseMatrixGauss(a, type);
+    if (method === "LU") {
+      const LUPC = Matrix.LUPC(a);
+      return models.InverseMatrixLU(LUPC.LU, LUPC.P, type);
+    }
+    if (method === "iterative Soleymani") {
+      return [];
+    }
+    if (method === "iterative") {
+      return [];
+    }
+
+    return errors.IncorrectMethodParameterInInverse();
+  }
+
+  /**
+   * Obtains the circles of Gershgorin of a matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The matrix instance.
+   * @param {NumericType} [type=Matrix._type] - The type of the resulting
+   * matrix.
+   * @returns {MatrixType | NumericMatrix}
+   * @throws {Error} If the "matrix" parameter is incorrectly declared.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static GershgorinCircles(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    return [];
+  }
+
   // 5. Numerical methods
 
   /**
