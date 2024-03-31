@@ -2892,7 +2892,9 @@ export class Matrix {
     );
   }
 
-  public static subtractVectorToMatrixByRowAxis(
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(error.IncorrectVectorParameter("subtractVectorFromMatrixByRowAxis"))
+  public static subtractVectorFromMatrixByRowAxis(
     matrix: MatrixType | NumericMatrix,
     vector: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -2900,8 +2902,8 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const dim = Matrix.dimensions(matrix);
     const modeExtension = mode === "column"
-      ? "subtractColVectorToMatrixByRowAxis"
-      : "subtractRowVectorToMatrixByRowAxis";
+      ? "subtractColVectorFromMatrixByRowAxis"
+      : "subtractRowVectorFromMatrixByRowAxis";
     return models.ApplyVectorOperationToMatrix(
       matrix,
       vector,
