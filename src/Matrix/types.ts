@@ -161,3 +161,23 @@ export type MapReduceExpression =
   | "rowSumSquaresNoDiagAsColumn"
   | "colSumSquaresNoDiagAsRow"
   | "colSumSquaresNoDiagAsColumn";
+export type VectorToMatrixOperation =
+  | "addRowVectorToMatrixByRowAxis"
+  | "addRowVectorToMatrixByColAxis"
+  | "addColVectorToMatrixByRowAxis"
+  | "addColVectorToMatrixByColAxis"
+  | "subtractRowVectorToMatrixByRowAxis"
+  | "subtractRowVectorToMatrixByColAxis"
+  | "subtractColVectorToMatrixByRowAxis"
+  | "subtractColVectorToMatrixByColAxis"
+  | "multiplyRowVectorToMatrixByRowAxis"
+  | "multiplyRowVectorToMatrixByColAxis"
+  | "multiplyColVectorToMatrixByRowAxis"
+  | "multiplyColVectorToMatrixByColAxis"
+  | "divideRowVectorToMatrixByRowAxis"
+  | "divideRowVectorToMatrixByColAxis"
+  | "divideColVectorToMatrixByRowAxis"
+  | "divideColVectorToMatrixByColAxis";
+
+export type ArithmeticOperatorSymbol = 
+| "+" | "-" | "*" | "/" | "**" | "%" | "<<" | ">>";
