@@ -23,6 +23,7 @@ import {
   ifSecureAndNotSymmetricThrow,
   ifTheParametersAreMatricesWithInappropriateSizeThrow,
   ifTheParametersAreNotMatricesThrow,
+  ifIsNotVectorOrHasInappropriateSizeThrow,
 } from "./Decorators";
 import {
   Integer,
@@ -2870,13 +2871,44 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(errors.IncorrectVectorParameter("addVectorToMatrixByRowAxis"))
   public static addVectorToMatrixByRowAxis(
     matrix: MatrixType | NumericMatrix,
     vector: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
-    return [];// models.ApplyVectorOperationToMatrix(matrix, vector, type, modeExtension);
+    const dim = Matrix.dimensions(matrix);
+    const modeExtension = mode === "column"
+      ? "addColVectorToMatrixByRowAxis"
+      : "addRowVectorToMatrixByRowAxis";
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  public static subtractVectorToMatrixByRowAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const dim = Matrix.dimensions(matrix);
+    const modeExtension = mode === "column"
+      ? "subtractColVectorToMatrixByRowAxis"
+      : "subtractRowVectorToMatrixByRowAxis";
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
   }
 
   /**
