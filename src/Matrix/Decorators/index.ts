@@ -26,3 +26,4 @@ export { ifTheParametersAreMatricesWithInappropriateSizeThrow } from "./IfThePar
 export { ifIsNotRowVectorOrHasInappropriateSizeThrow } from "./IfIsNotRowVectorOrHasInappropriateSizeThrow";
 export { ifColumnVectorHasInappropriateSizeThrow } from "./IfColumnVectorHasInappropriateSizeThrow";
 export { ifIsNotNumberThrow } from "./IfIsNotNumberThrow";
+export { ifIsNotVectorOrHasInappropriateSizeThrow } from "./IfIsNotVectorOrHasInappropriateSizeThrow"
