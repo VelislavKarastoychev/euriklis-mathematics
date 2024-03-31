@@ -99,4 +99,5 @@
 // import "./sum-of-squares-of-row-elements.spec";
 // import "./sum-of-squares-of-row-elements-except-diagonal.spec";
 // import "./sum-of-squares-of-column-elements.spec";
-import "./sum-of-squares-of-column-elements-except-diagonal.spec";
+// import "./sum-of-squares-of-column-elements-except-diagonal.spec";
+import "./add-vector-to-matrix-by-row-axis.spec";
