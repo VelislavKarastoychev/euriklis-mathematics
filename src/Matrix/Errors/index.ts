@@ -86,15 +86,17 @@ export const NonSquareMatrixInLDL = (): never =>
   runError(texts.NonSquareMatrixInLDLTxt);
 export const DiagonalElementClosedToZeroInLDL = (): never =>
   runError(texts.DiagonalElementClosedToZeroInLDLTxt);
-export const IncorrectParametersInTimes = (): never => 
+export const IncorrectParametersInTimes = (): never =>
   runError(texts.IncorrectParametersInTimesTxt);
 export const NonSquareMatrixInInverse = (): never =>
   runError(texts.NonSquareMatrixInInverseTxt);
-export const IncorrectMethodParameterInInverse =(): never =>
+export const IncorrectMethodParameterInInverse = (): never =>
   runError(texts.IncorrectMethodParameterInInverseTxt);
 export const IncorrectRowVectorInAddToDiagonal = (): never =>
   runError(texts.IncorrectRowVectorInAddToDiagonalTxt);
-export const IncorrectColumnVectorInAddToDiagonal = (): never => 
+export const IncorrectColumnVectorInAddToDiagonal = (): never =>
   runError(texts.IncorrectColumnVectorInAddToDiagonalTxt);
-export const IncorrectNumberParameterInAddNumberToDiagonal = (): never => 
+export const IncorrectNumberParameterInAddNumberToDiagonal = (): never =>
   runError(texts.IncorrectNumberParameterInAddNumberToDiagonalTxt);
+export const IncorrectVectorParameter = (method: string) => (): never =>
+  runError(texts.IncorrectVectorParameterTxt(method));
