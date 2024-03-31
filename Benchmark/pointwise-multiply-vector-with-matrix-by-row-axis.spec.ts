@@ -35,32 +35,32 @@ import { dimensions, startPerformanceTest } from "./utils";
     )(v, m);
   const condition = Matrix.FrobeniusNorm(
         Matrix.minus(
-          Matrix.pointwiseMultiplyVectorWithMatrixByRowAxis(r1, v1),
+          Matrix.pointwiseMultiplyMatrixWithVectorByRowAxis(r1, v1),
           pointwiseMultiplyRowVectorMatrixByRowAxis(v1, r1),
         ),
       ) <= 1e-8 && Matrix.FrobeniusNorm(
         Matrix.minus(
-          Matrix.pointwiseMultiplyVectorWithMatrixByRowAxis(r1, v2, undefined, "column"),
+          Matrix.pointwiseMultiplyMatrixWithVectorByRowAxis(r1, v2, undefined, "column"),
           pointwiseMultiplyColVectorMatrixByRowAxis(v2, r1),
         ),
       ) <= 1e-8;
   const euriklisTestForRowVector = (m: any) =>
-    m.pointwiseMultiplyVectorWithMatrixByRowAxis(r1, v1);
+    m.pointwiseMultiplyMatrixWithVectorByRowAxis(r1, v1);
   const numericTestForRowVector = (_: any) =>
     pointwiseMultiplyRowVectorMatrixByRowAxis(v1, r1);
   const euriklisTestForColVector = (m: any) =>
-    m.pointwiseMultiplyVectorWithMatrixByRowAxis(r1, v2, undefined, "column");
+    m.pointwiseMultiplyMatrixWithVectorByRowAxis(r1, v2, undefined, "column");
   const numericTestForColVector = (_: any) =>
     pointwiseMultiplyColVectorMatrixByRowAxis(v2, r1);
   startPerformanceTest(
-    "pointwiseMultiplyVectorWithMatrixByRowAxis in row mode",
+    "pointwiseMultiplyMatrixWithVectorByRowAxis in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
     euriklisTestForRowVector,
     numericTestForRowVector,
   );
   startPerformanceTest(
-    "pointwiseMultiplyVectorWithMatrixByRowAxis in column mode",
+    "pointwiseMultiplyMatrixWithVectorByRowAxis in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
     euriklisTestForColVector,
