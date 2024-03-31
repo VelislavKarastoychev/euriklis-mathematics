@@ -104,3 +104,4 @@ import "./sum-of-squares-of-column-elements.spec";
 import "./sum-of-squares-of-column-elements-except-diagonal.spec";
 import "./add-vector-to-matrix-by-row-axis.spec";
 import "./subtract-vector-from-matrix-by-row-axis.spec";
+import "./pointwise-multiply-vector-with-matrix-by-row-axis.spec";
