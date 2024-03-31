@@ -16,6 +16,7 @@ import {
   ifIsNotNumberThrow,
   ifIsNotRowVectorOrHasInappropriateSizeThrow,
   ifIsNotSquareMatrixThrow,
+  ifIsNotVectorOrHasInappropriateSizeThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
   ifRowParameterIsInappropriatelyDefinedThrow,
   ifRowsAndColumnsAreInappropriatelyDefinedThrow,
@@ -23,7 +24,6 @@ import {
   ifSecureAndNotSymmetricThrow,
   ifTheParametersAreMatricesWithInappropriateSizeThrow,
   ifTheParametersAreNotMatricesThrow,
-  ifIsNotVectorOrHasInappropriateSizeThrow,
 } from "./Decorators";
 import {
   Integer,
@@ -2872,7 +2872,9 @@ export class Matrix {
   }
 
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotVectorOrHasInappropriateSizeThrow(errors.IncorrectVectorParameter("addVectorToMatrixByRowAxis"))
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter("addVectorToMatrixByRowAxis"),
+  )
   public static addVectorToMatrixByRowAxis(
     matrix: MatrixType | NumericMatrix,
     vector: MatrixType | NumericMatrix,
@@ -2893,7 +2895,9 @@ export class Matrix {
   }
 
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
-  @ifIsNotVectorOrHasInappropriateSizeThrow(error.IncorrectVectorParameter("subtractVectorFromMatrixByRowAxis"))
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter("subtractVectorFromMatrixByRowAxis"),
+  )
   public static subtractVectorFromMatrixByRowAxis(
     matrix: MatrixType | NumericMatrix,
     vector: MatrixType | NumericMatrix,
