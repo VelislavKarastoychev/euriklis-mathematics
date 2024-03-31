@@ -2884,10 +2884,10 @@ export class Matrix {
   }
 
   /**
-   * Adds a row or column vector to each column of a matrix along the row axis.
+   * Adds a row or column vector to each row of a matrix along the row axis.
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The row or column vector to be
-   * added to each column of the matrix.
+   * added to each row of the matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
    * @param {"row" | "column"} [mode="row"] - The mode specifying whether the
    * vector is a row or column vector.
@@ -2922,16 +2922,16 @@ export class Matrix {
   }
 
   /**
-   * Subtracts a row or column vector from each column of a matrix along the row axis.
+   * Subtracts a row or column vector from each row of a matrix along the row axis.
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
-   * @param {MatrixType | NumericMatrix} vector - The row or column vector to be 
-   * subtracted from each column of the matrix.
+   * @param {MatrixType | NumericMatrix} vector - The row or column vector to be
+   * subtracted from each row of the matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
-   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the vector 
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the vector
    * is a row or column vector.
    * If mode is "row", the vector is treated as a row vector.
    * If mode is "column", the vector is treated as a column vector.
-   * @returns {MatrixType | NumericMatrix} The matrix resulting from subtracting the 
+   * @returns {MatrixType | NumericMatrix} The matrix resulting from subtracting the
    * vector from each column.
    * @throws {Error} Throws an error if the input matrix or vector is incorrectly defined.
    */
@@ -2949,6 +2949,43 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "subtractColVectorFromMatrixByRowAxis"
       : "subtractRowVectorFromMatrixByRowAxis";
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  /**
+   * Performs pointwise multiplication of a row or column vector with 
+   * each row of a matrix along the row axis.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} vector - The row or column 
+   * vector to be multiplied with each row of the matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether 
+   * the vector should be treated as a row or column vector.
+   * @returns {MatrixType | NumericMatrix} The result of pointwise multiplication.
+   * @throws {Error} Throws an error if the input matrix or vector is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter(
+      "pointwiseMultiplyVectorWithMatrixByRowAxis",
+    ),
+  )
+  public static pointwiseMultiplyVectorWithMatrixByRowAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ) {
+    const modeExtension = mode === "column"
+      ? "multiplyColVectorToMatrixByRowAxis"
+      : "multiplyRowVectorToMatrixByRowAxis";
+    const dim = Matrix.dimensions(matrix);
     return models.ApplyVectorOperationToMatrix(
       matrix,
       vector,
