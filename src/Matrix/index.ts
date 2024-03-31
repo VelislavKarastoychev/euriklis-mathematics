@@ -2637,7 +2637,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x rows).
    * If mode is "column", returns a column vector (rows x 1).
    * @returns {MatrixType | NumericMatrix} The result of summing each row or column elements.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfRowElements(
@@ -2658,7 +2658,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x rows) excluding diagonal elements.
    * If mode is "column", returns a column vector (rows x 1) excluding diagonal elements.
    * @returns {MatrixType | NumericMatrix} The result of summation.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfRowElementsExceptDiagonal(
@@ -2680,7 +2680,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x columns).
    * If mode is "column", returns a column vector (columns x 1).
    * @returns {MatrixType | NumericMatrix} The result of summing each column.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfColumnElements(
@@ -2700,7 +2700,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x columns).
    * If mode is "column", returns a column vector (columns x 1).
    * @returns {MatrixType | NumericMatrix} The result of summing each column excluding the diagonal elements.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfColumnElementsExceptDiagonal(
@@ -2722,7 +2722,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x rows) containing the absolute sum of each row.
    * If mode is "column", returns a column vector (rows x 1) containing the absolute sum of each column.
    * @returns {MatrixType | NumericMatrix} The result of summing the absolute values of each row.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfRowElements(
@@ -2744,7 +2744,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x rows) containing the absolute sum of each row.
    * If mode is "column", returns a column vector (rows x 1) containing the absolute sum of each column.
    * @returns {MatrixType | NumericMatrix} The result.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfRowElementsExceptDiagonal(
@@ -2766,7 +2766,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x columns) containing the absolute sum of each column.
    * If mode is "column", returns a column vector (columns x 1) containing the absolute sum of each row.
    * @returns {MatrixType | NumericMatrix} The result of summing the absolute values of each column.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfColumnElements(
@@ -2788,7 +2788,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x columns).
    * If mode is "column", returns a column vector (columns x 1).
    * @returns {MatrixType | NumericMatrix} The result
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static absoluteSumOfColumnElementsExceptDiagonal(
@@ -2810,7 +2810,7 @@ export class Matrix {
    * If mode is "row", returns a row vector (1 x rows).
    * If mode is "column", returns a column vector (rows x 1).
    * @returns {MatrixType | NumericMatrix} The result of summing the squares of each row.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfSquaresOfRowElements(
@@ -2824,6 +2824,15 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Calculates the sum of squares of elements in each column of a matrix.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether 
+   * the output should be a row or column vector.
+   * @returns {MatrixType | NumericMatrix} The result of summing squares of each column.
+   * @throws {Error} if the input matrix is incorrectly defined.
+   */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfSquaresOfColumnElements(
     matrix: MatrixType | NumericMatrix,
@@ -2845,7 +2854,7 @@ export class Matrix {
    * If mode is "column", returns a column vector (columns x 1).
    * @returns {MatrixType | NumericMatrix} The result of summing the squares of each row,
    * excluding diagonal elements.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfSquaresOfRowElementsExceptDiagonal(
@@ -2869,7 +2878,7 @@ export class Matrix {
    * If mode is "column", returns a column vector (rows x 1).
    * @returns {MatrixType | NumericMatrix} The result of summing the squares
    * of each column's elements excluding diagonal elements.
-   * @throws {Error} Throws an error if the input matrix is incorrectly defined.
+   * @throws {Error} if the input matrix is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static sumOfSquaresOfColumnElementsExceptDiagonal(
@@ -2895,7 +2904,7 @@ export class Matrix {
    * If mode is "column", the vector is treated as a column vector.
    * @returns {MatrixType | NumericMatrix} The matrix resulting from adding the
    * vector to each column.
-   * @throws {Error} Throws an error if the input matrix or vector is incorrectly
+   * @throws {Error} if the input matrix or vector is incorrectly
    * defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
@@ -2933,7 +2942,7 @@ export class Matrix {
    * If mode is "column", the vector is treated as a column vector.
    * @returns {MatrixType | NumericMatrix} The matrix resulting from subtracting the
    * vector from each column.
-   * @throws {Error} Throws an error if the input matrix or vector is incorrectly defined.
+   * @throws {Error} if the input matrix or vector is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotVectorOrHasInappropriateSizeThrow(
@@ -2959,16 +2968,16 @@ export class Matrix {
   }
 
   /**
-   * Performs pointwise multiplication of a row or column vector with 
+   * Performs pointwise multiplication of a row or column vector with
    * each row of a matrix along the row axis.
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
-   * @param {MatrixType | NumericMatrix} vector - The row or column 
+   * @param {MatrixType | NumericMatrix} vector - The row or column
    * vector to be multiplied with each row of the matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
-   * @param {"row" | "column"} [mode="row"] - The mode specifying whether 
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether
    * the vector should be treated as a row or column vector.
    * @returns {MatrixType | NumericMatrix} The result of pointwise multiplication.
-   * @throws {Error} Throws an error if the input matrix or vector is incorrectly defined.
+   * @throws {Error} if the input matrix or vector is incorrectly defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotVectorOrHasInappropriateSizeThrow(
@@ -2976,15 +2985,49 @@ export class Matrix {
       "pointwiseMultiplyVectorWithMatrixByRowAxis",
     ),
   )
-  public static pointwiseMultiplyVectorWithMatrixByRowAxis(
+  public static pointwiseMultiplyMatrixWithVectorByRowAxis(
     matrix: MatrixType | NumericMatrix,
     vector: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     mode: "row" | "column" = "row",
-  ) {
+  ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column"
       ? "multiplyColVectorToMatrixByRowAxis"
       : "multiplyRowVectorToMatrixByRowAxis";
+    const dim = Matrix.dimensions(matrix);
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  /**
+   * Performs pointwise division of each row of a matrix by a
+   * row or column vector along the row axis.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} vector - The row or column vector used for division.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the vector should
+   * be treated as a row or column vector.
+   * @returns {MatrixType | NumericMatrix} The result of pointwise division.
+   * @throws {Error} if the input matrix or vector is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter("pointwiseDivideMatrixWithVectorByRowAxis"),
+  )
+  public static pointwiseDivideMatrixWithVectorByRowAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "divideColVectorToMatrixByRowAxis"
+      : "divideRowVectorToMatrixByRowAxis";
     const dim = Matrix.dimensions(matrix);
     return models.ApplyVectorOperationToMatrix(
       matrix,
