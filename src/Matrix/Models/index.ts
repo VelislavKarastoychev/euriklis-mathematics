@@ -51,4 +51,5 @@ export {
   AddVectorToDiagonal,
 } from "./AddToDiagonal";
 export { GershgorinCircles } from "./GershgorinCircles";
-export { MatrixMapReduce } from "./MatrixMapReduce"
+export { MatrixMapReduce } from "./MatrixMapReduce";
+export { ApplyVectorOperationToMatrix } from "./ApplyVectorOperationToMatrix";
