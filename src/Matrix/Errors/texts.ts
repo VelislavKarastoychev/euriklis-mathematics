@@ -82,4 +82,7 @@ export const IncorrectRowVectorInAddToDiagonalTxt =
   "Incorrect row vector parameter in addRowVectorToDiagonal method. A row vector is in fact a MatrixType or NumericMatrix with rows (length) 1 and columns (matrix[0].length) equals to the min of the matrix rows or columns.";
 export const IncorrectColumnVectorInAddToDiagonalTxt =
   "Incorrect column vector parameter in the addColumnVectorToDiagonal method. Note that the 'v' parameter has to be a column vector (MatrixType or NumericMatrix with inner length 1) with size equal to the min(r, c), where the r and c are the rows and the columns of the matrix.";
-export const IncorrectNumberParameterInAddNumberToDiagonalTxt = "Incorrectly inserted number parameter in the addNumberToDiagonal.The type of the second parameter of the method has to be a number.";
+export const IncorrectNumberParameterInAddNumberToDiagonalTxt =
+  "Incorrectly inserted number parameter in the addNumberToDiagonal.The type of the second parameter of the method has to be a number.";
+export const IncorrectVectorParameterTxt = (methodName: string): string =>
+  `Incorrect vector parameter in ${methodName} method.`;
