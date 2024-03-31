@@ -13,15 +13,15 @@ const multiplyVector2MatrixByRowAxis = r1.map((row: number[], i: Integer) => {
 const callMultiplyVectorToMatrix = (
   m: MatrixType | NumericMatrix,
   v: MatrixType | NumericMatrix,
-) => Matrix.pointwiseMultiplyVectorWithMatrixByRowAxis(m, v);
+) => Matrix.pointwiseMultiplyMatrixWithVectorByRowAxis(m, v);
 new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(
-      Matrix.pointwiseMultiplyVectorWithMatrixByRowAxis(r1, v),
+      Matrix.pointwiseMultiplyMatrixWithVectorByRowAxis(r1, v),
       multiplyVector2MatrixByRowAxis,
     ),
   ) <= 1e-8,
-).describe("The poitwiseMultiplyVectorWithMatrixByRowAxis method has to:")
+).describe("The poitwiseMultiplyMatrixWithVectorByRowAxis method has to:")
   .test({ title: true, success: "green", error: "red" })
   .isSame(true)
   .describe(
@@ -32,7 +32,7 @@ new validator(
 new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(
-      Matrix.pointwiseMultiplyVectorWithMatrixByRowAxis(r1, v1, undefined, "column"),
+      Matrix.pointwiseMultiplyMatrixWithVectorByRowAxis(r1, v1, undefined, "column"),
       multiplyVector2MatrixByRowAxis,
     ),
   ) <= 1e-8,
