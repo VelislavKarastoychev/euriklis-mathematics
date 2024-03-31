@@ -10,7 +10,7 @@ import {
 } from "../types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor";
 
-const arithmeticalOperationsForColVector = (
+const arithmeticalOperationsForColVectorByRowAxis = (
   operator: ArithmeticOperatorSymbol,
 ) => ({
   init: "",
@@ -22,7 +22,7 @@ const arithmeticalOperationsForColVector = (
   colAccumulator: "return accum1;",
 });
 
-const arithmeticalOperationsForRowVector = (
+const arithmeticalOperationsForRowVectorByRowAxis = (
   operator: ArithmeticOperatorSymbol,
 ) => ({
   init: "",
@@ -46,21 +46,21 @@ const GenerateVectorToMatrixExpressions = (
 } => {
   switch (operation) {
     case "addRowVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForRowVector("+");
+      return arithmeticalOperationsForRowVectorByRowAxis("+");
     case "addColVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForColVector("+");
-    case "subtractRowVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForRowVector("-");
-    case "subtractColVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForColVector("-");
+      return arithmeticalOperationsForColVectorByRowAxis("+");
+    case "subtractRowVectorFromMatrixByRowAxis":
+      return arithmeticalOperationsForRowVectorByRowAxis("-");
+    case "subtractColVectorFromMatrixByRowAxis":
+      return arithmeticalOperationsForColVectorByRowAxis("-");
     case "multiplyRowVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForRowVector("*");
+      return arithmeticalOperationsForRowVectorByRowAxis("*");
     case "multiplyColVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForColVector("*");
+      return arithmeticalOperationsForColVectorByRowAxis("*");
     case "divideRowVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForRowVector("/");
+      return arithmeticalOperationsForRowVectorByRowAxis("/");
     case "divideColVectorToMatrixByRowAxis":
-      return arithmeticalOperationsForColVector("/");
+      return arithmeticalOperationsForColVectorByRowAxis("/");
   }
 };
 
