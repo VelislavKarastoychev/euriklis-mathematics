@@ -3075,17 +3075,17 @@ export class Matrix {
   }
 
   /**
-   * Performs a pointwise multiplication of a matrix with a row or column 
+   * Performs a pointwise multiplication of a matrix with a row or column
    * vector along the column axis.
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
-   * @param {MatrixType | NumericMatrix} vector - The vector to be pointwise 
+   * @param {MatrixType | NumericMatrix} vector - The vector to be pointwise
    * multiplied with each column of the matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
-   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the 
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the
    * vector is a row or column vector.
-   * @returns {MatrixType | NumericMatrix} The result of the pointwise 
+   * @returns {MatrixType | NumericMatrix} The result of the pointwise
    * multiplication along the column axis.
-   * @throws {Error} if the input matrix or vector is incorrectly 
+   * @throws {Error} if the input matrix or vector is incorrectly
    * defined or if the vector size is inappropriate for the operation.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
@@ -3139,6 +3139,46 @@ export class Matrix {
       ? "divideColVectorToMatrixByRowAxis"
       : "divideRowVectorToMatrixByRowAxis";
     const dim = Matrix.dimensions(matrix);
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  /**
+   * Performs a pointwise division of a matrix with a row or
+   * column vector along the column axis.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} vector - The vector to be
+   * pointwise divided with each column of the matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode specifying
+   * whether the vector is a row or column vector.
+   * @returns {MatrixType | NumericMatrix} The result of the pointwise
+   * division along the column axis.
+   * @throws {Error} if the input matrix or vector is incorrectly
+   * defined or if the vector size is inappropriate for the operation.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter(
+      "pointwiseDivideMatrixWithVectorByColumnAxis",
+    ),
+    "column",
+  )
+  public static pointwiseDivideMatrixWithVectorByColumnAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const dim = Matrix.dimensions(matrix);
+    const modeExtension = mode === "column"
+      ? "divideColVectorToMatrixByColAxis"
+      : "divideRowVectorToMatrixByColAxis";
     return models.ApplyVectorOperationToMatrix(
       matrix,
       vector,
