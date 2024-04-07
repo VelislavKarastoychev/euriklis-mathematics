@@ -2,13 +2,17 @@
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
+import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 
 (async () => {
   const r1 = Matrix.uniqueRandom(...dimensions);
   const r2 = Matrix.copy(r1);
   const v1 = Matrix.uniqueRandom(1, dimensions[1]);
   const v2 = Matrix.transpose(v1);
-  const pointwiseMultiplyMatrixWithVectorByColumnAxisInRowMode = (m, v) =>
+  const pointwiseMultiplyMatrixWithVectorByColumnAxisInRowMode = (
+    m: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ) =>
     numeric.pointwise2(
       ["v", "x[i]"],
       "xi = x[i];\n" +
@@ -19,7 +23,10 @@ import { dimensions, startPerformanceTest } from "./utils";
       "v = v[0];let j, reti;const [_, cols] = numeric.dim(x);",
     )(v, m);
 
-  const pointwiseMultiplyMatrixWithVectorByColumnAxisInColumnMode = (m, v) =>
+  const pointwiseMultiplyMatrixWithVectorByColumnAxisInColumnMode = (
+    m: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ) =>
     numeric.pointwise2(
       ["v[i]", "x[i]"],
       "xi = x[i];\n" +
