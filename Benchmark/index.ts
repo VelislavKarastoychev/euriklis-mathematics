@@ -105,4 +105,5 @@
 // import "./pointwise-multiply-vector-with-matrix-by-row-axis.spec";
 // import "./pointwise-divide-matrix-with-vector-by-row-axis.spec";
 // import "./add-vector-to-matrix-by-column-axis.spec";
-import "./subtract-vector-from-matrix-by-column-axis.spec";
+// import "./subtract-vector-from-matrix-by-column-axis.spec";
+import "./pointwise-multiply-matrix-with-vector-by-column-axis.spec";
