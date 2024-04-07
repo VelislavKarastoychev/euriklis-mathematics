@@ -33,6 +33,30 @@ const arithmeticalOperationsForRowVectorByRowAxis = (
   rowAccumulator: "return accum;",
   colAccumulator: "return accum1;",
 });
+
+const arithmeticalOperationsForRowVectorByColAxis = (
+  operator: ArithmeticOperatorSymbol,
+) => ({
+  init: "",
+  rowInit: "v = v[0];const accum = new Array(n);",
+  colInit: "const accum1 = new typedArray(n)",
+  rowSetup: "accum[i] = ai;",
+  colSetup: `accum1[i] = aij ${operator} v[i];`,
+  rowAccumulator: "return accum;",
+  colAccumulator: "return accum1;",
+});
+
+const arithmeticalOperationsForColVectorByColAxis = (
+  operator: ArithmeticOperatorSymbol
+) => ({
+  init: "",
+  rowInit: "const accum = new Array(n);",
+  colInit: "const accum1 = new typedArray(n)",
+  rowSetup: "accum[i] = ai;",
+  colSetup: `accum1[i] = aij ${operator} v[i][0];`,
+  rowAccumulator: "return accum;",
+  colAccumulator: "return accum1;",
+})
 const GenerateVectorToMatrixExpressions = (
   operation: VectorToMatrixOperation,
 ): {
@@ -49,18 +73,34 @@ const GenerateVectorToMatrixExpressions = (
       return arithmeticalOperationsForRowVectorByRowAxis("+");
     case "addColVectorToMatrixByRowAxis":
       return arithmeticalOperationsForColVectorByRowAxis("+");
+    case "addRowVectorToMatrixByColAxis":
+      return arithmeticalOperationsForRowVectorByColAxis("+");
+    case "addColVectorToMatrixByColAxis":
+      return arithmeticalOperationsForColVectorByColAxis("+");
     case "subtractRowVectorFromMatrixByRowAxis":
       return arithmeticalOperationsForRowVectorByRowAxis("-");
     case "subtractColVectorFromMatrixByRowAxis":
       return arithmeticalOperationsForColVectorByRowAxis("-");
+    case "subtractRowVectorFromMatrixByColAxis":
+      return arithmeticalOperationsForRowVectorByColAxis("-");
+    case "subtractColVectorFromMatrixByColAxis":
+      return arithmeticalOperationsForColVectorByColAxis("-");
     case "multiplyRowVectorToMatrixByRowAxis":
       return arithmeticalOperationsForRowVectorByRowAxis("*");
     case "multiplyColVectorToMatrixByRowAxis":
       return arithmeticalOperationsForColVectorByRowAxis("*");
+    case "multiplyRowVectorToMatrixByColAxis":
+      return arithmeticalOperationsForRowVectorByColAxis("*");
+    case "multiplyColVectorToMatrixByColAxis":
+      return arithmeticalOperationsForColVectorByColAxis("*");
     case "divideRowVectorToMatrixByRowAxis":
       return arithmeticalOperationsForRowVectorByRowAxis("/");
     case "divideColVectorToMatrixByRowAxis":
       return arithmeticalOperationsForColVectorByRowAxis("/");
+    case "divideRowVectorToMatrixByColAxis":
+      return arithmeticalOperationsForRowVectorByColAxis("/");
+    case "divideColVectorToMatrixByColAxis":
+      return arithmeticalOperationsForColVectorByColAxis("/");
   }
 };
 
