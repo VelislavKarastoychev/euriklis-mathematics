@@ -2828,7 +2828,7 @@ export class Matrix {
    * Calculates the sum of squares of elements in each column of a matrix.
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
-   * @param {"row" | "column"} [mode="row"] - The mode specifying whether 
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether
    * the output should be a row or column vector.
    * @returns {MatrixType | NumericMatrix} The result of summing squares of each column.
    * @throws {Error} if the input matrix is incorrectly defined.
@@ -2921,6 +2921,76 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "addColVectorToMatrixByRowAxis"
       : "addRowVectorToMatrixByRowAxis";
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  /**
+   * Adds a row or column vector to each column of a matrix (along the column axis).
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} vector - The vector to add to each column.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the vector
+   * is a row or column vector.
+   * @returns {MatrixType | NumericMatrix} The result of adding the vector to each
+   * column of the matrix.
+   * @throws {Error} Throws an error if the input matrix or vector is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter("addVectorToMatrixByColumnAxis"),
+    "column"
+  )
+  public static addVectorToMatrixByColumnAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const dim = Matrix.dimensions(matrix);
+    const modeExtension = mode === "column"
+      ? "addColVectorToMatrixByColAxis"
+      : "addRowVectorToMatrixByColAxis";
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  /**
+   * Subtracts a row or column vector from each column of a matrix (along the column axis).
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} vector - The vector to subtract from each column.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
+   * @param {"row" | "column"} [mode="row"] - The mode specifying whether the vector is a
+   * row or column vector.
+   * @returns {MatrixType | NumericMatrix} The result of subtracting the vector from each
+   * column of the matrix.
+   * @throws {Error} Throws an error if the input matrix or vector is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter("subtractVectorToMatrixByColumnAxis"),
+    "column"
+  )
+  public static subtractVectorFromMatrixByColumnAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const dim = Matrix.dimensions(matrix);
+    const modeExtension = mode === "column"
+      ? "subtractColVectorFromMatrixByColAxis"
+      : "subtractRowVectorFromMatrixByColAxis";
     return models.ApplyVectorOperationToMatrix(
       matrix,
       vector,
