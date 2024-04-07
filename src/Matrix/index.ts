@@ -2944,7 +2944,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotVectorOrHasInappropriateSizeThrow(
     errors.IncorrectVectorParameter("addVectorToMatrixByColumnAxis"),
-    "column"
+    "column",
   )
   public static addVectorToMatrixByColumnAxis(
     matrix: MatrixType | NumericMatrix,
@@ -2979,7 +2979,7 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   @ifIsNotVectorOrHasInappropriateSizeThrow(
     errors.IncorrectVectorParameter("subtractVectorToMatrixByColumnAxis"),
-    "column"
+    "column",
   )
   public static subtractVectorFromMatrixByColumnAxis(
     matrix: MatrixType | NumericMatrix,
@@ -3065,6 +3065,32 @@ export class Matrix {
       ? "multiplyColVectorToMatrixByRowAxis"
       : "multiplyRowVectorToMatrixByRowAxis";
     const dim = Matrix.dimensions(matrix);
+    return models.ApplyVectorOperationToMatrix(
+      matrix,
+      vector,
+      type,
+      dim,
+      modeExtension,
+    );
+  }
+
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorOrHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameter(
+      "pointwiseMultiplyMatrixWithVectorByColumnAxis",
+    ),
+    "column",
+  )
+  public static pointwiseMultiplyMatrixWithVectorByColumnAxis(
+    matrix: MatrixType | NumericMatrix,
+    vector: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const dim = Matrix.dimensions(matrix);
+    const modeExtension = mode === "column"
+      ? "multiplyColVectorToMatrixByColAxis"
+      : "multiplyRowVectorToMatrixByColAxis";
     return models.ApplyVectorOperationToMatrix(
       matrix,
       vector,
