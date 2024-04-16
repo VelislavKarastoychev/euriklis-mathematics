@@ -47,7 +47,7 @@
 // import "./product-of-all-elements.spec.ts";
 // import "./sum-of-squares-of-all-elements.spec.ts";
 // import "./sum-of-cubes-of-all-elements.spec.ts";
-import "./plus.spec.ts";
+// import "./plus.spec.ts";
 // import "./minus.spec.ts";
 // import "./power.spec.ts";
 // import "./Hadamard.spec.ts";
@@ -107,4 +107,7 @@ import "./plus.spec.ts";
 // import "./add-vector-to-matrix-by-column-axis.spec";
 // import "./subtract-vector-from-matrix-by-column-axis.spec";
 // import "./pointwise-multiply-matrix-with-vector-by-column-axis.spec";
-import "./pointwise-divide-matrix-with-vector-by-column-axis.spec";
+// import "./pointwise-divide-matrix-with-vector-by-column-axis.spec";
+// import "./set-diagonal-to-number.spec";
+// import "./set-diagonal-to-row-vector.spec";
+// import "./set-diagonal-to-column-vector.spec";
