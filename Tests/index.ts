@@ -110,4 +110,8 @@ import "./add-vector-to-matrix-by-column-axis.spec";
 import "./subtract-vector-from-matrix-by-column-axis.spec";
 import "./pointwise-multiply-matrix-with-vector-by-column-axis.spec";
 import "./pointwise-divide-matrix-with-vector-by-column-axis.spec";
+import "./set-diagonal-to-number.spec";
+import "./set-diagonal-to-row-vector.spec";
+import "./set-diagonal-to-column-vector.spec";
 import "./stack.spec";
+
