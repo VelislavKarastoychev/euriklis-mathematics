@@ -27,3 +27,4 @@ export { ifIsNotRowVectorOrHasInappropriateSizeThrow } from "./IfIsNotRowVectorO
 export { ifColumnVectorHasInappropriateSizeThrow } from "./IfColumnVectorHasInappropriateSizeThrow";
 export { ifIsNotNumberThrow } from "./IfIsNotNumberThrow";
 export { ifIsNotVectorOrHasInappropriateSizeThrow } from "./IfIsNotVectorOrHasInappropriateSizeThrow"
+export { ifIsNotVectorWithAppropriateSizeThrow } from "./IfIsNotVectorWithAppropriateSizeThrow";
