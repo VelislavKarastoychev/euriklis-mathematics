@@ -17,6 +17,7 @@ import {
   ifIsNotRowVectorOrHasInappropriateSizeThrow,
   ifIsNotSquareMatrixThrow,
   ifIsNotVectorOrHasInappropriateSizeThrow,
+  ifIsNotVectorWithAppropriateSizeThrow,
   ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow,
   ifRowParameterIsInappropriatelyDefinedThrow,
   ifRowsAndColumnsAreInappropriatelyDefinedThrow,
@@ -2557,6 +2558,62 @@ export class Matrix {
       weight,
       bias,
     );
+  }
+
+  /**
+   * Sets the diagonal elements of a matrix to a specified number.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {number} n - The number to set as the diagonal element.
+   * @returns {MatrixType | NumericMatrix} The matrix with diagonal elements set to the specified number.
+   * @throws {Error} if the input matrix is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotNumberThrow(errors.IncorrectVectorParameter("setDiagonalToNumber"), 1)
+  public static setDiagonalToNumber(
+    matrix: MatrixType | NumericMatrix,
+    n: number,
+  ): MatrixType | NumericMatrix {
+    return models.SetMatrixDiagonal(matrix, n);
+  }
+
+  /**
+   * Sets the diagonal elements of a matrix to the corresponding elements of a row vector.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} v - The row vector to set as the diagonal elements.
+   * @returns {MatrixType | NumericMatrix} The matrix with diagonal elements set to the row vector.
+   * @throws {Error} if the input matrix is incorrectly defined.
+   * @throws {Error} if the input vector is incorrectly defined
+   * as not a vector or has inappropriate size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorWithAppropriateSizeThrow(
+    errors.IncorrectVectorParameter("setDiagonalToRowVector"),
+  )
+  public static setDiagonalToRowVector(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.SetMatrixDiagonal(matrix, v);
+  }
+
+  /**
+   * Sets the diagonal elements of a matrix to the corresponding elements of a column vector.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {MatrixType | NumericMatrix} v - The column vector to set as the diagonal elements.
+   * @returns {MatrixType | NumericMatrix} The matrix with diagonal elements set to the column vector.
+   * @throws {Error} if the input matrix is incorrectly defined.
+   * @throws {Error} if the input vector is incorrectly defined as
+   * not a vector or has inappropriate size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotVectorWithAppropriateSizeThrow(
+    errors.IncorrectVectorParameter("setDiagonalToColumnVector"),
+  )
+  public static setDiagonalToColumnVector(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.SetMatrixDiagonal(matrix, v);
   }
 
   /**
