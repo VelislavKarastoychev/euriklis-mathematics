@@ -53,3 +53,4 @@ export {
 export { GershgorinCircles } from "./GershgorinCircles";
 export { MatrixMapReduce } from "./MatrixMapReduce";
 export { ApplyVectorOperationToMatrix } from "./ApplyVectorOperationToMatrix";
+export { SetMatrixDiagonal } from "./SetMatrixDiagonal";
