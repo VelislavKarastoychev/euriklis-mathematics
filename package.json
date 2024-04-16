@@ -24,6 +24,8 @@
   },
   "dependencies": {
     "@euriklis/validator-ts": "^1.0.0",
+    "@tensorflow/tfjs": "^4.17.0",
+    "@tensorflow/tfjs-node": "^4.17.0",
     "numericjs": "^1.2.6"
   }
 }
