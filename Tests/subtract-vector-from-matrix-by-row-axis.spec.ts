@@ -12,8 +12,8 @@ const r1 = Matrix.uniqueRandom(7, 9);
 const r2 = Matrix.copy(r1, "generic") as NumericMatrix;
 const v1 = Matrix.uniqueRandom(1, 7);
 const v2 = Matrix.transpose(v1);
-let subtractRowVectorFromMatrixByRowAxis = [];
-let subtractColVectorFromMatrixByRowAxis = [];
+let subtractRowVectorFromMatrixByRowAxis: number[][] | number[] = [];
+let subtractColVectorFromMatrixByRowAxis: number[][] = [];
 
 r2.forEach((row: number[], i: Integer) => {
   subtractRowVectorFromMatrixByRowAxis[i] = row.map((item: number) => {
@@ -34,7 +34,7 @@ new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(
       Matrix.subtractVectorFromMatrixByRowAxis(r1, v1),
-      subtractRowVectorFromMatrixByRowAxis,
+      subtractRowVectorFromMatrixByRowAxis as number[][],
     ),
   ) <= 1e-8,
 ).describe("The subtractVectorFromMatrixByRowAxis method has to:")
