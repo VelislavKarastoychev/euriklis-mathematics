@@ -5,8 +5,8 @@ import { Matrix } from "../src";
 
 const r1 = Matrix.uniqueRandom(7, 9);
 const r2 = Matrix.copy(r1, "generic") as NumericMatrix;
-let sumOfSquaresOfColumnElementsExceptDiagonalAsRow = [];
-let sumOfSquaresOfColumnElementsExceptDiagonalAsColumn = [];
+let sumOfSquaresOfColumnElementsExceptDiagonalAsRow: number[] | number[][] = [];
+let sumOfSquaresOfColumnElementsExceptDiagonalAsColumn: number[][] = [];
 
 r2.forEach((row: number[], i: Integer) => {
   row.forEach((item: number, j: Integer) => {
@@ -15,12 +15,12 @@ r2.forEach((row: number[], i: Integer) => {
       sumOfSquaresOfColumnElementsExceptDiagonalAsColumn[j] = [0];
     }
     const square = +(i !== j) * item * item;
-    sumOfSquaresOfColumnElementsExceptDiagonalAsRow[j] += square;
+    (sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[])[j] += square;
     sumOfSquaresOfColumnElementsExceptDiagonalAsColumn[j][0] += square;
   });
 });
-sumOfSquaresOfColumnElementsExceptDiagonalAsRow = [
-  sumOfSquaresOfColumnElementsExceptDiagonalAsRow,
+(sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[][]) = [
+  sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[]
 ];
 const callSumOfSquaresOfColumnElementsExceptDiagonal = (
   m: MatrixType | NumericMatrix,
@@ -29,7 +29,7 @@ new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(
       Matrix.sumOfSquaresOfColumnElementsExceptDiagonal(r1),
-      sumOfSquaresOfColumnElementsExceptDiagonalAsRow,
+      sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[][],
     ),
   ) <= 1e-8,
 ).describe("The sumOfSquaresOfColumnElementsExceptDiagonal method has to:")
