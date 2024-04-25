@@ -5,19 +5,19 @@ import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
 
 const r1 = Matrix.uniqueRandom(7, 9);
 const r2 = Matrix.copy(r1, "generic") as NumericMatrix;
-let sumOfSquaresOfColumnElementsAsRow = [];
-let sumOfSquaresOfColumnElementsAsColumn = [];
+let sumOfSquaresOfColumnElementsAsRow: number[][] | number[] = [];
+let sumOfSquaresOfColumnElementsAsColumn: number[][] = [];
 r2.forEach((row: number[], i: Integer) => {
   row.forEach((item: number, j: Integer) => {
     if (!i) {
       sumOfSquaresOfColumnElementsAsRow[j] = 0;
       sumOfSquaresOfColumnElementsAsColumn[j] = [0];
     }
-    sumOfSquaresOfColumnElementsAsRow[j] += item * item;
+    (sumOfSquaresOfColumnElementsAsRow as number[])[j] += item * item;
     sumOfSquaresOfColumnElementsAsColumn[j][0] += item * item;
   });
 });
-sumOfSquaresOfColumnElementsAsRow = [sumOfSquaresOfColumnElementsAsRow];
+sumOfSquaresOfColumnElementsAsRow = [sumOfSquaresOfColumnElementsAsRow as number[]];
 const callSumOfSquaresOfColumnElements = (m: MatrixType | NumericMatrix) =>
   Matrix.sumOfSquaresOfColumnElements(m);
 new validator(
