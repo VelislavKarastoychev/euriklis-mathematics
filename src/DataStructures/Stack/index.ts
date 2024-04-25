@@ -12,8 +12,8 @@ import { ifIsNotArrayThrow } from "../Decorators";
  * If the top element is null, then the Stack is empty.
  */
 export class Stack {
-  private _top: DataNode = null;
-  private _size: number = 0;
+  private _top: DataNode | null = null;
+  private _size: Integer = 0;
   /**
    * @param {any} data - The data which will be staored
    * in the Stack data structure.
@@ -22,7 +22,6 @@ export class Stack {
     this.push(data);
   }
 
-
   /**
    * Gets the last element of the stack but
    * does not deletes it from the stack.
@@ -30,7 +29,7 @@ export class Stack {
    * the stack without deletion.
    */
   get top(): any {
-    return this._top.data;
+    return (this._top as DataNode).data;
   }
 
   /**
@@ -45,7 +44,7 @@ export class Stack {
       if (this._top) {
         const dn = new DataNode(data);
         dn.prev = this._top;
-        this._top.next = dn;
+        (this._top as DataNode).next = dn;
         this._top = dn;
       } else this._top = new DataNode(data);
     }
@@ -57,10 +56,10 @@ export class Stack {
    * Pushes many items to the Stack.
    */
   @ifIsNotArrayThrow(errors.IncorrectParameterInPushMany)
-  pushMany (items: any[]): void {
+  pushMany(items: any[]): void {
     const n: Integer = items.length;
     let i: Integer;
-    for (i = 0;i < n;i++) this.push(items[i]);
+    for (i = 0; i < n; i++) this.push(items[i]);
   }
 
   /**
@@ -74,13 +73,13 @@ export class Stack {
     if (this._size) {
       this._size--;
       if (!this._size) {
-        data = this._top.data;
+        data = (this._top as DataNode).data;
         this._top = null;
         return data;
       }
-      data = this._top.data;
-      this._top = this._top.prev;
-      this._top.next = null;
+      data = (this._top as DataNode).data;
+      this._top = (this._top as DataNode).prev;
+      (this._top as DataNode).next = null;
       return data;
     }
   }
@@ -88,7 +87,7 @@ export class Stack {
   get size() {
     return this._size;
   }
-  
+
   /**
    * Creates a static list from the stack elements
    * and degenerate the stack.
@@ -96,8 +95,8 @@ export class Stack {
    */
   get list(): any[] {
     const list: any[] = [], n: Integer = this.size;
-    let i: Integer
-    for (i = n;i-- > 1;) {
+    let i: Integer;
+    for (i = n; i-- > 1;) {
       list[i--] = this.pop();
       list[i] = this.pop();
     }
@@ -106,7 +105,7 @@ export class Stack {
     return list;
   }
 
-  get isEmpty (): boolean {
+  get isEmpty(): boolean {
     return this.size === 0;
   }
 }
