@@ -30,6 +30,17 @@ export class DynamicStack {
   private _size: Integer = 0;
 
   /**
+   *
+   * Pros:
+   * - Dynamic resizing allows handling of varying data amounts efficiently.
+   * - Consistent performance across operations like pushMany and filter.
+   * - Versatile and suitable for scenarios with unpredictable stack sizes.
+   *
+   * Cons:
+   * - Potential for higher memory overhead due to dynamic resizing.
+   * - Slightly higher execution times for certain operations compared to a static stack.
+   *
+   *
    * Creates a new DynamicStack instance.
    * If initial data is provided, it is pushed onto the stack.
    * @param {any} data - The initial data to be stored in the stack (optional).
@@ -344,6 +355,17 @@ export class StaticStack {
   private _top: any[] = [];
 
   /**
+   *
+   * Pros:
+   * - Consistent performance for basic operations like push, pop, and append.
+   * - Efficient memory allocation due to fixed size.
+   * - Low overhead for small data sets.
+   *
+   * Cons:
+   * - Limited capacity; cannot resize dynamically.
+   * - Performance impact with large data sets, especially with pushMany and filter operations.
+   * - Less flexibility compared to a dynamically resizing stack.
+   *
    * Constructs a new instance of StaticStack.
    * If an initial element `d` is provided, it will be pushed onto the stack.
    * @param {any} d - Optional initial element to push onto the stack.
@@ -400,18 +422,12 @@ export class StaticStack {
   pushMany(data: any[]): StaticStack {
     const stack = this._top;
     const n = data.length;
-    let i: Integer, j: Integer;
-    for (i = 0; i < (n >> 2); i++) {
-      j = i << 2;
-      stack.push(data[j]);
-      stack.push(data[j + 1]);
-      stack.push(data[j + 2]);
-      stack.push(data[j + 3]);
+    let i: Integer, k: Integer = stack.length;
+    for (i = n; i-- > 1;) {
+      stack[k + i] = data[i--];
+      stack[k + i] = data[i];
     }
-
-    for (j = i << 2; j < n; j++) {
-      stack.push(data[j]);
-    }
+    if (i === 0) stack[k] = data[0];
 
     return this;
   }
@@ -421,8 +437,12 @@ export class StaticStack {
    * @returns {any} The element that was removed from the top of the stack.
    */
   pop(): any {
-    const d = this.top;
-    this._top.length--;
+    let d: any = null;
+    if (this.size) {
+      d = this.top;
+      this._top.length--;
+    }
+
     return d;
   }
 
@@ -496,17 +516,13 @@ export class StaticStack {
     const filteredStack = filtered._top;
     const n = this._top.length;
     const stack = this._top;
-    let i: Integer, j: Integer;
-    for (i = 0; i < n >> 2; i++) {
-      j = i << 2;
-      if (callback(stack[j], this)) filteredStack.push(stack[j]);
-      if (callback(stack[j + 1], this)) filteredStack.push(stack[j + 1]);
-      if (callback(stack[j + 2], this)) filteredStack.push(stack[j + 2]);
-      if (callback(stack[j + 3], this)) filteredStack.push(stack[j + 3]);
+    let i: Integer, k: Integer = 0;
+    for (i = 0;i < n - 1;i += 2) {
+      if (callback(stack[i], this)) filteredStack[k++] = stack[i];
+      if (callback(stack[i + 1], this)) filteredStack[k++] = stack[i + 1];
     }
-
-    for (j = i << 2; j < n; j++) {
-      if (callback(stack[j], this)) filteredStack.push(stack[j]);
+    if (i === n - 1) {
+      if (callback(stack[i], this)) filteredStack[k] = stack[i];
     }
 
     return filtered;
@@ -587,20 +603,14 @@ export class StaticStack {
     callback: (index: Integer, stack?: StaticStack) => any,
     size: Integer = 0,
   ): StaticStack {
-    let i: Integer, j: Integer;
+    let i: Integer;
     const n = this._top.length;
     const staticStackInstance = this._top;
-    for (i = 0; i < size >> 2; i++) {
-      j = i << 2;
-      staticStackInstance[n + j] = callback(j, this);
-      staticStackInstance[n + j + 1] = callback(j + 1, this);
-      staticStackInstance[n + j + 2] = callback(j + 2, this);
-      staticStackInstance[n + j + 3] = callback(j + 3, this);
+    for (i = size; i-- > 1;) {
+      staticStackInstance[n + i] = callback(i--, this);
+      staticStackInstance[n + i] = callback(i, this);
     }
-
-    for (j = i << 2; j < size; j++) {
-      staticStackInstance[j] = callback(j, this);
-    }
+    if (i === 0) staticStackInstance[n] = callback(0, this);
 
     return this;
   }

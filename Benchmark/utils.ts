@@ -42,7 +42,7 @@ export const startPerformanceTest = (
   new validator(condition).isSame(true)
     .on(true, (v) => {
       v.describe(
-        `Time performance of ${method} method for matrix with parameters: ${
+        `Time performance of ${method} method with parameters: ${
           paramsDescription(params)
         }`,
       )
@@ -63,7 +63,7 @@ export const startPerformanceTest = (
         );
         result[lib] = ti;
       }
-      console.table(result);
+      console.info(result);
     }).on(false, (v) => {
       v.describe(`Internal error in ${method} benchmark test method.`)
         .test({
