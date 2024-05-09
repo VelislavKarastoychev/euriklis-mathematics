@@ -1,5 +1,4 @@
 "use strict";
-
 // import "./zeros.spec.ts";
 // import "./identity-like.spec.ts";
 // import "./replicate.spec.ts";
@@ -110,4 +109,4 @@
 // import "./pointwise-divide-matrix-with-vector-by-column-axis.spec";
 // import "./set-diagonal-to-number.spec";
 // import "./set-diagonal-to-row-vector.spec";
-// import "./set-diagonal-to-column-vector.spec";
+import "./set-diagonal-to-column-vector.spec";

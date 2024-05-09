@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -21,16 +23,24 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
   const condition = Matrix.FrobeniusNorm(
     Matrix.minus(
       Matrix.setDiagonalToRowVector(r1, v1),
-      setDiagonalToRowVector(r2, v2)
-    )
+      setDiagonalToRowVector(r2, v2),
+    ),
   ) <= 1e-8;
   const euriklisTest = (m: any) => m.setDiagonalToRowVector(r1, v1);
   const numericTest = (_: any) => setDiagonalToRowVector(r1, v2);
   startPerformanceTest(
     "setDiagonalToRowVector",
-    [{param: "matrix", dimensions, type: "float64"}],
+    [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

@@ -1,2 +1,2 @@
 "use strict";
-export { Stack } from "./Stack";
+export { DynamicStack, StaticStack } from "./Stack";

@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -11,11 +13,28 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     Matrix.eq(m1, m2),
   );
   const test = (m: any) => m.eq(m1, m2);
+  const tfTest = (m: any) => m.equal(m1, m2)
   startPerformanceTest(
     "eq",
     [{ param: "matrices", dimensions, type: "float64" }],
     condition,
-    test,
-    test,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test
+      },
+      numericjs: {
+        instance: numeric,
+        test,
+      },
+      // tensorFlowjs: {
+      //   instance: tf,
+      //   test: tfTest
+      // },
+      // tensorFlowjsNode: {
+      //   instance: tfNode,
+      //   test: tfTest
+      // }
+    }
   );
 })();

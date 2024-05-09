@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -15,7 +17,15 @@ import { dimensions, startPerformanceTest } from "./utils";
     "bitwiseNegate",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

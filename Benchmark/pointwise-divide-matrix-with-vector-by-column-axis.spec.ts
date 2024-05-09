@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -71,15 +73,31 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
     "pointwiseDivideMatrixWithVectorByColumnAxis in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestInRowMode,
-    numericTestInRowMode,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestInRowMode,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestInRowMode,
+      },
+    },
   );
 
   startPerformanceTest(
     "pointwiseDivideMatrixWithVectorByColumnAxis in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestInColumnMode,
-    numericTestInColumnMode,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestInColumnMode,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestInColumnMode,
+      },
+    },
   );
 })();

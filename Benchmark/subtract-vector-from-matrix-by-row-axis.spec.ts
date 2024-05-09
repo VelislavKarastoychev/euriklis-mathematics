@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -50,14 +52,30 @@ import { dimensions, startPerformanceTest } from "./utils";
     "subtractVectorFromMatrixByRowAxis in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForRow,
-    numericTestForRow,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForRow,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForRow,
+      },
+    },
   );
   startPerformanceTest(
     "subtractVectorFromMatrixByRowAxis",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForCol,
-    numericTestForCol,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForCol,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForCol,
+      },
+    },
   );
 })();

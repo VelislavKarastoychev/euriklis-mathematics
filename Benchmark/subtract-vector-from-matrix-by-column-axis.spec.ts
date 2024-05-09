@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -43,7 +45,12 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
         ),
       ) <= 1e-8 && Matrix.FrobeniusNorm(
         Matrix.minus(
-          Matrix.subtractVectorFromMatrixByColumnAxis(r1, v2, undefined, "column"),
+          Matrix.subtractVectorFromMatrixByColumnAxis(
+            r1,
+            v2,
+            undefined,
+            "column",
+          ),
           subtractVectorFromMatrixByColumnAxisInColumnMode(r2, v2),
         ),
       ) <= 1e-8;
@@ -59,15 +66,31 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
     "subtractVectorFromMatrixByColumnAxis in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForRowMode,
-    numericTestForRowMode,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForRowMode,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForRowMode,
+      },
+    },
   );
 
   startPerformanceTest(
     "subtractVectorFromMatrixByColumnAxis in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForColumnMode,
-    numericTestForColumnMode,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForColumnMode,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForColumnMode,
+      },
+    },
   );
 })();

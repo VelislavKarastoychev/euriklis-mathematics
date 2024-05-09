@@ -1,8 +1,8 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
-import { NumericMatrix } from "../src/Matrix/types.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
@@ -13,11 +13,28 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     Matrix.copy(numeric.gt(m2, m1)),
   );
   const test = (m: any) => m.gt(m2, m1);
+  const tfTest = (m: any) => m.greater(m2, m1);
   startPerformanceTest(
     "gt",
     [{ param: "matrices", dimensions, type: "float64" }],
     condition,
-    test,
-    test,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test
+      },
+      numericjs: {
+        instance: numeric,
+        test
+      },
+      // tensorFlowjs: {
+      //   instance: tf,
+      //   test: tfTest
+      // },
+      // tensorFlowjsNode: {
+      //   instance: tfNode,
+      //   test: tfTest
+      // }
+    }
   );
 })();

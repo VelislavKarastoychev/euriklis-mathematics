@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -12,23 +14,23 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
   );
   const r2 = Matrix.copy(r1);
   const a1 = [
-    [0, 5, 22/3],
+    [0, 5, 22 / 3],
     [4, 2, 1],
-    [2, 7, 9]
+    [2, 7, 9],
   ];
   const a2 = Matrix.copy(a1, "generic");
   const lu = [
     [4, 2, 1],
     [0.5, 6, 8.5],
-    [0, (5/6), 0.25]
+    [0, 5 / 6, 0.25],
   ];
   const condition = Matrix.isEqualTo(
     Matrix.LUPC(a1).LU,
-    numeric.LU(a2).LU
+    numeric.LU(a2).LU,
   ) && Matrix.isEqualTo(
-      Matrix.LUPC(r1).LU,
-      numeric.LU(r2).LU
-    );
+    Matrix.LUPC(r1).LU,
+    numeric.LU(r2).LU,
+  );
   const euriklisTest = (m: any) => m.LUPC(r1);
   const numericTest = (m: any) => m.LU(r2);
   startPerformanceTest(
@@ -39,7 +41,15 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
       type: "float64",
     }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

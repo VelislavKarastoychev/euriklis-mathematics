@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -18,7 +20,15 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "getRow",
     [{ param: "matrix", dimensions, fromColumn: 0, toColumn: m.length }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest
+      }
+    }
   );
 })();

@@ -3,10 +3,12 @@ import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
 import { Integer } from "../src/Matrix/types.ts";
-type ParamsType = Array<{
-  param: string;
-  dimensions?: [number, number];
-} & {[key: string]: any}>;
+type ParamsType = Array<
+  {
+    param: string;
+    dimensions?: [number, number];
+  } & { [key: string]: any }
+>;
 const paramsDescription = (
   params: ParamsType,
 ) => {
@@ -29,9 +31,13 @@ export const startPerformanceTest = (
   method: string,
   params: ParamsType,
   condition: boolean,
-  euriklisTest: (v: any) => any,
-  numericTest: (v: any) => any,
-  iterations: Integer = 100
+  libraries: {
+    [library: string]: { instance: Object; test: (_: any) => any };
+  } = {
+    "@euriklis/mathematics": { instance: Matrix, test: (_: any) => {} },
+    "numericjs": { instance: numeric, test: (_: any) => {} },
+  },
+  iterations: Integer = 100,
 ) => {
   new validator(condition).isSame(true)
     .on(true, (v) => {
@@ -45,12 +51,19 @@ export const startPerformanceTest = (
           success: "green",
           error: "red",
         });
-      const t1 = new validator(Matrix).benchmark(euriklisTest, iterations);
-      const t2 = new validator(numeric).benchmark(numericTest, iterations);
-      console.table({
-        "@euriklis/mathematics": t1,
-        numericjs: t2,
-      });
+      let lib: string,
+        ti: { mean: number; std: number; iterations: Integer },
+        result: {
+          [library: string]: { mean: number; std: number; iterations: Integer };
+        } = {};
+      for (lib in libraries) {
+        ti = new validator(libraries[lib].instance).benchmark(
+          libraries[lib].test,
+          iterations,
+        );
+        result[lib] = ti;
+      }
+      console.table(result);
     }).on(false, (v) => {
       v.describe(`Internal error in ${method} benchmark test method.`)
         .test({

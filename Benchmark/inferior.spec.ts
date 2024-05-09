@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -14,7 +16,15 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "inferior",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest
+      }
+    }
   );
 })();

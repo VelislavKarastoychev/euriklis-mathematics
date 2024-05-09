@@ -1,5 +1,6 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -10,11 +11,28 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
   const condition = numeric.geq(m1, m2) && Matrix.isGreaterThanOrEqual(m1, m2);
   const euriklisTest = (m: any) => m.isGreaterThanOrEqual(m1, m2);
   const numericTest = (m: any) => m.geq(m2, m1);
+  const tfTest = (m: any) => m.greaterEqual(m2, m1);
   startPerformanceTest(
     "isGreaterThanOrEqual",
     [{ param: "matrices" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+      // tensorFlowjs: {
+      //   instance: tf,
+      //   test: tfTest
+      // },
+      // tensorFlowjsNode: {
+      //   instance: tfNode,
+      //   test: tfTest
+      // }
+    }
   );
 })();

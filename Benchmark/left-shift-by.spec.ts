@@ -15,7 +15,15 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "leftShiftBy",
     [{ param: "matrices", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

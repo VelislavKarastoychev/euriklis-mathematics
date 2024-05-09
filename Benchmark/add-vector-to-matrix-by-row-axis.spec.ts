@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
@@ -56,14 +58,30 @@ import { dimensions, startPerformanceTest } from "./utils";
     "addVectorToMatrixByRowAxis in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForRowVector,
-    numericTestForRowVector,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForRowVector,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForRowVector,
+      },
+    },
   );
   startPerformanceTest(
     "addVectorToMatrixByRowAxis in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForColVector,
-    numericTestForColVector,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForColVector,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForColVector,
+      },
+    },
   );
 })();

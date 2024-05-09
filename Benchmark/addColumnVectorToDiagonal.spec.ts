@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 import { Matrix } from "../src";
 import numeric from "numericjs";
@@ -30,7 +32,15 @@ import { dimensions, startPerformanceTest } from "./utils";
     "addColumnVectorToDiagonal",
     [{ param: "matrix", type: "float64", dimensions }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

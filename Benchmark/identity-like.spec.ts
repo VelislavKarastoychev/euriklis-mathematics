@@ -8,14 +8,24 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
   const identity = Matrix.identityLike(dimensions[0], dimensions[1]);
   const numericIdentity = numeric.identity(dimensions[0]);
   const condition = Matrix.isEqualTo(identity, numericIdentity);
-  const euriklisTest = (m) => m.identityLike(dimensions[0], dimensions[1]);
-  const numericTest = (m) => m.identity(dimensions[0]);
+  const euriklisTest = (m: any) => m.identityLike(dimensions[0], dimensions[1]);
+  const numericTest = (m: any) => m.identity(dimensions[0]);
+  const euriklisTestGeneric = (m: any) =>
+    m.identityLike(dimensions[0], dimensions[1], "generic");
   startPerformanceTest(
     "identitiLike and identity",
     [{ param: "matrix", dimensions, "type": "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      "numericjs": {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
   startPerformanceTest(
     "identityLike and identity",
@@ -24,7 +34,15 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
       Matrix.identityLike(41, 41, "generic"),
       numeric.identity(41),
     ),
-    (m) => m.identityLike(dimensions[0], dimensions[1], "generic"),
-    (m) => m.identity(dimensions[0]),
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestGeneric,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

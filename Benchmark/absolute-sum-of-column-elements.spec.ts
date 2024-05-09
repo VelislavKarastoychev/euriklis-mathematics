@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -42,15 +44,31 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
     "absoluteSumOfColumnElements in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestRowMode,
-    numericTestRowMode,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestRowMode,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestRowMode,
+      },
+    },
   );
 
   startPerformanceTest(
     "absoluteSumOfColumnElements in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestColumnMode,
-    numericTestColumnMode,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestColumnMode,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestColumnMode,
+      },
+    },
   );
 })();

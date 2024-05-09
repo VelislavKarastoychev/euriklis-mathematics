@@ -1,7 +1,9 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
-import {  MatrixType, NumericMatrix } from "../src/Matrix/types";
+import { MatrixType, NumericMatrix } from "../src/Matrix/types";
 import { dimensions, startPerformanceTest } from "./utils";
 (async () => {
   const r1 = Matrix.uniqueRandom(...dimensions);
@@ -40,7 +42,12 @@ import { dimensions, startPerformanceTest } from "./utils";
         ),
       ) <= 1e-8 && Matrix.FrobeniusNorm(
         Matrix.minus(
-          Matrix.pointwiseDivideMatrixWithVectorByRowAxis(r1, v2, undefined, "column"),
+          Matrix.pointwiseDivideMatrixWithVectorByRowAxis(
+            r1,
+            v2,
+            undefined,
+            "column",
+          ),
           pointwiseDivideColVectorMatrixByRowAxis(v2, r1),
         ),
       ) <= 1e-8;
@@ -56,15 +63,30 @@ import { dimensions, startPerformanceTest } from "./utils";
     "pointwiseDivideMatrixWithVectorByRowAxis in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForRowVector,
-    numericTestForRowVector,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForRowVector,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForRowVector,
+      },
+    },
   );
   startPerformanceTest(
     "pointwiseDivideMatrixWithVectorByRowAxis in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestForColVector,
-    numericTestForColVector,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestForColVector,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestForColVector,
+      },
+    },
   );
 })();
-

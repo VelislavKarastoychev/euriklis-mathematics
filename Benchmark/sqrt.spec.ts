@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -14,7 +16,15 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "sqrt",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    test,
-    test,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test,
+      },
+      numericjs: {
+        instance: numeric,
+        test,
+      },
+    },
   );
 })();

@@ -1,4 +1,6 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src";
 import { MatrixType, NumericMatrix } from "../src/Matrix/types";
@@ -27,10 +29,11 @@ function LL(A: MatrixType | NumericMatrix): MatrixType | NumericMatrix {
   return L;
 }
 (async () => {
-  const r = Matrix.random(dimensions[0] / 1000, dimensions[1] / 1000, -10, 10);
+  const r = Matrix.uniqueRandom(dimensions[0] / 1000, dimensions[1] / 1000, 0, 10);
   const a = Matrix.Hadamard(Matrix.plus(r, Matrix.transpose(r)), 0.5);
+  console.log(Matrix.LL(Matrix.copy(a)));
   const condition = Matrix.isEqualTo(
-    Matrix.LUPC(Matrix.copy(a)).LU,
+    Matrix.LL(Matrix.copy(a)),
     LL(a),
   );
   console.log(condition);

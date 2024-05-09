@@ -1,5 +1,6 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src/index.ts";
 import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -60,7 +61,15 @@ function exchangeColumns(
     "exchangeColumns",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest
+      },
+      conventionalJS: {
+        instance: undefined,
+        test: numericTest
+      }
+    }
   );
 })();

@@ -1,18 +1,37 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
-  const m1 = Matrix.uniqueRandom(...dimensions);
-  const m2 = Matrix.uniqueRandom(...dimensions);
+  const m1 = numeric.clone(Matrix.uniqueRandom(...dimensions));
+  const m2 = numeric.clone(Matrix.uniqueRandom(...dimensions));
   const condition = Matrix.isEqualTo(Matrix.and(m1, m2), numeric.and(m1, m2));
   const test = (m: any) => m.and(m1, m2);
+  const tfTest = (m: any) => m.logicalAnd(m1, m2);
   startPerformanceTest(
     "and",
     [{ param: "matrices", dimensions, type: "float64" }],
     condition,
-    test,
-    test,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test,
+      },
+      numericjs: {
+        instance: numeric,
+        test
+      },
+      // tensorFlowjs: {
+      //   instance: tf,
+      //   test: tfTest
+      // },
+      // tensorFlowjsNode: {
+      //   instance: tfNode,
+      //   test: tfTest
+      // }
+    }
   );
 })();

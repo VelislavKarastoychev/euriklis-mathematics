@@ -1,5 +1,6 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { startPerformanceTest } from "./utils.ts";
@@ -16,7 +17,15 @@ import { startPerformanceTest } from "./utils.ts";
     "toDiagonalMatrix",
     [{ param: "matrix", dimensions: [1, 5000], type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

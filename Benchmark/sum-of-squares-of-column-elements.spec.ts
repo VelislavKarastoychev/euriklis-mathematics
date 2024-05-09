@@ -1,5 +1,6 @@
 "use strict";
-
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils";
@@ -42,15 +43,31 @@ import { MatrixType, NumericMatrix } from "../src/Matrix/types";
     "sumOfSquaresOfColumn elements in row mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestAsRow,
-    numericTestAsRow,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestAsRow,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestAsRow,
+      },
+    },
   );
 
   startPerformanceTest(
     "sumOfSquaresOfColumnElements in column mode",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTestAsColumn,
-    numericTestAsColumn,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestAsColumn,
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTestAsColumn,
+      },
+    },
   );
 })();

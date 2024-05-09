@@ -4,19 +4,42 @@ import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 const rep1 = Matrix.replicate(Math.PI, 5, 5);
 const rep2 = numeric.rep([5, 5], Math.PI);
+const condition: boolean = Matrix.isEqualTo(rep1, rep2);
+const euriklisTestFloat = (m: any) =>
+  m.replicate(Math.PI, dimensions[0], dimensions[1]);
+const euriklisTestGeneric = (m: any) =>
+  m.replicate(Math.PI, dimensions[0], dimensions[1], "generic");
+const numericTest = (m: any) => m.rep(dimensions, Math.PI);
+
 (async () => {
   startPerformanceTest(
     "replilcate",
     [{ param: "matrix", dimensions, type: "float64" }],
-    Matrix.isEqualTo(rep1, rep2),
-    (m) => m.replicate(Math.PI, dimensions[0], dimensions[1]),
-    (m) => m.rep(dimensions, Math.PI),
+    condition,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestFloat,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
   startPerformanceTest(
     "replilcate",
     [{ param: "matrix", dimensions, type: "generic" }],
-    Matrix.isEqualTo(Matrix.replicate(Math.PI, 5, 5, "generic"), rep2),
-    (m) => m.replicate(Math.PI, dimensions[0], dimensions[1], "generic"),
-    (m) => m.rep(dimensions, Math.PI),
+    condition,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTestGeneric,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 })();

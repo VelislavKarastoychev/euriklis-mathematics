@@ -1,9 +1,9 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src";
 import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
 import { dimensions, startPerformanceTest } from "./utils";
-
 function exchangeRows(
   matrix: NumericMatrix | MatrixType,
   row1: Integer,
@@ -58,7 +58,15 @@ function exchangeRows(
     "exchangeRows",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest
+      },
+      conventionalJS: {
+        instance: undefined,
+        test: numericTest
+      }
+    }
   );
 })();

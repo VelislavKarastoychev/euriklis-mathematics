@@ -8,13 +8,22 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
   const conditionGeneric = true;
   const euriklisTest = (m: any) => m.random(dimensions[0], dimensions[1]);
   const numericTest = (m: any) => m.random(dimensions);
-  const euriklisRandomFast = (m: any) => m.uniqueRandom(dimensions[0], dimensions[1]);
+  const euriklisRandomFast = (m: any) =>
+    m.uniqueRandom(dimensions[0], dimensions[1]);
   startPerformanceTest(
     "random()",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 
   Matrix.setType("generic");
@@ -22,8 +31,16 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "random",
     [{ param: "matrix", dimensions, type: "generic" }],
     conditionGeneric,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
   Matrix.setType("float64");
 
@@ -31,8 +48,16 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "uniqueRandom()",
     [{ param: "matrix", dimensions, type: "float64" }],
     condition,
-    euriklisRandomFast,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
 
   Matrix.setType("generic");
@@ -40,8 +65,16 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
     "uniqueRandom()",
     [{ param: "matrix", dimensions, type: "generic" }],
     condition,
-    euriklisRandomFast,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest,
+      },
+      numeric: {
+        instance: numeric,
+        test: numericTest,
+      },
+    },
   );
   Matrix.setType("float64");
 })();

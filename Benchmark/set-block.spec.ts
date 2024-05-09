@@ -1,8 +1,9 @@
 "use strict";
+import * as tf from "@tensorflow/tfjs";
+import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import {  startPerformanceTest, dimensions } from "./utils.ts";
-// const dimensions: [number, number] = [5, 6];
 (async () => {
   const m11 = Matrix.uniqueRandom(...dimensions);
   const m12 = Matrix.copy(m11);
@@ -21,7 +22,16 @@ import {  startPerformanceTest, dimensions } from "./utils.ts";
     "setBlock",
     [{ param: "matrices", dimensions, type: "float64" }],
     condition,
-    euriklisTest,
-    numericTest,
+    {
+      "@euriklis/mathematics": {
+        instance: Matrix,
+        test: euriklisTest
+      },
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
+      },
+      
+    }
   );
 })();
