@@ -1,0 +1,31 @@
+{
+  "name": "@euriklis/mathematics",
+  "version": "1.0.0",
+  "description": "A mathematical library for numerical computations",
+  "main": "./Tests/index.ts",
+  "scripts": {
+    "test": "nodemon ./Tests/index.ts",
+    "build": "ts-node",
+    "start": "ts-node ./src/index.ts",
+    "benchmark": "nodemon ./Benchmark/index.ts"
+  },
+  "keywords": [
+    "Matrix",
+    "numerical",
+    "computations"
+  ],
+  "author": "Euriklis - euriklis@hotmai.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.6",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@euriklis/validator-ts": "^1.0.0",
+    "@tensorflow/tfjs": "^4.17.0",
+    "@tensorflow/tfjs-node": "^4.17.0",
+    "numericjs": "^1.2.6"
+  }
+}
