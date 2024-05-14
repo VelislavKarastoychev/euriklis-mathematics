@@ -33,9 +33,10 @@ export type TypedArrayConstructor =
   | Float64ArrayConstructor;
 
 export type MatrixType = TypedArray[] | [];
+
 export type MatrixBlockOptions = {
-  from: [number, number];
-  to: [number, number];
+  from: [Integer, Integer];
+  to: [Integer, Integer];
   type?: NumericType;
 };
 
@@ -179,5 +180,12 @@ export type VectorToMatrixOperation =
   | "divideColVectorToMatrixByRowAxis"
   | "divideColVectorToMatrixByColAxis";
 
-export type ArithmeticOperatorSymbol = 
-| "+" | "-" | "*" | "/" | "**" | "%" | "<<" | ">>";
+export type ArithmeticOperatorSymbol =
+  | "+"
+  | "-"
+  | "*"
+  | "/"
+  | "**"
+  | "%"
+  | "<<"
+  | ">>";
