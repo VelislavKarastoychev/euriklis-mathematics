@@ -1,6 +1,6 @@
-"use strict";
-// import "./zeros.spec.ts";
-// import "./identity-like.spec.ts";
+// "use strict";
+import "./zeros.spec.ts";
+import "./identity-like.spec.ts";
 // import "./replicate.spec.ts";
 // import "./random.spec.ts";
 // import "./copy.spec.ts";
@@ -46,7 +46,7 @@
 // import "./product-of-all-elements.spec.ts";
 // import "./sum-of-squares-of-all-elements.spec.ts";
 // import "./sum-of-cubes-of-all-elements.spec.ts";
-// import "./plus.spec.ts";
+import "./plus.spec.ts";
 // import "./minus.spec.ts";
 // import "./power.spec.ts";
 // import "./Hadamard.spec.ts";
@@ -110,4 +110,4 @@
 // import "./set-diagonal-to-number.spec";
 // import "./set-diagonal-to-row-vector.spec";
 // import "./set-diagonal-to-column-vector.spec";
-import "./stack.spec";
+import "./stack.spec.ts";
