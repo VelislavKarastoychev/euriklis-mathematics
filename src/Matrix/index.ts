@@ -26,15 +26,16 @@ import {
   ifTheParametersAreMatricesWithInappropriateSizeThrow,
   ifTheParametersAreNotMatricesThrow,
 } from "./Decorators";
+
 import {
-  Integer,
-  InverseMethods,
-  IterativeInversionInitialApproximationApproach,
-  MatrixBlockOptions,
-  MatrixType,
-  NumericMatrix,
-  NumericType,
-  TypedArray,
+  type Integer,
+  type InverseMethods,
+  type IterativeInversionInitialApproximationApproach,
+  type MatrixBlockOptions,
+  type MatrixType,
+  type NumericMatrix,
+  type NumericType,
+  type TypedArray,
 } from "./types";
 
 export class Matrix {
