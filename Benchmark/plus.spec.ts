@@ -2,8 +2,8 @@
 import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
-import { Matrix } from "../src/index.ts";
-import { NumericMatrix } from "../src/Matrix/types.ts";
+import {  Matrix } from "../src/index.ts";
+import { type NumericMatrix } from "../src/Matrix/types.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {
@@ -26,18 +26,18 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
         instance: Matrix,
         test: euriklisTest,
       },
-      numericjs: {
-        instance: numeric,
-        test: numericTest,
-      },
-      // tensorFlowjs: {
-      //   instance: tf,
-      //   test: tfTest,
+      // numericjs: {
+      //   instance: numeric,
+      //   test: numericTest,
       // },
-      tensorFlowjsNode: {
-        instance: tfNode,
+      tensorFlowjs: {
+        instance: tf,
         test: tfTest,
       },
+      // tensorFlowjsNode: {
+      //   instance: tfNode,
+      //   test: tfTest,
+      // },
     },
   );
 })();
