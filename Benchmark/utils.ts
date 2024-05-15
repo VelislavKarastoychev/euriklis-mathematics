@@ -63,7 +63,7 @@ export const startPerformanceTest = (
         );
         result[lib] = ti;
       }
-      console.info(result);
+      console.table(result);
     }).on(false, (v) => {
       v.describe(`Internal error in ${method} benchmark test method.`)
         .test({
