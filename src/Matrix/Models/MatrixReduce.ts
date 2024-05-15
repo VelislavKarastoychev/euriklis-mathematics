@@ -1,5 +1,5 @@
 "use strict";
-import { MatrixReducer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type { MatrixReducer, MatrixType, NumericMatrix, TypedArray } from "../types";
 
 /**
  * Generates the accumulator expressions and initialization code

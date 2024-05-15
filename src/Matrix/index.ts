@@ -36,6 +36,7 @@ import type {
   NumericMatrix,
   NumericType,
   TypedArray,
+  TypedArrayConstructor,
 } from "./types";
 
 export class Matrix {
@@ -452,6 +453,50 @@ export class Matrix {
     if (m1 === m2) return true;
     if (m1.length !== m2.length || m1[0].length !== m2[0].length) return false;
     else return models.CompareMatrices(m1, m2, "eq");
+  }
+
+  /**
+   * Checks if two matrices are nearly equal based on a specified norm and threshold.
+   * @param {MatrixType | NumericMatrix} m1 - The first matrix for comparison.
+   * @param {MatrixType | NumericMatrix} m2 - The second matrix for comparison.
+   * @param {number} [threshold=1e-8] - The threshold value for equality comparison.
+   * @param {"Euclidean" | "inferior" | "infinity" | "max" | "norm1" | "superior" | "Frobenius"} [norm="Euclidean"] - The
+   * norm type used for comparison.
+   * @returns {boolean} `true` if the matrices are nearly equal based
+   * on the specified norm and threshold, otherwise `false`.
+   */
+  public static isNearlyEqualTo(
+    m1: MatrixType | NumericMatrix,
+    m2: MatrixType | NumericMatrix,
+    threshold: number = 1e-8,
+    norm:
+      | "Euclidean"
+      | "inferior"
+      | "infinity"
+      | "max"
+      | "norm1"
+      | "superior"
+      | "Frobenius" = "Euclidean",
+  ): boolean {
+    const m12 = Matrix.minus(m1, m2);
+    switch (norm) {
+      case "Euclidean":
+        return Matrix.FrobeniusNorm(m12) <= threshold;
+      case "Frobenius":
+        return Matrix.FrobeniusNorm(m12) <= threshold;
+      case "inferior":
+        return Matrix.inferior(m12) <= threshold;
+      case "norm1":
+        return Matrix.norm1(m12) <= threshold;
+      case "infinity":
+        return Matrix.infinityNorm(m12) <= threshold;
+      case "max":
+        return Matrix.maxNorm(m12) <= threshold;
+      case "superior":
+        return Matrix.superior(m12) <= threshold;
+      default:
+        return Matrix.FrobeniusNorm(m12) <= threshold;
+    }
   }
 
   /**
@@ -3513,6 +3558,22 @@ export class Matrix {
   }
 
   /**
+   * Balances a matrix to have the same eigenvalues using the balanc routine.
+   * The eigenvalues of the balanced matrix are the same as the original matrix,
+   * and the stability of the QR algorithm for eigenvalue calculation is improved.
+   * Note that on output the "matrix" input will be destroyed, so copy the initial
+   * matrix if you want to save it.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix to be balanced.
+   * @returns {MatrixType | NumericMatrix} The balanced matrix with identical eigenvalues.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static balance(
+    matrix: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.Balance(matrix);
+  }
+
+  /**
    * Reduces a square matrix to a upper Hessenberg form.
    * The subdiagonal elements of the input matrix will have
    * random values, so be carefull if you want to use this
@@ -3526,7 +3587,38 @@ export class Matrix {
   public static toUpperHessenberg(
     matrix: MatrixType | NumericMatrix,
   ): MatrixType | NumericMatrix {
-    return models.ObtainUpperHessenberg(matrix);
+    const hess = models.ObtainUpperHessenberg(matrix);
+
+    return hess;
+  }
+
+  public static eigenproblem(
+    matrix: MatrixType | NumericMatrix,
+    method: "HouseholderQR" | "JacobiSymmetric" | "GivensSymmetric" =
+      "HouseholderQR",
+    balance: boolean = false,
+    type: NumericType = "float64",
+  ): {
+    eigenvalues: {
+      real: TypedArray | number[];
+      imaginary: TypedArray | number[];
+    };
+    eigenvectors?: {
+      real: MatrixType | NumericMatrix;
+      imaginary: MatrixType | NumericMatrix;
+    };
+  } {
+    const typedArray: TypedArrayConstructor | ArrayConstructor = models
+      .CreateTypedArrayConstructor(type);
+    // if (balance) Matrix.balance(matrix);
+    switch (method) {
+      case "HouseholderQR":
+        matrix = Matrix.toUpperHessenberg(matrix);
+        console.table(matrix);
+        return { eigenvalues: models.HQR(matrix, typedArray) };
+      default:
+        return { eigenvalues: models.HQR(matrix, typedArray) };
+    }
   }
 
   /**

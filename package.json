@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "bun run ./src/index.ts",
-    "test": "bun run ./Tests/index.ts",
+    "test": "bun run --watch ./Tests/index.ts",
     "benchmark": "bun --watch ./Benchmark/index.ts"
   },
   "peerDependencies": {
