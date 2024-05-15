@@ -27,15 +27,15 @@ import {
   ifTheParametersAreNotMatricesThrow,
 } from "./Decorators";
 
-import {
-  type Integer,
-  type InverseMethods,
-  type IterativeInversionInitialApproximationApproach,
-  type MatrixBlockOptions,
-  type MatrixType,
-  type NumericMatrix,
-  type NumericType,
-  type TypedArray,
+import type {
+  Integer,
+  InverseMethods,
+  IterativeInversionInitialApproximationApproach,
+  MatrixBlockOptions,
+  MatrixType,
+  NumericMatrix,
+  NumericType,
+  TypedArray,
 } from "./types";
 
 export class Matrix {
@@ -3510,6 +3510,23 @@ export class Matrix {
 
   public static QR(matrix: MatrixType | NumericMatrix) {
     return matrix;
+  }
+
+  /**
+   * Reduces a square matrix to a upper Hessenberg form.
+   * The subdiagonal elements of the input matrix will have
+   * random values, so be carefull if you want to use this
+   * method outside of its context which is the method eigenvalues.
+   * @param {MatrixType | NumericMatrix} matrix - the matrix to be
+   * transformed.
+   * @returns {MatrixType | NumericMatrix} The transformed matrix.
+   * @throws {Error} if the "matrix" parameter is not square matrix.
+   */
+  @ifIsNotSquareMatrixThrow(errors.IncorrectMatrixInput)
+  public static toUpperHessenberg(
+    matrix: MatrixType | NumericMatrix,
+  ): MatrixType | NumericMatrix {
+    return models.ObtainUpperHessenberg(matrix);
   }
 
   /**
