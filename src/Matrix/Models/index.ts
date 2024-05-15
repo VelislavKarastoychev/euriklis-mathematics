@@ -54,3 +54,5 @@ export { GershgorinCircles } from "./GershgorinCircles";
 export { MatrixMapReduce } from "./MatrixMapReduce";
 export { ApplyVectorOperationToMatrix } from "./ApplyVectorOperationToMatrix";
 export { SetMatrixDiagonal } from "./SetMatrixDiagonal";
+export { ObtainUpperHessenberg } from "./ObtainUpperHessengerg";
+export { Balance } from "./Balance";
