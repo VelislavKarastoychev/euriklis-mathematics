@@ -1,5 +1,5 @@
 "use strict";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
@@ -20,15 +20,15 @@ import { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
  *
  * @param {MatrixType | NumericMatrix} a - The matrix which will be
  * inverted.
- * @param {NumericType} type - The type of the output matrix.
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The type of the output matrix.
  */
 export const InverseMatrixGauss = (
   a: MatrixType | NumericMatrix,
-  type: NumericType,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
 ): MatrixType | NumericMatrix => {
   const n = a.length;
   const abs = Math.abs;
-  const I = GenerateIdentityLikeMatrix(n, n, type);
+  const I = GenerateIdentityLikeMatrix(n, n, typedArray);
   let p: Integer,
     r: Integer,
     c: Integer,
@@ -91,11 +91,9 @@ export const InverseMatrixGauss = (
 export const InverseMatrixLU = (
   a: MatrixType | NumericMatrix,
   P: Integer[],
-  type: NumericType,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
 ): MatrixType | NumericMatrix => {
   const n = a.length;
-  const typedArray: TypedArrayConstructor | ArrayConstructor =
-    CreateTypedArrayConstructor(type);
   const I: MatrixType | NumericMatrix = Array(n);
   let j: Integer,
     i: Integer,
