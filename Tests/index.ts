@@ -118,3 +118,6 @@ import "./balance.spec";
 import "./dynamic-stack.spec";
 import "./static-stack.spec";
 import "./eigenproblem.spec";
+import "./power-method-iteration.spec";
+import "./shifted-power-method.spec";
+import "./Gerschgorin-circles.spec";
