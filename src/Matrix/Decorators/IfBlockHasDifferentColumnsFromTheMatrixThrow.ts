@@ -1,6 +1,6 @@
 "use strict";
 
-import { MatrixType, NumericMatrix, NumericType } from "../types";
+import type { MatrixType, NumericMatrix, NumericType } from "../types";
 
 export function ifBlockHasDifferentColumnsFromTheMatrixThrow(
   error: Function,
