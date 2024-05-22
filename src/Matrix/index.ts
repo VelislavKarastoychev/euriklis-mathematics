@@ -25,6 +25,7 @@ import {
   ifSecureAndNotSymmetricThrow,
   ifTheParametersAreMatricesWithInappropriateSizeThrow,
   ifTheParametersAreNotMatricesThrow,
+  ifTheVectorIsDefinedAndHasInappropriateSizeThrow,
 } from "./Decorators";
 
 import type {
@@ -86,7 +87,8 @@ export class Matrix {
     columns: Integer,
     type: NumericType = "float64",
   ): MatrixType | NumericMatrix {
-    return models.GenerateZeroMatrix(rows, columns, type);
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateZeroMatrix(rows, columns, typedArray);
   }
 
   /**
@@ -119,7 +121,8 @@ export class Matrix {
     columns: Integer,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return models.GenerateIdentityLikeMatrix(rows, columns, type);
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.GenerateIdentityLikeMatrix(rows, columns, typedArray);
   }
 
   /**
@@ -159,7 +162,8 @@ export class Matrix {
     columns: Integer,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return models.Replicate(n, rows, columns, type) as MatrixType;
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    return models.Replicate(n, rows, columns, typedArray) as MatrixType;
   }
 
   /**
@@ -3464,10 +3468,11 @@ export class Matrix {
     initialValue: IterativeInversionInitialApproximationApproach = "Grozz",
   ): MatrixType | NumericMatrix {
     const a = Matrix.copy(matrix);
-    if (method === "Gauss") return models.InverseMatrixGauss(a, type);
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    if (method === "Gauss") return models.InverseMatrixGauss(a, typedArray);
     if (method === "LU") {
       const LUPC = Matrix.LUPC(a);
-      return models.InverseMatrixLU(LUPC.LU, LUPC.P, type);
+      return models.InverseMatrixLU(LUPC.LU, LUPC.P, typedArray);
     }
     if (method === "iterative Soleymani") {
       return [];
@@ -3491,9 +3496,14 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static GershgorinCircles(
     matrix: MatrixType | NumericMatrix,
-    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return [];
+    const center = Matrix.getDiagonal(matrix);
+    const rr = Matrix.absoluteSumOfRowElementsExceptDiagonal(matrix);
+    const circles: MatrixType | NumericMatrix = [
+      Matrix.minus(center, rr)[0],
+      Matrix.plus(center, rr)[0]
+    ] as MatrixType | NumericMatrix;
+    return circles;
   }
 
   // 5. Numerical methods
@@ -3592,33 +3602,196 @@ export class Matrix {
     return hess;
   }
 
+  /**
+   * Computes the eigenvalues and optionally the eigenvectors 
+   * of a matrix using the specified method.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input square matrix.
+   * @param {Object} [options={}] - Options for the eigenvalue computation.
+   * @param {"HQR" | "HQR2" | "JacobiSymmetric"} [options.method="HQR"] - The 
+   * method to use for the computation.
+   * @param {boolean} [options.balance=true] - Whether to balance the matrix before computation.
+   * @param {boolean} [options.sort=false] - Whether to sort the eigenvalues.
+   * @param {NumericType} [options.type="float64"] - The numeric type of the matrix elements.
+   * @returns {{ eigenvalues: { real: TypedArray | number[]; imaginary: TypedArray | number[] }; eigenvectors?: 
+   * MatrixType | NumericMatrix }} - The computed eigenvalues and optionally the eigenvectors.
+   *
+   * @example
+   * const matrix = [
+   *   [4, 1],
+   *   [2, 3]
+   * ];
+   * const result = Matrix.eigenproblem(matrix, { method: "HQR2" });
+   * console.log(result.eigenvalues.real); // Logs the real parts of the eigenvalues
+   * console.log(result.eigenvalues.imaginary); // Logs the imaginary parts of the eigenvalues
+   * if (result.eigenvectors) {
+   *   console.log(result.eigenvectors); // Logs the eigenvectors if computed
+   * }
+   */
   public static eigenproblem(
     matrix: MatrixType | NumericMatrix,
-    method: "HouseholderQR" | "JacobiSymmetric" | "GivensSymmetric" =
-      "HouseholderQR",
-    balance: boolean = false,
-    type: NumericType = "float64",
+    options: {
+      method?: "HQR" | "HQR2" | "JacobiSymmetric";
+      balance?: boolean;
+      sort?: boolean;
+      type?: NumericType;
+    } = {},
   ): {
     eigenvalues: {
       real: TypedArray | number[];
       imaginary: TypedArray | number[];
     };
-    eigenvectors?: {
-      real: MatrixType | NumericMatrix;
-      imaginary: MatrixType | NumericMatrix;
-    };
+    eigenvectors?: MatrixType | NumericMatrix;
   } {
+    const init: {
+      method: "HQR" | "HQR2" | "JacobiSymmetric";
+      balance: boolean;
+      sort: boolean;
+      type: NumericType;
+    } = {
+      method: "HQR",
+      balance: true,
+      sort: false,
+      type: "float64",
+    };
+    if (options) options = { ...init, ...options };
+    else options = init;
+    const { method, balance, type } = options;
     const typedArray: TypedArrayConstructor | ArrayConstructor = models
-      .CreateTypedArrayConstructor(type);
-    // if (balance) Matrix.balance(matrix);
+      .CreateTypedArrayConstructor(type as NumericType);
     switch (method) {
-      case "HouseholderQR":
+      case "HQR":
+        if (balance) Matrix.balance(matrix);
         matrix = Matrix.toUpperHessenberg(matrix);
-        console.table(matrix);
         return { eigenvalues: models.HQR(matrix, typedArray) };
+      case "HQR2":
+        if (balance) Matrix.balance(matrix);
+        matrix = Matrix.toUpperHessenberg(matrix);
+        return models.modifiedHQR(matrix, typedArray);
+      case "JacobiSymmetric":
+        return models.Jacobi(matrix, typedArray);
       default:
         return { eigenvalues: models.HQR(matrix, typedArray) };
     }
+  }
+
+  /**
+   * Performs a single iteration of the power method
+   * for approximating the dominant eigenvalue and
+   * its corresponding eigenvector.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input square matrix.
+   * @param {MatrixType | NumericMatrix} [x] - Optional initial guess
+   * for the eigenvector. If not provided, a default vector will be used.
+   * @param {NumericType} [type="float64"] - The numeric type of the matrix elements.
+   * @returns {{ eigenvalue: number, eigenvector: MatrixType | NumericMatrix }} - The
+   * approximated dominant eigenvalue and the corresponding eigenvector after one iteration.
+   *
+   * @throws {Error} - If the input is not a matrix of arrays with equal size.
+   * @throws {Error} - If the input matrix is not square.
+   * @throws {Error} - If the provided vector has inappropriate size.
+   *
+   * @example
+   * const matrix = [
+   *   [4, 1],
+   *   [2, 3]
+   * ];
+   * const result = Matrix.eigenproblemPowerMethodIteration(matrix);
+   * console.log(result.eigenvalue); // Logs the approximated dominant eigenvalue after one iteration
+   * console.log(result.eigenvector); // Logs the corresponding eigenvector after one iteration
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(
+    errors.IncorrectMatrixParameterInPowerIterationMethod,
+  )
+  @ifTheVectorIsDefinedAndHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameterInPowerIterationMethod,
+  )
+  public static powerMethodIteration(
+    matrix: MatrixType | NumericMatrix,
+    x?: MatrixType | NumericMatrix,
+    type: NumericType = "float64",
+  ): { eigenvalue: number; eigenvector: MatrixType | NumericMatrix } {
+    let eigenvalue: number,
+      eigenvector: MatrixType | NumericMatrix,
+      xnorm: number,
+      enorm: number;
+    const n = matrix.length;
+    if (!x) x = Matrix.replicate(1, n, 1, type);
+    xnorm = Matrix.FrobeniusNorm(x);
+    eigenvector = Matrix.times(matrix, x);
+    enorm = Matrix.FrobeniusNorm(eigenvector);
+    // Rayleigh quotient...
+    eigenvalue = Matrix.times(Matrix.transpose(x), eigenvector)[0][0] / xnorm;
+    eigenvector = Matrix.divide(eigenvector, enorm);
+    return {
+      eigenvalue,
+      eigenvector,
+    };
+  }
+
+  /**
+   * Performs a single iteration of the shifted power method
+   * for approximating an eigenvalue and its corresponding eigenvector.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input square matrix.
+   * @param {MatrixType | NumericMatrix} [x] - Optional initial guess for
+   * the eigenvector. If not provided, a default vector will be used.
+   * @param {number} [shift=1] - The shift value to apply in the iteration.
+   * @param {NumericType} [type="float64"] - The numeric type of the matrix elements.
+   * @returns {{ eigenvalue: number, eigenvector: MatrixType | NumericMatrix, remainder: number }} - The
+   * approximated eigenvalue, the corresponding eigenvector, and the remainder after one iteration.
+   *
+   * @throws {Error} - If the input is not a matrix of arrays with equal size.
+   * @throws {Error} - If the input matrix is not square.
+   * @throws {Error} - If the provided vector has inappropriate size.
+   *
+   * @example
+   * const matrix = [
+   *   [4, 1],
+   *   [2, 3]
+   * ];
+   * const result = Matrix.shiftedPowerMethodIteraton(matrix);
+   * console.log(result.eigenvalue); // Logs the approximated eigenvalue after one iteration
+   * console.log(result.eigenvector); // Logs the corresponding eigenvector after one iteration
+   * console.log(result.remainder); // Logs the remainder after one iteration
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  @ifIsNotSquareMatrixThrow(
+    errors.IncorrectMatrixParameterInPowerIterationMethod,
+  )
+  @ifTheVectorIsDefinedAndHasInappropriateSizeThrow(
+    errors.IncorrectVectorParameterInPowerIterationMethod,
+  )
+  public static shiftedPowerMethodIteraton(
+    matrix: MatrixType | NumericMatrix,
+    x?: MatrixType | NumericMatrix,
+    shift: number = 1,
+    type: NumericType = "float64",
+  ): {
+    eigenvalue: number;
+    eigenvector: MatrixType | NumericMatrix;
+    remainder: number;
+  } {
+    const n = matrix.length;
+    if (!x) x = Matrix.replicate(1, n, 1, type);
+    let eigenvalue: number,
+      eigenvector: MatrixType | NumericMatrix,
+      y: MatrixType | NumericMatrix,
+      r: MatrixType | NumericMatrix,
+      mju: number;
+    y = Matrix.times(matrix, x);
+    eigenvalue = Matrix.times(Matrix.transpose(x), y)[0][0];
+    r = Matrix.minus(y, Matrix.Hadamard(x, eigenvalue));
+    if (!shift) shift = eigenvalue;
+    eigenvector = Matrix.minus(y, Matrix.Hadamard(x, shift));
+    mju = 1 / Matrix.FrobeniusNorm(eigenvector);
+    eigenvector = Matrix.Hadamard(eigenvector, mju);
+    return {
+      eigenvalue,
+      eigenvector,
+      remainder: Matrix.FrobeniusNorm(r),
+    };
   }
 
   /**
