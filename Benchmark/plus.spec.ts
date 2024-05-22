@@ -26,14 +26,14 @@ import { dimensions, startPerformanceTest } from "./utils.ts";
         instance: Matrix,
         test: euriklisTest,
       },
-      // numericjs: {
-      //   instance: numeric,
-      //   test: numericTest,
-      // },
-      tensorFlowjs: {
-        instance: tf,
-        test: tfTest,
+      numericjs: {
+        instance: numeric,
+        test: numericTest,
       },
+      // tensorFlowjs: {
+      //   instance: tf,
+      //   test: tfTest,
+      // },
       // tensorFlowjsNode: {
       //   instance: tfNode,
       //   test: tfTest,
