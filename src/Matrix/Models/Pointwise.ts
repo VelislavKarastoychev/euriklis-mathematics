@@ -1,6 +1,6 @@
 "use strict";
 
-import {
+import type {
   BinaryOperator,
   BinaryPointwiseOperator,
   MatrixType,
