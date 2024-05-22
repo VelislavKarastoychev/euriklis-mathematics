@@ -86,3 +86,7 @@ export const IncorrectNumberParameterInAddNumberToDiagonalTxt =
   "Incorrectly inserted number parameter in the addNumberToDiagonal.The type of the second parameter of the method has to be a number.";
 export const IncorrectVectorParameterTxt = (methodName: string): string =>
   `Incorrect vector parameter in ${methodName} method.`;
+export const IncorrectMatrixParameterInPowerMethodIterationTxt =
+  "Non square matrix in the power method iteration. Please check the first parameter of the method. It has to be a square matrix.";
+export const IncorrectVectorParameterInPowerIterationMethodTxt =
+  "Incorrect vector size of the vector parameter in the power method iteration. The vector must be with size equals to the columns of the matrix. Please check the second parameter of the method.";
