@@ -100,3 +100,7 @@ export const IncorrectNumberParameterInAddNumberToDiagonal = (): never =>
   runError(texts.IncorrectNumberParameterInAddNumberToDiagonalTxt);
 export const IncorrectVectorParameter = (method: string) => (): never =>
   runError(texts.IncorrectVectorParameterTxt(method));
+export const IncorrectMatrixParameterInPowerIterationMethod = (): never =>
+  runError(texts.IncorrectMatrixParameterInPowerMethodIterationTxt);
+export const IncorrectVectorParameterInPowerIterationMethod = (): never =>
+  runError(texts.IncorrectVectorParameterInPowerIterationMethodTxt);
