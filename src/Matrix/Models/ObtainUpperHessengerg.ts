@@ -1,6 +1,11 @@
 "use strict";
 
+import { Matrix } from "..";
+import type { TypedArray, TypedArrayConstructor } from "../types";
 import type { Integer, MatrixType, NumericMatrix } from "../types";
+import { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
+import { MatrixReduce } from "./MatrixReduce";
+import { BinaryPointwise, UnaryPointwise } from "./Pointwise";
 
 /**
  * This routine reduces the "a" matrix to a Hessenberg - like
@@ -50,6 +55,7 @@ export const ObtainUpperHessenberg = (a: MatrixType | NumericMatrix) => {
       }
     }
   }
-
+  // delete the subdiagonal elements
   return a;
 };
+
