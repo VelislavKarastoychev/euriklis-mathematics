@@ -56,4 +56,5 @@ export { ApplyVectorOperationToMatrix } from "./ApplyVectorOperationToMatrix";
 export { SetMatrixDiagonal } from "./SetMatrixDiagonal";
 export { ObtainUpperHessenberg } from "./ObtainUpperHessengerg";
 export { Balance } from "./Balance";
-export { HQR } from "./HQR";
+export { HQR, modifiedHQR } from "./HQR";
+export { Jacobi } from "./Jacobi";
