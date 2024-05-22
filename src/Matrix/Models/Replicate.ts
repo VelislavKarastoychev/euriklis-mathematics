@@ -1,6 +1,6 @@
 "use strict";
 
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
@@ -12,15 +12,15 @@ import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
 const ReplicateIterator = (
   n: number,
-  rows: Integer,
-  columns: Integer,
+  dim: Integer[],
   typedArray: TypedArrayConstructor | ArrayConstructor,
-  it: boolean = false,
+  it: Integer = 0,
 ): NumericMatrix | MatrixType | TypedArray => {
   let rep: MatrixType | TypedArray, i: Integer;
-  if (it) {
-    rep = new typedArray(columns);
-    for (i = columns; i-- > 1;) {
+  const k = dim[it];
+  if (it === dim.length - 1) {
+    rep = new typedArray(k);
+    for (i = k; i-- > 1;) {
       rep[i--] = n;
       rep[i] = n;
     }
@@ -30,30 +30,27 @@ const ReplicateIterator = (
     return rep;
   }
   rep = [];
-  for (i = rows; i-- > 1;) {
+  for (i = k; i-- > 1;) {
     rep[i--] = ReplicateIterator(
       n,
-      rows,
-      columns,
+      dim,
       typedArray,
-      !it,
+      it + 1,
     ) as TypedArray;
     rep[i] = ReplicateIterator(
       n,
-      rows,
-      columns,
+      dim,
       typedArray,
-      !it,
+      it + 1,
     ) as TypedArray;
   }
 
   if (i === 0) {
     rep[0] = ReplicateIterator(
       n,
-      rows,
-      columns,
+      dim,
       typedArray,
-      !it,
+      it + 1,
     ) as TypedArray;
   }
   return rep;
@@ -63,10 +60,9 @@ export const Replicate = (
   n: number,
   rows: Integer,
   columns: Integer,
-  type: NumericType,
+  typedArray: TypedArrayConstructor | ArrayConstructor,
 ): MatrixType | NumericMatrix => {
-  const typedArray = CreateTypedArrayConstructor(type);
-  return ReplicateIterator(n, rows, columns, typedArray) as
+  return ReplicateIterator(n, [rows, columns], typedArray) as
     | MatrixType
     | NumericMatrix;
 };
