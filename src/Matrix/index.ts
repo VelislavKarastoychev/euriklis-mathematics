@@ -31,7 +31,6 @@ import {
 import type {
   Integer,
   InverseMethods,
-  IterativeInversionInitialApproximationApproach,
   MatrixBlockOptions,
   MatrixType,
   NumericMatrix,
@@ -3676,11 +3675,11 @@ export class Matrix {
    * @param {Object} [options] - Optional parameters for the SVD computation.
    * @param {NumericType} [options.type=Matrix._type] - The numeric type for the computation.
    * @param {boolean} [options.copy=false] - Whether to copy the input matrix before performing the decomposition.
-   * @param {boolean} [options.sort=false] - Whether to sort 
+   * @param {boolean} [options.sort=false] - Whether to sort
    * the singular values in decreasing order and maximize the count of positive elements.
-   * @returns {{ s: TypedArray | number[], v: MatrixType | NumericMatrix, d: MatrixType | NumericMatrix }} - The 
-   * singular values (`s`), 
-   * the right singular vectors (`v`), 
+   * @returns {{ s: TypedArray | number[], v: MatrixType | NumericMatrix, d: MatrixType | NumericMatrix }} - The
+   * singular values (`s`),
+   * the right singular vectors (`v`),
    * and the left singular vectors (`d`).
    * @throws{Error} if the "matrix" parameter is incorectly defined.
    */
@@ -3835,6 +3834,30 @@ export class Matrix {
 
   /**
    * Computes the initial inverse approximation
+   * according to the first  suggestion of Pan
+   * and Schreiber article: V.Y. Pan, R. Schreiber,
+   * "An Improved Newton Iteration for the Generalized
+   * Inverse of a Matrix, with Applications",
+   * SIAM J. Sci. Stat. Comput. 12 (1991), 1109 - 1131.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix.type] - The type of the matrix on output.
+   * @returns {MatrixType | NumericMatrix} The resulting of the computational procedure.
+   * @throws {Error} if the input matrix parameter is incorrectly declared.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static initialInverseApproximationPanSchreiber(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const A2 = Matrix.Hadamard(matrix, 2);
+    const { s } = Matrix.svd(matrix, { copy: true, sort: true });
+    const [smax, smin] = [s[0], s[s.length]];
+    return Matrix.Hadamard(A2, 1 / (smin * smin + smax * smax), type);
+  }
+
+  /**
+   * Computes the initial inverse approximation
    * according to the Pan and Schreiber article
    * V.Y. Pan, R. Schreiber, "An improved Newton
    * iteration for the generalized inverse of
@@ -3843,13 +3866,40 @@ export class Matrix {
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix whose inverse will be
    * approximated.
+   * @param{NumericType} [type=Matrix.type] - The type of the matrix on output.
    * @returns {MatrixType | NumericMatrix} The resulting of the computational procedure.
    * @throws {Error} If the matrix is incorrectly defined.
    */
-  public static inverseApproximationPanSchreiber2(
+  public static initialInverseApproximationPanSchreiber2(
     matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return models.InverseApproximationPanSchreiber2(matrix);
+    return Matrix.Hadamard(
+      Matrix.transpose(matrix),
+      1 / (Matrix.norm1(matrix) / Matrix.infinityNorm(matrix)),
+      type,
+    );
+  }
+
+  /**
+   * Computes the initial inverse approximation
+   * according to Ben-Israel and Greville article:
+   * A. Ben - Israel, T.N.E. Greville, "Generalized Inverses",
+   * second edition, Springer, NY, 2003.
+   *
+   * @param{MatrixType | NumericMatrix} matrix - The matrix on input.
+   * @param {NumericType} [type=Matrix.type] - the type of the matrix on output.
+   * @returns {MatrixType | NumericMatrix} The resulting of the computation procedure.
+   * @throws{Error} if the input "matrix" parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static initialInverseApproximationBenIsraelGreville(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const limit = 2 / models.MatrixReduce(matrix, "square");
+    const alpha = Math.random() * limit;
+    return Matrix.Hadamard(matrix, alpha, type);
   }
 
   /**
