@@ -127,9 +127,7 @@ export type UnaryPointwiseOperator =
   | "inverted";
 export type InverseMethods =
   | "Gauss"
-  | "LU"
-  | "iterative Soleymani"
-  | "iterative";
+  | "LU";
 export type IterativeInversionInitialApproximationApproach =
   | "Pan and Schreiber"
   | "Ben - Israel and Greville"
