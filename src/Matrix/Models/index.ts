@@ -58,3 +58,4 @@ export { ObtainUpperHessenberg } from "./ObtainUpperHessengerg";
 export { Balance } from "./Balance";
 export { HQR, modifiedHQR } from "./HQR";
 export { Jacobi } from "./Jacobi";
+export { SVD } from "./SVD";
