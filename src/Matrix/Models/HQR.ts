@@ -1,5 +1,6 @@
 "use strict";
 import { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
+import { cdiv, sign, abs, EPS, sqrt, max } from "../../utils";
 import type {
   Integer,
   MatrixType,
@@ -50,13 +51,7 @@ export const HQR = (
     r: number,
     q: number,
     p: number,
-    anorm: number,
-    sign: (a: number, b: number) => number = (
-      a,
-      b,
-    ) => (b >= 0.0 ? Math.abs(a) : -Math.abs(a)),
-    abs: (n: number) => number = Math.abs,
-    sqrt: (n: number) => number = Math.sqrt;
+    anorm: number;
   anorm = MatrixReduce(a, "norm1");
   nn = n - 1;
   t = 0.0;
@@ -175,15 +170,6 @@ export const HQR = (
   return { real: wr, imaginary: wi };
 };
 
-const cdiv = (a: [number, number], b: [number, number]): [number, number] => {
-  const z = b[0] * b[0] + b[1] * b[1];
-  return [(a[0] * b[0] + a[1] * b[1]) / z, (a[1] * b[0] - a[0] * b[1]) / z];
-};
-
-const cdot = (
-  a: [number, number],
-  b: [number, number],
-) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[0] * b[0]];
 
 /**
  * This function is a translation of the hqr2 subroutine
@@ -197,7 +183,7 @@ const cdot = (
  * if  elmhes  and  eltran  or  orthes  and ortran  have
  * been used to reduce this general matrix to hessenberg form
  * and to accumulate the similarity transformations.
- * @param {MatrixType | NumericMatrix} h - a Hessenberg matrix.
+ * @param {MatrixType | NumericMatrix} a - a Hessenberg matrix.
  * @param {TypedArrayConstructor | ArrayConstructor} typedArray - the
  * desired form of the output.
  * @returns {{
@@ -243,20 +229,12 @@ export const modifiedHQR = (
     vr,
     vi;
   let temp: [number, number];
-  const EPS: number = Number.EPSILON;
   const n: Integer = a.length;
-  const max: Function = Math.max,
-    abs: Function = Math.abs,
-    sqrt: Function = Math.sqrt;
   const wi = new typedArray(n);
   const wr = new typedArray(n);
   const zz = GenerateIdentityLikeMatrix(n, n, typedArray);
 
-  const sign: (a: number, b: number) => number = (
-    a,
-    b,
-  ) => (b >= 0.0 ? Math.abs(a) : -Math.abs(a));
-  // Compute the matrix norm for possible use
+    // Compute the matrix norm for possible use
   // in locationg of signle small subdiagonal
   // elements.
   anorm = MatrixReduce(a, "norm1");
