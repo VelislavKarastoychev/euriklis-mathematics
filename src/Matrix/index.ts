@@ -3455,7 +3455,6 @@ export class Matrix {
    * @param {NumericType} [type = Matrix._type] - The type of the inversed matrix.
    * @param {InverseMethods} [method = "Gauss"] - The method which
    * will be used for matrix inversion.
-   * @param {IterativeInversionInitialApproximationApproach} initialValue
    * @returns {MatrixType | NumericMatrix} The inverse matrix.
    * @throws {Error} If the matrix is incorrectly defined or if is non square.
    */
@@ -3465,7 +3464,6 @@ export class Matrix {
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
     method: InverseMethods = "Gauss",
-    initialValue: IterativeInversionInitialApproximationApproach = "Grozz",
   ): MatrixType | NumericMatrix {
     const a = Matrix.copy(matrix);
     const typedArray = models.CreateTypedArrayConstructor(type);
@@ -3473,12 +3471,6 @@ export class Matrix {
     if (method === "LU") {
       const LUPC = Matrix.LUPC(a);
       return models.InverseMatrixLU(LUPC.LU, LUPC.P, typedArray);
-    }
-    if (method === "iterative Soleymani") {
-      return [];
-    }
-    if (method === "iterative") {
-      return [];
     }
 
     return errors.IncorrectMethodParameterInInverse();
@@ -3496,12 +3488,13 @@ export class Matrix {
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static GershgorinCircles(
     matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    const center = Matrix.getDiagonal(matrix);
-    const rr = Matrix.absoluteSumOfRowElementsExceptDiagonal(matrix);
+    const center = Matrix.getDiagonal(matrix, undefined, type);
+    const rr = Matrix.absoluteSumOfRowElementsExceptDiagonal(matrix, type);
     const circles: MatrixType | NumericMatrix = [
-      Matrix.minus(center, rr)[0],
-      Matrix.plus(center, rr)[0]
+      Matrix.minus(center, rr, type)[0],
+      Matrix.plus(center, rr, type)[0],
     ] as MatrixType | NumericMatrix;
     return circles;
   }
@@ -3603,17 +3596,17 @@ export class Matrix {
   }
 
   /**
-   * Computes the eigenvalues and optionally the eigenvectors 
+   * Computes the eigenvalues and optionally the eigenvectors
    * of a matrix using the specified method.
    *
    * @param {MatrixType | NumericMatrix} matrix - The input square matrix.
    * @param {Object} [options={}] - Options for the eigenvalue computation.
-   * @param {"HQR" | "HQR2" | "JacobiSymmetric"} [options.method="HQR"] - The 
+   * @param {"HQR" | "HQR2" | "JacobiSymmetric"} [options.method="HQR"] - The
    * method to use for the computation.
    * @param {boolean} [options.balance=true] - Whether to balance the matrix before computation.
    * @param {boolean} [options.sort=false] - Whether to sort the eigenvalues.
    * @param {NumericType} [options.type="float64"] - The numeric type of the matrix elements.
-   * @returns {{ eigenvalues: { real: TypedArray | number[]; imaginary: TypedArray | number[] }; eigenvectors?: 
+   * @returns {{ eigenvalues: { real: TypedArray | number[]; imaginary: TypedArray | number[] }; eigenvectors?:
    * MatrixType | NumericMatrix }} - The computed eigenvalues and optionally the eigenvectors.
    *
    * @example
