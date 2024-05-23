@@ -3717,6 +3717,7 @@ export class Matrix {
     // Rayleigh quotient...
     eigenvalue = Matrix.times(Matrix.transpose(x), eigenvector)[0][0] / xnorm;
     eigenvector = Matrix.divide(eigenvector, enorm);
+    // the eigen-candidates:
     return {
       eigenvalue,
       eigenvector,
@@ -3780,6 +3781,7 @@ export class Matrix {
     eigenvector = Matrix.minus(y, Matrix.Hadamard(x, shift));
     mju = 1 / Matrix.FrobeniusNorm(eigenvector);
     eigenvector = Matrix.Hadamard(eigenvector, mju);
+    // the eigen candidates and the error estimation.
     return {
       eigenvalue,
       eigenvector,
