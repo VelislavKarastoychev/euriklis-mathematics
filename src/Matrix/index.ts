@@ -3645,7 +3645,7 @@ export class Matrix {
       method: "HQR",
       balance: true,
       sort: false,
-      type: "float64",
+      type: Matrix._type,
     };
     if (options) options = { ...init, ...options };
     else options = init;
@@ -3666,6 +3666,50 @@ export class Matrix {
       default:
         return { eigenvalues: models.HQR(matrix, typedArray) };
     }
+  }
+
+  /**
+   * Computes the Singular Value Decomposition (SVD) of a given matrix.
+   * The matrix "v" on the output is not transposed.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix to decompose.
+   * @param {Object} [options] - Optional parameters for the SVD computation.
+   * @param {NumericType} [options.type=Matrix._type] - The numeric type for the computation.
+   * @param {boolean} [options.copy=false] - Whether to copy the input matrix before performing the decomposition.
+   * @param {boolean} [options.sort=false] - Whether to sort 
+   * the singular values in decreasing order and maximize the count of positive elements.
+   * @returns {{ s: TypedArray | number[], v: MatrixType | NumericMatrix, d: MatrixType | NumericMatrix }} - The 
+   * singular values (`s`), 
+   * the right singular vectors (`v`), 
+   * and the left singular vectors (`d`).
+   * @throws{Error} if the "matrix" parameter is incorectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static svd(
+    matrix: MatrixType | NumericMatrix,
+    options: {
+      type?: NumericType;
+      copy?: boolean; // copy the input
+      sort?: boolean; // sort in decreasing order and maximize the count of positive elements...
+    } = {},
+  ): {
+    s: TypedArray | number[];
+    v: MatrixType | NumericMatrix;
+    d: MatrixType | NumericMatrix;
+  } {
+    const __options__: {
+      type: NumericType;
+      copy: boolean;
+      sort: boolean;
+    } = {
+      type: Matrix._type,
+      copy: false,
+      sort: false,
+    };
+    const { copy, sort, type } = { ...__options__, ...options };
+    const typedArray = models.CreateTypedArrayConstructor(type);
+    if (copy) matrix = Matrix.copy(matrix);
+    return models.SVD(matrix, typedArray, sort);
   }
 
   /**
