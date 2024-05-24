@@ -3980,6 +3980,8 @@ export class Matrix {
    * matrix on output.
    * @returns {MatrixType | NumericMatrix} The resulting matrix from the 
    * computational procedure.
+   * @throws{Error} if the "a" matrix input parameter is incorrectly
+   * defined.
    */
   @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static numericalInverseStepSoleymaniAndToutounian(
