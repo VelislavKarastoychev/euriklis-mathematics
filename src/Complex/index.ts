@@ -21,9 +21,9 @@ export class Complex {
    * @param {number | undefined} [b] - The imaginary part
    * of the complex number. If undefined, initializes with zero.
    */
-  constructor(a: Complex | number | undefined, b?: number | undefined) {
+  constructor(a?: Complex | number | undefined, b?: number | undefined) {
     let z1: number = 0, z2: number = 0;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
     this.Re = z1;
     this.Im = z2;
   }
@@ -83,7 +83,7 @@ export class Complex {
    */
   plus(a: Complex | number | undefined, b?: number | undefined): Complex {
     let z1: number = 0, z2: number = 0;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
     this._Re += z1;
     this._Im += z2;
 
@@ -99,7 +99,7 @@ export class Complex {
    */
   minus(a: Complex | number | undefined, b?: number | undefined): Complex {
     let z1: number = 0, z2: number = 0;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
     this._Re -= z1;
     this._Im -= z2;
 
@@ -121,7 +121,7 @@ export class Complex {
       z2: number = 0,
       x: number = this._Re,
       y: number = this._Im;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
     // Gauss technique of multiplication:
     const m1: number = x * z1,
       m2: number = y * z2,
@@ -141,7 +141,7 @@ export class Complex {
    * Faculty of Computer Science and Information Technology,
    * Żołnierska 49, Szczecin 71-210, Poland.
    *
-   * @param {a: Complex | number | undefined} a - If is a number, represents
+   * @param {Complex | number | undefined} a - If is a number, represents
    * the real part of the complex number, if is undefined, the real part will
    * be set to zero and if is Complex instance then only this parameter
    * will be assumed as input.
@@ -154,7 +154,7 @@ export class Complex {
    */
   divide(a: Complex | number | undefined, b?: number | undefined): Complex {
     let z1: number = 0, z2: number = 0;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
     const x = this._Re, y = this._Im;
     const Y12 = models.AleksandrCariowComplexDivision(x, y, z1, z2);
     this._Re = Y12[0];
@@ -240,7 +240,7 @@ export class Complex {
       x: number = this._Re,
       y: number = this._Im,
       i: Integer;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
     if (z1 === 0 && z2 === 0) {
       this._Re = 1;
       this._Im = 0;
@@ -269,12 +269,12 @@ export class Complex {
    * If "a" is defined as Complex instance, then will be ignored.
    * @returns {boolean} True if the complex numbers are equal, false otherwise.
    */
-  isSame(a: Complex | number | undefined, b: number | undefined): boolean {
+  isSame(a?: Complex | number | undefined, b?: number | undefined): boolean {
     let z1: number = 0,
       z2: number = 0,
       x: number = this._Re,
       y: number = this._Im;
-    models.PrepareInput(a, b, z1, z2);
+    [z1, z2] = models.PrepareInput(a, b, z1, z2);
 
     return (x === z1) && (y == z2);
   }

@@ -122,3 +122,5 @@ import "./power-method-iteration.spec";
 import "./shifted-power-method.spec";
 import "./Gerschgorin-circles.spec";
 import "./svd.spec";
+import "./complex-constructor.spec";
+import "./copy-Complex.spec";
