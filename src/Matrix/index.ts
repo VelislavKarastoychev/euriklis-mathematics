@@ -3965,20 +3965,21 @@ export class Matrix {
   }
 
   /**
-   * Computes the inverse approximation iteration 
+   * Computes the inverse approximation iteration
    * according to the article of Soleymani and Toutounian:
-   * F. Soleymani, F. Toutounian, An iterative method for 
-   * computing approximate inverse of a square matrix and 
+   * F. Soleymani, F. Toutounian, An iterative method for
+   * computing approximate inverse of a square matrix and
    * Moore - Penrose inverse of a non - square matrix,
    * Department of Applied Mathematics, School of Mathematical
-   * Sciences, Ferdowsi University of Mashlad, Mashlad, Iran. 
+   * Sciences, Ferdowsi University of Mashlad, Mashlad, Iran;
+   * Appl. Math. and Comput. 224 (2013), 671 - 680.
    *
    * @param {MatrixType | NumericMatrix} a - The matrix on input.
-   * @param {MatrixType | NumericMatrix} v - The approximation 
+   * @param {MatrixType | NumericMatrix} v - The approximation
    * candidate matrix.
    * @param {NumericType}[type=Matrix.type] type - The type of the
    * matrix on output.
-   * @returns {MatrixType | NumericMatrix} The resulting matrix from the 
+   * @returns {MatrixType | NumericMatrix} The resulting matrix from the
    * computational procedure.
    * @throws{Error} if the "a" matrix input parameter is incorrectly
    * defined.
