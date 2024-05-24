@@ -3832,6 +3832,186 @@ export class Matrix {
     };
   }
 
+  public static numericalInverseStepSchulz(
+    matrix: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    // v = v * (2I - av)
+    return Matrix.times(
+      v,
+      Matrix.addNumberToDiagonal(Matrix.negate(Matrix.times(matrix, v)), 2),
+      type,
+    );
+  }
+
+  /**
+   * Computes the inverse approximation iteration
+   * according to the article of Li and Li:
+   * W. Li, Z. Li, A family of iterative methods for
+   * computing the approximate inverse of a square matrix
+   * and inner inverse of a non - square mateix, Appl.
+   * Math. Comput. 215 (2010), 3433 - 3442.
+   *
+   * @param {MatrixType | NumericMatrix} a - The matrix on input.
+   * @param {MatrixType | NumericMatrix} v - The approximation candidate matrix.
+   * @param {NumericType} [type=Matrix.type] - The type of the matrix on output.
+   * @returns {MatrixType | NumericMatrix}  The resulting of the computational procedure.
+   * @throws {Error} if the "a" input matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static numericalInverseStepLiAndLi(
+    a: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    const av = Matrix.times(a, v);
+    // v = v * (3I - 3av  + (av)^2) = v * (3I - (3I - av) * av)
+    return Matrix.times(
+      v,
+      Matrix.addNumberToDiagonal(
+        Matrix.negate(
+          Matrix.times(
+            Matrix.addNumberToDiagonal(Matrix.negate(av), 3),
+            av,
+          ),
+        ),
+        3,
+      ),
+      type,
+    );
+  }
+
+  /**
+   * Computes the inverse approximation iteration
+   * according to the article of Li et al.:
+   * H. - B. Li, T. - Z. Huang, Y. Zhang, X. - P. Liu, T. - X. Gu,
+   * Chebyshev - type methods and preconditioning techniques, Appl. Math.
+   * Comput. 218 (2011) 260 - 270.
+   *
+   * @param {MatrixType | NumericMatrix} a - The matrix on input.
+   * @param {MatrixType | NumericMatrix} v - The approximation candidate matrix.
+   * @param {NumericType} [type=Matrix.type] - The type of the matrix on output.
+   * @returns {MatrixType | NumericMatrix} The resulting of the computational procedure.
+   * @throws {Error} if the "a" input matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static numericalInverseStepLiEtAl(
+    a: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+  ): MatrixType | NumericMatrix {
+    // va
+    const va = Matrix.times(v, a);
+    // I - va
+    const Imva = Matrix.addNumberToDiagonal(Matrix.negate(va), 1);
+    // 3I - va
+    const I3mva = Matrix.addNumberToDiagonal(Matrix.negate(va), 3);
+    // (3I - va)^2
+    const I3mva2 = Matrix.times(I3mva, I3mva);
+    // v = [I + .25 * (I - va) * (3I - va)^2]*v
+    return Matrix.times(
+      Matrix.addNumberToDiagonal(
+        Matrix.Hadamard(
+          Matrix.times(Imva, I3mva2),
+          .25,
+        ),
+        1,
+      ),
+      v,
+      type,
+    );
+  }
+
+  /**
+   * Computes the inverse approximation iteration
+   * according to the second suggestion in article of Li et al.:
+   * H. - B. Li, T. - Z. Huang, Y. Zhang, X. - P. Liu, T. - X. Gu,
+   * Chebyshev - type methods and preconditioning techniques, Appl. Math.
+   * Comput. 218 (2011) 260 - 270.
+   *
+   * @param {MatrixType | NumericMatrix} a - The matrix on input.
+   * @param {MatrixType | NumericMatrix} v - The approximation candidate matrix.
+   * @param {NumericType} [type=Matrix.type] - The type of the matrix on output.
+   * @returns {MatrixType | NumericMatrix} The resulting of the computational procedure.
+   * @throws {Error} if the "a" input matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static numericalInverseStepLiEtAl2(
+    a: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+    type: NumericType,
+  ): MatrixType | NumericMatrix {
+    // av
+    const av = Matrix.times(a, v);
+    // I - av
+    const Imav = Matrix.addNumberToDiagonal(Matrix.negate(av), 1);
+    // 2I - av
+    const I2mav = Matrix.addNumberToDiagonal(Matrix.negate(av), 2);
+    // (2I - av)^2
+    const I2mav2 = Matrix.times(I2mav, I2mav);
+    // v = v * [I + .5 * (I - av) * (I + (2I - av)^2)]
+    return Matrix.times(
+      v,
+      Matrix.addNumberToDiagonal(
+        Matrix.Hadamard(
+          Matrix.times(Imav, Matrix.addNumberToDiagonal(I2mav2, 1)),
+          .5,
+        ),
+        1,
+      ),
+      type,
+    );
+  }
+
+  /**
+   * Computes the inverse approximation iteration 
+   * according to the article of Soleymani and Toutounian:
+   * F. Soleymani, F. Toutounian, An iterative method for 
+   * computing approximate inverse of a square matrix and 
+   * Moore - Penrose inverse of a non - square matrix,
+   * Department of Applied Mathematics, School of Mathematical
+   * Sciences, Ferdowsi University of Mashlad, Mashlad, Iran. 
+   *
+   * @param {MatrixType | NumericMatrix} a - The matrix on input.
+   * @param {MatrixType | NumericMatrix} v - The approximation 
+   * candidate matrix.
+   * @param {NumericType}[type=Matrix.type] type - The type of the
+   * matrix on output.
+   * @returns {MatrixType | NumericMatrix} The resulting matrix from the 
+   * computational procedure.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static numericalInverseStepSoleymaniAndToutounian(
+    a: MatrixType | NumericMatrix,
+    v: MatrixType | NumericMatrix,
+    type: NumericType,
+  ): MatrixType | NumericMatrix {
+    const av = Matrix.times(a, v);
+    // 6I - av
+    const I6mav = Matrix.addNumberToDiagonal(Matrix.negate(av), 6);
+    // av * (6I - av)
+    const av6Imav = Matrix.times(av, I6mav);
+    // 14I - av * (6I - av)
+    const I14mavI6mav = Matrix.addNumberToDiagonal(Matrix.negate(av6Imav), 14);
+    // av * (14I - av * (6I - av))
+    const avI14mavI6mav = Matrix.times(av, I14mavI6mav);
+    // 16I - av * (14I - av * (6I - av))
+    const I16mavI14mavI6mav = Matrix.addNumberToDiagonal(
+      Matrix.negate(avI14mavI6mav),
+      16,
+    );
+    // av * (16I - av * (14I - av * (6I - av)))
+    const avI16mavI14mavI6mav = Matrix.times(av, I16mavI14mavI6mav);
+    // 9I - av * (16I - av * (14I - av * (6I - av)))
+    const I9mavI16mavI14mavI6mav = Matrix.addNumberToDiagonal(
+      Matrix.negate(avI16mavI14mavI6mav),
+      9,
+    );
+    // v = .5 * v * [9I - av* (16I - av * (14I - av * (6I - av)))]
+    return Matrix.Hadamard(Matrix.times(v, I9mavI16mavI14mavI6mav), .5, type);
+  }
+
   /**
    * Computes the initial inverse approximation
    * according to the first  suggestion of Pan
