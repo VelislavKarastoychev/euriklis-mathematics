@@ -11,6 +11,15 @@ export const ln: (n: number) => number = Math.log;
 export const pow: (a: number, n: number) => number = Math.pow;
 export const PI: number = Math.PI;
 export const E: number = Math.E;
+export const exp: (n: number) => number = Math.exp;
+export const sin: (n: number) => number = Math.sin;
+export const cos: (n: number) => number = Math.cos;
+export const tg: (n: number) => number = Math.tan;
+export const cotg: (n: number) => number = (n) => 1 / Math.tan(n);
+export const atan2: (n: number, m: number) => number = Math.atan2;
+export const sinh: (n: number) => number = Math.sinh;
+export const cosh: (n: number) => number = Math.cosh;
+export const tanh: (n: number) => number = Math.tanh;
 export const sign: (a: number, b: number) => number = (
   a,
   b,
