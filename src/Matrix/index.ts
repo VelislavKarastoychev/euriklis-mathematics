@@ -4035,7 +4035,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const A2 = Matrix.Hadamard(matrix, 2);
     const { s } = Matrix.svd(matrix, { copy: true, sort: true });
-    const [smax, smin] = [s[0], s[s.length]];
+    const [smax, smin] = [s[0], s[s.length - 1]];
     return Matrix.Hadamard(A2, 1 / (smin * smin + smax * smax), type);
   }
 
