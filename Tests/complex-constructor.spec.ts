@@ -31,7 +31,7 @@ new validator(z3.Re).isSame(1)
   )
   .test();
 
-new validator(z4.isSame(z3))
+new validator(z4.isEquals(z3))
   .isSame(true)
   .and.bind(
     new validator(z4.Re).isSame(1),

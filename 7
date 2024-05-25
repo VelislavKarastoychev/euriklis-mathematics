@@ -139,11 +139,6 @@ export class Complex {
    * Faculty of Computer Science and Information Technology,
    * Żołnierska 49, Szczecin 71-210, Poland.
    *
-   * Note! The formula proposed from the A. Cariow has an
-   * inaquracy in the sign. Instead of "-(x + y)", the
-   * correct version is "(x + y)" for the computation of
-   * the D3 matrix.
-   *
    * @param {Complex | number | undefined} a - If is a number, represents
    * the real part of the complex number, if is undefined, the real part will
    * be set to zero and if is Complex instance then only this parameter
@@ -159,7 +154,6 @@ export class Complex {
     let z1: number = 0, z2: number = 0;
     [z1, z2] = models.PrepareInput(a, b, z1, z2);
     const x = this._Re, y = this._Im;
-    if (z1 === 0 && z2 === 0) errors.ZeroDivision("divide")();
     const Y12 = models.AleksandrCariowComplexDivision(x, y, z1, z2);
     this._Re = Y12[0];
     this._Im = Y12[1];
@@ -198,7 +192,7 @@ export class Complex {
    * @returns {number} The argument in radians.
    */
   arg(): number {
-    return atan2(this._Im, this._Re);
+    return atan2(this._Re, this._Im);
   }
 
   /**
@@ -215,10 +209,10 @@ export class Complex {
   }
 
   /**
-   * Computes the exponential of the current complex number (e^(x + iy)).
+   * Exponentiates the current complex number.
    *
-   * @returns {Complex} The current instance updated with
-   * the exponential of the original complex number.
+   * @returns {Complex} The current instance
+   * raised to the power of e.
    */
   exp(): Complex {
     const a = this._Re;
@@ -238,7 +232,7 @@ export class Complex {
    * If the "a" is a Complex instance, it will be ignored.
    * @returns {Complex} The current instance raised to the given power.
    */
-  pow(a?: Complex | number | undefined, b?: number | undefined): Complex {
+  pow(a: Complex | number | undefined, b: number | undefined): Complex {
     let z1: number = 0,
       z2: number = 0,
       x: number = this._Re,
@@ -255,11 +249,10 @@ export class Complex {
         this._Re = p._Re;
         this._Im = p._Im;
       } else {
-        const arg = this.arg();
-        const m = exp(-z2 * arg) * pow(pythag(x, y), z1);
-        const t = z1 * arg + .5 * z2 * ln(x * x + y * y);
-        this._Re = m * cos(t);
-        this._Im = m * sin(t);
+        const m = exp(-z2 * this.arg()) * pow(pythag(x, y), z1);
+        const t = z1 * this.arg() + .5 * z2 * ln(x * x + y * y);
+        this._Re = m * m * cos(t);
+        this._Im = m * m * sin(t);
       }
     }
 
@@ -291,7 +284,7 @@ export class Complex {
   ): boolean {
     let z1: number = 0, z2: number = 0;
     [z1, z2] = models.PrepareInput(a, b, z1, z2);
-    return this.copy().minus(z1, z2).abs() <= epsilon;
+    return this.copy().minus(z1, z2).abs() < epsilon;
   }
 
   /**
@@ -330,7 +323,7 @@ export class Complex {
   reciprocal(): Complex {
     const x: number = this._Re, y: number = this._Im;
     const denominator: number = x * x + y * y;
-    if (denominator === 0) errors.ZeroDivision("reciprocal")();
+    if (denominator === 0) errors.ZeroDivision("reciprocal");
     this._Re /= denominator;
     this._Im /= -denominator;
 
@@ -344,23 +337,10 @@ export class Complex {
    */
   normalize(): Complex {
     const magnitude: number = this.abs();
-    if (magnitude === 0) errors.ZeroDivision("normalize")();
+    if (magnitude === 0) errors.ZeroDivision("normalize");
     this._Re /= magnitude;
     this._Im /= magnitude;
 
     return this;
-  }
-
-  /**
-   * Returns a string representation of the complex number.
-   * The format is "a + bi" or "a - bi" depending on the sign of the imaginary part.
-   * If the imaginary part is zero, it only returns "a".
-   *
-   * @returns {string} A string representation of the complex number.
-   */
-  toString(): string {
-    return `${this._Re}${this._Im > 0 ? " + " : this._Im < 0 ? " - " : ""}${
-      this._Im > 0 ? this._Im + "i" : this.Im < 0 ? -this._Im + "i" : ""
-    }`;
   }
 }
