@@ -3940,7 +3940,7 @@ export class Matrix {
   public static numericalInverseStepLiEtAl2(
     a: MatrixType | NumericMatrix,
     v: MatrixType | NumericMatrix,
-    type: NumericType,
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     // av
     const av = Matrix.times(a, v);
@@ -3988,7 +3988,7 @@ export class Matrix {
   public static numericalInverseStepSoleymaniAndToutounian(
     a: MatrixType | NumericMatrix,
     v: MatrixType | NumericMatrix,
-    type: NumericType,
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const av = Matrix.times(a, v);
     // 6I - av
@@ -4033,7 +4033,7 @@ export class Matrix {
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    const A2 = Matrix.Hadamard(matrix, 2);
+    const A2 = Matrix.Hadamard(Matrix.transpose(matrix), 2);
     const { s } = Matrix.svd(matrix, { copy: true, sort: true });
     const [smax, smin] = [s[0], s[s.length - 1]];
     return Matrix.Hadamard(A2, 1 / (smin * smin + smax * smax), type);
@@ -4059,7 +4059,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     return Matrix.Hadamard(
       Matrix.transpose(matrix),
-      1 / (Matrix.norm1(matrix) / Matrix.infinityNorm(matrix)),
+      1 / (Matrix.norm1(matrix) * Matrix.infinityNorm(matrix)),
       type,
     );
   }
@@ -4082,7 +4082,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const limit = 2 / models.MatrixReduce(matrix, "square");
     const alpha = Math.random() * limit;
-    return Matrix.Hadamard(matrix, alpha, type);
+    return Matrix.Hadamard(Matrix.transpose(matrix), alpha, type);
   }
 
   /**
@@ -4090,16 +4090,22 @@ export class Matrix {
    * according to the Grosz article:
    * L. Grosz, "Preconditioning by incomplete block elimination",
    * Numer. Linear Algebra Appl. 7 (2000) 527–541.
+   * Note: In many cases this initial matrix lead to divergence.
    *
    * @param {MatrixType | NumericMatrix} matrix - The matrix input parameter.
    * @returns {MatrixType | NumericMatrix} The resulting matrix from the
    * computational procedure.
    * @throws {Error} If the matrix is icorrectly defined.
    */
-  public static inverseApproximationGrosz(
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static initialInverseApproximationGrosz(
     matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return models.InverseApproximationGrosz(matrix);
+    return Matrix.toDiagonalMatrix(
+      Matrix.inverted(Matrix.getDiagonal(matrix)),
+      type,
+    );
   }
 
   /**
@@ -4108,15 +4114,20 @@ export class Matrix {
    * G. Codevico, V.Y. Pan, M.V. Barel,
    * "Newton-like iteration based on a cubic polynomial
    * for structured matrices", Numer. Algorith. 36 (2004) 365–380.
+   * Note: In many cases this initial matrix lead to divergence.
    *
-   * @param {MatrixType | NumericMatrix} symmetricMatrix - The input matrix parameter.
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix parameter.
    * @returns {MatrixType | NumericMatrix} The resulting matrix from the computation
    * procedure.
    * @throws {Error} If the matrix parameter is incorrectly defined.
    */
-  public static invesionApproximationCodevico(
-    symmetricMatrix: MatrixType | NumericMatrix,
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static initialInverseApproximationCodevico(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
-    return models.InverseApproximationCodevico(symmetricMatrix);
+    const n = matrix.length;
+    const invFroNorm = 1 / Matrix.FrobeniusNorm(matrix);
+    return Matrix.setDiagonalToNumber(Matrix.zero(n, type), invFroNorm);
   }
 }
