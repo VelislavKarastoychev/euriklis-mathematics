@@ -41,11 +41,6 @@ export {
 } from "./MultiplyMatrices";
 export { InverseMatrixGauss, InverseMatrixLU } from "./InverseMatrix";
 export {
-  InverseApproximationCodevico,
-  InverseApproximationGrosz,
-  InverseApproximationPanSchreiber2,
-} from "./InverseApproximations";
-export {
   AddArrayToDiagonal,
   AddNumberToDiagonal,
   AddVectorToDiagonal,
