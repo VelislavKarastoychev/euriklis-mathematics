@@ -17,6 +17,8 @@
     "@euriklis/validator-ts": "^1.0.0",
     "@tensorflow/tfjs": "^4.19.0",
     "@tensorflow/tfjs-node": "^4.19.0",
-    "numericjs": "^1.2.6"
+    "@types/uuid": "^9.0.8",
+    "numericjs": "^1.2.6",
+    "uuid": "^9.0.1"
   }
 }
