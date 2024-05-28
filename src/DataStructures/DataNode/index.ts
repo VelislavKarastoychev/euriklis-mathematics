@@ -1,33 +1,39 @@
 "use strict";
-export class DataNode {
-  private _data: any = null;
-  private _prev: DataNode | null = null;
-  private _next: DataNode | null = null;
-  constructor(data: any) {
+export class DataNode<T extends DataNode<any>> {
+  protected _data: any = null;
+  protected _prev: T | null = null;
+  constructor(data?: any) {
     this.data = data;
   }
-  
+
   get data(): any {
-    return (this as DataNode)._data;
+    return this._data;
   }
 
   set data(d: any) {
-    (this as DataNode)._data = d;
+    if (typeof d !== "undefined") this._data = d;
   }
 
-  get prev (): DataNode | null {
-    return (this as DataNode)._prev;
+  get prev(): T | null {
+    return this._prev;
   }
 
-  set prev(node: DataNode | null) {
-    (this as DataNode)._prev = node;
+  set prev(node: T | null) {
+    this._prev = node;
+  }
+}
+
+export class LinkedDataNode extends DataNode<LinkedDataNode> {
+  protected _next: LinkedDataNode | null = null;
+  constructor(data: any) {
+    super(data);
+  }
+  get next(): LinkedDataNode | null {
+    return (this as LinkedDataNode)._next;
   }
 
-  get next(): DataNode | null{
-    return (this as DataNode)._next;
+  set next(node: LinkedDataNode | null) {
+    (this as LinkedDataNode)._next = node;
   }
 
-  set next(node: DataNode | null) {
-    (this as DataNode)._next = node;
-  }
 }
