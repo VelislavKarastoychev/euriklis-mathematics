@@ -1,5 +1,5 @@
-import { Integer } from "../../Matrix/types";
-import { DataNode } from "../DataNode";
+import type { Integer } from "../../Matrix/types";
+import { LinkedDataNode } from "../DataNode";
 import * as errors from "./Errors";
 import { ifIsNotArrayThrow } from "../Decorators";
 
@@ -17,10 +17,10 @@ export class DynamicStack {
    * Holder for the top element of the Stack.
    * This property references the top node of the
    * stack chain.
-   * @type {DataNode | null}
+   * @type {LinkedDataNode | null}
    * @private
    */
-  private _top: DataNode | null = null;
+  private _top: LinkedDataNode | null = null;
 
   /**
    * Represents the current size (number of elements) of the Stack.
@@ -30,7 +30,6 @@ export class DynamicStack {
   private _size: Integer = 0;
 
   /**
-   *
    * Pros:
    * - Dynamic resizing allows handling of varying data amounts efficiently.
    * - Consistent performance across operations like pushMany and filter.
@@ -39,7 +38,6 @@ export class DynamicStack {
    * Cons:
    * - Potential for higher memory overhead due to dynamic resizing.
    * - Slightly higher execution times for certain operations compared to a static stack.
-   *
    *
    * Creates a new DynamicStack instance.
    * If initial data is provided, it is pushed onto the stack.
@@ -70,7 +68,7 @@ export class DynamicStack {
    * @returns {any} The top element of the stack (last element).
    */
   get top(): any {
-    return (this._top as DataNode)?.data;
+    return (this._top as LinkedDataNode)?.data;
   }
 
   /**
@@ -81,10 +79,10 @@ export class DynamicStack {
    */
   push(data: any): DynamicStack {
     if (typeof data !== "undefined") {
-      const newNode = new DataNode(data);
+      const newNode = new LinkedDataNode(data);
       newNode.prev = this._top;
       if (this._top) {
-        (this._top as DataNode).next = newNode;
+        (this._top as LinkedDataNode).next = newNode;
       }
       this._top = newNode;
       this._size++;
@@ -103,7 +101,7 @@ export class DynamicStack {
   pushMany(items: any[]): DynamicStack {
     const n: Integer = items.length;
     let i: Integer;
-    // because if the data field of a DataNode
+    // because if the data field of a LinkedDataNode
     // is set to undefined, the push method is
     // not executed, this code is correct.
     for (i = 0; i < n; i++) {
@@ -122,9 +120,9 @@ export class DynamicStack {
   pop(): any {
     let data: any = null;
     if (this._size) {
-      data = (this._top as DataNode).data;
-      this._top = (this._top as DataNode).prev;
-      if (this._top) (this._top as DataNode).next = null;
+      data = (this._top as LinkedDataNode).data;
+      this._top = (this._top as LinkedDataNode).prev;
+      if (this._top) (this._top as LinkedDataNode).next = null;
       this._size--;
     }
 
@@ -142,19 +140,19 @@ export class DynamicStack {
     const data: any[] = [];
     if (n > this.size) n = this.size;
     for (i = 0; i < n - 1; i += 2) {
-      item = (this._top as DataNode).data;
-      this._top = (this._top as DataNode).prev;
-      (this._top as DataNode).next = null;
+      item = (this._top as LinkedDataNode).data;
+      this._top = (this._top as LinkedDataNode).prev;
+      (this._top as LinkedDataNode).next = null;
       data[i] = item;
-      item = (this._top as DataNode).data;
-      this._top = (this._top as DataNode).prev;
-      (this._top as DataNode).next = null;
+      item = (this._top as LinkedDataNode).data;
+      this._top = (this._top as LinkedDataNode).prev;
+      (this._top as LinkedDataNode).next = null;
       data[i + 1] = item;
       this._size -= 2;
     }
     if (i === n - 1) {
-      item = (this._top as DataNode).data;
-      this._top = (this._top as DataNode).prev;
+      item = (this._top as LinkedDataNode).data;
+      this._top = (this._top as LinkedDataNode).prev;
       if (this._top) this._top.next = null;
       data[i] = item;
       this._size--;
@@ -191,7 +189,7 @@ export class DynamicStack {
     let current = this._top;
     while (current) {
       callback(current.data, this);
-      current = (current as DataNode).prev;
+      current = (current as LinkedDataNode).prev;
     }
 
     return this;
@@ -253,24 +251,24 @@ export class DynamicStack {
    */
   filter(callback: (el: any, stack: DynamicStack) => boolean): DynamicStack {
     const filteredElements: DynamicStack = new DynamicStack();
-    let currentNode: DataNode | null = null;
-    let predecessor: DataNode;
+    let currentNode: LinkedDataNode | null = null;
+    let predecessor: LinkedDataNode;
     let top = this._top;
     while (top) {
       if (callback(top.data, this)) {
         if (currentNode) {
-          predecessor = new DataNode(top.data);
+          predecessor = new LinkedDataNode(top.data);
           predecessor.next = currentNode;
           currentNode.prev = predecessor;
           currentNode = predecessor;
           filteredElements._size++;
         } else {
-          currentNode = new DataNode(top.data);
+          currentNode = new LinkedDataNode(top.data);
           filteredElements._top = currentNode;
           filteredElements._size++;
         }
       }
-      top = (top as DataNode).prev;
+      top = (top as LinkedDataNode).prev;
     }
     return filteredElements;
   }
@@ -292,18 +290,18 @@ export class DynamicStack {
    */
   copy(): DynamicStack {
     const stack = new DynamicStack();
-    let currentNode: DataNode | null = null,
-      predecessorNode: DataNode,
-      top: DataNode | null;
+    let currentNode: LinkedDataNode | null = null,
+      predecessorNode: LinkedDataNode,
+      top: LinkedDataNode | null;
     top = this._top;
     while (top) {
       if (currentNode) {
-        predecessorNode = new DataNode(top.data);
+        predecessorNode = new LinkedDataNode(top.data);
         predecessorNode.next = currentNode;
         currentNode.prev = predecessorNode;
         currentNode = predecessorNode;
       } else {
-        currentNode = new DataNode(top.data);
+        currentNode = new LinkedDataNode(top.data);
         stack._top = currentNode;
       }
       stack._size++;
@@ -355,7 +353,6 @@ export class StaticStack {
   private _top: any[] = [];
 
   /**
-   *
    * Pros:
    * - Consistent performance for basic operations like push, pop, and append.
    * - Efficient memory allocation due to fixed size.
@@ -517,7 +514,7 @@ export class StaticStack {
     const n = this._top.length;
     const stack = this._top;
     let i: Integer, k: Integer = 0;
-    for (i = 0;i < n - 1;i += 2) {
+    for (i = 0; i < n - 1; i += 2) {
       if (callback(stack[i], this)) filteredStack[k++] = stack[i];
       if (callback(stack[i + 1], this)) filteredStack[k++] = stack[i + 1];
     }
