@@ -136,9 +136,10 @@ import "./log-Complex.spec";
 import "./sqrt-Complex.spec";
 import "./reciprocal-Complex.spec";
 import "./normalize-Complex.spec";
-import "./initial-inverse-approximation-Pan-Schreiber.spec";
-import "./initial-inverse-approximation-Pan-Schreiber2.spec";
-import "./initial-inverse-approximation-Ben-Israel-and-Greville.spec";
+// import "./initial-inverse-approximation-Pan-Schreiber.spec";
+// import "./initial-inverse-approximation-Pan-Schreiber2.spec";
+// import "./initial-inverse-approximation-Ben-Israel-and-Greville.spec";
 // import "./initial-inverse-approximation-Codevico.spec"
 import "./static-stack.spec";
 import "./dynamic-stack.spec";
+import "./doubly-linked-list.spec";
