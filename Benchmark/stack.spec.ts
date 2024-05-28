@@ -1,7 +1,7 @@
 "use strict";
 import { dimensions, startPerformanceTest } from "./utils";
 import { DynamicStack, StaticStack } from "../src";
-import { Integer } from "../src/Matrix/types";
+import type { Integer } from "../src/Matrix/types";
 (async () => {
   const SStack = new StaticStack();
   const DStack = new DynamicStack();
