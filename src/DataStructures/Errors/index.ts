@@ -6,7 +6,7 @@ import {
   StackUnderflowTxt,
 } from "./texts";
 const runError = errorGenerator(
-  "@euriklis/mathematics Stack library error message",
+  "@euriklis/mathematics DataStructures library error message",
 );
 export const IncorrectParameterInPushMany: () => never = () =>
   runError(IncorrectParameterInPushManyTxt);
