@@ -56,3 +56,10 @@ export const printAsJavaMatrix: (m: MatrixType | NumericMatrix) => string = (
 ) => {
   return `{${m.map((row) => printAsJavaVector(row))}}`;
 };
+
+export const errorGenerator = (name: string) => (text: string): never => {
+  const error: Error = new Error();
+  error.name = name;
+  error.message = text;
+  throw error;
+};
