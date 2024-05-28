@@ -110,5 +110,6 @@
 // import "./set-diagonal-to-number.spec";
 // import "./set-diagonal-to-row-vector.spec";
 // import "./set-diagonal-to-column-vector.spec";
-// import "./stack.spec.ts";
-import "./eigenproblem.spec";
+// import "./eigenproblem.spec";
+
+// import "./stack.spec";
