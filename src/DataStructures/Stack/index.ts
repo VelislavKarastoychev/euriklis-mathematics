@@ -1,6 +1,6 @@
 import type { Integer } from "../../Matrix/types";
 import { LinkedDataNode } from "../DataNode";
-import * as errors from "./Errors";
+import * as errors from "../Errors";
 import { ifIsNotArrayThrow } from "../Decorators";
 
 /**
@@ -28,6 +28,7 @@ export class DynamicStack {
    * @private
    */
   private _size: Integer = 0;
+  private _limit: Integer = Infinity;
 
   /**
    * Pros:
@@ -43,7 +44,7 @@ export class DynamicStack {
    * If initial data is provided, it is pushed onto the stack.
    * @param {any} data - The initial data to be stored in the stack (optional).
    */
-  constructor(data: any = undefined) {
+  constructor(data: any = undefined, size: Integer = Infinity) {
     this.push(data);
   }
 
@@ -53,6 +54,10 @@ export class DynamicStack {
    */
   get size(): Integer {
     return this._size;
+  }
+
+  get limit(): Integer {
+    return this._limit;
   }
 
   /**
@@ -79,6 +84,9 @@ export class DynamicStack {
    */
   push(data: any): DynamicStack {
     if (typeof data !== "undefined") {
+      if (this.limit === this.size + 1) {
+        errors.StackOverflow("Stack push");
+      }
       const newNode = new LinkedDataNode(data);
       newNode.prev = this._top;
       if (this._top) {
