@@ -28,40 +28,80 @@ import * as errors from "../Errors";
  *    me with full control over their manipulation, unlike the
  *    Map structure which is internally implemented in JavaScript.
  */
+/**
+ * @class DoublyLinkedList
+ * @classdesc This class represents a doubly linked list
+ * with optional size limitation.
+ */
 export class DoublyLinkedList {
   private _size: Integer = Infinity;
   private _head: LinkedDataNode | null = null;
   private _top: LinkedDataNode | null = null;
   private _currentSize = 0;
+
+  /**
+   * Creates an instance of DoublyLinkedList.
+   * @param {any} [data] - The initial data to add to the list.
+   * @param {Integer} [size=Infinity] - The maximum size of the list.
+   */
   constructor(data?: any, size: Integer = Infinity) {
     this.size = size;
     this.addLast(data);
   }
 
+  /**
+   * Gets the maximum size of the list.
+   * @returns {Integer}
+   */
   get size(): Integer {
     return this._size;
   }
 
+  /**
+   * Sets the maximum size of the list.
+   * @type {Integer}
+   */
   set size(s: Integer) {
     this._size = s;
   }
 
+  /**
+   * Gets the data of the head node.
+   * @returns {any}
+   */
   get head(): any {
     return this._head?.data || null;
   }
 
+  /**
+   * Gets the data of the top (last) node.
+   * @returns {any}
+   */
   get top(): any {
     return this._top?.data || null;
   }
 
+  /**
+   * Gets the current length of the list.
+   * @returns {Integer}
+   */
   get length(): Integer {
     return this._currentSize;
   }
 
+  /**
+   * Checks if the list is empty.
+   * @returns {boolean}
+   */
   get isEmpty(): boolean {
     return this.length === 0 && this._head === this._top && this._head === null;
   }
 
+  /**
+   * Adds a node with the given data to the end of the list.
+   * @param {any} data - The data to add.
+   * @returns {DoublyLinkedList} The updated list.
+   */
   addLast(data: any): DoublyLinkedList {
     if (data) {
       if (this._size < this._currentSize + 1) {
@@ -80,6 +120,11 @@ export class DoublyLinkedList {
     return this;
   }
 
+  /**
+   * Adds an existing node to the end of the list.
+   * @private
+   * @param {LinkedDataNode} node - The node to add.
+   */
   private _addLastNode(node: LinkedDataNode) {
     if (node) {
       if (this._size < this._currentSize + 1) {
@@ -95,6 +140,10 @@ export class DoublyLinkedList {
     }
   }
 
+  /**
+   * Removes the last node from the list.
+   * @returns {any} The data of the removed node.
+   */
   removeLast(): DoublyLinkedList {
     if (!this._head) {
       errors.StackUnderflow("DoublyLinkedList removeLast")();
@@ -113,6 +162,10 @@ export class DoublyLinkedList {
     return data;
   }
 
+  /**
+   * Removes the first node from the list.
+   * @returns {any} The data of the removed node.
+   */
   removeFirst(): any {
     if (!this._head) {
       errors.StackUnderflow("DoublyLinkedList removeFirst")();
@@ -131,6 +184,11 @@ export class DoublyLinkedList {
     return data;
   }
 
+  /**
+   * Removes a node by its ID.
+   * @param {string} id - The ID of the node to remove.
+   * @returns {any} The data of the removed node.
+   */
   remove(id: string): any {
     const node: LinkedDataNode | null = this._findNodeById(id);
     if (node) {
@@ -152,6 +210,12 @@ export class DoublyLinkedList {
     }
   }
 
+  /**
+   * Inserts a node with the given data after the node with the specified ID.
+   * @param {string} id - The ID of the node to insert after.
+   * @param {any} data - The data to insert.
+   * @returns {DoublyLinkedList} The updated list.
+   */
   insertAfter(id: string, data: any): DoublyLinkedList {
     const node = this._findNodeById(id);
     const newNode: LinkedDataNode | null = new LinkedDataNode(data);
@@ -174,6 +238,12 @@ export class DoublyLinkedList {
     return this;
   }
 
+  /**
+   * Inserts a node with the given data before the node with the specified ID.
+   * @param {string} id - The ID of the node to insert before.
+   * @param {any} data - The data to insert.
+   * @returns {DoublyLinkedList} The updated list.
+   */
   insertBefore(id: string, data: any): DoublyLinkedList {
     const node: LinkedDataNode | null = this._findNodeById(id);
     const newNode = new LinkedDataNode(data);
@@ -197,6 +267,10 @@ export class DoublyLinkedList {
     return this;
   }
 
+  /**
+   * Returns a map of all node values, keyed by their IDs.
+   * @returns {Map<string, any>} The map of node values.
+   */
   values(): Map<string, any> {
     let pointer = this._head;
     const values = new Map();
@@ -208,10 +282,21 @@ export class DoublyLinkedList {
     return values;
   }
 
+  /**
+   * Checks if a node with the specified ID exists in the list.
+   * @param {string} id - The ID to check for.
+   * @returns {boolean} True if the node exists, otherwise false.
+   */
   has(id: string): boolean {
     return this._findNodeById(id) !== null;
   }
 
+  /**
+   * Traverses the list, applying the given callback to each node.
+   * @param {function} callback - The function to apply to each node.
+   * @param {boolean} [inversed=false] - Whether to traverse in reverse order.
+   * @returns {DoublyLinkedList} The traversed list.
+   */
   traverse(
     callback: (d: any, id?: string, list?: DoublyLinkedList) => any,
     inversed: boolean = false,
@@ -229,6 +314,12 @@ export class DoublyLinkedList {
     return this;
   }
 
+  /**
+   * Filters the list, returning a new list with nodes that match the given callback.
+   * @param {function} callback - The function to apply to each node.
+   * @param {boolean} [inversed=false] - Whether to traverse in reverse order.
+   * @returns {DoublyLinkedList} The filtered list.
+   */
   filter(
     callback: (d: any, id?: string, list?: DoublyLinkedList) => boolean,
     inversed: boolean = false,
@@ -249,7 +340,12 @@ export class DoublyLinkedList {
     return list;
   }
 
-  copy(inversed: boolean = false) {
+  /**
+   * Creates a copy of the list.
+   * @param {boolean} [inversed=false] - Whether to traverse in reverse order.
+   * @returns {DoublyLinkedList} The copied list.
+   */
+  copy(inversed: boolean = false): DoublyLinkedList {
     const DLL = new DoublyLinkedList();
     DLL.size = this.size;
     let pointer: LinkedDataNode | null = inversed ? this._top : this._head;
@@ -263,6 +359,11 @@ export class DoublyLinkedList {
     return DLL;
   }
 
+  /**
+   * Checks if every node in the list satisfies the given callback.
+   * @param {function} callback - The function to apply to each node.
+   * @returns {boolean} True if all nodes satisfy the callback, otherwise false.
+   */
   every(
     callback: (d: any, id?: string, list?: DoublyLinkedList) => boolean,
   ): boolean {
@@ -283,6 +384,11 @@ export class DoublyLinkedList {
     return answer;
   }
 
+  /**
+   * Checks if any node in the list satisfies the given callback.
+   * @param {function} callback - The function to apply to each node.
+   * @returns {boolean} True if any node satisfies the callback, otherwise false.
+   */
   any(
     callback: (d: any, id?: string, list?: DoublyLinkedList) => boolean,
   ): boolean {
@@ -303,7 +409,11 @@ export class DoublyLinkedList {
     return answer;
   }
 
-  clean() {
+  /**
+   * Clears the list.
+   * @returns {DoublyLinkedList} The cleared list.
+   */
+  clean(): DoublyLinkedList {
     this._size = Infinity;
     this._currentSize = 0;
     this._head = null;
@@ -312,6 +422,11 @@ export class DoublyLinkedList {
     return this;
   }
 
+  /**
+   * Merges another doubly linked list into this list.
+   * @param {DoublyLinkedList} list - The list to merge.
+   * @returns {DoublyLinkedList} The merged list.
+   */
   merge(list: DoublyLinkedList): DoublyLinkedList {
     if (!list.isEmpty) {
       this._size = this._size + list._size;
@@ -329,7 +444,12 @@ export class DoublyLinkedList {
 
     return this;
   }
-
+  /**
+   * Finds a node by its ID.
+   * @private
+   * @param {string} id - The ID of the node to find.
+   * @returns {LinkedDataNode | null} The found node or null if not found.
+   */
   private _findNodeById(id: string): LinkedDataNode | null {
     let node: LinkedDataNode | null = null;
     let currentNode: LinkedDataNode | null = this._head;
