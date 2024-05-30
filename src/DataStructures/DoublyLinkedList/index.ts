@@ -62,7 +62,7 @@ export class DoublyLinkedList {
     return this.length === 0 && this._head === this._top && this._head === null;
   }
 
-  addLast(data: any) {
+  addLast(data: any): DoublyLinkedList {
     if (data) {
       if (this._size < this._currentSize + 1) {
         errors.StackOverflow("DoublyLinkedList addLast")();
@@ -76,9 +76,26 @@ export class DoublyLinkedList {
       this._top = node;
       this._currentSize++;
     }
+
+    return this;
   }
 
-  removeLast() {
+  private _addLastNode(node: LinkedDataNode) {
+    if (node) {
+      if (this._size < this._currentSize + 1) {
+        errors.StackOverflow("DoublyLinkedList addLastNode")();
+      }
+      if (this._head) {
+        (this._top as LinkedDataNode).next = node;
+        node.prev = this._top;
+      } else this._head = node;
+
+      this._top = node;
+      this._currentSize++;
+    }
+  }
+
+  removeLast(): DoublyLinkedList {
     if (!this._head) {
       errors.StackUnderflow("DoublyLinkedList removeLast")();
     }
@@ -96,8 +113,8 @@ export class DoublyLinkedList {
     return data;
   }
 
-  removeFirst() {
-    if (this._head) {
+  removeFirst(): any {
+    if (!this._head) {
       errors.StackUnderflow("DoublyLinkedList removeFirst")();
     }
 
@@ -114,7 +131,7 @@ export class DoublyLinkedList {
     return data;
   }
 
-  remove(id: string) {
+  remove(id: string): any {
     const node: LinkedDataNode | null = this._findNodeById(id);
     if (node) {
       if ((this._head as LinkedDataNode).id === id) {
@@ -135,7 +152,7 @@ export class DoublyLinkedList {
     }
   }
 
-  insertAfter(id: string, data: any) {
+  insertAfter(id: string, data: any): DoublyLinkedList {
     const node = this._findNodeById(id);
     const newNode: LinkedDataNode | null = new LinkedDataNode(data);
     if (node) {
@@ -153,9 +170,11 @@ export class DoublyLinkedList {
       node.next = newNode;
       this._currentSize++;
     }
+
+    return this;
   }
 
-  insertBefore(id: string, data: any) {
+  insertBefore(id: string, data: any): DoublyLinkedList {
     const node: LinkedDataNode | null = this._findNodeById(id);
     const newNode = new LinkedDataNode(data);
     if (node) {
@@ -174,6 +193,8 @@ export class DoublyLinkedList {
       node.prev = newNode;
       this._currentSize++;
     }
+
+    return this;
   }
 
   values(): Map<string, any> {
@@ -187,9 +208,131 @@ export class DoublyLinkedList {
     return values;
   }
 
+  has(id: string): boolean {
+    return this._findNodeById(id) !== null;
+  }
+
+  traverse(
+    callback: (d: any, id?: string, list?: DoublyLinkedList) => any,
+    inversed: boolean = false,
+  ): DoublyLinkedList {
+    let data: any,
+      id: string,
+      pointer: LinkedDataNode | null = inversed ? this._top : this._head;
+    while (pointer) {
+      data = pointer.data;
+      id = pointer.id;
+      callback(data, id, this);
+      pointer = inversed ? pointer.prev : pointer.next;
+    }
+
+    return this;
+  }
+
+  filter(
+    callback: (d: any, id?: string, list?: DoublyLinkedList) => boolean,
+    inversed: boolean = false,
+  ): DoublyLinkedList {
+    const list = new DoublyLinkedList();
+    let data: any,
+      id: string,
+      pointer: LinkedDataNode | null = inversed ? this._top : this._head;
+    while (pointer) {
+      data = pointer.data;
+      id = pointer.id;
+      if (callback(data, id, this)) {
+        list.addLast(data);
+      }
+      pointer = inversed ? pointer.prev : pointer.next;
+    }
+
+    return list;
+  }
+
+  copy(inversed: boolean = false) {
+    const DLL = new DoublyLinkedList();
+    DLL.size = this.size;
+    let pointer: LinkedDataNode | null = inversed ? this._top : this._head;
+    while (pointer) {
+      const node = new LinkedDataNode(pointer.data);
+      node.id = pointer.id;
+      DLL._addLastNode(node);
+      pointer = inversed ? pointer.prev : pointer.next;
+    }
+
+    return DLL;
+  }
+
+  every(
+    callback: (d: any, id?: string, list?: DoublyLinkedList) => boolean,
+  ): boolean {
+    let answer: boolean = true,
+      pointer: LinkedDataNode | null = this._head,
+      data: any,
+      id: string;
+    while (pointer) {
+      data = pointer.data;
+      id = pointer.id;
+      if (!callback(data, id, this)) {
+        answer = false;
+        break;
+      }
+      pointer = pointer.next;
+    }
+
+    return answer;
+  }
+
+  any(
+    callback: (d: any, id?: string, list?: DoublyLinkedList) => boolean,
+  ): boolean {
+    let answer: boolean = false,
+      pointer: LinkedDataNode | null = this._head,
+      data: any,
+      id: string;
+    while (pointer) {
+      data = pointer.data;
+      id = pointer.id;
+      if (callback(data, id, this)) {
+        answer = true;
+        break;
+      }
+      pointer = pointer.next;
+    }
+
+    return answer;
+  }
+
+  clean() {
+    this._size = Infinity;
+    this._currentSize = 0;
+    this._head = null;
+    this._top = null;
+
+    return this;
+  }
+
+  merge(list: DoublyLinkedList): DoublyLinkedList {
+    if (!list.isEmpty) {
+      this._size = this._size + list._size;
+      if (this.isEmpty) {
+        this._head = list._head;
+        this._top = list._top;
+      } else {
+        const top: LinkedDataNode = this._top as LinkedDataNode;
+        top.next = list._head;
+        (top.next as LinkedDataNode).prev = this._top;
+        this._top = list._top;
+      }
+      this._currentSize += list._currentSize;
+    }
+
+    return this;
+  }
+
   private _findNodeById(id: string): LinkedDataNode | null {
     let node: LinkedDataNode | null = null;
-    let currentNode: LinkedDataNode | null = this._head as LinkedDataNode;
+    let currentNode: LinkedDataNode | null = this._head;
     while (currentNode) {
       if (currentNode.id === id) {
         node = currentNode;
