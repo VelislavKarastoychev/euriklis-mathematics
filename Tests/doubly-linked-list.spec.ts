@@ -106,3 +106,8 @@ new validator(DLL.length).isSame(4)
     "15. provide a method merge which concatenates to doubly linked list structures.",
   )
   .test();
+new validator(DLL.every((d) => typeof d?.data === "string")).isSame(false)
+  .describe(
+    "16. provide a method every, which checks if all the elements satisfies a given callback condition.",
+  )
+  .test();
