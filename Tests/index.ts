@@ -143,3 +143,4 @@ import "./normalize-Complex.spec";
 import "./static-stack.spec";
 import "./dynamic-stack.spec";
 import "./doubly-linked-list.spec";
+import "./bst.spec.ts";
