@@ -1,6 +1,6 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
-import { DoublyLinkedList } from "../src/DataStructures/DoublyLinkedList";
+import { DoublyLinkedList } from "../src";
 
 const list = new DoublyLinkedList();
 
