@@ -11,7 +11,6 @@ export class BST {
   public compare: (x: BSTDataNode, y: BSTDataNode) => -1 | 0 | 1 = (x, y) =>
     x.id < y.id ? -1 : x.id === y.id ? 0 : 1;
   private _root: BSTDataNode | null = null;
-  private _size: Integer = Infinity;
 
   constructor(data?: any) {
     this.root = data;
