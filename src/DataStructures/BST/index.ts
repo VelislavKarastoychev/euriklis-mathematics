@@ -1,15 +1,18 @@
 "use strict";
+import validator from "@euriklis/validator-ts";
 import type { Integer } from "../../Matrix/types";
 import { BSTDataNode } from "../DataNode";
 import { DynamicStack } from "../Stack";
+
+const compareNodes: (x: BSTDataNode, y: BSTDataNode) => -1 | 0 | 1 = (x, y) =>
+  x.id < y.id ? -1 : x.id === y.id ? 0 : 1;
 
 /**
  * This class implements the concept of the Binary search trees
  * using the BSTDataNode extension of the DataNode model.
  */
 export class BST {
-  public compare: (x: BSTDataNode, y: BSTDataNode) => -1 | 0 | 1 = (x, y) =>
-    x.id < y.id ? -1 : x.id === y.id ? 0 : 1;
+  public compare = compareNodes;
   private _root: BSTDataNode | null = null;
 
   constructor(data?: any) {
@@ -33,6 +36,47 @@ export class BST {
 
   get isEmpty(): boolean {
     return !this._root;
+  }
+
+  clean() {
+    this._root = null;
+    this.compare = compareNodes;
+
+    return this;
+  }
+
+  copy(): BST {
+    const tree = new BST();
+    tree.compare = this.compare;
+    this.DFS((node) => {
+      tree.insert(node.data, node.id);
+    });
+
+    return tree;
+  }
+
+  isSame(tree: BST) {
+    const r1 = this._root,
+      r2 = tree._root,
+      S1 = new DynamicStack(r1),
+      S2 = new DynamicStack(r2);
+    let same = false, t1: BSTDataNode, t2: BSTDataNode;
+    while (!S1.isEmpty && !S2.isEmpty) {
+      t1 = S1.pop();
+      t2 = S2.pop();
+      same = new validator(t1.data).isSame(t2.data)
+        .and.bind(
+          new validator(t1.id).isSame(t2.id),
+        ).answer;
+      if (!same) break;
+      if (t1.left) S1.push(t1.left);
+      if (t1.right) S1.push(t1.right);
+      if (t2.left) S2.push(t2.left);
+      if (t2.right) S2.push(t2.right);
+    }
+
+    if (!S1.isEmpty || !S2.isEmpty) return false;
+    return same;
   }
 
   insert(data: any, id?: string) {
@@ -85,7 +129,7 @@ export class BST {
     return node;
   }
 
-  search(callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1): any {
+  binarySearch(callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1): any {
     let found = false, r: BSTDataNode | null = this._root;
     while (r && !found) {
       if (callback(r, this) === 0) found = true;
@@ -97,7 +141,7 @@ export class BST {
     else return null;
   }
 
-  searchNode(
+  binarySearchNode(
     callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1,
   ): BSTDataNode | null {
     let found = false, r: BSTDataNode | null = this._root;
@@ -135,7 +179,7 @@ export class BST {
       y = y.right;
     }
 
-    return y?.right || null;
+    return y?.data || null;
   }
 
   maxNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
