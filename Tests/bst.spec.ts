@@ -103,3 +103,11 @@ new validator(tree404.copy().max()).isSame(45)
   .describe(
     "8. provide methods max and maxNode which if are without parameter find the largest element of the tree and if a node s defined, then returns the maximal value from this node.",
   ).test();
+
+const arr: any = [];
+tree404.BFS((node) => arr.push(node?.data));
+new validator(arr).isSame([31, 39, 26, 45, 34, 28, 18, 40, 36, 22, 42, 25, 21])
+  .describe("9. provides a method for BFS traverse of the tree.")
+  .test();
+
+
