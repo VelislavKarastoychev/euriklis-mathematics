@@ -110,4 +110,35 @@ new validator(arr).isSame([31, 39, 26, 45, 34, 28, 18, 40, 36, 22, 42, 25, 21])
   .describe("9. provides a method for BFS traverse of the tree.")
   .test();
 
+// testing of the successor and successor node methods.
+// see example of the book Data structures and algorithms of
+// Manolis Lukakis, pp.410.
 
+const tree410 = new BST(53);
+tree410.compare = (x, y) => x.data < y.data ? -1 : x.data === y.data ? 0 : 1;
+tree410
+  .insert(38)
+  .insert(68)
+  .insert(20)
+  .insert(45)
+  .insert(55)
+  .insert(76)
+  .insert(30)
+  .insert(60)
+  .insert(70)
+  .insert(26)
+  .insert(33)
+  .insert(64)
+  .insert(73);
+
+new validator(tree410.successor()).isSame(55)
+  .and.bind(
+    new validator(tree410.successor(tree410.rootNode?.right?.right)).isSame(null)
+  )
+  .and.bind(
+    new validator(tree410.successor(tree410.rootNode?.left?.left?.right?.right)).isSame(20)
+      .on(false, (v) => console.log(v.value))
+  )
+  .describe(
+    "10. provide a method successor, which computes the next minimal node which is greater than the underlined node.",
+  ).test();
