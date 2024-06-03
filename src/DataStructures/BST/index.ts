@@ -200,15 +200,17 @@ export class BST {
       s = x?.prev || null;
     }
 
-    while (s && (x = s.right)) {
+    while (s && (x === s.right)) {
       x = s;
       s = s?.prev || null;
     }
 
-    if (!s && (x = x?.right || null)) {
+    if (!s && (x?.right)) {
       s = null;
       return s;
-    } else return x?.data || null;
+    }
+
+    return x?.data || null;
   }
 
   successorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
@@ -219,15 +221,17 @@ export class BST {
       s = x?.prev || null;
     }
 
-    while (s && (x = s.right)) {
+    while (s && (x === s.right)) {
       x = s;
       s = s?.prev || null;
     }
 
-    if (!s && (x = x?.right || null)) {
+    if (!s && (x?.right)) {
       s = null;
       return s;
-    } else return x;
+    }
+    
+    return x;
   }
 
   DFS(callback: (node: BSTDataNode, tree?: BST) => void): BST {
