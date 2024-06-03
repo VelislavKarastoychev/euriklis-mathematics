@@ -3,6 +3,7 @@ import validator from "@euriklis/validator-ts";
 import type { Integer } from "../../Matrix/types";
 import { BSTDataNode } from "../DataNode";
 import { DynamicStack } from "../Stack";
+import { Queue } from "../Queue";
 
 const compareNodes: (x: BSTDataNode, y: BSTDataNode) => -1 | 0 | 1 = (x, y) =>
   x.id < y.id ? -1 : x.id === y.id ? 0 : 1;
@@ -101,7 +102,7 @@ export class BST {
   }
 
   delete(id: string) {
-    const node = this.searchNode((node) =>
+    const node: BSTDataNode | null = this.binarySearchNode((node) =>
       node.id > id ? -1 : node.id === id ? 0 : 1
     );
     return this.deleteNode(node)?.data || null;
@@ -241,7 +242,23 @@ export class BST {
     return this;
   }
 
-  values() {
+  BFS(callback: (node: BSTDataNode, tree: BST) => void): BST {
+    const Q = new Queue(this._root);
+    while (!Q.isEmpty) {
+      const node: BSTDataNode = Q.dequeue();
+      callback(node, this);
+      if (node.right) {
+        Q.enqueue(node.right);
+      }
+      if (node.left) {
+        Q.enqueue(node.left);
+      }
+    }
+
+    return this;
+  }
+
+  toArray() {
     const __values__: any = [];
     this.DFS((node) => __values__.push(node.data));
 
