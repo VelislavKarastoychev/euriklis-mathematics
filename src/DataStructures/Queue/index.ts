@@ -83,20 +83,18 @@ export class Queue {
    * @param {LinkedDataNode} node - The node to enqueue.
    */
   private _enqueue(node: LinkedDataNode) {
-    if (node) {
-      if (this._size < this._length + 1) {
-        errors.StackOverflow("Queue enqueue")();
-      }
-      if (!this._top) {
-        this._top = node;
-        this._head = node;
-      } else {
-        node.prev = this._top;
-        this._top.next = node;
-        this._top = node;
-      }
-      this._length++;
+    if (this._size < this._length + 1) {
+      errors.StackOverflow("Queue enqueue")();
     }
+    if (!this._top) {
+      this._top = node;
+      this._head = node;
+    } else {
+      node.prev = this._top;
+      this._top.next = node;
+      this._top = node;
+    }
+    this._length++;
   }
 
   /**
@@ -145,16 +143,14 @@ export class Queue {
    */
   dequeue(): any {
     let data: any = null;
-    if (this._head) {
-      data = this._head.data;
-      this._head = this._head.next;
+    if (this.isEmpty) errors.StackUnderflow("Queue dequeue")();
+      data = this._head?.data || null;
+      this._head = this._head?.next || null;
       if (this._head) this._head.prev = null;
+      else this._top = null; // if the head is empty delete the rear.
       this._length--;
 
-      return data;
-    }
-
-    errors.StackUnderflow("Queue dequeue")();
+    return data;
   }
 
   /**
@@ -172,6 +168,7 @@ export class Queue {
         node = this._head;
         this._head = this._head.next;
         if (this._head) this._head.prev = null;
+        else this._top = null;
         items.push(node.data);
         this._length--;
         i--;
@@ -181,6 +178,7 @@ export class Queue {
         node = this._head;
         this._head = this._head.next;
         if (this._head) this._head.prev = null;
+        else this._top = null;
         items.push(node.data);
         this._length--;
       } else errors.StackUnderflow("Queue dequeueMany")();
@@ -191,6 +189,7 @@ export class Queue {
         node = this._head;
         this._head = this._head.next;
         if (this._head) this._head.prev = null;
+        else this._top = null;
         items.push(node.data);
         this._length--;
       } else errors.StackUnderflow("Queue dequeueMany")();
