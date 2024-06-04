@@ -4,7 +4,7 @@ import type {
   MatrixType,
   NumericMatrix,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { GenerateZeroMatrix } from "./GenerateZeroMatrix.ts";
 /**
  * Generates an identity-like matrix with specified dimensions.

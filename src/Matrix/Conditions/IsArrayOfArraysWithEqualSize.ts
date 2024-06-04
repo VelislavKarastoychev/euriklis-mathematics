@@ -1,10 +1,9 @@
-import { MatrixType, NumericMatrix } from "../types";
+import type { MatrixType, NumericMatrix } from "../../Types";
 import validator from "@euriklis/validator-ts";
 /**
  * Checks if the input in the M setter is
  * a legal matrix object.
  */
-export const IsArrayOfArraysWithEqualSize = (array: NumericMatrix | MatrixType): boolean =>
-  new validator(array).isArrayOfAbstractArraysWithEqualSize.answer;
-
-
+export const IsArrayOfArraysWithEqualSize = (
+  array: NumericMatrix | MatrixType,
+): boolean => new validator(array).isArrayOfAbstractArraysWithEqualSize.answer;

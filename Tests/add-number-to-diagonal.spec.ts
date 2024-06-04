@@ -1,7 +1,7 @@
 "use strict";
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const rows = Math.random() * 100 >> 0 || 1;
 const columns = Math.random() * 100 >> 0 | 1;

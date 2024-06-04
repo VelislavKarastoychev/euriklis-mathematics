@@ -1,11 +1,10 @@
 "use strict";
 
-import {
-  Integer,
+import type {
   MatrixType,
   NumericMatrix,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 export const GershgorinCircles = (
   matrix: MatrixType,

@@ -1,4 +1,5 @@
 "use strict";
+
 import numeric from "numericjs";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
@@ -7,8 +8,10 @@ const rep2 = numeric.rep([5, 5], Math.PI);
 const condition: boolean = Matrix.isEqualTo(rep1, rep2);
 const euriklisTestFloat = (m: any) =>
   m.replicate(Math.PI, dimensions[0], dimensions[1]);
-const euriklisTestGeneric = (m: any) =>
-  m.replicate(Math.PI, dimensions[0], dimensions[1], "generic");
+const euriklisTestGeneric = (m: any) => {
+  m.type = "generic";
+  return m.replicate(Math.PI, dimensions[0], dimensions[1]);
+};
 const numericTest = (m: any) => m.rep(dimensions, Math.PI);
 
 (async () => {

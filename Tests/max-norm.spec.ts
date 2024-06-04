@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const matrix = [[1, 2, 3], [-4, 5, 6], [7, 8, -9]];
 let m = Matrix.random(4, 4);

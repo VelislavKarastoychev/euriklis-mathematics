@@ -1,7 +1,7 @@
 "use strict";
 import { DynamicStack } from "../src/DataStructures";
 import validator from "@euriklis/validator-ts";
-import { Integer } from "../src/Matrix/types";
+import type { Integer } from "../src/Types";
 
 new validator(new DynamicStack())
   .describe(
@@ -138,5 +138,3 @@ new validator(DStack.size)
     ),
   ).describe("12. provide a method for appending of elements.")
   .test();
-
-

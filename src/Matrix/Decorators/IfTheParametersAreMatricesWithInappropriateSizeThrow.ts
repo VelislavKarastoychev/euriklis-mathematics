@@ -1,6 +1,6 @@
 "use strict";
 import { IsNumber } from "../Conditions";
-import { MatrixType, NumericMatrix } from "../types";
+import type { MatrixType, NumericMatrix } from "../../Types";
 
 export function ifTheParametersAreMatricesWithInappropriateSizeThrow(
   error: Function,

@@ -37,7 +37,7 @@ import type {
   NumericType,
   TypedArray,
   TypedArrayConstructor,
-} from "./types";
+} from "../Types";
 
 export class Matrix {
   // 1. Declaration of the private methods and properties

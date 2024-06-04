@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import type { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const matrix = [
   [1, 2, 3, 4],
@@ -23,10 +23,10 @@ new validator(
       Matrix.eigenproblem(matrix, { method: "HQR2" }).eigenvalues.real,
     ] as MatrixType | NumericMatrix,
     [eigenvalues],
-    1e-4
+    1e-4,
   ),
 ).isSame(true)
   .describe("The eigenproblem method has to:")
-  .test({title: true, success: "green", error: "red"})
+  .test({ title: true, success: "green", error: "red" })
   .describe("1. compute the correct eigenpairs with the method HQR.")
   .test();

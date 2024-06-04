@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 const r = Matrix.random(3, 4);
 const exp = (Matrix.copy(r, "generic") as NumericMatrix).map((r: number[]) =>
   r.map((c: number) => Math.exp(c))
@@ -10,7 +10,8 @@ const expWeighted = (Matrix.copy(r, "generic") as NumericMatrix).map((
   r: number[],
 ) => r.map((c: number) => Math.exp(2 * c + 3)));
 
-const callExp = (m: MatrixType | NumericMatrix): MatrixType | NumericMatrix => Matrix.exp(m);
+const callExp = (m: MatrixType | NumericMatrix): MatrixType | NumericMatrix =>
+  Matrix.exp(m);
 new validator(Matrix.isEqualTo(Matrix.exp(r), exp))
   .describe("The exp method has to:")
   .test({

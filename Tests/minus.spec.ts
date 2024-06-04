@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { epsilon, Matrix } from "../src";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const r1 = Matrix.random(3, 4);
 const r2 = Matrix.random(3, 4, 1, 2);

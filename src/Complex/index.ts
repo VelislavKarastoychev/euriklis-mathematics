@@ -1,5 +1,5 @@
 "use strict";
-import type { Integer } from "../Matrix/types";
+import type { Integer } from "../Types";
 import { abs, atan2, cos, exp, ln, pow, pythag, sin, sqrt } from "../utils";
 import * as models from "./Models";
 import * as errors from "./Errors";

@@ -1,5 +1,5 @@
 "use strict";
-import { Integer } from "../types";
+import type { Integer } from "../../Types";
 /**
  * If the rows or the columns are not positive
  * integers throws error message, otherwise executes

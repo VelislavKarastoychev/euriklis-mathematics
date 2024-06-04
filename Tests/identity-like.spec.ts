@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { Integer } from "../src/Matrix/types.ts";
+import type { Integer } from "../src/Types";
 const generateIdentityLikeMatrix = (rows: Integer, columns: Integer) =>
   Matrix.identityLike(rows, columns);
 new validator(Matrix.identityLike(15, 51))
@@ -24,14 +24,16 @@ new validator(Matrix.identityLike(15, 51))
   .test();
 
 new validator(Matrix.identityLike(21, 12, "generic"))
-  .describe("2. creates a conventional array - like matrix when the type is generic.")
+  .describe(
+    "2. creates a conventional array - like matrix when the type is generic.",
+  )
   .isArrayOfIntegerArraysWithEqualSize
   .and.forEvery((row, i) => {
     return row.forEvery((el, j) => {
       return el.isSame(0).and.bind(
-        new validator(i).not.isSame(j)
-      ).or.isSame(1)
-    })
+        new validator(i).not.isSame(j),
+      ).or.isSame(1);
+    });
   }).test();
 
 new validator(generateIdentityLikeMatrix)

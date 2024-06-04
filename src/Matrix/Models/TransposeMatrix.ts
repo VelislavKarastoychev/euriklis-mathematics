@@ -1,25 +1,25 @@
 "use strict";
 
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 /**
  * Transposes a matrix.
  *
- * @param {MatrixType} matrix - The 
+ * @param {MatrixType} matrix - The
  * matrix to be transposed.
- * @param {number} rows - The 
+ * @param {number} rows - The
  * number of rows in the original matrix.
- * @param {number} columns - The 
+ * @param {number} columns - The
  * number of columns in the original matrix.
- * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The 
+ * @param {TypedArrayConstructor | ArrayConstructor} typedArray - The
  * constructor for the TypedArray type used in the matrix.
- * @returns {MatrixType | NumericMatrix} - Returns 
+ * @returns {MatrixType | NumericMatrix} - Returns
  * a new matrix representing the transposed matrix.
  */
 export const TransposeMatrix = (
@@ -31,9 +31,9 @@ export const TransposeMatrix = (
   let i: Integer,
     j: Integer,
     transposed = Array(columns),
-    A0: TypedArray | number [],
-    A1: TypedArray | number [],
-    Bj: TypedArray | number [];
+    A0: TypedArray | number[],
+    A1: TypedArray | number[],
+    Bj: TypedArray | number[];
   for (j = 0; j < columns; j++) transposed[j] = new typedArray(rows);
   for (i = rows - 1; i >= 1; i -= 2) {
     A1 = matrix[i];
@@ -61,6 +61,6 @@ export const TransposeMatrix = (
     }
     if (j === 0) transposed[0][0] = A0[0];
   }
-  
+
   return transposed;
 };

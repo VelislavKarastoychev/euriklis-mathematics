@@ -4,7 +4,7 @@ import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils.ts";
-import { NumericMatrix } from "../src/Matrix/types.ts";
+import type { NumericMatrix } from "../src/Types";
 (async () => {
   const m1 = Matrix.uniqueRandom(dimensions[0], dimensions[1], 10, 30);
   const m2 = Matrix.uniqueRandom(dimensions[0], dimensions[1], 20, 50);

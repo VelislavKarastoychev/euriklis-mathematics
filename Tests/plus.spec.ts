@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const m = Matrix.replicate(1, 4, 5);
 const onces = Matrix.replicate(1, 4, 5);
@@ -31,7 +31,9 @@ new validator(
   Matrix.isEqualTo(Matrix.plus(m, Matrix.copy(onces, "generic")), twoes),
 )
   .and.bind(
-    new validator(Matrix.isEqualTo(Matrix.plus(m, Matrix.copy(onces, "float32")), twoes)),
+    new validator(
+      Matrix.isEqualTo(Matrix.plus(m, Matrix.copy(onces, "float32")), twoes),
+    ),
   ).describe(
     "3. return the correct result when the method's parameter is a Matrix - like structure.",
   )

@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import type { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 
 const matrix = [
   [1, 2, 3, 4],
@@ -32,6 +32,6 @@ for (i = 0; i < 10; i++) {
 new validator(eigenvalue - Matrix.eigenproblem(matrix).eigenvalues.real[0])
   .isInRange(-1e-8, 1e-8)
   .describe("The shiftedPowerMethodIteration has to:")
-  .test({title: true, success: "green", error: "red"})
+  .test({ title: true, success: "green", error: "red" })
   .describe("1. compute correctly an approximation of the eigenvalue.")
   .test();

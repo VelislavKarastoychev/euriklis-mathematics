@@ -1,7 +1,7 @@
 "use strict";
 
 import { IsNumber } from "../Conditions";
-import { Integer } from "../types";
+import type { Integer } from "../../Types";
 
 export function ifIsNotNumberThrow(
   error: Function,

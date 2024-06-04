@@ -1,6 +1,11 @@
 "use strict";
 
-import type { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 
 const ComputeDimensionsIterator = (
   m: MatrixType | NumericMatrix | TypedArray | number[] | number,

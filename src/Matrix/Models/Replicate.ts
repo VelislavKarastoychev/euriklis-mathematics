@@ -4,10 +4,9 @@ import type {
   Integer,
   MatrixType,
   NumericMatrix,
-  NumericType,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
 const ReplicateIterator = (
@@ -26,32 +25,31 @@ const ReplicateIterator = (
     }
 
     if (i === 0) rep[0] = n;
+  } else {
+    rep = [];
+    for (i = k; i-- > 1;) {
+      rep[i--] = ReplicateIterator(
+        n,
+        dim,
+        typedArray,
+        it + 1,
+      ) as TypedArray;
+      rep[i] = ReplicateIterator(
+        n,
+        dim,
+        typedArray,
+        it + 1,
+      ) as TypedArray;
+    }
 
-    return rep;
-  }
-  rep = [];
-  for (i = k; i-- > 1;) {
-    rep[i--] = ReplicateIterator(
-      n,
-      dim,
-      typedArray,
-      it + 1,
-    ) as TypedArray;
-    rep[i] = ReplicateIterator(
-      n,
-      dim,
-      typedArray,
-      it + 1,
-    ) as TypedArray;
-  }
-
-  if (i === 0) {
-    rep[0] = ReplicateIterator(
-      n,
-      dim,
-      typedArray,
-      it + 1,
-    ) as TypedArray;
+    if (i === 0) {
+      rep[0] = ReplicateIterator(
+        n,
+        dim,
+        typedArray,
+        it + 1,
+      ) as TypedArray;
+    }
   }
   return rep;
 };

@@ -1,5 +1,10 @@
 "use strict";
-import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 
 /**
  * Exchange rows in a matrix.
@@ -19,7 +24,7 @@ export const ExchangeRows = (
 ): void => {
   let j: Integer, temp: number;
   const mr1: TypedArray | number[] = matrix[r1];
-  const mr2: TypedArray | number[]  = matrix[r2];
+  const mr2: TypedArray | number[] = matrix[r2];
 
   for (j = from; j <= to; j++) {
     temp = mr1[j];

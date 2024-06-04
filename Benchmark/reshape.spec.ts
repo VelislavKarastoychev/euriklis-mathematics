@@ -1,8 +1,9 @@
 "use strict";
+
 import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
 import { Matrix } from "../src/index.ts";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 (async () => {
   function reshapeMatrix(

@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 
 const n = Math.random() * 100 >> 0;
 const l1 = Matrix.randomLowerTriangular(n, n, -1, 1);

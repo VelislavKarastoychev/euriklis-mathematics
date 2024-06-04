@@ -2,7 +2,12 @@
 
 import { epsilon } from "../..";
 import { NonPositiveSemidefinedMatrixInCholeskyLL } from "../Errors";
-import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 
 /**
  * utility function, which performs the Cholesky LL factorization on a given
@@ -43,7 +48,7 @@ export const CholeskyBanachiewiczAlgorithm = (
     v = 0;
     for (j = 0; j < k; j++) v += Lk[j] * Lk[j];
     Lk[k] -= v;
-    if (Lk[k] < 0) NonPositiveSemidefinedMatrixInCholeskyLL()
+    if (Lk[k] < 0) NonPositiveSemidefinedMatrixInCholeskyLL();
     Lk[k] = Math.sqrt(Lk[k]);
     // if L(k, k) is closed to zero throw error message:
     if (abs(Lk[k]) < 0.5 * epsilon) {

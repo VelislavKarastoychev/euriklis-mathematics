@@ -1,4 +1,5 @@
 "use strict";
+
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
 import { dimensions, startPerformanceTest } from "./utils.ts";

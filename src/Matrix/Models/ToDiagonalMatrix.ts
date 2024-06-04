@@ -1,12 +1,12 @@
 "use strict";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   NumericType,
   TypedArray,
   TypedArrayConstructor,
-} from "../types.ts";
+} from "../../Types";
 import { ComputeBytesLength } from "./ComputeBytesLength.ts";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 

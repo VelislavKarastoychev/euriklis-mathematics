@@ -1,5 +1,5 @@
 "use strict";
-import type { Integer, MatrixType, NumericMatrix } from "../types";
+import type { Integer, MatrixType, NumericMatrix } from "../../Types";
 
 const RADIX: Integer = 2;
 

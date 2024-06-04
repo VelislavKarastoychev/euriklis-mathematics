@@ -1,12 +1,21 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
-import type { Integer } from "../../Matrix/types";
+import type { Integer } from "../../Types";
+import type {
+  BSTNodeComparisonCallbackType,
+  BSTNodeValueComparisonCallbackType,
+} from "../../Types";
 import { BSTDataNode } from "../DataNode";
 import { DynamicStack } from "../Stack";
 import { Queue } from "../Queue";
 
-const compareNodes: (x: BSTDataNode, y: BSTDataNode) => -1 | 0 | 1 = (x, y) =>
+const compareNodes: BSTNodeComparisonCallbackType = (x, y) =>
   x.id < y.id ? -1 : x.id === y.id ? 0 : 1;
+
+const compareNodeWithValue: BSTNodeValueComparisonCallbackType = (
+  x,
+  value,
+) => x.data > value ? -1 : x.data === value ? 0 : 1;
 
 /**
  * This class implements the concept of the Binary search trees
@@ -14,6 +23,7 @@ const compareNodes: (x: BSTDataNode, y: BSTDataNode) => -1 | 0 | 1 = (x, y) =>
  */
 export class BST {
   public compare = compareNodes;
+  public search = compareNodeWithValue;
   private _root: BSTDataNode | null = null;
 
   constructor(data?: any) {
@@ -50,7 +60,7 @@ export class BST {
     const tree = new BST();
     tree.compare = this.compare;
     this.DFS((node) => {
-      tree.insert(node.data, node.id);
+      tree.insert(node?.data, node?.id);
     });
 
     return tree;
@@ -101,9 +111,9 @@ export class BST {
     return this;
   }
 
-  delete(id: string) {
+  delete(id: any) {
     const node: BSTDataNode | null = this.binarySearchNode((node) =>
-      node.id > id ? -1 : node.id === id ? 0 : 1
+      node.data > id ? -1 : node.data === id ? 0 : 1
     );
     return this.deleteNode(node)?.data || null;
   }
@@ -121,7 +131,7 @@ export class BST {
     }
 
     if (!y?.prev) this._root = z;
-    else if ((y = y.prev?.left)) {
+    else if ((y === y.prev?.left)) {
       (y.prev as BSTDataNode).left = z;
     }
     if (y !== node) {
@@ -130,16 +140,25 @@ export class BST {
     return node;
   }
 
-  binarySearch(callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1): any {
-    let found = false, r: BSTDataNode | null = this._root;
-    while (r && !found) {
-      if (callback(r, this) === 0) found = true;
-      else if (callback(r, this) === -1) r = r.left;
-      else r = r.right;
-    }
+  binarySearch(
+    value: any,
+    callback: BSTNodeValueComparisonCallbackType = this.search,
+  ): any {
+    return this._binarySearchNode(this._root, value, callback)?.data || null;
+  }
 
-    if (found) return r?.data;
-    else return null;
+  private _binarySearchNode(
+    node: BSTDataNode | null = this._root,
+    value: any,
+    callback: BSTNodeValueComparisonCallbackType = this.search,
+  ): BSTDataNode | null {
+    this.search = callback;
+    if (node) {
+      const comparison = this.search(node, value);
+      if (comparison < 0) return this._binarySearchNode(node.left, value);
+      else if (comparison > 0) return this._binarySearchNode(node.right, value);
+      else return node;
+    } else return null;
   }
 
   binarySearchNode(
@@ -192,73 +211,130 @@ export class BST {
     return y;
   }
 
+  // successor(x: BSTDataNode | null = this._root): any {
+  //   let s: BSTDataNode | null;
+  //   if (x?.right) {
+  //     return this.min(x.right);
+  //   } else {
+  //     s = x?.prev || null;
+  //   }
+  //
+  //   while (s && (x === s.right)) {
+  //     x = s;
+  //     s = s?.prev || null;
+  //   }
+  //
+  //   if (!s && (x?.right)) {
+  //     s = null;
+  //     return s;
+  //   }
+  //
+  //   return x?.data || null;
+  // }
+
   successor(x: BSTDataNode | null = this._root): any {
-    let s: BSTDataNode | null;
-    if (x?.right) {
-      return this.min(x.right);
-    } else {
-      s = x?.prev || null;
-    }
-
-    while (s && (x === s.right)) {
-      x = s;
-      s = s?.prev || null;
-    }
-
-    if (!s && (x?.right)) {
-      s = null;
-      return s;
-    }
-
-    return x?.data || null;
+    if (x?.right) return this.min(x.right);
+    else return this.backward(x)?.data || null;
   }
 
-  successorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
-    let s: BSTDataNode | null;
-    if (x?.right) {
-      return this.minNode(x.right);
-    } else {
-      s = x?.prev || null;
-    }
+  backward(x: BSTDataNode | null): BSTDataNode | null {
+    if (x?.prev && (x === x?.prev?.right)) {
+      return this.backward(x.prev);
+    } else if (!x?.prev && (x?.right)) return null;
 
-    while (s && (x === s.right)) {
-      x = s;
-      s = s?.prev || null;
-    }
-
-    if (!s && (x?.right)) {
-      s = null;
-      return s;
-    }
-    
     return x;
   }
 
-  DFS(callback: (node: BSTDataNode, tree?: BST) => void): BST {
-    const S = new DynamicStack(this._root);
-    while (!S.isEmpty) {
-      const node: BSTDataNode = S.pop();
-      callback(node);
-      if (node.right) S.push(node.right);
-      if (node.left) S.push(node.left);
-    }
+  // successorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
+  // let s: BSTDataNode | null;
+  // if (x?.right) {
+  //   return this.minNode(x.right);
+  // } else {
+  //   s = x?.prev || null;
+  // }
+  //
+  // while (s && (x === s.right)) {
+  //   x = s;
+  //   s = s?.prev || null;
+  // }
+  //
+  // if (!s && (x?.right)) {
+  //   s = null;
+  //   return s;
+  // }
+  //
+  // return x;
+  // }
+
+  successorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
+    if (x?.right) return this.minNode(x);
+    else return this.backward(x);
+  }
+
+  // DFS(callback: (node: BSTDataNode, tree?: BST) => void): BST {
+  //   const S = new DynamicStack(this._root);
+  //   while (!S.isEmpty) {
+  //     const node: BSTDataNode = S.pop();
+  //     callback(node);
+  //     if (node.right) S.push(node.right);
+  //     if (node.left) S.push(node.left);
+  //   }
+  //
+  //   return this;
+  // }
+
+  // BFS(callback: (node: BSTDataNode, tree: BST) => void): BST {
+  //   const Q = new Queue(this._root);
+  //   while (!Q.isEmpty) {
+  //     const node: BSTDataNode = Q.dequeue();
+  //     callback(node, this);
+  //     if (node.right) {
+  //       Q.enqueue(node.right);
+  //     }
+  //     if (node.left) {
+  //       Q.enqueue(node.left);
+  //     }
+  //   }
+  //
+  //   return this;
+  // }
+
+  private callBFS(
+    Q: Queue,
+    callback: (node: BSTDataNode, tree: BST) => void,
+  ): void {
+    if (Q.isEmpty) return;
+    const node: BSTDataNode = Q.dequeue();
+    if (node.right) Q.enqueue(node.right);
+    if (node.left) Q.enqueue(node.left);
+    callback(node, this);
+
+    return this.callBFS(Q, callback);
+  }
+
+  private callDFS(
+    S: DynamicStack,
+    callback: (node: BSTDataNode | null, tree: BST) => void,
+  ): void {
+    if (S.isEmpty) return;
+    const node: BSTDataNode = S.pop();
+    if (node.right) S.push(node.right);
+    if (node.left) S.push(node.left);
+    callback(node, this);
+
+    return this.callDFS(S, callback);
+  }
+
+  BFS(callback: (node: BSTDataNode | null, tree: BST) => void): BST {
+    const Q = new Queue(this._root);
+    this.callBFS(Q, callback);
 
     return this;
   }
 
-  BFS(callback: (node: BSTDataNode, tree: BST) => void): BST {
-    const Q = new Queue(this._root);
-    while (!Q.isEmpty) {
-      const node: BSTDataNode = Q.dequeue();
-      callback(node, this);
-      if (node.right) {
-        Q.enqueue(node.right);
-      }
-      if (node.left) {
-        Q.enqueue(node.left);
-      }
-    }
-
+  DFS(callback: (node: BSTDataNode | null, tree: BST) => void): BST {
+    const S = new DynamicStack(this._root);
+    this.callDFS(S, callback);
     return this;
   }
 

@@ -1,6 +1,10 @@
 "use strict";
 
-import { Integer, MatrixBlockOptions, MatrixType, NumericMatrix } from "../types";
+import type {
+  MatrixBlockOptions,
+  MatrixType,
+  NumericMatrix,
+} from "../../Types";
 import { AreFromAndToCorrectlyDefined } from "../Conditions";
 
 /**
@@ -21,7 +25,11 @@ export function ifFromOrToParametersAreIncorrectlyDefinedThrow(
   return function (_: any, __: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
 
-    descriptor.value = function (matrix: MatrixType | NumericMatrix, options: MatrixBlockOptions | undefined, ...params: any[]) {
+    descriptor.value = function (
+      matrix: MatrixType | NumericMatrix,
+      options: MatrixBlockOptions | undefined,
+      ...params: any[]
+    ) {
       if (typeof options === "undefined") {
         options = {
           from: [0, 0],
@@ -35,8 +43,13 @@ export function ifFromOrToParametersAreIncorrectlyDefinedThrow(
           matrix[0].length,
         ])
       ) error();
-      
-      return method.call(null, matrix, options as MatrixBlockOptions, ...params);
+
+      return method.call(
+        null,
+        matrix,
+        options as MatrixBlockOptions,
+        ...params,
+      );
     };
   };
 }

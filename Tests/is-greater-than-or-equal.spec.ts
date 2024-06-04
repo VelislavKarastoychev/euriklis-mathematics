@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 const a1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 const a2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 const a3 = [[4, 5, 6], [7, 8, 9], [10, 11, 12]];
@@ -28,7 +28,7 @@ new validator(Matrix.isGreaterThanOrEqual(a4, a5)).isSame(false)
   ).test();
 
 new validator(
-  Matrix.isGreaterThanOrEqual(Matrix.random(2, 3, 1, 2),Matrix.random(2, 3)),
+  Matrix.isGreaterThanOrEqual(Matrix.random(2, 3, 1, 2), Matrix.random(2, 3)),
 )
   .isSame(true)
   .and.bind(
@@ -42,10 +42,12 @@ new validator(
     "4. return the correct value when the matrices are with the same dimension and different type.",
   )
   .test();
-new validator((m: MatrixType | NumericMatrix) => Matrix.isGreaterThanOrEqual(m, m))
+new validator((m: MatrixType | NumericMatrix) =>
+  Matrix.isGreaterThanOrEqual(m, m)
+)
   .throwsErrorWith([
     [1, 2, 3],
     [1, 23],
-    [123]
+    [123],
   ]).describe("5. throws error when some of the matrices are not table.")
   .test();

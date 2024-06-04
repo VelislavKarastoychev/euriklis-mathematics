@@ -1,13 +1,13 @@
 "use strict";
 
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   NumericType,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
 /**
@@ -30,27 +30,28 @@ const GetBlockIterator = (
   typedArray: TypedArrayConstructor | ArrayConstructor,
   k: Integer,
 ): MatrixType | TypedArray => {
-  let i: Integer, j: Integer,
+  let i: Integer,
+    j: Integer,
     start: number = from[k],
     n: Integer = to[k] - start + 1,
     block: MatrixType | TypedArray;
   const l = from.length;
   if (k === l - 1) {
     block = new typedArray(n);
-    for (i = 0; i < n >> 2;i++) {
+    for (i = 0; i < n >> 2; i++) {
       j = i << 2;
       (block as TypedArray)[j] = (m as TypedArray)[j++ + start];
       (block as TypedArray)[j] = (m as TypedArray)[j++ + start];
-      (block as TypedArray)[j] = (m as TypedArray)[j++ + start]; 
+      (block as TypedArray)[j] = (m as TypedArray)[j++ + start];
       (block as TypedArray)[j] = (m as TypedArray)[j + start];
     }
-    for (j = i << 2;j < n;j++) {
+    for (j = i << 2; j < n; j++) {
       (block as TypedArray)[j] = (m as TypedArray)[j + start];
     }
     return block as TypedArray;
   }
   block = new Array(n);
-  for (i = n;i--;) {
+  for (i = n; i--;) {
     block[i] = GetBlockIterator(
       (m as MatrixType)[i + start],
       from,

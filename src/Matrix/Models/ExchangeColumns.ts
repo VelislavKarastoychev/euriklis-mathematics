@@ -1,5 +1,5 @@
 "use strict";
-import { Integer, MatrixType, NumericMatrix } from "../types";
+import type { Integer, MatrixType, NumericMatrix } from "../../Types";
 
 /**
  * @param {MatrixType} matrix - The matrix data.

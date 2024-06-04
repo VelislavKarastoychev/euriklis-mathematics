@@ -1,10 +1,11 @@
 "use strict";
+
 import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
 import { dimensions, startPerformanceTest } from "./utils";
 import { Matrix } from "../src";
 import numeric from "numericjs";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 (async () => {
   const r1 = Matrix.uniqueRandom(...dimensions);

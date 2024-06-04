@@ -1,4 +1,5 @@
 "use strict";
+
 import { Matrix } from "../src/index.ts";
 import validator from "@euriklis/validator-ts";
 

@@ -3,7 +3,7 @@ import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import { Matrix } from "../src";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 import { dimensions } from "./utils";
 function LL(A: MatrixType | NumericMatrix): MatrixType | NumericMatrix {
   const n = A.length;

@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import type { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 type inverseStepNameType =
   | "Schulz"
   | "Li et al."

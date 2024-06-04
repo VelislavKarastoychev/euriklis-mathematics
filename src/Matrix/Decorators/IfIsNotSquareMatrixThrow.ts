@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "..";
-import { MatrixType, NumericMatrix, NumericType } from "../types";
+import type { MatrixType, NumericMatrix, NumericType } from "../../Types";
 
 export function ifIsNotSquareMatrixThrow(error: Function) {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {

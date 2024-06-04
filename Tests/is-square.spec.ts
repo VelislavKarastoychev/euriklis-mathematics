@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { MatrixType } from "../src/Matrix/types";
+import type { MatrixType } from "../src/Types";
 new validator(Matrix.isSquare(Matrix.random(2, 2)))
   .isSame(true)
   .and.bind(
@@ -19,6 +19,8 @@ new validator((m: MatrixType) => Matrix.isSquare(m))
   .throwsErrorWith([
     [2, 3, 4],
     [2, 34],
-    [234]
-  ]).describe("2. throws error when the matrix is incorrectly defined (i.e. the matrix is not a table).")
+    [234],
+  ]).describe(
+    "2. throws error when the matrix is incorrectly defined (i.e. the matrix is not a table).",
+  )
   .test();

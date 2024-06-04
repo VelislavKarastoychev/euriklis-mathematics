@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { Integer } from "../src/Matrix/types.ts";
+import type { Integer } from "../src/Types";
 
 const randomMatrix = Matrix.random(3, 3, -1, 1, "float64", 123456);
 const generateRandomMatrix = (rows: Integer, columns: Integer) =>

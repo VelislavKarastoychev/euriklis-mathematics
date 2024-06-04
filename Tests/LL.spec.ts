@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const a = [[4, 12, -16], [12, 37, -43], [-16, -43, 98]];
 const l = [[2, 0, 0], [6, 1, 0], [-8, 5, 3]];

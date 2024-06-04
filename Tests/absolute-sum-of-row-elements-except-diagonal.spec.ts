@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 
 const r1: NumericMatrix = Matrix.random(
   3,
@@ -33,7 +33,8 @@ const absRowSumExceptDiagonalAsColumn = r2.reduce(
   [],
 );
 
-const callAbsRowSum = (m: MatrixType | NumericMatrix) => Matrix.absoluteSumOfRowElementsExceptDiagonal(m);
+const callAbsRowSum = (m: MatrixType | NumericMatrix) =>
+  Matrix.absoluteSumOfRowElementsExceptDiagonal(m);
 new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(

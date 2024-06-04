@@ -1,6 +1,6 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 import { Matrix } from "../src";
 
 const r1 = Matrix.uniqueRandom(7, 9);
@@ -20,7 +20,7 @@ r2.forEach((row: number[], i: Integer) => {
   });
 });
 (sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[][]) = [
-  sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[]
+  sumOfSquaresOfColumnElementsExceptDiagonalAsRow as number[],
 ];
 const callSumOfSquaresOfColumnElementsExceptDiagonal = (
   m: MatrixType | NumericMatrix,

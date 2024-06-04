@@ -7,7 +7,7 @@ import type {
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { GenerateZeroMatrix } from "./GenerateZeroMatrix";
 
 const reorder = (

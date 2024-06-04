@@ -1,5 +1,6 @@
 "use strict";
-import { NumericMatrix } from "../src/Matrix/types.ts";
+
+import type { NumericMatrix } from "../src/Types";
 import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";

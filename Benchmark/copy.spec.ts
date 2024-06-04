@@ -1,7 +1,7 @@
 "use strict";
 import numeric from "numericjs";
 import { Matrix } from "../src";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 import { dimensions, startPerformanceTest } from "./utils";
 import * as tfNode from "@tensorflow/tfjs-node";
 import * as tf from "@tensorflow/tfjs";

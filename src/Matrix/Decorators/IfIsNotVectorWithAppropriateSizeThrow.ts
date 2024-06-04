@@ -1,6 +1,6 @@
 "use strict";
 import { ComputeDimensions } from "../Models";
-import { Integer, MatrixType, NumericMatrix } from "../types";
+import type { Integer, MatrixType, NumericMatrix } from "../../Types";
 
 export function ifIsNotVectorWithAppropriateSizeThrow(
   error: Function,

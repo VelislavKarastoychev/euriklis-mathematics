@@ -1,6 +1,11 @@
 "use strict";
 import { epsilon } from "../..";
-import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 import { MatrixDegenerate } from "../Errors";
 /**
  * @param {MatrixType | NumericMatrix} M - the matrix which will be decomposed.

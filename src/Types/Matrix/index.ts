@@ -1,3 +1,4 @@
+"use strict";
 export type Integer = number;
 export type IntegerNumericType =
   | "int8"

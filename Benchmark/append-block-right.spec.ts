@@ -1,7 +1,7 @@
 "use strict";
 import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
-import { Integer } from "../src/Matrix/types.ts";
+import type { Integer } from "../src/Types";
 import { Matrix } from "../src/index.ts";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 

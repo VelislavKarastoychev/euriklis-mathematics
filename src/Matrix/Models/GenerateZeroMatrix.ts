@@ -6,7 +6,7 @@ import type {
   // NumericType,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 // import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 // import { ComputeBytesLength } from "./ComputeBytesLength.ts";
 // import { Replicate } from "./Replicate.ts";
@@ -28,7 +28,7 @@ const CreateZerosRecursively = (
         z[i--] = 0;
         z[i] = 0;
       }
-      for (++i;i--;) z[0] = 0;
+      for (++i; i--;) z[0] = 0;
     }
 
     return z as TypedArray | number[];
@@ -50,7 +50,7 @@ const CreateZerosRecursively = (
       | number[];
   }
 
-  for (++i;i--;) {
+  for (++i; i--;) {
     z[i] = CreateZerosRecursively(dim, typedArray, it + 1) as
       | TypedArray
       | number[];

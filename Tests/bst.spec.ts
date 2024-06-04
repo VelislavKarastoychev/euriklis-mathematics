@@ -22,9 +22,9 @@ tree404.insert(40);
 tree404.insert(42);
 tree404.insert(21);
 tree404.insert(25);
-tree404.print();
+// tree404.print();
 const searchValue = (v: number = SEARCH_VALUE) =>
-  tree404.binarySearch((node) => node.data === v ? 0 : node.data > 25 ? -1 : 1);
+  tree404.binarySearch(v);
 new validator(searchValue(1)).isSame(null)
   .and.bind(
     new validator(searchValue()).isSame(SEARCH_VALUE),
@@ -133,12 +133,36 @@ tree410
 
 new validator(tree410.successor()).isSame(55)
   .and.bind(
-    new validator(tree410.successor(tree410.rootNode?.right?.right)).isSame(null)
+    new validator(tree410.successor(tree410.rootNode?.right?.right)).isSame(
+      null,
+    ),
   )
   .and.bind(
-    new validator(tree410.successor(tree410.rootNode?.left?.left?.right?.right)).isSame(20)
-      .on(false, (v) => console.log(v.value))
+    new validator(tree410.successor(tree410.rootNode?.left?.left?.right?.right))
+      .isSame(20)
+      .on(false, (v) => console.log(v.value)),
   )
   .describe(
     "10. provide a method successor, which computes the next minimal node which is greater than the underlined node.",
   ).test();
+
+// testin g of the deletion of nodes in a BST.
+// see Manolis Loukakis, Data structures. Algorithms.
+// pp. 414.
+const tree414 = new BST();
+
+tree414.compare = (x, y) => x.data < y.data ? -1 : x.data === y.data ? 0 : 1;
+tree414
+  .insert(25)
+  .insert(15)
+  .insert(32)
+  .insert(8)
+  .insert(18)
+  .insert(40)
+  .insert(12)
+  .insert(16)
+  .insert(21)
+  .insert(35)
+  .insert(45);
+// tree414.delete(21);
+// tree414.print();

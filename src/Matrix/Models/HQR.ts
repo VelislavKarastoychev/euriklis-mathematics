@@ -1,13 +1,13 @@
 "use strict";
 import { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
-import { cdiv, sign, abs, EPS, sqrt, max } from "../../utils";
+import { abs, cdiv, EPS, max, sign, sqrt } from "../../utils";
 import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { MatrixReduce } from "./MatrixReduce";
 /**
  * Implements the Hessenberg QR algorithm
@@ -170,7 +170,6 @@ export const HQR = (
   return { real: wr, imaginary: wi };
 };
 
-
 /**
  * This function is a translation of the hqr2 subroutine
  * in Fortran, which is a translation of the algol procedure
@@ -234,7 +233,7 @@ export const modifiedHQR = (
   const wr = new typedArray(n);
   const zz = GenerateIdentityLikeMatrix(n, n, typedArray);
 
-    // Compute the matrix norm for possible use
+  // Compute the matrix norm for possible use
   // in locationg of signle small subdiagonal
   // elements.
   anorm = MatrixReduce(a, "norm1");
@@ -399,7 +398,7 @@ export const modifiedHQR = (
       }
     } while (l + 1 < nn);
   }
-  // All roots found. Backsubstitute to 
+  // All roots found. Backsubstitute to
   // find the vectors of upper triangular form.
   if (anorm != 0.0) {
     for (nn = n - 1; nn >= 0; nn--) {
@@ -429,7 +428,7 @@ export const modifiedHQR = (
             } else {
               x = a[i][i + 1];
               y = a[i + 1][i];
-              q = (wr[i] - p) * (wr[i] - p)+ (wi[i] * wi[i]);
+              q = (wr[i] - p) * (wr[i] - p) + (wi[i] * wi[i]);
               t = (x * s! - z! * r) / q;
               a[i][nn] = t;
               if (abs(x) > abs(z!)) {

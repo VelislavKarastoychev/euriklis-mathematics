@@ -1,13 +1,13 @@
 "use strict";
 
-import {
+import type {
   ArithmeticOperatorSymbol,
   Integer,
   MatrixType,
   NumericMatrix,
   NumericType,
   VectorToMatrixOperation,
-} from "../types";
+} from "../../Types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor";
 
 const arithmeticalOperationsForColVectorByRowAxis = (
@@ -47,7 +47,7 @@ const arithmeticalOperationsForRowVectorByColAxis = (
 });
 
 const arithmeticalOperationsForColVectorByColAxis = (
-  operator: ArithmeticOperatorSymbol
+  operator: ArithmeticOperatorSymbol,
 ) => ({
   init: "",
   rowInit: "const accum = new Array(n);",
@@ -56,7 +56,7 @@ const arithmeticalOperationsForColVectorByColAxis = (
   colSetup: `accum1[i] = aij ${operator} v[i][0];`,
   rowAccumulator: "return accum;",
   colAccumulator: "return accum1;",
-})
+});
 const GenerateVectorToMatrixExpressions = (
   operation: VectorToMatrixOperation,
 ): {

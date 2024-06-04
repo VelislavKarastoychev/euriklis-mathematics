@@ -1,13 +1,13 @@
 "use strict";
 
 import { epsilon } from "../..";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { DiagonalElementClosedToZeroInLDL } from "../Errors";
 
 /**

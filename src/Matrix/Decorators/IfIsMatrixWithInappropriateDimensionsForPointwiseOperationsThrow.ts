@@ -1,6 +1,6 @@
 "use strict";
 
-import { MatrixType, NumericMatrix, NumericType } from "../types";
+import type { MatrixType, NumericMatrix, NumericType } from "../../Types";
 import { IsNumber } from "../Conditions";
 export function ifIsMatrixWithInappropriateDimensionsForPointwiseOperationsThrow(
   error: Function,

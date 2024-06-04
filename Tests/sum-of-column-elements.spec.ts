@@ -2,7 +2,7 @@
 
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const r = Matrix.uniqueRandom(4, 7);
 const sum = Matrix.sumOfColumnElements(r);

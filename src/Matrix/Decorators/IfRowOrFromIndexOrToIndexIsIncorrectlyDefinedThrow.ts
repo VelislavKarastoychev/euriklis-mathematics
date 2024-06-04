@@ -1,6 +1,6 @@
 "use strict";
 
-import { Integer, MatrixType, NumericType } from "../types";
+import type { Integer, MatrixType, NumericType } from "../../Types";
 
 export function ifRowOrFromIndexOrToIndexIsIncorrectlyDefinedThrow(
   [

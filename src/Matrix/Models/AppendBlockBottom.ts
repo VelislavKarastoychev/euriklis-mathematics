@@ -1,12 +1,12 @@
 "use strict";
 
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 /**
  * Recursively (recurrently) appends a block to the bottom

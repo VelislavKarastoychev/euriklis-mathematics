@@ -2,10 +2,11 @@
 
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const m = [[1, 2, 3], [-4, 5, 6], [7, 8, -9]];
-const callInfinityNorm = (m: MatrixType | NumericMatrix) => Matrix.infinityNorm(m); 
+const callInfinityNorm = (m: MatrixType | NumericMatrix) =>
+  Matrix.infinityNorm(m);
 
 // check if the infinity norm is equal to pi
 new validator(Matrix.infinityNorm(m)).isSame(24)
@@ -15,7 +16,7 @@ new validator(Matrix.infinityNorm(m)).isSame(24)
     error: "red",
   }).describe(
     "1. return the greatest in absolute value sum of elements in a row of a matrix.",
-  ).test()
+  ).test();
 
 new validator(callInfinityNorm)
   .throwsErrorWith([[1, 2, 3], [1, 23], [123]])

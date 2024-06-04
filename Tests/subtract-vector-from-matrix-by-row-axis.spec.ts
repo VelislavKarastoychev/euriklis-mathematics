@@ -1,12 +1,12 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   NumericType,
-} from "../src/Matrix/types";
+} from "../src/Types";
 
 const r1 = Matrix.uniqueRandom(7, 9);
 const r2 = Matrix.copy(r1, "generic") as NumericMatrix;

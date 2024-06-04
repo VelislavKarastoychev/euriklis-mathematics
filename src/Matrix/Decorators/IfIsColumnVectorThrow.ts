@@ -1,6 +1,6 @@
 "use strict";
 
-import { MatrixType, NumericMatrix, NumericType } from "../types";
+import type { MatrixType, NumericMatrix, NumericType } from "../../Types";
 
 export function ifIsColumnVectorThrow(error: Function): Function {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {

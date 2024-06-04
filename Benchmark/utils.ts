@@ -2,7 +2,7 @@
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
 import numeric from "numericjs";
-import { Integer } from "../src/Matrix/types.ts";
+import type { Integer } from "../src/Types";
 type ParamsType = Array<
   {
     param: string;

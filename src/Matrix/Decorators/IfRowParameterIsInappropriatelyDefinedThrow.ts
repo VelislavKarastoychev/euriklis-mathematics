@@ -1,5 +1,10 @@
 "use strict";
-import { Integer, MatrixType, NumericMatrix, NumericType } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  NumericType,
+} from "../../Types";
 /**
  * Decorator function for the getDiagonal method.
  * @param {Function} error - The error which will be thrown if the condition is

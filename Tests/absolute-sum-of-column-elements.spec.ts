@@ -1,14 +1,16 @@
 "use strict";
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 const abs = Math.abs;
 const r1 = Matrix.uniqueRandom(8, 7, -1, 1, "generic") as NumericMatrix;
 const r2 = Matrix.copy(r1, "generic") as NumericMatrix;
 const callAbsoluteSumOfColumnElements = (m: MatrixType | NumericMatrix) =>
   Matrix.absoluteSumOfColumnElements(m);
 const absoluteSumOfColElements = new Array(r2[0].length).fill(0);
-const absoluteSumOfColElementsAsColumn = absoluteSumOfColElements.map(_ => [0]);
+const absoluteSumOfColElementsAsColumn = absoluteSumOfColElements.map(
+  (_) => [0]
+);
 r2.forEach((row: number[]) => {
   row.forEach((el: number, colIndex: Integer) => {
     absoluteSumOfColElements[colIndex] += abs(el);

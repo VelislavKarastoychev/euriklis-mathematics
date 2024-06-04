@@ -1,6 +1,6 @@
 "use strict";
 import { IsArrayOfArraysWithEqualSize } from "../Conditions";
-import { MatrixType, NumericMatrix } from "../types";
+import type { MatrixType, NumericMatrix } from "../../Types";
 export function ifTheParametersAreNotMatricesThrow(
   error: Function,
 ): (_: any, __: string, descriptor: PropertyDescriptor) => any {

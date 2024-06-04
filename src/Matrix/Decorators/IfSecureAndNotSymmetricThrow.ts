@@ -1,7 +1,7 @@
 "use strict";
 
 import { Matrix } from "..";
-import { MatrixType, NumericMatrix } from "../types";
+import type { MatrixType, NumericMatrix } from "../../Types";
 
 export function ifSecureAndNotSymmetricThrow(error: Function) {
   return function (_: any, __: string, descriptor: PropertyDescriptor) {

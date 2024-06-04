@@ -1,7 +1,11 @@
 "use strict";
 
-import { webcrypto } from "crypto";
-import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 
 /**
  * Iteratively sets a the elements of a matrix
@@ -25,16 +29,16 @@ const SetBlockIterator = (
 ): void => {
   const n = to[k] - from[k] + 1;
   let i: Integer, j: Integer;
-  const p: Integer = from[k]; 
+  const p: Integer = from[k];
   if (k === from.length - 1) {
-    for (i = 0;i < n >> 2;i++) {
+    for (i = 0; i < n >> 2; i++) {
       j = i << 2;
       (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j++];
       (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j++];
       (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j++];
       (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j];
     }
-    for (j = i << 2;j < n;j++) {
+    for (j = i << 2; j < n; j++) {
       (matrix as TypedArray)[j + p] = (block as TypedArray | number[])[j];
     }
   } else {

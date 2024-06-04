@@ -1,13 +1,12 @@
 "use strict";
 
-import { dimensions } from "../../../Benchmark/utils";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 /**
  * Generates a matrix with static random numbers.
@@ -315,7 +314,7 @@ export const GenerateUniqueRandomLowerTriangularMatrix = (
           | number[];
       }
     }
-    
+
     return rand;
   }
   return UniqueRandomLowerTriangularMatrixGenerator() as

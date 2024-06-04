@@ -2,7 +2,7 @@
 
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const rowVector = Matrix.replicate(Math.PI, 1, 5);
 
@@ -32,7 +32,6 @@ new validator(
 new validator(callAddRowVectorToDiagonal)
   .throwsErrorWith(Matrix.random(5, 5))
   .and.throwsErrorWith("it throws")
-  .and.throwsErrorWith([[1, 2, 3], [1,23], [123]])
+  .and.throwsErrorWith([[1, 2, 3], [1, 23], [123]])
   .describe("2. throw error when the matrix parameter is incorrectly defined.")
   .test();
-

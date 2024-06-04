@@ -2,7 +2,7 @@
 
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const m = Matrix.random(4, 5);
 const m1 = Matrix.random(4, 5);
@@ -28,7 +28,9 @@ new validator(Matrix.isEqualTo(Matrix.eq(onces, 1), onces))
   .test();
 new validator(Matrix.isEqualTo(Matrix.eq(m1, Matrix.copy(m)), onces))
   .and.bind(
-    new validator(Matrix.isEqualTo(Matrix.eq(Matrix.copy(m, "generic"), m1), onces)),
+    new validator(
+      Matrix.isEqualTo(Matrix.eq(Matrix.copy(m, "generic"), m1), onces),
+    ),
   ).isSame(true)
   .describe(
     "3. return the correct result when the argument is a numeric matrix or a typed matrix structure.",

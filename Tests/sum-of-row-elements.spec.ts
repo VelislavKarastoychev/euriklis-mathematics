@@ -2,7 +2,7 @@
 
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const r = Matrix.uniqueRandom(5, 7, 0, 2, "generic") as NumericMatrix;
 const r1 = Matrix.uniqueRandom(7, 13, 0, 3, "generic") as NumericMatrix;

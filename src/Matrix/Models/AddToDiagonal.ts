@@ -1,6 +1,11 @@
 "use strict";
 
-import { Integer, MatrixType, NumericMatrix, TypedArray } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 
 export const AddNumberToDiagonal = (
   m: MatrixType | NumericMatrix,

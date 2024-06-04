@@ -1,12 +1,13 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const onces34 = Matrix.replicate(1, 3, 4);
 const onces42 = Matrix.replicate(1, 4, 2);
 const fours32 = Matrix.replicate(4, 3, 2);
-const callTimes = (m: MatrixType | NumericMatrix) => Matrix.times(Matrix.random(5, 8), m);
+const callTimes = (m: MatrixType | NumericMatrix) =>
+  Matrix.times(Matrix.random(5, 8), m);
 new validator(Matrix.isEqualTo(
   Matrix.times(onces34, onces42),
   fours32,
@@ -74,20 +75,26 @@ new validator(Matrix.isEqualTo(
 
 new validator(Matrix.isEqualTo(
   Matrix.times(7, Matrix.random(60, 70)),
-  Matrix.Hadamard(Matrix.random(60, 70), 7)
-)).describe("7. provide the correct result for arguments of times which are number and Matrix.")
+  Matrix.Hadamard(Matrix.random(60, 70), 7),
+)).describe(
+  "7. provide the correct result for arguments of times which are number and Matrix.",
+)
   .isSame(true)
   .test();
 
 new validator(Matrix.isEqualTo(
   Matrix.times([[7]], Matrix.random(60, 70)),
-  Matrix.Hadamard(Matrix.random(60, 70), 7)
-)).describe("8. provide the correct result for arguments of times which are matrix with dimensions 1 x 1 and Matrix.")
+  Matrix.Hadamard(Matrix.random(60, 70), 7),
+)).describe(
+  "8. provide the correct result for arguments of times which are matrix with dimensions 1 x 1 and Matrix.",
+)
   .isSame(true)
   .test();
 new validator(callTimes)
   .throwsErrorWith([[1, 3]])
   .and.throwsErrorWith([[1, 2, 3], [1, 23], [123]])
   .and.throwsErrorWith("this throws")
-  .describe("9. throw error when the matrix parameters are inappropriately or incorrectly defined.")
+  .describe(
+    "9. throw error when the matrix parameters are inappropriately or incorrectly defined.",
+  )
   .test();

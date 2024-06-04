@@ -1,5 +1,5 @@
 "use strict";
-import { Integer } from "../src/Matrix/types";
+import type { Integer } from "../src/Types";
 import validator from "@euriklis/validator-ts";
 import { StaticStack } from "../src";
 new validator(new StaticStack())
@@ -141,5 +141,3 @@ new validator(DStack.size)
     ),
   ).describe("12. provide a method for appending of elements.")
   .test();
-
-

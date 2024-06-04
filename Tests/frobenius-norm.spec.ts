@@ -1,10 +1,8 @@
 "use strict";
-import {
-  Integer,
+import type {
   MatrixType,
   NumericMatrix,
-  TypedArray,
-} from "../src/Matrix/types.ts";
+} from "../src/Types";
 import { Matrix } from "../src/index.ts";
 import validator from "@euriklis/validator-ts";
 const m: MatrixType | NumericMatrix = Matrix.random(31, 21);

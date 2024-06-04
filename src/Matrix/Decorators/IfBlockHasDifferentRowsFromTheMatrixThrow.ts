@@ -1,7 +1,6 @@
 "use strict";
 
-import { IsEmpty } from "../Conditions";
-import { MatrixType, NumericMatrix, NumericType } from "../types";
+import type { MatrixType, NumericMatrix, NumericType } from "../../Types";
 
 export function ifBlockHasDifferentRowsFromTheMatrixThrow(
   error: Function,

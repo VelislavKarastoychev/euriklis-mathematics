@@ -6,7 +6,7 @@ import type {
   NumericType,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor";
 import { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
 

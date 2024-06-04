@@ -1,6 +1,6 @@
 "use strict";
 import { IsArrayOfArraysWithEqualSize } from "../Conditions/index.ts";
-import { Integer, MatrixType, NumericMatrix } from "../types";
+import type { Integer, MatrixType, NumericMatrix } from "../../Types";
 
 export function ifIsNotArrayOfArraysWithEqualSizeThrow(
   error: Function,

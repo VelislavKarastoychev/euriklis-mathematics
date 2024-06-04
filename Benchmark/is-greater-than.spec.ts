@@ -1,4 +1,5 @@
 "use strict";
+
 import numeric from "numericjs";
 import { Matrix } from "../src";
 import * as tf from "@tensorflow/tfjs";

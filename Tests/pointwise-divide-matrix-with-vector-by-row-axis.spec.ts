@@ -1,7 +1,7 @@
 "use strict";
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 
 const r1 = Matrix.uniqueRandom(5, 7, -10, 10, "generic") as NumericMatrix;
 const v = Matrix.uniqueRandom(1, 5);
@@ -32,7 +32,12 @@ new validator(
 new validator(
   Matrix.FrobeniusNorm(
     Matrix.minus(
-      Matrix.pointwiseDivideMatrixWithVectorByRowAxis(r1, v1, undefined, "column"),
+      Matrix.pointwiseDivideMatrixWithVectorByRowAxis(
+        r1,
+        v1,
+        undefined,
+        "column",
+      ),
       divideVector2MatrixByRowAxis,
     ),
   ) <= 1e-8,

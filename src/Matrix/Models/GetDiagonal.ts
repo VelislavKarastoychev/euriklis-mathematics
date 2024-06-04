@@ -1,11 +1,11 @@
 "use strict";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 /**
  * Retrieves the diagonal or subdiagonal of a matrix as a new Matrix instance.
@@ -30,16 +30,17 @@ export const GetDiagonal = (
 };
 
 export const GetDiagonalAsColumn = (
-matrix: MatrixType | NumericMatrix,
-row: Integer,
-typedArray: TypedArrayConstructor | ArrayConstructor = Float64Array
+  matrix: MatrixType | NumericMatrix,
+  row: Integer,
+  typedArray: TypedArrayConstructor | ArrayConstructor = Float64Array,
 ): MatrixType | NumericMatrix => {
   const n = matrix.length - row;
   const diag: MatrixType | NumericMatrix = [];
   let i: Integer, di: number[] | TypedArray;
-  for (i = n;i--;) {
-    di = new typedArray(1)
+  for (i = n; i--;) {
+    di = new typedArray(1);
     di[0] = matrix[i + row][i];
     diag[i] = di;
-  } return diag;
-}
+  }
+  return diag;
+};

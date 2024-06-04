@@ -1,7 +1,7 @@
 "use strict";
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 
 const r1 = Matrix.uniqueRandom(5, 7, -10, 10, "generic") as NumericMatrix;
 const v = Matrix.uniqueRandom(1, 5);

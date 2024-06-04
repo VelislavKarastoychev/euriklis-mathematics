@@ -1,6 +1,6 @@
 "use strict";
 
-import { NumericType, TypedArrayConstructor } from "../types.ts";
+import type { NumericType, TypedArrayConstructor } from "../../Types";
 /**
  * Creates a TypedArray constructor based on the provided numeric type.
  * @param {NumericType} type - The numeric type.

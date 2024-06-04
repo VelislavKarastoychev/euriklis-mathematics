@@ -1,10 +1,10 @@
 "use strict";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 /**
  * Reshapes the provided matrix with the specified number of rows and columns.
  *
@@ -23,7 +23,7 @@ export const Reshape = (
   rows: Integer,
   columns: Integer,
   typedArray: TypedArrayConstructor | ArrayConstructor,
-): MatrixType | NumericMatrix=> {
+): MatrixType | NumericMatrix => {
   const reshaped: MatrixType | NumericMatrix = [];
   let i: Integer, j: Integer, r: Integer = mrows - 1, c: Integer = mcolumns - 1;
   for (i = rows; i--;) {

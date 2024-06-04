@@ -1,11 +1,11 @@
 "use strict";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 /**
  * Iteratively appends a block to the right side of a matrix by recursion.

@@ -1,9 +1,10 @@
 "use strict";
+
 import * as tf from "@tensorflow/tfjs";
 import * as tfNode from "@tensorflow/tfjs-node";
 import numeric from "numericjs";
 import {  Matrix } from "../src/index.ts";
-import { type NumericMatrix } from "../src/Matrix/types.ts";
+import type { NumericMatrix } from "../src/Types";
 import { dimensions, startPerformanceTest } from "./utils.ts";
 
 (async () => {

@@ -1,5 +1,5 @@
 "use strict";
-import { NumericType } from "../types";
+import type { NumericType } from "../../Types";
 
 /**
  * Utility function.

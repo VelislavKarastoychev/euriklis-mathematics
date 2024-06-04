@@ -1,6 +1,10 @@
 "use strict";
-import { TypedArray } from "@tensorflow/tfjs";
-import { Integer, MatrixType, NumericMatrix } from "../types";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArray,
+} from "../../Types";
 import { ComputeDimensions } from "./ComputeDimensions";
 
 /**
@@ -37,8 +41,7 @@ const SetMatrixDiagonalRecursively = (
         } else {vector = (n as MatrixType | NumericMatrix)[0][i] as
             | TypedArray
             | number[]
-            | number;
-        }
+            | number;}
       } else vector = n as number;
       (matrix as MatrixType | NumericMatrix)[i] = SetMatrixDiagonalRecursively(
         matrix[i] as MatrixType | NumericMatrix,

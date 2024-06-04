@@ -1,6 +1,6 @@
 "use strict";
 import { Matrix } from "../src";
-import type { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 import validator from "@euriklis/validator-ts";
 
 const a = Matrix.uniqueRandom(3, 3);
@@ -36,8 +36,12 @@ new validator(
   )
   .test();
 
-new validator((r: Integer, c: Integer): MatrixType | NumericMatrix => Matrix.inverse(Matrix.random(r, c)))
+new validator((r: Integer, c: Integer): MatrixType | NumericMatrix =>
+  Matrix.inverse(Matrix.random(r, c))
+)
   .throwsErrorWith(6, 7)
   .and.throwsErrorWith(-Infinity, Infinity)
-  .describe("3. throws error when the matrix is incorrectly defined or if is not wquare.")
+  .describe(
+    "3. throws error when the matrix is incorrectly defined or if is not wquare.",
+  )
   .test();

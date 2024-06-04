@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const m = [
   [-3, 5, 7],
@@ -9,7 +9,8 @@ const m = [
   [0, 2, 8],
 ];
 
-const callSumOfSquares = (m: MatrixType | NumericMatrix) => Matrix.sumOfSquaresOfAllElements(m);
+const callSumOfSquares = (m: MatrixType | NumericMatrix) =>
+  Matrix.sumOfSquaresOfAllElements(m);
 new validator(Matrix.sumOfSquaresOfAllElements(m)).isSame(207)
   .describe("The sumOfSquaresOfAllElements getter method has to:")
   .test({

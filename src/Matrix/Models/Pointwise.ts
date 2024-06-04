@@ -8,7 +8,7 @@ import type {
   NumericType,
   TypedArrayConstructor,
   UnaryPointwiseOperator,
-} from "../types";
+} from "../../Types";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor.ts";
 
 /**
@@ -131,7 +131,8 @@ export const BinaryPointwise = (
   action: BinaryPointwiseOperator,
   type: NumericType,
 ): MatrixType | NumericMatrix => {
-  const typedArray: TypedArrayConstructor | ArrayConstructor = CreateTypedArrayConstructor(type);
+  const typedArray: TypedArrayConstructor | ArrayConstructor =
+    CreateTypedArrayConstructor(type);
   const operator = BinaryPointwiseExpression(action);
 
   return BinaryPointwiseIterator(m1, m2, operator, typedArray);
@@ -207,7 +208,7 @@ const UnaryPointwiseExpression = (action: UnaryPointwiseOperator): string => {
       return `((x) => {
           if (x !== 0) return  1 / x; 
           throw new Error('division with zero error in unaryPointwise!')
-        })`
+        })`;
   }
 };
 
@@ -307,7 +308,8 @@ export const UnaryPointwise = (
   weight: number,
   bias: number,
 ): MatrixType | NumericMatrix => {
-  const typedArray: TypedArrayConstructor | ArrayConstructor = CreateTypedArrayConstructor(type);
+  const typedArray: TypedArrayConstructor | ArrayConstructor =
+    CreateTypedArrayConstructor(type);
   const operator = UnaryPointwiseExpression(action);
   if (weight !== 1 || bias !== 0) {
     return UnaryPointwiseIteratorWithWeightAndBias(

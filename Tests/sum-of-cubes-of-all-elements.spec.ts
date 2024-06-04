@@ -1,13 +1,14 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 const m = [
   [1, 2, 3],
   [4, 5, 6],
   [7, 8, 9],
 ];
-const callSumOfCubes = (m: MatrixType | NumericMatrix) => Matrix.sumOfCubesOfAllElements(m);
+const callSumOfCubes = (m: MatrixType | NumericMatrix) =>
+  Matrix.sumOfCubesOfAllElements(m);
 new validator(Matrix.sumOfCubesOfAllElements(m)).isSame(2025)
   .describe("The sumOfCubesOfAllElements getter method has to:")
   .test({

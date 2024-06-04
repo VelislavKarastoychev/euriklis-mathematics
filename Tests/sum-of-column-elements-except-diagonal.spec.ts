@@ -1,7 +1,7 @@
 "use strict";
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 // this file has a test for the
 // method sumOfColumnsExceptDiagonal.

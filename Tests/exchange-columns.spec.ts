@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { Integer } from "../src/Matrix/types.ts";
+import type { Integer } from "../src/Types";
 
 const a = [
   [1, 2, 3, 4, 5, 6, 7, 8, 9],

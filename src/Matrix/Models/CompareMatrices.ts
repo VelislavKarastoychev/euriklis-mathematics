@@ -1,13 +1,13 @@
 "use strict";
 
-import {
+import type {
   ComparisonOperator,
   ComparisonParameter,
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
-} from "../types";
+} from "../../Types";
 
 /**
  * Obtains the JavaScript comparison operator

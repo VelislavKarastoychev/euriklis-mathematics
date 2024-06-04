@@ -7,7 +7,7 @@ import type {
   NumericMatrix,
   NumericType,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { ComputeDimensions } from "./ComputeDimensions";
 import { CreateTypedArrayConstructor } from "./CreateTypedArrayConstructor";
 

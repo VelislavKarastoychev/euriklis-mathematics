@@ -1,6 +1,6 @@
 "use strict";
 
-import type { MatrixType, NumericMatrix, TypedArray } from "../Matrix/types";
+import type { MatrixType, NumericMatrix, TypedArray } from "../Types";
 
 export const abs: (n: number) => number = Math.abs;
 export const sqrt: (n: number) => number = Math.sqrt;

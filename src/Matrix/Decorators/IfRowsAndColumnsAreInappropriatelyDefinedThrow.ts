@@ -1,6 +1,5 @@
 "use strict";
-import { Matrix } from "..";
-import { Integer, MatrixType, NumericMatrix } from "../types";
+import type { Integer, MatrixType, NumericMatrix } from "../../Types";
 /**
  * Validates that the provided rows and columns are appropriately defined,
  * throwing an error if conditions are not met.

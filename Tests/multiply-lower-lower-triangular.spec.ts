@@ -2,7 +2,7 @@
 
 import { Matrix } from "../src";
 import validator from "@euriklis/validator-ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const a: MatrixType | NumericMatrix = [
   [Math.random(), 0, 0, 0, 0],
@@ -30,4 +30,3 @@ new validator(Matrix.FrobeniusNorm(
   .test({ title: true, success: "green", error: "red" })
   .describe("1. multiply correctly lower triangular matrices.")
   .test();
-

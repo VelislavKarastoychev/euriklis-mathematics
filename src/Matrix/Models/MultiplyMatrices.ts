@@ -1,11 +1,11 @@
 "use strict";
-import {
+import type {
   Integer,
   MatrixType,
   NumericMatrix,
   TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 
 /**
  * Gets a column of a matrix and stores it in an array.

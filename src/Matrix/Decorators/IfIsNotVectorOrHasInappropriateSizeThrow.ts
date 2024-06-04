@@ -1,7 +1,7 @@
 "use strict";
 
 import { IsArrayOfArraysWithEqualSize } from "../Conditions";
-import { MatrixType, NumericMatrix, NumericType } from "../types";
+import type { MatrixType, NumericMatrix, NumericType } from "../../Types";
 
 export function ifIsNotVectorOrHasInappropriateSizeThrow(
   error: Function,

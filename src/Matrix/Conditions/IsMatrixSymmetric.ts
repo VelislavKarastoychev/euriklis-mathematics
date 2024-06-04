@@ -1,13 +1,15 @@
 "use strict";
 
-import { Integer, MatrixType, NumericMatrix } from "../types";
+import type { Integer, MatrixType, NumericMatrix } from "../../Types";
 /**
  * Checks if a matrix is symmetric.
  *
  * @param {MatrixType | NumericMatrix} matrix - The matrix to check for symmetry.
  * @returns {boolean} True if the matrix is symmetric, false otherwise.
  */
-export const IsMatrixSymmetric = (matrix: MatrixType | NumericMatrix) => {
+export const IsMatrixSymmetric = (
+  matrix: MatrixType | NumericMatrix,
+): boolean => {
   const n: Integer = matrix.length;
   let i: Integer, j: number;
   for (i = n; i-- > 0;) {

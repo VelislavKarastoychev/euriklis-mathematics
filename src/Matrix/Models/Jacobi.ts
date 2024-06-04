@@ -1,12 +1,12 @@
 "use strict";
 
-import type { TypedArray } from "@tensorflow/tfjs";
 import type {
   Integer,
   MatrixType,
   NumericMatrix,
+  TypedArray,
   TypedArrayConstructor,
-} from "../types";
+} from "../../Types";
 import { GenerateIdentityLikeMatrix } from "./GenerateIdentityLikeMatrix";
 
 function ROTATE(

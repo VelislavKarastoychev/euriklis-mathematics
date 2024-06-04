@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src";
-import { Integer, MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { Integer, MatrixType, NumericMatrix } from "../src/Types";
 
 const r1 = Matrix.uniqueRandom(7, 9);
 const r2 = Matrix.copy(r1, "generic") as NumericMatrix;
@@ -17,7 +17,9 @@ r2.forEach((row: number[], i: Integer) => {
     sumOfSquaresOfColumnElementsAsColumn[j][0] += item * item;
   });
 });
-sumOfSquaresOfColumnElementsAsRow = [sumOfSquaresOfColumnElementsAsRow as number[]];
+sumOfSquaresOfColumnElementsAsRow = [
+  sumOfSquaresOfColumnElementsAsRow as number[],
+];
 const callSumOfSquaresOfColumnElements = (m: MatrixType | NumericMatrix) =>
   Matrix.sumOfSquaresOfColumnElements(m);
 new validator(

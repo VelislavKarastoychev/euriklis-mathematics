@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const r = Matrix.random(3, 4);
 const arccos = (Matrix.copy(r, "generic") as NumericMatrix).map((r: number[]) =>

@@ -1,12 +1,11 @@
 "use strict";
 
 import { InternalErrorInFrobeniusNorm } from "../Errors/index.ts";
-import { MatrixType, NumericMatrix } from "../types";
+import type { MatrixType, NumericMatrix } from "../../Types";
 import { MatrixReduce } from "./MatrixReduce.ts";
 
-
 /**
- * Calculates the Frobenius (Euclidean) 
+ * Calculates the Frobenius (Euclidean)
  * norm of a matrix using matrix reduction.
  *
  * @param {MatrixType | NumericMatrix} a - The input matrix.

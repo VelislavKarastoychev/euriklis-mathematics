@@ -1,13 +1,13 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types.ts";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 
 const m = [
-    [-3, 5, 7],
-    [2, 6, 4],
-    [0, 2, 8],
-  ];
+  [-3, 5, 7],
+  [2, 6, 4],
+  [0, 2, 8],
+];
 
 const callNorm1 = (m: MatrixType | NumericMatrix) => Matrix.norm1(m);
 new validator(Matrix.norm1(m)).isSame(19)

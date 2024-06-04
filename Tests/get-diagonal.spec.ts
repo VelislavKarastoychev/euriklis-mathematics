@@ -1,7 +1,7 @@
 "use strict";
 
 import { Matrix } from "../src/index.ts";
-import { Integer } from "../src/Matrix/types";
+import type { Integer } from "../src/Types";
 import validator from "@euriklis/validator-ts";
 const rand55 = Matrix.random(5, 5);
 const rand55M = Matrix.copy(rand55, "generic");

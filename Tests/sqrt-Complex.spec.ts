@@ -1,4 +1,5 @@
 "use strict";
+
 import validator from "@euriklis/validator-ts";
 import { Complex } from "../src";
 import { sqrt } from "../src/utils";

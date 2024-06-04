@@ -1,5 +1,10 @@
 "use strict";
-import { Integer, MatrixType, NumericMatrix, TypedArrayConstructor } from "../types.ts";
+import type {
+  Integer,
+  MatrixType,
+  NumericMatrix,
+  TypedArrayConstructor,
+} from "../../Types";
 /**
  * Generates a matrix with a typed array form
  * which is needed for more efficient computations.

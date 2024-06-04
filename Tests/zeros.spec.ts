@@ -1,7 +1,7 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
 import { Matrix } from "../src/index.ts";
-import { Integer } from "../src/Matrix/types.ts";
+import type { Integer } from "../src/Types";
 const zeros = Array.from({ length: 50 }).map((_) =>
   Array.from({ length: 50 }).map((_) => 0)
 );

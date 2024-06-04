@@ -1,6 +1,6 @@
 "use strict";
 import validator from "@euriklis/validator-ts";
-import { MatrixType, NumericMatrix } from "../src/Matrix/types";
+import type { MatrixType, NumericMatrix } from "../src/Types";
 import { Matrix } from "../src";
 
 const colVector = Matrix.replicate(Math.E, 7, 1);
@@ -41,8 +41,7 @@ new validator(callAddColVector2)
   .throwsErrorWith([[1, 2, 3], [1, 23], [123]])
   .and.throwsErrorWith(Matrix.random(8, 1))
   .and.throwsErrorWith("it throws")
-  .describe("2. throws error when the column vector parameter is incorrectly defined.")
+  .describe(
+    "2. throws error when the column vector parameter is incorrectly defined.",
+  )
   .test();
-
-
-
