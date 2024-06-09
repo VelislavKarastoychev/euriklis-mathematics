@@ -23,7 +23,7 @@ const compareNodeWithValue: BSTNodeValueComparisonCallbackType = (
  * using the BSTDataNode extension of the DataNode model.
  */
 export class BST {
-  public compare = compareNodes;
+  public order = compareNodes;
   public search = compareNodeWithValue;
   private _root: BSTDataNode | null = null;
 
@@ -50,16 +50,23 @@ export class BST {
     return !this._root;
   }
 
+  get size(): Integer {
+    let s: Integer = 0;
+    this.BFS((_) => s++);
+
+    return s;
+  }
+
   clean() {
     this._root = null;
-    this.compare = compareNodes;
+    this.order = compareNodes;
 
     return this;
   }
 
   copy(): BST {
     const tree = new BST();
-    tree.compare = this.compare;
+    tree.order = this.order;
     this.DFS((node) => {
       tree.insert(node?.data, node?.id);
     });
@@ -79,7 +86,8 @@ export class BST {
       same = new validator(t1.data).isSame(t2.data)
         .and.bind(
           new validator(t1.id).isSame(t2.id),
-        ).answer;
+        )
+        .answer;
       if (!same) break;
       if (t1.left) S1.push(t1.left);
       if (t1.right) S1.push(t1.right);
@@ -98,7 +106,7 @@ export class BST {
     if (id) node.id = id;
     while (r) {
       y = r;
-      if (this.compare(node, r) < 0) r = r.left;
+      if (this.order(node, r) < 0) r = r.left;
       else r = r.right;
     }
 
@@ -106,39 +114,78 @@ export class BST {
 
     if (!y) this._root = node;
     else {
-      if (this.compare(node, y) < 0) y.left = node;
+      if (this.order(node, y) < 0) y.left = node;
       else y.right = node;
     }
     return this;
   }
 
-  delete(id: any) {
-    const node: BSTDataNode | null = this.binarySearchNode((node) =>
-      node.data > id ? -1 : node.data === id ? 0 : 1
-    );
-    return this.deleteNode(node)?.data || null;
+  insertMany(data: any[]): BST {
+    const n = data.length;
+    let i: Integer;
+    for (i = 0; i < n - 1; i++) {
+      this.insert(data[i++]);
+      this.insert(data[i]);
+    }
+
+    if (i === (n - 1)) this.insert(data[n - 1]);
+
+    return this;
   }
 
-  deleteNode(node: BSTDataNode | null): BSTDataNode | null {
-    // implementation of the delete algorithm for BSTs.
-    let y: BSTDataNode | null, z: BSTDataNode | null;
-    if (node?.left || node?.right) {
-      y = node;
-    } else y = this.successorNode(node);
-    if (y?.left) z = y.left;
-    else z = y?.right as BSTDataNode | null;
-    if (z) {
-      z.prev = y?.prev as BSTDataNode | null;
+  delete(
+    value: any,
+    callback: BSTNodeValueComparisonCallbackType = this.search,
+  ) {
+    const node = models.BinarySearch(this._root, value, callback);
+    if (!node) return null;
+    if (!node.left) models.ShiftNodes(this, node, node?.right);
+    else if (!node.right) models.ShiftNodes(this, node, node?.left || null);
+    else {
+      const successor = this.successorNode(node) as BSTDataNode;
+      if (successor.prev !== node) {
+        models.ShiftNodes(this, successor, successor.right as BSTDataNode);
+        successor.right = node?.right || null;
+        (successor.right as BSTDataNode).prev = successor;
+      }
+      models.ShiftNodes(this, node, successor);
+      if (!node.prev) this._root = successor;
+      if (node === node.prev?.left) node.prev.left = successor;
+      if (node === node.prev?.right) node.prev.right = successor;
+      successor.left = node.left;
+      (successor.left as BSTDataNode).prev = successor;
     }
 
-    if (!y?.prev) this._root = z;
-    else if ((y === y.prev?.left)) {
-      (y.prev as BSTDataNode).left = z;
+    // It is no needed to delete the node connection
+    // because the garbadge collector will delete it.
+    return node?.data || null;
+  }
+
+  deleteNode(
+    callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1,
+  ): BSTDataNode | null {
+    const node = this.binarySearchNode(callback);
+    if (!node) return null;
+    if (!node.left) models.ShiftNodes(this, node, node?.right);
+    else if (!node.right) models.ShiftNodes(this, node, node?.left || null);
+    else {
+      //  Note that it is possible to run the predecessorNode
+      const successor = this.successorNode(node) as BSTDataNode;
+      if (successor.prev !== node) {
+        models.ShiftNodes(this, successor, successor.right as BSTDataNode);
+        successor.right = node.right;
+        (successor.right as BSTDataNode).prev = successor;
+      }
+      models.ShiftNodes(this, node, successor);
+      successor.left = node.left;
+      (successor.left as BSTDataNode).prev = successor;
     }
-    if (y !== node) {
-      node = y;
-    }
-    return node;
+    // delete the connection of the node because it is deleted.
+    node.prev = null;
+    node.right = null;
+    node.left = null;
+
+    return node || null;
   }
 
   binarySearch(
@@ -179,14 +226,34 @@ export class BST {
     return y;
   }
 
+  predecessor(x: BSTDataNode | null = this._root): any | null {
+    if (x?.left) return this.max(x.left);
+    else return models.LeftBackward(x)?.data || null;
+  }
+
+  predecessorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
+    if (x?.left) return this.maxNode(x.left);
+    else return models.LeftBackward(x);
+  }
+
   successor(x: BSTDataNode | null = this._root): any {
     if (x?.right) return this.min(x.right);
-    else return models.Backward(x)?.data || null;
+    else return models.RightBackward(x)?.data || null;
   }
 
   successorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
-    if (x?.right) return this.minNode(x);
-    else return models.Backward(x);
+    if (x?.right) return this.minNode(x.right);
+    else return models.RightBackward(x);
+  }
+
+  filter(callback: (node: BSTDataNode | null, tree?: BST) => boolean): BST {
+    const tree = new BST();
+    tree.order = this.order;
+    this.BFS((node, bst) => {
+      if (callback(node, bst)) tree.insert(node?.data);
+    });
+
+    return tree;
   }
 
   BFS(callback: (node: BSTDataNode | null, tree: BST) => void): BST {
@@ -203,9 +270,9 @@ export class BST {
     return this;
   }
 
-  toArray() {
+  toArray(mode: "BFS" | "DFS" = "DFS") {
     const __values__: any = [];
-    this.DFS((node) => __values__.push(node?.data));
+    this[mode]((node) => __values__.push(node?.data));
 
     return __values__;
   }
