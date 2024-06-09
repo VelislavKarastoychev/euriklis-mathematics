@@ -25,7 +25,7 @@ const compareNodeWithValue: BSTNodeValueComparisonCallbackType = (
 export class BST {
   public order = compareNodes;
   public search = compareNodeWithValue;
-  private _root: BSTDataNode | null = null;
+  protected _root: BSTDataNode | null = null;
 
   constructor(data?: any) {
     this.root = data;
@@ -37,8 +37,7 @@ export class BST {
 
   set root(data) {
     if (data) {
-      const node = new BSTDataNode(data);
-      this._root = node;
+      this._root = new BSTDataNode(data);
     }
   }
 
