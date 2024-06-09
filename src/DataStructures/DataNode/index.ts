@@ -2,7 +2,7 @@
 
 import { v4 as uuidv4 } from "uuid";
 
-import type { Integer } from "../../Matrix/types";
+import type { Integer } from "../../Types";
 
 export abstract class DataNode<T extends DataNode<any>> {
   protected _id: string = "";
@@ -75,5 +75,21 @@ export class BSTDataNode extends DataNode<BSTDataNode> {
 
   set left(node: BSTDataNode | null) {
     this._left = node || null;
+  }
+}
+
+export class AVLDataNode extends BSTDataNode {
+  private bf: Integer = 0;
+
+  constructor(data: any) {
+    super(data);
+  }
+
+  get balance(): Integer {
+    return this.bf;
+  }
+
+  set balance(n: Integer) {
+    this.bf = n;
   }
 }
