@@ -57,7 +57,6 @@ export class LinkedDataNode extends DataNode<LinkedDataNode> {
 export class BSTDataNode extends DataNode<BSTDataNode> {
   protected _right: BSTDataNode | null = null;
   protected _left: BSTDataNode | null = null;
-  protected _sign: -1 | 0 | 1 = 0;
   constructor(data: any) {
     super(data);
   }
@@ -76,13 +75,5 @@ export class BSTDataNode extends DataNode<BSTDataNode> {
 
   set left(node: BSTDataNode | null) {
     this._left = node || null;
-  }
-
-  get sign(): -1 | 0 | 1 {
-    return this._sign;
-  }
-
-  set sign(d: -1 | 1) {
-    this._sign = d;
   }
 }
