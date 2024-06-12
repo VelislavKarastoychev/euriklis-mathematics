@@ -137,7 +137,7 @@ export class BST<T extends BSTDataNode> {
 
   deleteNode(
     callback: (node: T, tree?: BST<T>) => -1 | 0 | 1,
-  ): BSTDataNode | null {
+  ): T | null {
     const node = this.binarySearchNode(callback);
     if (!node) return null;
     if (!node.left) models.ShiftNodes(this, node, node?.right);
@@ -171,7 +171,7 @@ export class BST<T extends BSTDataNode> {
 
   binarySearchNode(
     callback: (node: T, tree?: BST<T>) => -1 | 0 | 1,
-  ): BSTDataNode | null {
+  ): T | null {
     return models.BinarySearchNode(this, this._root, callback);
   }
 
