@@ -44,6 +44,10 @@ export class BST {
     return this._root;
   }
 
+  set rootNode(node: BSTDataNode) {
+    this._root = node;
+  }
+
   get isEmpty(): boolean {
     return !this._root;
   }
@@ -85,22 +89,8 @@ export class BST {
 
   insert(data: any, id?: string) {
     if (data?.id) id = data.id;
-    const node = new BSTDataNode(data);
-    let r: BSTDataNode | null = this._root, y: BSTDataNode | null = null;
-    if (id) node.id = id;
-    while (r) {
-      y = r;
-      if (this.order(node, r) < 0) r = r.left;
-      else r = r.right;
-    }
+    models.InsertNodeInBST(this, data, id);
 
-    node.prev = y;
-
-    if (!y) this._root = node;
-    else {
-      if (this.order(node, y) < 0) y.left = node;
-      else y.right = node;
-    }
     return this;
   }
 
