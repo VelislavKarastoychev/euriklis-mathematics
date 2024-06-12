@@ -6,3 +6,4 @@ const tree = new AVLTree(4);
 tree.insert(3);
 tree.insert(4);
 tree.print();
+
