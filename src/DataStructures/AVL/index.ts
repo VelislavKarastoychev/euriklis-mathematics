@@ -12,6 +12,10 @@ export class AVLTree extends BST {
     return this._root?.data || null;
   }
   set root(data: any) {
-    this._root = new AVLDataNode(data);
+    this._root = new AVLDataNode(data) as AVLDataNode;
   }
+
+  set rootNode(node: AVLDataNode) {}
+
+
 }
