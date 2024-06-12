@@ -2,8 +2,8 @@
 
 import { BST } from "../BST";
 import { AVLDataNode } from "../DataNode";
-
-export class AVLTree extends BST {
+import * as models from "../BST/Models";
+export class AVLTree extends BST<AVLDataNode> {
   constructor(data: any) {
     super(data);
   }
@@ -15,7 +15,14 @@ export class AVLTree extends BST {
     this._root = new AVLDataNode(data) as AVLDataNode;
   }
 
-  set rootNode(node: AVLDataNode) {}
-
+  insert(data: any, id?: string) {
+    if (data?.id) id = data.id;
+    const node = models.InsertNodeInBST(this, data, id) as AVLDataNode;
+    if (node) {
+      node.balance = 0;
+    } 
+    
+    return this;
+  }
 
 }
