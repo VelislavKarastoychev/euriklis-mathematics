@@ -145,3 +145,4 @@ import "./dynamic-stack.spec";
 import "./doubly-linked-list.spec";
 import "./queue.spec.ts";
 import "./bst.spec.ts";
+import "./avl.spec.ts";
