@@ -21,10 +21,10 @@ const compareNodeWithValue: BSTNodeValueComparisonCallbackType = (
  * This class implements the concept of the Binary search trees
  * using the BSTDataNode extension of the DataNode model.
  */
-export class BST {
+export class BST<T extends BSTDataNode> {
   public order = compareNodes;
   public search = compareNodeWithValue;
-  protected _root: BSTDataNode | null = null;
+  protected _root: T | null = null;
 
   constructor(data?: any) {
     this.root = data;
@@ -36,15 +36,15 @@ export class BST {
 
   set root(data) {
     if (data) {
-      this._root = new BSTDataNode(data);
+      this._root = new BSTDataNode(data) as T;
     }
   }
 
-  get rootNode(): BSTDataNode | null {
-    return this._root;
+  get rootNode(): T | null {
+    return this._root as T;
   }
 
-  set rootNode(node: BSTDataNode) {
+  set rootNode(node: T) {
     this._root = node;
   }
 
@@ -67,7 +67,7 @@ export class BST {
     return this;
   }
 
-  copy(): BST {
+  copy(): BST<T> {
     const tree = new BST();
     tree.order = this.order;
     tree.search = this.search;
@@ -75,10 +75,10 @@ export class BST {
       tree.insert(node?.data, node?.id);
     });
 
-    return tree;
+    return tree as BST<T>;
   }
 
-  isSame(tree: BST) {
+  isSame(tree: BST<T>) {
     const r1 = this._root,
       r2 = tree._root,
       S1 = new DynamicStack(r1),
@@ -94,7 +94,7 @@ export class BST {
     return this;
   }
 
-  insertMany(data: any[]): BST {
+  insertMany(data: any[]): BST<T> {
     const n = data.length;
     let i: Integer;
     for (i = 0; i < n - 1; i++) {
@@ -116,18 +116,18 @@ export class BST {
     if (!node.left) models.ShiftNodes(this, node, node?.right);
     else if (!node.right) models.ShiftNodes(this, node, node?.left || null);
     else {
-      const successor = this.successorNode(node) as BSTDataNode;
+      const successor = this.successorNode(node as T) as T;
       if (successor.prev !== node) {
-        models.ShiftNodes(this, successor, successor.right as BSTDataNode);
+        models.ShiftNodes(this, successor, successor.right as T);
         successor.right = node?.right || null;
-        (successor.right as BSTDataNode).prev = successor;
+        (successor.right as T).prev = successor;
       }
       models.ShiftNodes(this, node, successor);
       if (!node.prev) this._root = successor;
       if (node === node.prev?.left) node.prev.left = successor;
       if (node === node.prev?.right) node.prev.right = successor;
       successor.left = node.left;
-      (successor.left as BSTDataNode).prev = successor;
+      (successor.left as T).prev = successor;
     }
 
     // It is no needed to delete the node connection
@@ -136,7 +136,7 @@ export class BST {
   }
 
   deleteNode(
-    callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1,
+    callback: (node: T, tree?: BST<T>) => -1 | 0 | 1,
   ): BSTDataNode | null {
     const node = this.binarySearchNode(callback);
     if (!node) return null;
@@ -144,15 +144,15 @@ export class BST {
     else if (!node.right) models.ShiftNodes(this, node, node?.left || null);
     else {
       //  Note that it is possible to run the predecessorNode
-      const successor = this.successorNode(node) as BSTDataNode;
+      const successor = this.successorNode(node as T) as T;
       if (successor.prev !== node) {
-        models.ShiftNodes(this, successor, successor.right as BSTDataNode);
+        models.ShiftNodes(this, successor, successor.right as T);
         successor.right = node.right;
-        (successor.right as BSTDataNode).prev = successor;
+        (successor.right as T).prev = successor;
       }
       models.ShiftNodes(this, node, successor);
       successor.left = node.left;
-      (successor.left as BSTDataNode).prev = successor;
+      (successor.left as T).prev = successor;
     }
     // delete the connection of the node because it is deleted.
     node.prev = null;
@@ -170,74 +170,74 @@ export class BST {
   }
 
   binarySearchNode(
-    callback: (node: BSTDataNode, tree?: BST) => -1 | 0 | 1,
+    callback: (node: T, tree?: BST<T>) => -1 | 0 | 1,
   ): BSTDataNode | null {
     return models.BinarySearchNode(this, this._root, callback);
   }
 
-  min(x: BSTDataNode | null = this._root): any {
+  min(x: T | null = this._root): any {
     // shallow copy of x!
-    let y: BSTDataNode | null = x;
-    if (y?.left) return this.min(y.left);
+    let y: T | null = x;
+    if (y?.left) return this.min(y.left as T);
     return y?.data || null;
   }
 
-  minNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
-    let y: BSTDataNode | null = x;
-    if (y?.left) return this.minNode(y.left);
+  minNode(x: T | null = this._root): T | null {
+    let y: T | null = x;
+    if (y?.left) return this.minNode(y.left as T);
     return y;
   }
 
-  max(x: BSTDataNode | null = this._root): any {
-    let y: BSTDataNode | null = x;
-    if (y?.right) return this.max(y.right);
+  max(x: T | null = this._root): any {
+    let y: T | null = x;
+    if (y?.right) return this.max(y.right as T);
     return y?.data || null;
   }
 
-  maxNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
-    let y: BSTDataNode | null = x;
-    if (y?.right) return this.maxNode(y.right);
+  maxNode(x: T | null = this._root): T | null {
+    let y: T | null = x;
+    if (y?.right) return this.maxNode(y.right as T | null);
     return y;
   }
 
-  predecessor(x: BSTDataNode | null = this._root): any | null {
-    if (x?.left) return this.max(x.left);
+  predecessor(x: T | null = this._root): any | null {
+    if (x?.left) return this.max(x.left as T);
     else return models.LeftBackward(x)?.data || null;
   }
 
-  predecessorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
-    if (x?.left) return this.maxNode(x.left);
-    else return models.LeftBackward(x);
+  predecessorNode(x: T | null = this._root): T | null {
+    if (x?.left) return this.maxNode(x.left as T);
+    else return models.LeftBackward(x) as T | null;
   }
 
-  successor(x: BSTDataNode | null = this._root): any {
-    if (x?.right) return this.min(x.right);
+  successor(x: T | null = this._root): any {
+    if (x?.right) return this.min(x.right as T);
     else return models.RightBackward(x)?.data || null;
   }
 
-  successorNode(x: BSTDataNode | null = this._root): BSTDataNode | null {
-    if (x?.right) return this.minNode(x.right);
-    else return models.RightBackward(x);
+  successorNode(x: T | null = this._root): T | null {
+    if (x?.right) return this.minNode(x.right as T | null);
+    else return models.RightBackward(x) as T | null;
   }
 
-  filter(callback: (node: BSTDataNode | null, tree?: BST) => boolean): BST {
+  filter(callback: (node: T | null, tree?: BST<T>) => boolean): BST<T> {
     const tree = new BST();
     tree.order = this.order;
     this.BFS((node, bst) => {
-      if (callback(node, bst)) tree.insert(node?.data);
+      if (callback(node as T, bst)) tree.insert(node?.data);
     });
 
-    return tree;
+    return tree as BST<T>;
   }
 
-  BFS(callback: (node: BSTDataNode | null, tree: BST) => void): BST {
+  BFS(callback: (node: T | null, tree: BST<T>) => void): BST<T> {
     const Q = new Queue(this._root);
     models.CallBFS(this, Q, callback);
 
     return this;
   }
 
-  DFS(callback: (node: BSTDataNode | null, tree: BST) => void): BST {
+  DFS(callback: (node: T | null, tree: BST<T>) => void): BST<T> {
     const S = new DynamicStack(this._root);
     models.CallDFS(this, S, callback);
 
@@ -252,7 +252,7 @@ export class BST {
   }
 
   print(
-    node: BSTDataNode | null = this._root,
+    node: T | null = this._root,
     level: Integer = 0,
     prefix: string = "Root: ",
   ) {
@@ -262,11 +262,11 @@ export class BST {
     console.log(" ".repeat(level * 2) + prefix + node.data);
 
     if (node.left) {
-      this.print(node.left, level + 1, "L--> ");
+      this.print(node.left as T, level + 1, "L--> ");
     }
 
     if (node.right) {
-      this.print(node.right, level + 1, "R--> ");
+      this.print(node.right as T, level + 1, "R--> ");
     }
   }
 }
