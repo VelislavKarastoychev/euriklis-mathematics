@@ -58,6 +58,7 @@ export class BST {
   clean() {
     this._root = null;
     this.order = compareNodes;
+    this.search = compareNodeWithValue;
 
     return this;
   }
