@@ -1,5 +1,4 @@
 "use strict";
-import validator from "@euriklis/validator-ts";
 import * as models from "./Models";
 import type { Integer } from "../../Types";
 import type {
@@ -16,7 +15,7 @@ const compareNodes: BSTNodeComparisonCallbackType = (x, y) =>
 const compareNodeWithValue: BSTNodeValueComparisonCallbackType = (
   x,
   value,
-) => x.data > value ? -1 : x.data === value ? 0 : 1;
+) => x.id > value ? -1 : x.id === value ? 0 : 1;
 
 /**
  * This class implements the concept of the Binary search trees
@@ -66,7 +65,8 @@ export class BST {
   copy(): BST {
     const tree = new BST();
     tree.order = this.order;
-    this.DFS((node) => {
+    tree.search = this.search;
+    this.BFS((node) => {
       tree.insert(node?.data, node?.id);
     });
 
@@ -78,24 +78,8 @@ export class BST {
       r2 = tree._root,
       S1 = new DynamicStack(r1),
       S2 = new DynamicStack(r2);
-    let same = false, t1: BSTDataNode, t2: BSTDataNode;
-    while (!S1.isEmpty && !S2.isEmpty) {
-      t1 = S1.pop();
-      t2 = S2.pop();
-      same = new validator(t1.data).isSame(t2.data)
-        .and.bind(
-          new validator(t1.id).isSame(t2.id),
-        )
-        .answer;
-      if (!same) break;
-      if (t1.left) S1.push(t1.left);
-      if (t1.right) S1.push(t1.right);
-      if (t2.left) S2.push(t2.left);
-      if (t2.right) S2.push(t2.right);
-    }
 
-    if (!S1.isEmpty || !S2.isEmpty) return false;
-    return same;
+    if (!S1.isEmpty && !S2.isEmpty) return models.IsNodeSame(S1, S2);
   }
 
   insert(data: any, id?: string) {
@@ -287,11 +271,11 @@ export class BST {
     console.log(" ".repeat(level * 2) + prefix + node.data);
 
     if (node.left) {
-      this.print(node.left, level + 1, "L--- ");
+      this.print(node.left, level + 1, "L--> ");
     }
 
     if (node.right) {
-      this.print(node.right, level + 1, "R--- ");
+      this.print(node.right, level + 1, "R--> ");
     }
   }
 }
