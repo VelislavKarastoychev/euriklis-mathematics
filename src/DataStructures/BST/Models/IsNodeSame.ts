@@ -3,8 +3,11 @@ import type { DynamicStack } from "../../Stack";
 import type { BSTDataNode } from "../../DataNode";
 import validator from "@euriklis/validator-ts";
 
-export const IsNodeSame = (S1: DynamicStack, S2: DynamicStack): boolean => {
-  let t1: BSTDataNode, t2: BSTDataNode;
+export const IsNodeSame = <T extends BSTDataNode>(
+  S1: DynamicStack,
+  S2: DynamicStack,
+): boolean => {
+  let t1: T, t2: T;
   if (!S1.isEmpty && !S2.isEmpty) {
     t1 = S1.pop();
     t2 = S2.pop();
