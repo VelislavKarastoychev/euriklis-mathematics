@@ -47,6 +47,13 @@ export class BST<T extends BSTDataNode> {
   protected _root: T | null = null;
 
   /**
+   * Indicates whether the BST allows only unique node values.
+   * When set to true, inserting a node with an existing ID will replace the existing node.
+   * Defaults to false (allowing duplicate IDs).
+   */
+  protected __unique__: boolean = false;
+
+  /**
    * Creates an instance of the BST class.
    * If data is provided, it sets the root
    * of the BST to a new node containing this data.
@@ -124,6 +131,23 @@ export class BST<T extends BSTDataNode> {
     this.BFS((_) => s++);
 
     return s;
+  }
+
+  /**
+   * @returns{boolean} If True no unique records are allowed,
+   * otherwise the duplicate records according to the order
+   * callback are allowed.
+   */
+  get unique(): boolean {
+    return this.__unique__;
+  }
+
+  /**
+   *
+   * Sets the ability of the BST to contain unique items.
+   */
+  set unique(isUnique: boolean) {
+    this.__unique__ = isUnique;
   }
 
   /**
@@ -526,14 +550,14 @@ export class BST<T extends BSTDataNode> {
   }
 
   /**
-   * Prints the structure of the Binary Search Tree 
+   * Prints the structure of the Binary Search Tree
    * starting from the specified node.
    *
-   * @param {T | null} node The starting node to begin 
+   * @param {T | null} node The starting node to begin
    * printing the BST structure (default: this._root).
-   * @param {Integer} level The current level of the node 
+   * @param {Integer} level The current level of the node
    * in the BST (default: 0).
-   * @param {string} prefix The prefix label indicating the 
+   * @param {string} prefix The prefix label indicating the
    * position relative to its parent (default: "Root: ").
    * @returns {void}
    */
