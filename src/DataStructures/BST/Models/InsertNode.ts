@@ -18,6 +18,15 @@ const searchForLeaf = <T extends BSTDataNode>(
   } else return prev;
 };
 
+/**
+ * Inserts a new node with the given data into the Binary Search Tree (BST).
+ * If the BST's `unique` property is set to true and a node with the same ID exists,
+ * the existing node will be replaced with the new node.
+ * @param tree The BST instance where the node should be inserted.
+ * @param data The data to be stored in the new node.
+ * @param id Optional. The ID for the new node. If not provided, `data.id` will be used if available.
+ * @returns The newly inserted BSTDataNode.
+ */
 export const InsertNodeInBST = <T extends BSTDataNode>(
   tree: BST<T>,
   data: any,
@@ -29,11 +38,14 @@ export const InsertNodeInBST = <T extends BSTDataNode>(
   if (id) node.id = id;
   y = searchForLeaf(root, node, orderCallback) as T | null;
   node.prev = y;
-
   if (!y) tree.rootNode = node as T;
   else {
-    if (orderCallback(node, y) < 0) y.left = node;
-    else y.right = node;
+    const comparison = orderCallback(node, y);
+    if (comparison < 0) y.left = node;
+    else if (comparison === 0) {
+      if (tree.unique) y = node as T;
+      else y.right = node;
+    } else y.right = node;
   }
 
   return node;
