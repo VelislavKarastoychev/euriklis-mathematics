@@ -18,11 +18,9 @@ export class AVLTree extends BST<AVLDataNode> {
   insert(data: any, id?: string) {
     if (data?.id) id = data.id;
     const node = models.InsertNodeInBST(this, data, id) as AVLDataNode;
-    if (node) {
-      node.balance = 0;
-    } 
-    
+    // set the initial balance of the node.
+    node.balance = 0;
+
     return this;
   }
-
 }
