@@ -6,3 +6,4 @@ export { InsertNodeInBST    } from "./InsertNode";
 export { IsNodeSame } from "./IsNodeSame";
 export { LeftBackward, RightBackward } from "./Backward";
 export { ShiftNodes } from "./ShiftNodes";
+export { CompareNodes, CompareNodeWithValue } from "./OrderCallback";
