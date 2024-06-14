@@ -27,12 +27,11 @@ const searchForLeaf = <T extends BSTDataNode>(
  * @param id Optional. The ID for the new node. If not provided, `data.id` will be used if available.
  * @returns The newly inserted BSTDataNode.
  */
-export const InsertNodeInBST = <T extends BSTDataNode>(
+export const InsertNodeInBST = <T extends BSTDataNode>( 
   tree: BST<T>,
-  data: any,
+  node: T,
   id?: string,
 ) => {
-  const node = new BSTDataNode(data);
   const orderCallback = tree.order;
   let root: T | null = tree.rootNode, y: T | null;
   if (id) node.id = id;
@@ -43,8 +42,10 @@ export const InsertNodeInBST = <T extends BSTDataNode>(
     const comparison = orderCallback(node, y);
     if (comparison < 0) y.left = node;
     else if (comparison === 0) {
-      if (tree.unique) y = node as T;
-      else y.right = node;
+      if (tree.unique) {
+        y.data = (node as T).data;
+        return null;
+      } else y.right = node;
     } else y.right = node;
   }
 
