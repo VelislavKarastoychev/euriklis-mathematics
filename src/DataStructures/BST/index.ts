@@ -5,6 +5,7 @@ import type { BSTNodeValueComparisonCallbackType } from "../../Types";
 import { BSTDataNode } from "../DataNode";
 import { DynamicStack } from "../Stack";
 import { Queue } from "../Queue";
+import { max } from "../../utils";
 
 /**
  * This class implements the concept of Binary Search Trees (BSTs)
@@ -143,11 +144,19 @@ export class BST<T extends BSTDataNode> {
   }
 
   /**
-   *
    * Sets the ability of the BST to contain unique items.
    */
   set unique(isUnique: boolean) {
     this.__unique__ = isUnique;
+  }
+
+  height(node: T | null = this._root): Integer {
+    if (!node) return 0;
+    return 1 +
+      max(
+        this.height(node.left as T | null),
+        this.height(node.right as T | null),
+      );
   }
 
   /**
@@ -215,7 +224,8 @@ export class BST<T extends BSTDataNode> {
    */
   insert(data: any, id?: string): BST<T> {
     if (data?.id) id = data.id;
-    models.InsertNodeInBST(this, data, id);
+    const node = new BSTDataNode(data);
+    models.InsertNodeInBST(this, node, id);
 
     return this;
   }
