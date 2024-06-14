@@ -83,6 +83,7 @@ export class AVLDataNode extends BSTDataNode {
 
   constructor(data: any) {
     super(data);
+    this.balance = 0;
   }
 
   get balance(): Integer {
@@ -91,5 +92,29 @@ export class AVLDataNode extends BSTDataNode {
 
   set balance(n: Integer) {
     this.bf = n;
+  }
+
+  get right(): AVLDataNode | null {
+    return (this._right as AVLDataNode) || null;
+  }
+
+  set right(node: AVLDataNode | null) {
+    this._right = node || null;
+  }
+
+  get left(): AVLDataNode | null {
+    return this._left as AVLDataNode || null;
+  }
+
+  set left(node: AVLDataNode | null) {
+    this._left = node || null;
+  }
+
+  get prev(): AVLDataNode | null {
+    return this._prev as AVLDataNode || null;
+  }
+
+  set prev(node: AVLDataNode | null) {
+    this._prev = node || null;
   }
 }
