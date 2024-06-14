@@ -5,7 +5,8 @@ import { AVLTree } from "../src/DataStructures/AVL";
 const tree = new AVLTree(4);
 tree.unique = true;
 tree.insert(3);
-tree.insert(4);
-tree.insert(22 / 7);
+// tree.insert(5);
+// tree.insert(22 / 7);
 tree.insert(Math.sqrt(2));
+// tree.insert(Math.sqrt(3))
 tree.print();
