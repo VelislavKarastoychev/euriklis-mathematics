@@ -5,6 +5,7 @@ import { AVLDataNode } from "../DataNode";
 import { BinarySearch, DeleteNodeInBST, InsertNodeInBST } from "../BST/Models";
 import * as models from "./Models";
 import type { BSTNodeValueComparisonCallbackType, Integer } from "../../Types";
+
 export class AVLTree extends BST<AVLDataNode> {
   constructor(data?: any) {
     super(data);
@@ -52,6 +53,17 @@ export class AVLTree extends BST<AVLDataNode> {
     node.balance = 0;
 
     return node;
+  }
+
+  copy(): AVLTree {
+    const tree = new AVLTree();
+    this.BFS((node) => {
+      const copiedNode = new AVLDataNode(node.data);
+      copiedNode.id = node.id;
+      const insertedNode = InsertNodeInBST(tree, copiedNode, undefined);
+      if (insertedNode) models.SetBalanceFactorsBackward(insertedNode, this);
+    });
+    return tree;
   }
 
   print(
