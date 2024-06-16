@@ -150,6 +150,13 @@ export class BST<T extends BSTDataNode> {
     this.__unique__ = isUnique;
   }
 
+  /**
+   * Calculates the height of the tree from the given node.
+   * The height is the number of edges on the longest path from the node to a leaf.
+   *
+   * @param {T | null} [node=this._root] - The node from which to calculate the height. Defaults to the root node.
+   * @returns {Integer} The height of the tree from the given node.
+   */
   height(node: T | null = this._root): Integer {
     if (!node) return 0;
     return 1 +
@@ -269,24 +276,7 @@ export class BST<T extends BSTDataNode> {
     callback: BSTNodeValueComparisonCallbackType = this.search,
   ): any | null {
     const node = models.BinarySearch(this._root, value, callback);
-    if (!node) return null;
-    if (!node.left) models.ShiftNodes(this, node, node?.right);
-    else if (!node.right) models.ShiftNodes(this, node, node?.left || null);
-    else {
-      const successor = this.successorNode(node as T) as T;
-      if (successor.prev !== node) {
-        models.ShiftNodes(this, successor, successor.right as T);
-        successor.right = node?.right || null;
-        (successor.right as T).prev = successor;
-      }
-      models.ShiftNodes(this, node, successor);
-      if (!node.prev) this._root = successor;
-      if (node === node.prev?.left) node.prev.left = successor;
-      if (node === node.prev?.right) node.prev.right = successor;
-      successor.left = node.left;
-      (successor.left as T).prev = successor;
-    }
-
+    models.DeleteNodeInBST(node, this);
     // It is no needed to delete the node connection
     // because the garbadge collector will delete it.
     return node?.data || null;
@@ -308,26 +298,13 @@ export class BST<T extends BSTDataNode> {
   ): T | null {
     const node = this.binarySearchNode(callback);
     if (!node) return null;
-    if (!node.left) models.ShiftNodes(this, node, node?.right);
-    else if (!node.right) models.ShiftNodes(this, node, node?.left || null);
-    else {
-      //  Note that it is possible to run the predecessorNode
-      const successor = this.successorNode(node as T) as T;
-      if (successor.prev !== node) {
-        models.ShiftNodes(this, successor, successor.right as T);
-        successor.right = node.right;
-        (successor.right as T).prev = successor;
-      }
-      models.ShiftNodes(this, node, successor);
-      successor.left = node.left;
-      (successor.left as T).prev = successor;
-    }
+    models.DeleteNodeInBST(node, this);
     // delete the connection of the node because it is deleted.
     node.prev = null;
     node.right = null;
     node.left = null;
 
-    return node || null;
+    return node;
   }
 
   /**
