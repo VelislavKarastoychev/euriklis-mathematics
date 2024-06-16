@@ -1,7 +1,8 @@
 "use strict";
+
 import validator from "@euriklis/validator-ts";
 import { AVLTree } from "../src/DataStructures/AVL";
-import { BST } from "../src";
+import { Queue } from "../src";
 
 const tree = new AVLTree();
 tree.search = (node, value) =>
@@ -15,4 +16,8 @@ tree.insert(Math.sqrt(2));
 tree.insert(Math.sqrt(3));
 tree.insert(1.41);
 const n = tree.delete(Math.sqrt(2));
+tree.insertMany([1, 2, Math.E, Math.sin(12), Math.PI]);
+const copied = tree.copy();
+copied.print();
 tree.print();
+console.log(copied.size, tree.size);
