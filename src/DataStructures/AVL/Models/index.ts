@@ -1,2 +1,6 @@
 "use strict";
-export { SetBalanceFactorsBackward } from "./SetBalanceFactors";
+export {
+  SetBalanceFactorsAfterDeletion,
+  SetBalanceFactorsBackward,
+  SetBalanceFactorsForward,
+} from "./SetBalanceFactors";
