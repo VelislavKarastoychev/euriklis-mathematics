@@ -3,92 +3,6 @@
 import type { AVLTree } from "..";
 import type { AVLDataNode } from "../../DataNode";
 
-/**
- * Performs single right (left) rotation of an AVL
- * tree.
- *
- * @param {AVLDataNode} a - The node which has
- * balance equals to -2 or 2.
- * @returns{void}
- */
-export const SingleRightRotation = (
-  a: AVLDataNode,
-  tree: AVLTree,
-): void => {
-  const b = a.left as AVLDataNode;
-  if (a.prev) {
-    if (a === a.prev.left) a.prev.left = b;
-    else a.prev.right = b;
-  } else tree.rootNode = b;
-
-  b.prev = a.prev;
-  a.prev = b;
-  if (b.right) b.right.prev = a;
-  a.left = b.right;
-  b.right = a;
-};
-export const SingleLeftRotation = (a: AVLDataNode, tree: AVLTree): void => {
-
-  const b = a.right as AVLDataNode;
-  if (a.prev) {
-    if (a === a.prev.left) a.prev.left = b;
-    else a.prev.right = b;
-  } else tree.rootNode = b;
-
-  b.prev = a.prev;
-  a.prev = b;
-  if (b.left) b.left.prev = a;
-  a.right = b.left;
-  b.left = a;
-};
-
-export const DoubleLeftRightRotation = (
-  a: AVLDataNode,
-  tree: AVLTree,
-): void => {
-
-  const b = a.left as AVLDataNode;
-  const c = b.right as AVLDataNode;
-  if (a.prev) {
-    if (a === a.prev.left) a.prev.left = c;
-    else a.prev.right = c;
-  } else tree.rootNode = c;
-
-  c.prev = a.prev || null;
-  a.prev = c;
-  b.prev = c;
-
-  b.right = c.left;
-  if (c.left) c.left.prev = b;
-  a.left = c.right;
-  if (c.right) c.right.prev = a;
-  c.left = b;
-  c.right = a;
-};
-
-export const DoubleRightLeftRotation = (
-  a: AVLDataNode,
-  tree: AVLTree,
-): void => {
-  const b = a.right as AVLDataNode;
-  const c = b.left as AVLDataNode;
-  if (a.prev) {
-    if (a === a.prev.left) a.prev.left = c;
-    else a.prev.right = c;
-  } else tree.rootNode = c;
-
-  c.prev = a.prev || null;
-  a.prev = c;
-  b.prev = c;
-
-  b.left = c.right;
-  if (c.right) c.right.prev = b;
-  a.right = c.left;
-  if (c.left) c.left.prev = a;
-  c.left = b;
-  c.right = a;
-};
-
 export const SetBalanceFactorsForward = (
   node: AVLDataNode | null,
   tree: AVLTree,
@@ -112,19 +26,19 @@ export const SetBalanceFactorsAfterDeletion = (
 export const UpdateNodeBalance = (node: AVLDataNode, tree: AVLTree) => {
   if (node.balance === -2) {
     if (node.left?.balance === -1) {
-      SingleRightRotation(node, tree);
+      tree.singleRightRotation(node);
       SetBalanceFactorsForward(node, tree);
     } else if (node.left?.balance === 1) {
-      DoubleLeftRightRotation(node, tree);
+      tree.doubleLeftRightRotation(node);
       SetBalanceFactorsForward(node, tree);
     }
   } else if (node.balance === 2) {
     if (node.right?.balance === 1) {
-      SingleLeftRotation(node, tree);
+      tree.singleLeftRotation(node);
       SetBalanceFactorsForward(node, tree);
     }
     if (node.right?.balance === -1) {
-      DoubleRightLeftRotation(node, tree);
+      tree.doubleRightLeftRotation(node);
       SetBalanceFactorsForward(node, tree);
     }
   }
