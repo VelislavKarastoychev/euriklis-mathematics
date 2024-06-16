@@ -519,6 +519,64 @@ export class BST<T extends BSTDataNode> {
   }
 
   /**
+   * Performs a single right rotation on the specified node.
+   * This operation is typically used to rebalance an AVL tree.
+   *
+   * @param {T | null} node - The node on which to perform the right rotation.
+   * @returns {BST<T>} The updated tree after the rotation.
+   */
+  singleRightRotation(node: T | null): BST<T> {
+    if (!node!) return this;
+    models.SingleRightRotation(node, this);
+
+    return this;
+  }
+
+  /**
+   * Performs a single left rotation on the specified node.
+   * This operation is typically used to rebalance an AVL tree.
+   *
+   * @param {T | null} node - The node on which to perform the left rotation.
+   * @returns {BST<T>} The updated tree after the rotation.
+   */
+  singleLeftRotation(node: T | null): BST<T> {
+    if (!node) return this;
+    models.SingleLeftRotation(node, this);
+
+    return this;
+  }
+
+  /**
+   * Performs a double left-right rotation on the specified node.
+   * This operation is typically used to rebalance an AVL tree when
+   * a left-right imbalance is detected.
+   *
+   * @param {T | null} node - The node on which to perform the double left-right rotation.
+   * @returns {BST<T>} The updated tree after the rotation.
+   */
+  doubleLeftRightRotation(node: T | null): BST<T> {
+    if (!node) return this;
+    models.DoubleLeftRightRotation(node, this);
+
+    return this;
+  }
+
+  /**
+   * Performs a double right-left rotation on the specified node.
+   * This operation is typically used to rebalance an AVL tree when
+   * a right-left imbalance is detected.
+   *
+   * @param {T} node - The node on which to perform the double right-left rotation.
+   * @returns {BST<T>} The updated tree after the rotation.
+   */
+  doubleRightLeftRotation(node: T): BST<T> {
+    if (!node) return this;
+    models.DoubleRightLeftRotation(node, this);
+
+    return this;
+  }
+
+  /**
    * Converts the Binary Search Tree into an array
    * based on the specified traversal mode.
    * Default traversal mode is Depth-First Search (DFS).
