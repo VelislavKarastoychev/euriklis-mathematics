@@ -4,7 +4,7 @@ import type { BST } from "..";
 export const CallDFS = <T extends BSTDataNode>(
   tree: BST<T>,
   S: DynamicStack,
-  callback: (node: T | null, tree: BST<T>) => void,
+  callback: (node: T, tree: BST<T>) => void,
 ): void => {
   if (S.isEmpty) return;
   const node: T = S.pop();
