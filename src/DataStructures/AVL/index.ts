@@ -2,11 +2,11 @@
 
 import { BST } from "../BST";
 import { AVLDataNode } from "../DataNode";
-import { InsertNodeInBST } from "../BST/Models";
+import { BinarySearch, DeleteNodeInBST, InsertNodeInBST } from "../BST/Models";
 import * as models from "./Models";
-import type { Integer } from "../../Types";
+import type { BSTNodeValueComparisonCallbackType, Integer } from "../../Types";
 export class AVLTree extends BST<AVLDataNode> {
-  constructor(data: any) {
+  constructor(data?: any) {
     super(data);
   }
 
@@ -14,7 +14,7 @@ export class AVLTree extends BST<AVLDataNode> {
     return this._root?.data || null;
   }
   set root(data: any) {
-    this._root = new AVLDataNode(data) as AVLDataNode;
+    if (data) this._root = new AVLDataNode(data) as AVLDataNode;
   }
 
   insert(data: any, id?: string) {
@@ -22,8 +22,36 @@ export class AVLTree extends BST<AVLDataNode> {
     const n = new AVLDataNode(data);
     const node = InsertNodeInBST(this, n, id);
     // set the balance factors recursively for the all nodes of the tree.
-     if (node) models.SetBalanceFactorsBackward(node, this);
+    if (node) models.SetBalanceFactorsBackward(node, this);
+
     return this;
+  }
+
+  delete(
+    value: any,
+    callback: BSTNodeValueComparisonCallbackType = this.search,
+  ): any | null {
+    const node = BinarySearch(this._root, value, callback);
+    if (!node) return null;
+    const predecessor = DeleteNodeInBST(node, this) as AVLDataNode | null;
+    models.SetBalanceFactorsForward(predecessor, this);
+
+    return node.data;
+  }
+
+  deleteNode(
+    callback: (node: AVLDataNode, tree?: AVLTree) => -1 | 0 | 1,
+  ): AVLDataNode | null {
+    const node = this.binarySearchNode(callback);
+    if (!node) return null;
+    const predecessor = DeleteNodeInBST(node, this) as AVLDataNode | null;
+    models.SetBalanceFactorsAfterDeletion(predecessor, this);
+    node.prev = null;
+    node.left = null;
+    node.right = null;
+    node.balance = 0;
+
+    return node;
   }
 
   print(
@@ -34,7 +62,9 @@ export class AVLTree extends BST<AVLDataNode> {
     if (node === null) {
       return;
     }
-    console.log(" ".repeat(level * 2) + prefix + node.data + ` [${node.balance}]`);
+    console.log(
+      " ".repeat(level * 2) + prefix + node.data + ` [BF = ${node.balance}]`,
+    );
 
     if (node.left) {
       this.print(node.left as AVLDataNode, level + 1, "L--> ");
