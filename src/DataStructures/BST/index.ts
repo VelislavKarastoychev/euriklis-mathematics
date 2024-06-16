@@ -488,7 +488,7 @@ export class BST<T extends BSTDataNode> {
    * on each node. Receives the node and the current BST instance.
    * @returns {BST<T>} The Binary Search Tree instance after BFS traversal.
    */
-  BFS(callback: (node: T | null, tree: BST<T>) => void): BST<T> {
+  BFS(callback: (node: T, tree: BST<T>) => void): BST<T> {
     // Initialize a queue with the root node
     const Q = new Queue(this._root);
     // Call BFS implementation with the queue and callback
@@ -508,7 +508,7 @@ export class BST<T extends BSTDataNode> {
    * on each node. Receives the node and the current BST instance.
    * @returns {BST<T>} The Binary Search Tree instance after DFS traversal.
    */
-  DFS(callback: (node: T | null, tree: BST<T>) => void): BST<T> {
+  DFS(callback: (node: T, tree: BST<T>) => void): BST<T> {
     // Initialize a stack with the root node
     const S = new DynamicStack(this._root);
     // call the DFS implementation with the stack and the callback.
