@@ -1,6 +1,7 @@
 "use strict";
 
-import type { Integer } from "../../Matrix/types";
+import type { Integer } from "../../Types";
+import { AVLTree } from "../AVL";
 import { LinkedDataNode } from "../DataNode";
 import * as errors from "../Errors";
 
@@ -38,6 +39,7 @@ export class DoublyLinkedList {
   private _head: LinkedDataNode | null = null;
   private _top: LinkedDataNode | null = null;
   private _currentSize = 0;
+  private _map = new AVLTree();
 
   /**
    * Creates an instance of DoublyLinkedList.
@@ -115,6 +117,7 @@ export class DoublyLinkedList {
 
       this._top = node;
       this._currentSize++;
+      this._map.insert(node)
     }
 
     return this;
@@ -136,6 +139,7 @@ export class DoublyLinkedList {
       } else this._head = node;
 
       this._top = node;
+      this._map.insert(node)
       this._currentSize++;
     }
   }
@@ -149,7 +153,7 @@ export class DoublyLinkedList {
       errors.StackUnderflow("DoublyLinkedList removeLast")();
     }
     const data = this.top;
-
+    this._map.delete(this._top?.id);
     if (this._head === this._top) {
       this._head = null;
       this._top = null;
@@ -170,8 +174,9 @@ export class DoublyLinkedList {
     if (!this._head) {
       errors.StackUnderflow("DoublyLinkedList removeFirst")();
     }
-
+  
     const data = (this._head as LinkedDataNode)?.data;
+    this._map.delete(this._head?.id);
     if (this._head === this._top) {
       this._head = null;
       this._top = null;
@@ -192,6 +197,7 @@ export class DoublyLinkedList {
   remove(id: string): any {
     const node: LinkedDataNode | null = this._findNodeById(id);
     if (node) {
+      this._map.delete(node.id);
       if ((this._head as LinkedDataNode).id === id) {
         this.removeFirst();
       } else if ((this._top as LinkedDataNode).id === id) {
@@ -232,6 +238,7 @@ export class DoublyLinkedList {
       }
 
       node.next = newNode;
+      this._map.insert(newNode);
       this._currentSize++;
     }
 
@@ -261,6 +268,7 @@ export class DoublyLinkedList {
       }
 
       node.prev = newNode;
+      this._map.insert(newNode);
       this._currentSize++;
     }
 
@@ -451,15 +459,15 @@ export class DoublyLinkedList {
    * @returns {LinkedDataNode | null} The found node or null if not found.
    */
   private _findNodeById(id: string): LinkedDataNode | null {
-    let node: LinkedDataNode | null = null;
-    let currentNode: LinkedDataNode | null = this._head;
-    while (currentNode) {
-      if (currentNode.id === id) {
-        node = currentNode;
-        break;
-      } else currentNode = currentNode.next;
-    }
-
+    let node: LinkedDataNode | null = this._map.binarySearch(id) as LinkedDataNode | null;
+  //   let currentNode: LinkedDataNode | null = this._head;
+  //   while (currentNode) {
+  //     if (currentNode.id === id) {
+  //       node = currentNode;
+  //       break;
+  //     } else currentNode = currentNode.next;
+  //   }
+  //
     return node;
   }
 }
