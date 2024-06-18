@@ -8,7 +8,7 @@ export const IncorrectFromAndToParametersInGetBlockTxt =
 export const IncorrectFromAndToParametersInSetBlockTxt =
   "Incorrectly defined 'from' and 'to' parameters in setBlock - 'from' has to be with values less than or equals to the 'to' and to has to have values less than the dimensions of the matrix.";
 export const IncorrectMatrixInputTxt =
-  "Incorrect matrix input in the M setter of the Matrix instance. Note that a matrix is an array of numeric arrays with equal length.";
+  "The matrix instance is incorrectly declared. Every matrix has to be an array of numeric or typed arrays with equal size. If you want to define a row vector, then put the numeric array into an array.";
 export const IncorrectRowIndexParametersInExchangeRowsTxt =
   "Incorrect row indices in exchangeRows method. Note that the row indices have to be positive integer numbers less than the total matrix rows.";
 export const IncorrectFromColumnIndexParameterInExchangeRowsTxt =
