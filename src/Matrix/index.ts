@@ -87,6 +87,7 @@ export class Matrix {
     type: NumericType = "float64",
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+    
     return models.GenerateZeroMatrix(rows, columns, typedArray);
   }
 
@@ -121,6 +122,7 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+    
     return models.GenerateIdentityLikeMatrix(rows, columns, typedArray);
   }
 
@@ -162,6 +164,7 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+    
     return models.Replicate(n, rows, columns, typedArray) as MatrixType;
   }
 
@@ -190,6 +193,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const dimensions = [rows, columns];
     const typedArray = models.CreateTypedArrayConstructor(type);
+
     return models.GenerateRandomMatrix(dimensions, from, to, typedArray, seed);
   }
 
@@ -221,6 +225,7 @@ export class Matrix {
     seed: number = 123456,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+
     return models.GenerateLowerRandomTriangularMatrix(
       [rows, columns],
       from,
@@ -258,6 +263,7 @@ export class Matrix {
     seed: number = 123456,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+
     return models.GenerateUpperRandomTriangularMatrix(
       [rows, columns],
       from,
@@ -294,6 +300,7 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+
     return models.GenerateUniqueRandomLowerTriangularMatrix(
       [rows, columns],
       from,
@@ -330,6 +337,7 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+
     return models.GenerateUniqueRandomUpperTriangularMatrix(
       [rows, columns],
       from,
@@ -361,6 +369,7 @@ export class Matrix {
     type: NumericType = Matrix._type,
   ): MatrixType | NumericMatrix {
     const typedArray = models.CreateTypedArrayConstructor(type);
+
     return models.GenerateUniqueRandomMatrix(
       [rows, columns],
       from,
@@ -2888,6 +2897,7 @@ export class Matrix {
 
   /**
    * Calculates the absolute sum of elements in each column of a matrix, excluding diagonal elements.
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
    * @param {"row" | "column"} [mode="row"] - The mode of summation:
@@ -2910,6 +2920,7 @@ export class Matrix {
 
   /**
    * Calculates the sum of squares of elements in each row of a matrix.
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
    * @param {"row" | "column"} [mode="row"] - The mode of summation:
@@ -3000,6 +3011,7 @@ export class Matrix {
 
   /**
    * Adds a row or column vector to each row of a matrix along the row axis.
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The row or column vector to be
    * added to each row of the matrix.
@@ -3038,6 +3050,7 @@ export class Matrix {
 
   /**
    * Adds a row or column vector to each column of a matrix (along the column axis).
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The vector to add to each column.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
@@ -3073,6 +3086,7 @@ export class Matrix {
 
   /**
    * Subtracts a row or column vector from each column of a matrix (along the column axis).
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The vector to subtract from each column.
    * @param {NumericType} [type=Matrix._type] - The numeric type of the output.
@@ -3108,6 +3122,7 @@ export class Matrix {
 
   /**
    * Subtracts a row or column vector from each row of a matrix along the row axis.
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The row or column vector to be
    * subtracted from each row of the matrix.
@@ -3146,6 +3161,7 @@ export class Matrix {
   /**
    * Performs pointwise multiplication of a row or column vector with
    * each row of a matrix along the row axis.
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The row or column
    * vector to be multiplied with each row of the matrix.
@@ -3257,6 +3273,7 @@ export class Matrix {
   /**
    * Performs a pointwise division of a matrix with a row or
    * column vector along the column axis.
+   * 
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
    * @param {MatrixType | NumericMatrix} vector - The vector to be
    * pointwise divided with each column of the matrix.
@@ -3708,6 +3725,7 @@ export class Matrix {
     const { copy, sort, type } = { ...__options__, ...options };
     const typedArray = models.CreateTypedArrayConstructor(type);
     if (copy) matrix = Matrix.copy(matrix);
+    
     return models.SVD(matrix, typedArray, sort);
   }
 
@@ -3804,7 +3822,7 @@ export class Matrix {
     matrix: MatrixType | NumericMatrix,
     x?: MatrixType | NumericMatrix,
     shift: number = 1,
-    type: NumericType = "float64",
+    type: NumericType = Matrix._type,
   ): {
     eigenvalue: number;
     eigenvector: MatrixType | NumericMatrix;
@@ -4036,6 +4054,7 @@ export class Matrix {
     const A2 = Matrix.Hadamard(Matrix.transpose(matrix), 2);
     const { s } = Matrix.svd(matrix, { copy: true, sort: true });
     const [smax, smin] = [s[0], s[s.length - 1]];
+    
     return Matrix.Hadamard(A2, 1 / (smin * smin + smax * smax), type);
   }
 
@@ -4082,6 +4101,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const limit = 2 / models.MatrixReduce(matrix, "square");
     const alpha = Math.random() * limit;
+    
     return Matrix.Hadamard(Matrix.transpose(matrix), alpha, type);
   }
 
@@ -4128,6 +4148,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const n = matrix.length;
     const invFroNorm = 1 / Matrix.FrobeniusNorm(matrix);
+    
     return Matrix.setDiagonalToNumber(Matrix.zero(n, type), invFroNorm);
   }
 }
