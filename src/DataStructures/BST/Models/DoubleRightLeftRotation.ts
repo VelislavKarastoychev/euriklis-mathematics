@@ -22,7 +22,7 @@ export const DoubleRightLeftRotation = <T extends BSTDataNode>(
   if (c.right) c.right.prev = b;
   a.right = c.left;
   if (c.left) c.left.prev = a;
-  c.left = b;
-  c.right = a;
+  c.right = b;
+  c.left = a;
 };
 
