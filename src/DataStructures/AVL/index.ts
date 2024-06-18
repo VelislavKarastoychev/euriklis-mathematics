@@ -70,20 +70,21 @@ export class AVLTree extends BST<AVLDataNode> {
     node: AVLDataNode | null = this._root,
     level: Integer = 0,
     prefix: string = "Root: ",
+    callback: (node: AVLDataNode, tree?: AVLTree) => any = (node) => node.data,
   ): void {
     if (node === null) {
       return;
     }
     console.log(
-      " ".repeat(level * 2) + prefix + node.data + ` [BF = ${node.balance}]`,
+      " ".repeat(level * 2) + prefix + callback(node, this) + ` [BF = ${node.balance}]`,
     );
 
     if (node.left) {
-      this.print(node.left as AVLDataNode, level + 1, "L--> ");
+      this.print(node.left as AVLDataNode, level + 1, "L--> ", callback);
     }
 
     if (node.right) {
-      this.print(node.right as AVLDataNode, level + 1, "R--> ");
+      this.print(node.right as AVLDataNode, level + 1, "R--> ", callback);
     }
   }
 }
