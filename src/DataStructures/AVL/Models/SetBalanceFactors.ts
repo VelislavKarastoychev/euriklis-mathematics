@@ -25,19 +25,19 @@ export const SetBalanceFactorsAfterDeletion = (
 
 export const UpdateNodeBalance = (node: AVLDataNode, tree: AVLTree) => {
   if (node.balance === -2) {
-    if (node.left?.balance === -1) {
+    if (((node.left as AVLDataNode)?.balance) < 0) {
       tree.singleRightRotation(node);
       SetBalanceFactorsForward(node, tree);
-    } else if (node.left?.balance === 1) {
+    } else if (((node.left as AVLDataNode)?.balance) > 0) {
       tree.doubleLeftRightRotation(node);
       SetBalanceFactorsForward(node, tree);
     }
   } else if (node.balance === 2) {
-    if (node.right?.balance === 1) {
+    if (((node.right as AVLDataNode)?.balance) > 0) {
       tree.singleLeftRotation(node);
       SetBalanceFactorsForward(node, tree);
     }
-    if (node.right?.balance === -1) {
+    if (((node.right as AVLDataNode)?.balance) < 0) {
       tree.doubleRightLeftRotation(node);
       SetBalanceFactorsForward(node, tree);
     }
