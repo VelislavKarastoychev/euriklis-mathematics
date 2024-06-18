@@ -610,18 +610,19 @@ export class BST<T extends BSTDataNode> {
     node: T | null = this._root,
     level: Integer = 0,
     prefix: string = "Root: ",
+    callback: (node: T, tree?: BST<T>) => any = node => node.id
   ): void {
     if (node === null) {
       return;
     }
-    console.log(" ".repeat(level * 2) + prefix + node.data);
+    console.log(" ".repeat(level * 2) + prefix + callback(node, this));
 
     if (node.left) {
-      this.print(node.left as T, level + 1, "L--> ");
+      this.print(node.left as T, level + 1, "L--> ", callback(node, this));
     }
 
     if (node.right) {
-      this.print(node.right as T, level + 1, "R--> ");
+      this.print(node.right as T, level + 1, "R--> ", callback(node, this));
     }
   }
 }
