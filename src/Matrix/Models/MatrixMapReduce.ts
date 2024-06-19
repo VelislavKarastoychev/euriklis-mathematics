@@ -475,11 +475,12 @@ const GenerateMapReduceExpression = (
         const max = Math.max,
           maxColumns = (a, b) => {
             if (a) {
-              for (let i = n;i--> 1;) {
-                b[i] = max(a[i], b[i--]);
-                b[i] = max(a[i], b[i]);
+              let k;
+              for (k = n;k--> 1;) {
+                b[k] = max(a[k], b[k--]);
+                b[k] = max(a[k], b[k]);
               }
-              if (i === 0) b[0] = max(a[0], b[0])
+              if (k === 0) b[0] = max(a[0], b[0])
             }
             return b;
           }
@@ -494,27 +495,30 @@ const GenerateMapReduceExpression = (
     case "maxColElementAsColumn":
       return {
         init: `
-        const maxColumns = (a, b) => {
-          if (a) {
-            for (let i = n;i--> 1;) {
-              b[i] = max(a[i], b[i--]);
-              b[i] = max(a[i], b[i]);
+        const max = Math.max,
+          maxColumns = (a, b) => {
+            if (a) {
+              let k;
+              for (k = n;k--> 1;) {
+                b[k] = max(a[k], b[k--]);
+                b[k] = max(a[k], b[k]);
+              }
+              if (k === 0) b[0] = max(a[0], b[0])
             }
-            if (i === 0) b[0] = max(a[i], b[i]);
+            return b;
           }
-          return b;
-        }
         `,
-        rowInit: `let accum, accum1;`,
+        rowInit: `let accum;`,
         colInit: `let accum1 = new typedArray(n);`,
         rowAccumulator: `
-        accum1 = [];
-        for (let k = accum.length;k--;) accum1[k] = [accum[k]];
-        return accum1;
-        `,
+        let accum1 = [];
+        for (i = accum.length;i--;) {
+          accum1[i] = typedArray.name !== 'Array' ? new typedArray([accum[i]]) : [accum[i]];
+        }
+        return accum1;`,
         colAccumulator: `return accum1;`,
         rowSetup: `accum = maxColumns(accum, ai);`,
-        colSetup: `accum1 = aij;`,
+        colSetup: `accum1[i] = aij;`,
       };
     case "maxRowElementExceptDiagonalAsRow":
       return {
@@ -543,7 +547,8 @@ const GenerateMapReduceExpression = (
         const max = Math.max,
           maxColumns = (a, b) => {
             if (a) {
-              for (let i = n;i--> 1;) {
+              let i;
+              for (i = n;i--> 1;) {
                 b[i] = max(a[i], b[i--]);
                 b[i] = max(a[i], b[i]);
               }
@@ -557,14 +562,15 @@ const GenerateMapReduceExpression = (
         rowAccumulator: `return [accum];`,
         colAccumulator: `return accum1;`,
         rowSetup: `accum = maxColumns(accum, ai);`,
-        colSetup: `accum1[i] = i !== row ? aij : -Infinity;`,
+        colSetup: `accum1[i] = i !== row ? aij : accum1;`,
       };
     case "maxColElementExceptDiagonalAsColumn":
       return {
         init: `
         const maxColumns = (a, b) => {
           if (a) {
-            for (let i = n;i--> 1;) {
+            let i;
+            for (i = n;i--> 1;) {
               b[i] = max(a[i], b[i--]);
               b[i] = max(a[i], b[i]);
             }
