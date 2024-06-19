@@ -2777,7 +2777,7 @@ export class Matrix {
     mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
     const modeExtension = mode === "row" ? "rowSumAsRow" : "rowSumAsColumn";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2801,7 +2801,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "rowSumNoDiagAsColumn"
       : "rowSumNoDiagAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2822,7 +2822,7 @@ export class Matrix {
     mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column" ? "colSumAsColumn" : "colSumAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2845,7 +2845,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "colSumNoDiagAsColumn"
       : "colSumNoDiagAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2868,7 +2868,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "rowNorm1AsColumn"
       : "rowNorm1AsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2891,7 +2891,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "rowNorm1NoDiagAsColumn"
       : "rowNorm1NoDiagAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2914,7 +2914,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "colNorm1AsColumn"
       : "colNorm1AsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2938,7 +2938,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "colNorm1NoDiagAsColumn"
       : "colNorm1NoDiagAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2962,7 +2962,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "rowSumSquaresAsColumn"
       : "rowSumSquaresAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -2984,7 +2984,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "colSumSquaresAsColumn"
       : "colSumSquaresAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -3008,7 +3008,7 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "rowSumSquaresNoDiagAsColumn"
       : "rowSumSquaresNoDiagAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
@@ -3033,10 +3033,24 @@ export class Matrix {
     const modeExtension = mode === "column"
       ? "colSumSquaresNoDiagAsColumn"
       : "colSumSquaresNoDiagAsRow";
-    
+
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
-  
+
+  /**
+   * Computes the maximum element in each row of the given matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type for the computation.
+   * @param {"row" | "column"} [mode="row"] - The mode for the output format.
+   *     If "row", the result will be a row vector.
+   *     If "column", the result will be a column vector.
+   * @returns {MatrixType | NumericMatrix} - A matrix containing the maximum elements
+   * from each row, formatted as specified by the mode.
+   *
+   * @throws {Error} If the input matrix is not an array of arrays with equal size.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static maxRowElements(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
@@ -3055,8 +3069,8 @@ export class Matrix {
     mode: "row" | "column",
   ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column"
-     ? "maxRowElementExceptDiagonalAsColumn"
-     : "maxRowElementExceptDiagonalAsRow";
+      ? "maxRowElementExceptDiagonalAsColumn"
+      : "maxRowElementExceptDiagonalAsRow";
 
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
@@ -3080,7 +3094,7 @@ export class Matrix {
   ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column"
       ? "maxColElementExceptDiagonalAsColumn"
-      : "maxColElementExceptDiagonalAsRow"
+      : "maxColElementExceptDiagonalAsRow";
 
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
