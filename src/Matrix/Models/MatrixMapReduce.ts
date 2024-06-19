@@ -53,7 +53,8 @@ const GenerateMapReduceExpression = (
         colInit: "",
         rowAccumulator: "return accum;",
         colAccumulator: "return accum1;",
-        rowSetup: "accum[i] = new typedArray([ai]);",
+        rowSetup:
+          "accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];",
         colSetup: "accum1 += aij;",
       };
     case "rowSumNoDiagAsRow":
@@ -73,7 +74,8 @@ const GenerateMapReduceExpression = (
         colInit: "",
         rowAccumulator: "return accum;",
         colAccumulator: "return accum1;",
-        rowSetup: "accum[i] = new typedArray([ai]);",
+        rowSetup:
+          "accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];",
         colSetup: "accum1 += (i !== row) * aij;",
       };
     case "colSumAsRow":
@@ -187,7 +189,8 @@ const GenerateMapReduceExpression = (
         colInit: "",
         rowAccumulator: "return accum;",
         colAccumulator: "return accum1;",
-        rowSetup: "accum[i] = new typedArray([ai]);",
+        rowSetup:
+          "accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];",
         colSetup: "accum1 += abs(aij);",
       };
     case "rowNorm1NoDiagAsRow":
@@ -207,7 +210,8 @@ const GenerateMapReduceExpression = (
         colInit: "",
         rowAccumulator: "return accum;",
         colAccumulator: "return accum1;",
-        rowSetup: "accum[i] = new typedArray([ai]);",
+        rowSetup:
+          "accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];",
         colSetup: "accum1 += +(i !== row) * abs(aij);",
       };
     case "colNorm1AsRow":
@@ -325,7 +329,8 @@ const GenerateMapReduceExpression = (
         colInit: "",
         rowAccumulator: "return accum;",
         colAccumulator: "return accum1;",
-        rowSetup: "accum[i] = new typedArray([ai]);",
+        rowSetup:
+          "accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];",
         colSetup: "accum1 += aij * aij;",
       };
     case "colSumSquaresAsRow":
@@ -392,7 +397,8 @@ const GenerateMapReduceExpression = (
         colInit: "",
         rowAccumulator: "return accum;",
         colAccumulator: "return accum1;",
-        rowSetup: "accum[i] = new typedArray([ai]);",
+        rowSetup:
+          "accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];",
         colSetup: "accum1 += (i !== row) * aij * aij;",
       };
     case "colSumSquaresNoDiagAsRow":
@@ -434,13 +440,149 @@ const GenerateMapReduceExpression = (
           return b;
         }
         `,
-        rowInit: "let accum;",
+        rowInit: "let accum, accum1;",
         colInit: "let accum1 = new typedArray(n);",
         rowAccumulator:
           "accum1 = [];for (i = accum.length;i--;)accum1[i] = [accum[i]];return accum1;",
         colAccumulator: "return accum1;",
         rowSetup: "accum = add(accum, ai);",
         colSetup: "accum1[i] = (i !== row) * aij * aij;",
+      };
+    case "maxRowElementAsRow":
+      return {
+        init: `let accum, accum1 = -Infinity; const max = Math.max;`,
+        rowInit: `accum = new typedArray(n);`,
+        colInit: ``,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum[i] = ai;`,
+        colSetup: `accum1 = max(accum1, aij);`,
+      };
+    case "maxRowElementAsColumn":
+      return {
+        init: `let accum = [], accum1 = -Infinity;const max = Math.max;`,
+        rowInit: ``,
+        colInit: ``,
+        rowAccumulator: `return accum;`,
+        colAccumulator: `return accum1;`,
+        rowSetup:
+          `accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];`,
+        colSetup: `accum1 = max(accum1, aij);`,
+      };
+    case "maxColElementAsRow":
+      return {
+        init: `
+        const max = Math.max,
+          maxColumns = (a, b) => {
+            if (a) {
+              for (let i = n;i--> 1;) {
+                b[i] = max(a[i], b[i--]);
+                b[i] = max(a[i], b[i]);
+              }
+              if (i === 0) b[0] = max(a[0], b[0])
+            }
+            return b;
+          }
+        `,
+        rowInit: `let accum;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = maxColumns(accum, ai);`,
+        colSetup: `accum1[i] = aij;`,
+      };
+    case "maxColElementAsColumn":
+      return {
+        init: `
+        const maxColumns = (a, b) => {
+          if (a) {
+            for (let i = n;i--> 1;) {
+              b[i] = max(a[i], b[i--]);
+              b[i] = max(a[i], b[i]);
+            }
+            if (i === 0) b[0] = max(a[i], b[i]);
+          }
+          return b;
+        }
+        `,
+        rowInit: `let accum, accum1;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `
+        accum1 = [];
+        for (let k = accum.length;k--;) accum1[k] = [accum[k]];
+        return accum1;
+        `,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = maxColumns(accum, ai);`,
+        colSetup: `accum1 = aij;`,
+      };
+    case "maxRowElementExceptDiagonalAsRow":
+      return {
+        init: `let accum, accum1 = -Infinity;const max = Math.max;`,
+        rowInit: `accum = new typedArray(n);`,
+        colInit: ``,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum[i] = max(accum, ai);`,
+        colSetup: `accum1 = i === row ? max(aij, accum1) : accum1;`,
+      };
+    case "maxRowElementExceptDiagonalAsColumn":
+      return {
+        init: `let accum1 = -Infinity; const max = Math.max;`,
+        rowInit: `let accum = [];`,
+        colInit: ``,
+        rowAccumulator: `return accum;`,
+        colAccumulator: `return accum1;`,
+        rowSetup:
+          `accum[i] = typedArray.name !== 'Array' ? new typedArray(ai) : [ai];`,
+        colSetup: `accum1 = i !== row ? max(accum1, aij) : accum1;`,
+      };
+    case "maxColElementExceptDiagonalAsRow":
+      return {
+        init: `
+        const max = Math.max,
+          maxColumns = (a, b) => {
+            if (a) {
+              for (let i = n;i--> 1;) {
+                b[i] = max(a[i], b[i--]);
+                b[i] = max(a[i], b[i]);
+              }
+              if (i === 0) b[0] = max(a[0], b[0])
+            }
+            return b;
+          }
+        `,
+        rowInit: `let accum;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = maxColumns(accum, ai);`,
+        colSetup: `accum1[i] = i !== row ? aij : -Infinity;`,
+      };
+    case "maxColElementExceptDiagonalAsColumn":
+      return {
+        init: `
+        const maxColumns = (a, b) => {
+          if (a) {
+            for (let i = n;i--> 1;) {
+              b[i] = max(a[i], b[i--]);
+              b[i] = max(a[i], b[i]);
+            }
+            if (i === 0) b[0] = max(a[i], b[i]);
+          }
+          return b;
+        }
+        `,
+        rowInit: `let accum, accum1;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `
+        accum1 = [];
+        for (let k = accum.length;k--;) accum1[k] = [accum[k]];
+        return accum1;
+        `,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = maxColumns(accum, ai);`,
+        colSetup: `accum1 = i !== row ? aij : -Infinity;`,
       };
   }
 };
