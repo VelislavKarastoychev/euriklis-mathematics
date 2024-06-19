@@ -3118,7 +3118,7 @@ export class Matrix {
   public static maxColumnElementsExceptDiagonal(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
-    mode: "row" | "column",
+    mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column"
       ? "maxColElementExceptDiagonalAsColumn"
