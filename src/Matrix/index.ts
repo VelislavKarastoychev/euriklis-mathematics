@@ -3064,7 +3064,7 @@ export class Matrix {
   }
 
   /**
-   * Computes the maximum element in each row of the given matrix, 
+   * Computes the maximum element in each row of the given matrix,
    * excluding the diagonal elements.
    *
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
@@ -3072,7 +3072,7 @@ export class Matrix {
    * @param {"row" | "column"} mode - The mode for the output format.
    *     If "row", the result will be a row vector.
    *     If "column", the result will be a column vector.
-   * @returns {MatrixType | NumericMatrix} - A matrix containing the maximum elements 
+   * @returns {MatrixType | NumericMatrix} - A matrix containing the maximum elements
    * from each row, excluding the diagonal elements, formatted as specified by the mode.
    *
    * @throws {Error} If the input matrix is not an array of arrays with equal size.
@@ -3090,10 +3090,23 @@ export class Matrix {
     return models.MatrixMapReduce(matrix, type, modeExtension);
   }
 
+  /**
+   * Computes the maximum element in each column of the given matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type for the computation.
+   * @param {"row" | "column"} mode - The mode for the output format.
+   *     If "row", the result will be a row vector.
+   *     If "column", the result will be a column vector.
+   * @returns {MatrixType | NumericMatrix} - A matrix containing the maximum elements 
+   * from each column, formatted as specified by the mode.
+   * @throws{Error} If the matrix parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
   public static maxColumnElements(
     matrix: MatrixType | NumericMatrix,
     type: NumericType = Matrix._type,
-    mode: "row" | "column",
+    mode: "row" | "column" = "row",
   ): MatrixType | NumericMatrix {
     const modeExtension = mode === "column"
       ? "maxColElementAsColumn"
