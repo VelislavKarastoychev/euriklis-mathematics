@@ -169,6 +169,14 @@ export type MapReduceExpression =
   | "maxRowElementExceptDiagonalAsColumn"
   | "maxColElementExceptDiagonalAsRow"
   | "maxColElementExceptDiagonalAsColumn"
+  | "minRowElementAsRow"
+  | "minRowElementAsColumn"
+  | "minRowElementExceptDiagonalAsRow"
+  | "minRowElementExceptDiagonalAsColumn"
+  | "minColElementAsRow"
+  | "minColElementAsColumn"
+  | "minColElementExceptDiagonalAsRow"
+  | "minColElementExceptDiagonalAsColumn"
 ;
 export type VectorToMatrixOperation =
   | "addRowVectorToMatrixByRowAxis"
