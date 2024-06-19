@@ -518,23 +518,23 @@ const GenerateMapReduceExpression = (
       };
     case "maxRowElementExceptDiagonalAsRow":
       return {
-        init: `let accum, accum1 = -Infinity;const max = Math.max;`,
+        init: `let accum, accum1 = -Infinity; const max = Math.max;`,
         rowInit: `accum = new typedArray(n);`,
         colInit: ``,
         rowAccumulator: `return [accum];`,
         colAccumulator: `return accum1;`,
-        rowSetup: `accum[i] = max(accum, ai);`,
-        colSetup: `accum1 = i === row ? max(aij, accum1) : accum1;`,
+        rowSetup: `accum[i] = ai;`,
+        colSetup: `accum1 = i !== row ? max(accum1, aij) : accum1;`,
       };
     case "maxRowElementExceptDiagonalAsColumn":
       return {
-        init: `let accum1 = -Infinity; const max = Math.max;`,
-        rowInit: `let accum = [];`,
+        init: `let accum = [], accum1 = -Infinity;const max = Math.max;`,
+        rowInit: ``,
         colInit: ``,
         rowAccumulator: `return accum;`,
         colAccumulator: `return accum1;`,
         rowSetup:
-          `accum[i] = typedArray.name !== 'Array' ? new typedArray(ai) : [ai];`,
+          `accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];`,
         colSetup: `accum1 = i !== row ? max(accum1, aij) : accum1;`,
       };
     case "maxColElementExceptDiagonalAsRow":
