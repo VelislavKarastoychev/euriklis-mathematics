@@ -160,7 +160,16 @@ export type MapReduceExpression =
   | "rowSumSquaresNoDiagAsRow"
   | "rowSumSquaresNoDiagAsColumn"
   | "colSumSquaresNoDiagAsRow"
-  | "colSumSquaresNoDiagAsColumn";
+  | "colSumSquaresNoDiagAsColumn"
+  | "maxRowElementAsRow"
+  | "maxRowElementAsColumn"
+  | "maxColElementAsRow"
+  | "maxColElementAsColumn"
+  | "maxRowElementExceptDiagonalAsRow"
+  | "maxRowElementExceptDiagonalAsColumn"
+  | "maxColElementExceptDiagonalAsRow"
+  | "maxColElementExceptDiagonalAsColumn"
+;
 export type VectorToMatrixOperation =
   | "addRowVectorToMatrixByRowAxis"
   | "addRowVectorToMatrixByColAxis"
