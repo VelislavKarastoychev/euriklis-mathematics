@@ -149,3 +149,4 @@ import "./avl.spec.ts";
 import "./max-row-elements.spec";
 import "./max-row-elements-except-diagonal.spec";
 import "./max-column-elements.spec";
+import "./max-column-elements-except-diagonal.spec";
