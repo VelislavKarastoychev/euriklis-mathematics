@@ -147,3 +147,4 @@ import "./queue.spec.ts";
 import "./bst.spec.ts";
 import "./avl.spec.ts";
 import "./max-row-elements.spec";
+import "./max-row-elements-except-diagonal.spec";
