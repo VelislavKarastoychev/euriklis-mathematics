@@ -592,6 +592,150 @@ const GenerateMapReduceExpression = (
         rowSetup: `accum = maxColumns(accum, ai);`,
         colSetup: `accum1[i] = i !== row ? aij : -Infinity;`,
       };
+    case "minRowElementAsRow":
+      return {
+        init: `let accum, accum1 = Infinity; const min = Math.min;`,
+        rowInit: `accum = new typedArray(n);`,
+        colInit: ``,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum[i] = ai;`,
+        colSetup: `accum1 = min(accum1, aij);`,
+      };
+    case "minRowElementAsColumn":
+      return {
+        init: `let accum = [], accum1 = Infinity;const min = Math.min;`,
+        rowInit: ``,
+        colInit: ``,
+        rowAccumulator: `return accum;`,
+        colAccumulator: `return accum1;`,
+        rowSetup:
+          `accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];`,
+        colSetup: `accum1 = min(accum1, aij);`,
+      };
+    case "minColElementAsRow":
+      return {
+        init: `
+        const min = Math.min,
+          minColumns = (a, b) => {
+            if (a) {
+              let k;
+              for (k = n;k--> 1;) {
+                b[k] = min(a[k], b[k--]);
+                b[k] = min(a[k], b[k]);
+              }
+              if (k === 0) b[0] = min(a[0], b[0])
+            }
+            return b;
+          }
+        `,
+        rowInit: `let accum;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = minColumns(accum, ai);`,
+        colSetup: `accum1[i] = aij;`,
+      };
+    case "minColElementAsColumn":
+      return {
+        init: `
+        const min = Math.min,
+          minColumns = (a, b) => {
+            if (a) {
+              let k;
+              for (k = n;k--> 1;) {
+                b[k] = min(a[k], b[k--]);
+                b[k] = min(a[k], b[k]);
+              }
+              if (k === 0) b[0] = min(a[0], b[0])
+            }
+            return b;
+          }
+        `,
+        rowInit: `let accum;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `
+        let accum1 = [];
+        for (i = accum.length;i--;) {
+          accum1[i] = typedArray.name !== 'Array' ? new typedArray([accum[i]]) : [accum[i]];
+        }
+        return accum1;`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = minColumns(accum, ai);`,
+        colSetup: `accum1[i] = aij;`,
+      };
+    case "minRowElementExceptDiagonalAsRow":
+      return {
+        init: `let accum, accum1 = Infinity; const min = Math.min;`,
+        rowInit: `accum = new typedArray(n);`,
+        colInit: ``,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum[i] = ai;`,
+        colSetup: `accum1 = i !== row ? min(accum1, aij) : accum1;`,
+      };
+    case "minRowElementExceptDiagonalAsColumn":
+      return {
+        init: `let accum = [], accum1 = Infinity;const min = Math.min;`,
+        rowInit: ``,
+        colInit: ``,
+        rowAccumulator: `return accum;`,
+        colAccumulator: `return accum1;`,
+        rowSetup:
+          `accum[i] = typedArray.name !== 'Array' ? new typedArray([ai]) : [ai];`,
+        colSetup: `accum1 = i !== row ? min(accum1, aij) : accum1;`,
+      };
+    case "minColElementExceptDiagonalAsRow":
+      return {
+        init: `
+        const min = Math.min,
+          minColumns = (a, b) => {
+            if (a) {
+              let k;
+              for (k = n;k--> 1;) {
+                b[k] = min(a[k], b[k--]);
+                b[k] = min(a[k], b[k]);
+              }
+              if (k === 0) b[0] = min(a[0], b[0])
+            }
+            return b;
+          }
+        `,
+        rowInit: `let accum;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `return [accum];`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = minColumns(accum, ai);`,
+        colSetup: `accum1[i] = i !== row ? aij : Infinity`,
+      };
+    case "minColElementExceptDiagonalAsColumn":
+      return {
+        init: `
+        const min = Math.min,
+          minColumns = (a, b) => {
+            if (a) {
+              let k;
+              for (k = n;k--> 1;) {
+                b[k] = min(a[k], b[k--]);
+                b[k] = min(a[k], b[k]);
+              }
+              if (k === 0) b[0] = min(a[0], b[0])
+            }
+            return b;
+          }
+        `,
+        rowInit: `let accum;`,
+        colInit: `let accum1 = new typedArray(n);`,
+        rowAccumulator: `
+        let accum1 = [];
+        for (i = accum.length;i--;) {
+          accum1[i] = typedArray.name !== 'Array' ? new typedArray([accum[i]]) : [accum[i]];
+        }
+        return accum1;`,
+        colAccumulator: `return accum1;`,
+        rowSetup: `accum = minColumns(accum, ai);`,
+        colSetup: `accum1[i] = i !== row ? aij : Infinity;`,
+      };
   }
 };
 
