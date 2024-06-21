@@ -3142,6 +3142,120 @@ export class Matrix {
   }
 
   /**
+   * Computes the minimum element in each row of the given matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type for the computation.
+   * @param {"row" | "column"} [mode="row"] - The mode for the output format.
+   *     If "row", the result will be a row vector.
+   *     If "column", the result will be a column vector.
+   * @returns {MatrixType | NumericMatrix} - A matrix containing the minimum elements
+   * from each row, formatted as specified by the mode.
+   * @throws {Error} If the "matrix" parameter is incorrectly defined.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static minRowElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "minRowElementAsColumn"
+      : "minRowElementAsRow";
+
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  /**
+   * Computes the minimum element in each column of the given matrix.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type for the computation.
+   * @param {"row" | "column"} [mode="row"] - The mode for the output format.
+   *     If "row", the result will be a row vector.
+   *     If "column", the result will be a column vector.
+   * @returns {MatrixType | NumericMatrix} - A matrix containing the minimum elements
+   * from each column, formatted as specified by the mode.
+   * @throws {Error} If the input matrix does not have equal-sized subarrays.
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static minColumnElements(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "minColElementAsColumn"
+      : "minColElementAsRow";
+
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  /**
+   * Computes the minimum elements of each row or column in a matrix, excluding the diagonal elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output matrix.
+   * @param {"row" | "column"} [mode="row"] - Specifies whether to compute the minimum elements by rows or columns.
+   * @returns {MatrixType | NumericMatrix} A matrix containing the minimum elements of
+   * each row or column, excluding the diagonal elements.
+   * @throws {Error} If the input is not an array of arrays with equal size.
+   *
+   * @example
+   * const matrix = [
+   *   [1, 2, 3],
+   *   [4, 5, 6],
+   *   [7, 8, 9]
+   * ];
+   * const result = Matrix.minRowElementsExceptDiagonal(matrix);
+   * // result would be [[2, 4, 7]] when mode is "row"
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static minRowElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "minRowElementExceptDiagonalAsColumn"
+      : "minRowElementExceptDiagonalAsRow";
+
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  /**
+   * Computes the minimum elements of each column or row in a matrix, excluding the diagonal elements.
+   *
+   * @param {MatrixType | NumericMatrix} matrix - The input matrix.
+   * @param {NumericType} [type=Matrix._type] - The numeric type of the output matrix.
+   * @param {"row" | "column"} [mode="row"] - Specifies whether to compute the minimum elements by columns or rows.
+   * @throws {errors.IncorrectMatrixInput} If the input is not an array of arrays with equal size.
+   * @returns {MatrixType | NumericMatrix} A matrix containing the minimum elements of 
+   * each column or row, excluding the diagonal elements.
+   *
+   * @example
+   * const matrix = [
+   *   [1, 2, 3],
+   *   [4, 5, 6],
+   *   [7, 8, 9]
+   * ];
+   * const result = Matrix.minColumnElementsExceptDiagonal(matrix, "row");
+   * // result would be [[4, 2, 3]] when mode is "column"
+   */
+  @ifIsNotArrayOfArraysWithEqualSizeThrow(errors.IncorrectMatrixInput)
+  public static minColumnElementsExceptDiagonal(
+    matrix: MatrixType | NumericMatrix,
+    type: NumericType = Matrix._type,
+    mode: "row" | "column" = "row",
+  ): MatrixType | NumericMatrix {
+    const modeExtension = mode === "column"
+      ? "minColElementExceptDiagonalAsColumn"
+      : "minColElementExceptDiagonalAsRow";
+
+    return models.MatrixMapReduce(matrix, type, modeExtension);
+  }
+
+  /**
    * Adds a row or column vector to each row of a matrix along the row axis.
    *
    * @param {MatrixType | NumericMatrix} matrix - The input matrix.
