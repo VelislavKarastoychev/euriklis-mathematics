@@ -176,8 +176,7 @@ export type MapReduceExpression =
   | "minColElementAsRow"
   | "minColElementAsColumn"
   | "minColElementExceptDiagonalAsRow"
-  | "minColElementExceptDiagonalAsColumn"
-;
+  | "minColElementExceptDiagonalAsColumn";
 export type VectorToMatrixOperation =
   | "addRowVectorToMatrixByRowAxis"
   | "addRowVectorToMatrixByColAxis"
@@ -205,3 +204,9 @@ export type ArithmeticOperatorSymbol =
   | "%"
   | "<<"
   | ">>";
+export type QRComputationMethodType =
+  | "Householder"
+  | "Givens"
+  | "Gram-Schmidt"
+  | "Gram-Schmidt with reorthogonization"
+  | "Gram-Schmidt Ritzit source";
