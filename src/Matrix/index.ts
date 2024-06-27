@@ -35,6 +35,7 @@ import type {
   MatrixType,
   NumericMatrix,
   NumericType,
+  QRComputationMethodType,
   TypedArray,
   TypedArrayConstructor,
 } from "../Types";
@@ -3818,7 +3819,7 @@ export class Matrix {
     return models.CholeskyLDL(matrix, typedArray);
   }
 
-  public static QR(matrix: MatrixType | NumericMatrix) {
+  public static QR(matrix: MatrixType | NumericMatrix, method: QRComputationMethodType) {
     return matrix;
   }
 
