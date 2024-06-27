@@ -36,12 +36,12 @@ library. To utilize the functionalities of a particular library, import it into
 your file. For example:
 
 ```ts
-import { Matrix } from "@euriklis/mathematics";
+import { Matrix, Complex, AVLTree, Queue } from "@euriklis/mathematics";
 ```
 
 # Matrix library:
 
-The matrix library is the core component of the @euriklis/mathematics package,
+The matrix library is one of the core components of the @euriklis/mathematics package,
 providing efficient and versatile matrix operations and algorithms.
 
 ## Matrix Class
