@@ -23,7 +23,8 @@ export const tanh: (n: number) => number = Math.tanh;
 export const sign: (a: number, b: number) => number = (
   a,
   b,
-) => (b >= 0.0 ? Math.abs(a) : -Math.abs(a));
+) => (b >= 0.0 ? abs(a) : -abs(a));
+export const sgn = (x: number) => x < 0 ? -1 : 1;
 export const cdiv = (
   a: [number, number],
   b: [number, number],
